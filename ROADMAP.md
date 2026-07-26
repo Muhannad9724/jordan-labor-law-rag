@@ -111,8 +111,16 @@ Verified functionally: static files serve correctly, backend health check passes
 
 `API_BASE_URL` in `app.js` is hardcoded to `http://127.0.0.1:8000` — needs updating once the backend has a real deployed URL (Phase 11).
 
-## Phase 11 — Deployment & launch ⬜ not started
-Wire backend + frontend + vector store together, attach a domain, add a usage/cost cap so a public link can't run up a surprise bill, write the README/resume blurb.
+## Phase 11 — Deployment & launch 🔄 in progress
+Progress so far:
+- **Git/GitHub**: repo initialized, pushed to `github.com/Muhannad9724/jordan-labor-law-rag` (private for now, plan to flip public once the live deploy is confirmed working).
+- **Frontend + backend combined into one deployment**: `src/api.py` now mounts `frontend/` as static files on the FastAPI app itself (`StaticFiles(..., html=True)` mounted last so it doesn't shadow the API routes) — one service instead of two, and CORS is no longer needed since everything's same-origin. `frontend/app.js`'s `API_BASE_URL` changed from a hardcoded `localhost:8000` to `""` (relative).
+- **Rate limiting added** (`slowapi`, in-memory, keyed by IP): `/ask` capped at 10/minute and 100/day. Every question costs real money (Cohere + Pinecone + OpenRouter calls), so this was needed before any public link, not optional polish. Verified locally: 11th request in a minute correctly returns 429 with a proper `{"detail": ...}` body the frontend already knows how to render as an error message.
+- **README.md** written — architecture table, results summary, local run instructions, resume-facing.
+- **Deploy config added**: `Procfile` (`web: uvicorn src.api:app --host 0.0.0.0 --port $PORT`), `.python-version` pinned to 3.11.
+- **Host chosen: Railway** — picked over Render/Fly.io specifically because the user prioritized dashboard/interface quality over cost and is fine paying; not evaluated empirically like other project decisions, just a stated preference.
+
+Not yet done: actually deploying to Railway (requires the user to log in via browser — can't be done from here), setting the three API keys as Railway environment variables, confirming the live URL works end-to-end, then flipping the GitHub repo public.
 
 ## Phase 12 — Polish ⬜ ongoing
 Revisit the Professional Work Law EN/AR mismatch, glossary-article chunking, and expand the eval set once real pipeline failures show what's missing.

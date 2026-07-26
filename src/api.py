@@ -1,19 +1,33 @@
-"""FastAPI backend: wraps Retriever -> Generator behind an HTTP endpoint.
+"""FastAPI backend: wraps Retriever -> Generator behind an HTTP endpoint, and
+serves the static frontend from the same origin (avoids CORS entirely).
 
 Retriever and the production generator are expensive to construct (loads all 739
 chunks, builds the BM25 index, connects to Pinecone/Cohere/OpenRouter) so they're
 built once at startup via the lifespan handler, not per-request.
 
+Rate limiting (slowapi, in-memory) guards /ask specifically -- this is a public
+demo with no auth, and each question costs real money (Cohere embed + Pinecone
+query + OpenRouter generation), so an unrestricted endpoint is a real cost risk,
+not just an abuse-prevention nicety.
+
 Run locally: uvicorn src.api:app --reload --port 8000
 """
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from src.generation import get_production_generator
 from src.retrieval import Retriever
+
+PROJECT = Path(__file__).resolve().parent.parent
+FRONTEND_DIR = PROJECT / "frontend"
 
 _state = {}
 
@@ -28,13 +42,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Jordan Labor & Social Security Law RAG API", lifespan=lifespan)
 
-# Permissive for now -- tighten to the actual frontend origin once Phase 10/11 pick one.
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(status_code=429, content={"detail": "Too many questions -- please wait a bit and try again."})
 
 
 class AskRequest(BaseModel):
@@ -67,7 +81,8 @@ def health():
 
 
 @app.post("/ask", response_model=AskResponse)
-def ask(req: AskRequest):
+@limiter.limit("10/minute;100/day")
+def ask(request: Request, req: AskRequest):
     retriever: Retriever = _state["retriever"]
     generator = _state["generator"]
 
@@ -86,3 +101,7 @@ def ask(req: AskRequest):
             for c in chunks
         ],
     )
+
+
+# Mounted last -- StaticFiles would otherwise shadow the API routes above at "/".
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")

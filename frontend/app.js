@@ -1,5 +1,5 @@
-// Update this before deploying (Phase 11) -- points at the local FastAPI dev server for now.
-const API_BASE_URL = "http://127.0.0.1:8000";
+// Same-origin now that FastAPI serves this frontend directly (src/api.py) -- no CORS needed.
+const API_BASE_URL = "";
 
 const LAW_DISPLAY_NAMES = {
   ssl: "Social Security Law",
