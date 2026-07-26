@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jordan Labor &amp; Social Security Law Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="top-bar" aria-hidden="true"></div>
+  <div class="page">
+    <header class="app-header">
+      <h1>Jordan Labor &amp; Social Security Law Assistant</h1>
+      <p class="subtitle">Ask in English or Arabic &middot; answers cite the Labor Law 1996, its 2019 Professional Work Law amendment, and the Social Security Law</p>
+    </header>
+
+    <div class="chat-card">
+      <main class="chat" id="chat" aria-live="polite"></main>
+
+      <form class="composer" id="composer">
+        <textarea
+          id="question-input"
+          placeholder="Ask a question, e.g. How much notice does my employer need to give before ending my contract?"
+          rows="1"
+          required
+        ></textarea>
+        <button type="submit" id="send-btn" aria-label="Send">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <p class="disclaimer">General legal information, not legal advice. Consult a licensed lawyer for your specific situation.</p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,621 @@
+<style>
+  :root {
+    --paper: #efeeea;
+    --paper-raised: #f8f7f3;
+    --ink: #1a1d1f;
+    --ink-secondary: #4b5054;
+    --ink-muted: #7a7f82;
+    --border: #d8d6cf;
+    --border-strong: #c3c0b6;
+    --accent: #7a2e3a;
+    --accent-ink: #ffffff;
+    --accent-tint: #f3e4e6;
+    --accent-tint-border: #dcb7bd;
+    --model-cohere: #2e5fa3;
+    --model-openai: #1f8a6e;
+    --model-qwen: #b8763a;
+    --shadow: 0 1px 2px rgba(26,20,15,0.06), 0 4px 14px rgba(26,20,15,0.05);
+
+    --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "URW Palladio L", Georgia, serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14171a;
+      --paper-raised: #1b1f23;
+      --ink: #e8e7e2;
+      --ink-secondary: #b9bab8;
+      --ink-muted: #888d8f;
+      --border: #2b2f33;
+      --border-strong: #3a3f44;
+      --accent: #d98fa0;
+      --accent-ink: #14171a;
+      --accent-tint: #2e1a1f;
+      --accent-tint-border: #4a2a30;
+      --model-cohere: #4a7fc7;
+      --model-openai: #2e9b7c;
+      --model-qwen: #bd8038;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 18px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14171a;
+    --paper-raised: #1b1f23;
+    --ink: #e8e7e2;
+    --ink-secondary: #b9bab8;
+    --ink-muted: #888d8f;
+    --border: #2b2f33;
+    --border-strong: #3a3f44;
+    --accent: #d98fa0;
+    --accent-ink: #14171a;
+    --accent-tint: #2e1a1f;
+    --accent-tint-border: #4a2a30;
+    --model-cohere: #4a7fc7;
+    --model-openai: #2e9b7c;
+    --model-qwen: #bd8038;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 4px 18px rgba(0,0,0,0.35);
+  }
+  :root[data-theme="light"] {
+    --paper: #efeeea;
+    --paper-raised: #f8f7f3;
+    --ink: #1a1d1f;
+    --ink-secondary: #4b5054;
+    --ink-muted: #7a7f82;
+    --border: #d8d6cf;
+    --border-strong: #c3c0b6;
+    --accent: #7a2e3a;
+    --accent-ink: #ffffff;
+    --accent-tint: #f3e4e6;
+    --accent-tint-border: #dcb7bd;
+    --model-cohere: #2e5fa3;
+    --model-openai: #1f8a6e;
+    --model-qwen: #b8763a;
+    --shadow: 0 1px 2px rgba(26,20,15,0.06), 0 4px 14px rgba(26,20,15,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--paper); }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin: 0 0 14px;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+  .dek {
+    font-size: 17px;
+    color: var(--ink-secondary);
+    max-width: 62ch;
+    margin: 0 0 40px;
+  }
+  .dek b { color: var(--ink); font-weight: 600; }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.005em;
+    margin: 0 0 6px;
+  }
+  .section-note {
+    font-size: 14.5px;
+    color: var(--ink-muted);
+    max-width: 62ch;
+    margin: 0 0 20px;
+  }
+  section { margin: 56px 0; }
+  section:first-of-type { margin-top: 0; }
+
+  /* ---------- verdict banner ---------- */
+  .verdict {
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 30px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 40px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .verdict-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+  .verdict-model {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0;
+  }
+  .verdict-model span {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    background: var(--model-openai);
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .verdict-sub {
+    font-size: 14px;
+    color: var(--ink-secondary);
+    margin: 4px 0 0;
+  }
+  .chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .chip b { color: var(--model-openai); font-weight: 700; }
+
+  /* ---------- scorecard table ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--paper-raised); }
+  thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border-strong);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; }
+  .model-name { display: flex; align-items: center; gap: 9px; font-weight: 600; white-space: nowrap; }
+  .swatch { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .winner-row { background: color-mix(in oklab, var(--model-openai) 7%, var(--paper-raised)); }
+  .winner-row td:first-child { position: relative; }
+  .win-mark { color: var(--model-openai); font-weight: 700; margin-left: 6px; }
+
+  /* ---------- bar charts ---------- */
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 620px) { .charts { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px 18px;
+  }
+  .chart-title { font-size: 14px; font-weight: 600; margin: 0 0 3px; }
+  .chart-sub { font-size: 12.5px; color: var(--ink-muted); margin: 0 0 20px; }
+  .bars {
+    display: flex;
+    gap: 22px;
+    padding: 0 4px;
+  }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; }
+  .bar-val {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  /* fixed-height track = the 0-5 axis; bar height% and tick bottom% both resolve against this same 140px, so they line up correctly */
+  .bar-track {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  .bar-track::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 50%;
+    border-top: 1px dashed var(--border);
+  }
+  .bar {
+    position: absolute;
+    bottom: 0;
+    width: 42px;
+    border-radius: 5px 5px 0 0;
+    min-height: 2px;
+  }
+  .bar-min-tick {
+    position: absolute;
+    left: 3px; right: 3px;
+    height: 2px;
+    background: var(--ink);
+    opacity: 0.55;
+  }
+  .bar-label {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ink-secondary);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .chart-legend {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chart-legend .tick-swatch { width: 12px; height: 2px; background: var(--ink); opacity: 0.55; display: inline-block; }
+
+  /* ---------- findings ---------- */
+  .findings { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 700px) { .findings { grid-template-columns: 1fr; } }
+  .finding {
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-tint-border);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+  .finding-tag {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin: 0 0 10px;
+  }
+  .finding-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 15.5px;
+    line-height: 1.5;
+    margin: 0 0 10px;
+    color: var(--ink);
+  }
+  .finding-meta { font-size: 13px; color: var(--ink-secondary); margin: 0; }
+  .finding-meta b { color: var(--ink); }
+
+  .honest-note {
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--ink-muted);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    margin-top: 20px;
+  }
+  .honest-note b { color: var(--ink); }
+
+  /* ---------- ledger table ---------- */
+  .ledger-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+  .ledger { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 760px; background: var(--paper-raised); }
+  .ledger thead th {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-strong);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .ledger th.model-col { text-align: center; }
+  .ledger tbody td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .ledger tbody tr:last-child td { border-bottom: none; }
+  .q-label { font-weight: 600; white-space: nowrap; }
+  .q-id { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); display: block; margin-top: 2px; font-weight: 400; }
+  .score-cell { text-align: center; min-width: 120px; }
+  .cite-line { display: block; font-size: 12.5px; color: var(--ink-secondary); margin-bottom: 4px; }
+  .score-line { font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .score-line .lbl { font-weight: 400; color: var(--ink-muted); }
+  .flag-cell { background: var(--accent-tint); border-radius: 8px; }
+  .flag-cell .cite-line { color: var(--accent); font-weight: 600; }
+  .flag-cell .score-line { color: var(--accent); }
+  .ok-mark { color: var(--model-openai); }
+  .miss-mark { color: var(--accent); }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink-muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  footer code { font-family: var(--font-mono); background: var(--paper-raised); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border); }
+</style>
+
+<div class="page">
+
+  <p class="eyebrow">RAG Project · Jordan Labor &amp; Social Security Law · Phase 7</p>
+  <h1>Which model should answer the questions?</h1>
+  <p class="dek">Three candidate LLMs — <b>Cohere Command A</b>, <b>OpenAI GPT-4o-mini</b>, and <b>Qwen 2.5-72B</b> — generated answers to the same 11 questions from the same retrieved law chunks. Scored on citation correctness, fabricated citations, and independently-judged faithfulness &amp; relevancy.</p>
+
+  <section class="verdict">
+    <div>
+      <p class="verdict-label">Verdict</p>
+      <p class="verdict-model"><span></span>gpt-4o-mini</p>
+      <p class="verdict-sub">via OpenRouter — wins on every metric measured</p>
+    </div>
+    <div class="chips">
+      <span class="chip"><b>10/10</b> correct citations</span>
+      <span class="chip"><b>0</b> fabrications</span>
+      <span class="chip"><b>5.00</b>/5 faithfulness</span>
+      <span class="chip"><b>~17×</b> cheaper than Cohere</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Scorecard</h2>
+    <p class="section-note">11 test questions: 10 sampled from the project's 40-question eval set (known-correct article per question) plus 1 out-of-domain question with no correct answer, to test honest refusal.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th class="num">Correct article</th>
+            <th class="num">Fabricated citations</th>
+            <th class="num">Faithfulness</th>
+            <th class="num">Relevancy</th>
+            <th class="num">Cost / question</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="model-name"><span class="swatch" style="background:var(--model-cohere)"></span>Cohere command-a-03-2025</span></td>
+            <td class="num">9 / 10</td>
+            <td class="num">1</td>
+            <td class="num">4.82 <span style="color:var(--ink-muted)">(min 3)</span></td>
+            <td class="num">4.73 <span style="color:var(--ink-muted)">(min 2)</span></td>
+            <td class="num">$0.007</td>
+          </tr>
+          <tr class="winner-row">
+            <td><span class="model-name"><span class="swatch" style="background:var(--model-openai)"></span>OpenAI gpt-4o-mini<span class="win-mark">✓</span></span></td>
+            <td class="num">10 / 10</td>
+            <td class="num">0</td>
+            <td class="num">5.00 <span style="color:var(--ink-muted)">(min 5)</span></td>
+            <td class="num">4.91 <span style="color:var(--ink-muted)">(min 4)</span></td>
+            <td class="num">$0.0004</td>
+          </tr>
+          <tr>
+            <td><span class="model-name"><span class="swatch" style="background:var(--model-qwen)"></span>Qwen 2.5-72B</span></td>
+            <td class="num">9 / 10</td>
+            <td class="num">1</td>
+            <td class="num">4.64 <span style="color:var(--ink-muted)">(min 3)</span></td>
+            <td class="num">4.91 <span style="color:var(--ink-muted)">(min 4)</span></td>
+            <td class="num">$0.0008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Faithfulness &amp; relevancy</h2>
+    <p class="section-note">The real metrics — scored by an independent judge (Claude Sonnet 5, not one of the three candidates), reading each answer against the exact source text it was given. Bar = mean of 11 scores; tick = lowest single score, showing consistency.</p>
+    <div class="charts">
+
+      <div class="chart-card">
+        <p class="chart-title">Faithfulness</p>
+        <p class="chart-sub">every claim backed by the source text · 1–5</p>
+        <div class="bars">
+          <div class="bar-col">
+            <span class="bar-val">4.82</span>
+            <div class="bar-track">
+              <div class="bar" style="height:96.4%; background:var(--model-cohere)"></div>
+              <span class="bar-min-tick" style="bottom:60%"></span>
+            </div>
+            <span class="bar-label">Cohere</span>
+          </div>
+          <div class="bar-col">
+            <span class="bar-val">5.00</span>
+            <div class="bar-track">
+              <div class="bar" style="height:100%; background:var(--model-openai)"></div>
+              <span class="bar-min-tick" style="bottom:100%"></span>
+            </div>
+            <span class="bar-label">GPT-4o-mini</span>
+          </div>
+          <div class="bar-col">
+            <span class="bar-val">4.64</span>
+            <div class="bar-track">
+              <div class="bar" style="height:92.8%; background:var(--model-qwen)"></div>
+              <span class="bar-min-tick" style="bottom:60%"></span>
+            </div>
+            <span class="bar-label">Qwen</span>
+          </div>
+        </div>
+        <p class="chart-legend"><span class="tick-swatch"></span> lowest single score</p>
+      </div>
+
+      <div class="chart-card">
+        <p class="chart-title">Relevancy</p>
+        <p class="chart-sub">answer actually addresses the question · 1–5</p>
+        <div class="bars">
+          <div class="bar-col">
+            <span class="bar-val">4.73</span>
+            <div class="bar-track">
+              <div class="bar" style="height:94.6%; background:var(--model-cohere)"></div>
+              <span class="bar-min-tick" style="bottom:40%"></span>
+            </div>
+            <span class="bar-label">Cohere</span>
+          </div>
+          <div class="bar-col">
+            <span class="bar-val">4.91</span>
+            <div class="bar-track">
+              <div class="bar" style="height:98.2%; background:var(--model-openai)"></div>
+              <span class="bar-min-tick" style="bottom:80%"></span>
+            </div>
+            <span class="bar-label">GPT-4o-mini</span>
+          </div>
+          <div class="bar-col">
+            <span class="bar-val">4.91</span>
+            <div class="bar-track">
+              <div class="bar" style="height:98.2%; background:var(--model-qwen)"></div>
+              <span class="bar-min-tick" style="bottom:80%"></span>
+            </div>
+            <span class="bar-label">Qwen</span>
+          </div>
+        </div>
+        <p class="chart-legend"><span class="tick-swatch"></span> lowest single score</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>What the judge caught that citation-matching missed</h2>
+    <p class="section-note">Checking whether the right article <em>number</em> was cited says nothing about whether the answer stayed on-topic or avoided embellishment. Two real defects only showed up once someone actually read the answers.</p>
+    <div class="findings">
+      <div class="finding">
+        <p class="finding-tag">Relevancy failure</p>
+        <p class="finding-quote">"The question asked about Germany's minimum wage, which the answer cannot provide, so it substitutes unrelated Jordanian information instead."</p>
+        <p class="finding-meta"><b>Cohere</b>, out-of-domain trap question — scored relevancy <b>2/5</b>. It correctly avoided inventing a German figure, but padded the refusal with unrequested Jordan minimum-wage detail instead of just declining.</p>
+      </div>
+      <div class="finding">
+        <p class="finding-tag">Faithfulness failure</p>
+        <p class="finding-quote">"The core legal claim is accurate, but the response includes a stray Chinese sentence that is an unexplained artifact not derived from the sources."</p>
+        <p class="finding-meta"><b>Qwen 2.5-72B</b>, annual-leave-splitting question — scored faithfulness <b>3/5</b>. A generation-quality bug with nothing to do with citations; the cheap open-weight route's real risk.</p>
+      </div>
+    </div>
+    <div class="honest-note">
+      <b>Also worth noting, against my own methodology:</b> the regex citation-check flagged Qwen as "wrong" on the 1999-law question (it extracted "Article 11," not the ground-truth "10"). The judge read the actual answer — Qwen had written "Article 10/11" together and was factually accurate — and scored it 5/5 faithfulness. The shallow proxy produced a false negative here; the judge caught it.
+    </div>
+  </section>
+
+  <section>
+    <h2>Per-question ledger</h2>
+    <p class="section-note">Citation cited (✓/✗ against ground truth) and Faithfulness/Relevancy scores, all three models, every question. Rows with a defect are marked.</p>
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th class="model-col">Cohere</th>
+            <th class="model-col">GPT-4o-mini</th>
+            <th class="model-col">Qwen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="q-label">Annual leave days &amp; tenure increase<span class="q-id">q03</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 61</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 61</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 61</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Overtime &amp; holiday pay rates<span class="q-id">q05</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 59</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 59</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 59</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Notice period for termination<span class="q-id">q01</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 23</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 23</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 23</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Dismissal without notice <span style="color:var(--ink-muted); font-weight:400;">(AR→EN)</span><span class="q-id">q04</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 28</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 28</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 28</span><span class="score-line"><span class="lbl">F</span> 4 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Splitting annual leave<span class="q-id">q12</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 62</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 62</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell flag-cell"><span class="cite-line">✓ Art. 62, stray artifact</span><span class="score-line"><span class="lbl">F</span> 3 <span class="lbl">R</span> 4</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Work-injury law scope<span class="q-id">q17</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 86</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 86</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 86</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Unemployment benefit calculation<span class="q-id">q21</span></td>
+            <td class="score-cell flag-cell"><span class="cite-line">✓ Art. 53 + fabricated Art. 90</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 53</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell flag-cell"><span class="cite-line">✓ Art. 53 + fabricated Art. 90</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Retirement age &amp; eligibility <span style="color:var(--ink-muted); font-weight:400;">(EN→AR)</span><span class="q-id">q33</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 62, 64</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 62, 64</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 62, 64</span><span class="score-line"><span class="lbl">F</span> 4 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Definition of "profession"<span class="q-id">q37</span></td>
+            <td class="score-cell flag-cell"><span class="cite-line">✗ said Art. 3, meant Art. 2</span><span class="score-line"><span class="lbl">F</span> 3 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 2</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 4</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 2</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Is the 1999 law still in force?<span class="q-id">q39</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 10</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ Art. 10</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line miss-mark">✗ regex / ✓ judge (Art. 10/11)</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+          <tr>
+            <td class="q-label">Out-of-domain: Germany's minimum wage<span class="q-id">trap</span></td>
+            <td class="score-cell flag-cell"><span class="cite-line">declined, but padded w/ Jordan info</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 2</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ declined cleanly</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+            <td class="score-cell"><span class="cite-line ok-mark">✓ declined cleanly</span><span class="score-line"><span class="lbl">F</span> 5 <span class="lbl">R</span> 5</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Data: <code>eval/llm_comparison_details.csv</code> · <code>eval/llm_comparison_judge_scores.csv</code></span>
+    <span>Full methodology: <code>scripts/generation_llm_comparison.ipynb</code></span>
+  </footer>
+
+</div>

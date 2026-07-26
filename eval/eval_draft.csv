@@ -1,0 +1,137 @@
+﻿question_id,question_text,question_language,answer_law,answer_article_numbers,answer_language,question_category,labeling_note,difficulty,source_article_excerpt
+q01,"If either I or my employer wants to end an ongoing job with no fixed end date, how much notice has to be given?",en,Work_Law_1996,23,en,termination,"One month's written notice from either side; the contract stays valid during the notice period (employer may excuse attendance but must still pay); if the worker quits early without finishing the notice period, they owe the employer for the unworked portion.",medium,"Article 23 Termination of an unlimited-term employment contract (Effective date: 14/06/1996) 
+
+ 
+a. If one of the parties intends to terminate the unlimited term employment contract, the 
+other party "
+q02,How many days after my wages are due does my employer have to actually pay me?,en,Work_Law_1996,46,en,rights,Wages and overtime must be paid within 7 days of the due date; the employer can't deduct anything except where the law allows; signing a payslip doesn't waive the right to money still owed.,easy,"Article 46 Eligibility and receipt of wages (Effective date: 15/06/2023)             
+a- The wage and overtime shall be paid within a period not exceeding seven days from the 
+date of maturity, and th"
+q03,"How many paid vacation days do I get per year, and does that go up the longer I stay?",en,Work_Law_1996,61,en,rights,"14 paid days per year, rising to 21 days once the worker completes 5 consecutive years with the same employer; official/religious holidays and weekends don't count against it.",easy,"Article 61 Annual leave )Effective date: 16/05/2019) 
+a- Every worker shall be entitled to an annual leave with full pay for a period of fourteen 
+days for each year of service, unless an agreement is"
+q04,هل يحق لصاحب العمل فصلي من العمل من دون سابق إنذار؟,ar,Work_Law_1996,28,en,termination,"Cross-lingual: Arabic question, English-sourced article. Yes, but only in specific cases: forging documents, breaching contract duties, causing serious financial loss, repeated safety/rule violations after two written warnings, excessive unexcused absence, disclosing secrets, a morals-related conviction, being intoxicated at work, or assaulting someone at work.",medium,"Article 28 Cases of dismissal of worker without notice (Effective date: 14/06/1996) 
+The employer may dismiss the worker without notice in any of the following cases:- 
+a- If the worker impersonates a"
+q05,"How much extra do I get paid for working overtime, or for working on a holiday?",en,Work_Law_1996,59,en,benefits_calculation,At least 125% of the regular wage per overtime hour; at least 150% for working on the weekly day off or a religious/official holiday.,easy,"Article 59 Overtime and working on public official holidays (Effective date: 16/05/2004) 
+a- It is permissible to engage the worker, with their consent, for more than the daily or 
+weekly working hour"
+q06,What's the most hours I can legally be asked to work in a day or in a week?,en,Work_Law_1996,56,en,rights,8 hours/day or 48 hours/week cap (meal and rest breaks don't count toward that); hours can be spread unevenly across the week as long as no single day exceeds 11 hours.,easy,"Article 56 Working hours (Effective date: 16/05/2004) 
+a- It is not permissible to employ a worker for more than eight hours per day or forty-eight 
+hours per week, except in cases stipulated by this "
+q07,Can my employer make me get a medical check-up before I start a job?,en,Work_Law_1996,83,en,obligations,The Minister may require pre-employment medical fitness exams for specified jobs; the instructions are published in two newspapers and the Gazette.,easy,"Article 83 Health protection instructions (Effective date: 14/06/1996) 
+The Minister, after consulting the relevant authorities, may issue instructions specifying jobs that 
+no person shall be employe"
+q08,ما هو أقصى مبلغ يمكن أن أُغرَّم به إذا خالفت تعليمات صادرة عن قانون العمل ولم تكن هناك عقوبة محددة لتلك المخالفة؟,ar,Work_Law_1996,139,en,penalties,"Cross-lingual: Arabic question, English-sourced article. General catch-all fine: 500-1000 JD; the heavier Penal Code penalty applies instead if it's more severe; fines combine when there are multiple violations.",easy,"Article 139 Violating the provisions of legislation (Effective date: 15/06/2023) 
+Each violation of the provisions of this Law or any regulation issued pursuant thereto for 
+which no penalty is specif"
+q09,"If my employer ends my fixed-term contract early, do I still get paid for the rest of the term?",en,Work_Law_1996,26,en,termination,"Yes - the worker keeps all contractual rights/benefits plus wages through the original end date, unless it's a for-cause dismissal under Article 28. (If the worker ends it early instead without an Article 29 justification, they can owe the employer up to half a month's wage per remaining month.)",medium,"Article 26 Termination of fixed-term employment contract (Effective date: 14/06/1996) 
+a- If the employer terminates the fixed-term employment contract before the expiry of its 
+term, or if the worker"
+q10,How many paid sick days do I get per year?,en,Work_Law_1996,65,en,rights,14 paid days per year with a doctor's note; renewable for another 14 paid days if hospitalized; a medical committee sign-off is required for employers with more than 20 workers.,easy,"Article 65 Sick leaves (Effective date: 16/05/2019) 
+A worker shall have the right to sick leave for a duration of fourteen days per year with full 
+pay based on a report from the physician approved b"
+q11,"If my contract doesn't say how much I'll be paid, how do we figure out my wage?",en,Work_Law_1996,45,ar,benefits_calculation,"Cross-lingual: English question, Arabic-sourced article. No explicit amount in the contract -> use the wage for similar work if one exists, otherwise custom/common practice, otherwise the court decides it as a wage dispute.",medium,"المادة (45): تحديد الأجر
+يحدد مقدار الأجر في العقد وإذا لم ينص عقد العمل عليه فيأخذ العامل الأجر المقدر لعمل من نفس النوع أن وجد وإلا قدر طبقاً للعرف
+فإذا لم يوجد العرف تولت المحكمة تقديره بمقتضى أحكا"
+q12,هل يمكنني أخذ إجازتي السنوية على دفعات؟ وما أقل مدة لكل دفعة؟,ar,Work_Law_1996,62,ar,rights,يجوز التجزئة، على ألا يقل الجزء الواحد عن يومين.,easy,"المادة (62): تجزئة الاجازة السنوية تاريخ السريان ١٦-٠٤-٢٠٠٤
+إذا لم تؤخذ الإجازة السنوية دفعة واحدة فلا يجوز أن يقل الجزء منها عن يومين في أي مرة ."
+q13,هل يحق لي أخذ إجازة إذا التحقت بالجامعة أو معهد للدراسة، وهل هي مدفوعة الأجر؟,ar,Work_Law_1996,66,ar,rights,يحق للعامل إجازة أربعة أشهر بدون أجر للدراسة في جامعة أو معهد أو كلية معترف بها رسمياً. المادة نفسها تتضمن إجازات أخرى مدفوعة الأجر (تدريب مهني وأبوة) لم يتناولها هذا السؤال.,easy,"المادة (66): الاجازات الاضافية
+- أ - لكل عامل الحق في إجازة مدتها أربعة عشر يوماً في السنة مدفوعة الأجر في أي من الحالات التالية:
+- أ – إذا التحق بدورة للثقافة العمالية معتمدة من الوزارة أو الاتحاد ال"
+q14,"If we store flammable materials at work, does my employer have to take fire-safety precautions?",en,Work_Law_1996,80,ar,obligations,"Cross-lingual: English question, Arabic-sourced article. Employer must take necessary precautions per official technical instructions.",easy,"المادة (80): الوقاية من المواد الخطرة
+على صاحب العمل اتخاذ الاحتياطات اللازمة لحماية المؤسسة والعاملين فيها من اخطار الحريق والانفجارات او تخزين المواد الخطرة القابلة
+للاشتعال او نقلها او تداولها وتوف"
+q15,ما الأشياء التي يجب أن أقوم بها كموظف تجاه صاحب العمل؟,ar,Work_Law_1996,19,ar,obligations,أداء العمل بنفسه بعناية، حفظ أسرار صاحب العمل، المحافظة على أدوات ولوازم العمل، والخضوع للفحوصات الطبية اللازمة.,medium,"المادة (19): واجبات العامل
+على العامل :-
+أ - تأدية العمل بنفسه وأن يبذل في تأديته عناية الشخص العادي وأن يلتزم بأوامر صاحب العمل المتعلقة بتنفيذ العمل المتفق عليه
+وذلك ضمن الحدود التي لا تعرضه للخطر أ"
+q16,هل يحق لي أخذ إجازة بدون راتب إذا انتقل زوجي أو زوجتي للعمل في مكان بعيد؟,ar,Work_Law_1996,68,ar,rights,نعم، إجازة بدون أجر لمرة واحدة، لمدة لا تزيد على سنتين، لمرافقة الزوج أو الزوجة المنتقل لعمل خارج المحافظة أو خارج المملكة.,easy,"المادة (68): اجازة الزوجين
+لكل من الزوجين العاملين الحصول على اجازة لمرة واحدة دون أجر لمدة لا تزيد على سنتين لمرافقة زوجه إذا انتقل الى عمل آخر يقع خارج
+المحافظة التي يعمل فيها داخل المملكة أو الى عم"
+q17,متى تنطبق عليّ أحكام إصابات العمل في قانون العمل بدلاً من قانون الضمان الاجتماعي؟,ar,Work_Law_1996,86,ar,scope,تُطبَّق على العمال الذين لا يشملهم قانون الضمان الاجتماعي المعمول به.,medium,"المادة (86): تطبيق اصابات العمل
+تطبق احكام هذا الفصل المتعلقة باصابات العمل وامراض المهنة على العمال الذين لا تسري عليهم احكام قانون الضمان الاجتماعي المعمول به."
+q18,إذا تعرضت لإصابة خطيرة أثناء العمل، ماذا يجب على صاحب العمل أن يفعل؟,ar,Work_Law_1996,87,ar,obligations,نقل المصاب للمستشفى أو مركز طبي، إبلاغ الجهات الأمنية، وإشعار الوزارة خلال 48 ساعة؛ مخالفة ذلك يعاقب عليها بغرامة 100-500 دينار (تُضاعف عند التكرار).,medium,"المادة (87): تبليغ الاصابات
+أ - اذا اصيب عامل باصابة عمل ادت الى وفاته او الحقت به ضررا جسمانيا حال دون استمراره في العمل فعلى صاحب العمل نقل المصاب الى مستشفى او اي مركز طبي وتبليغ الجهات الامنية الم"
+q19,هل يحتاج صاحب عملي إلى إذن رسمي قبل أن يوظف عاملاً غير أردني؟,ar,Work_Law_1996,12,ar,eligibility,نعم، يلزم موافقة الوزير وحصول العامل على تصريح عمل قبل الاستقدام أو التوظيف.,medium,"المادة (12)
+أ- لا يجوز استقدام أو استخدام أي عامل غير أردني إلا بموافقة الوزير أو من يفوضه شريطة أن يتطلب العمل خبرة وكفاءة غير متوافرة لدى العمال الأردنيين أو كان العدد المتوافر منهم لا يفي بالحاجة و"
+q20,إذا لم تكن هناك عقوبة محددة لمخالفة معينة في قانون العمل، فهل هذا يعني أنني لن أُعاقب؟,ar,Work_Law_1996,139,ar,penalties,لا، غرامة 500-1000 دينار كحد افتراضي؛ تُطبَّق عقوبة قانون العقوبات إن كانت أشد؛ وتُجمع الغرامات عند تعدد المخالفات.,easy,"المادة (139): مخالفة أحكام التشريع
+كل مخالفة لأحكام هذا القانون أو أي نظام صادر بمقتضاه لم تعين لها عقوبة فيه يعاقب مرتكبها بغرامة لا تقل عن (٥٠٠) دينار ولا تزيد
+على (١٠٠٠) دينار ويشترط في ذلك أن تفرض"
+q21,"If I lose my job, how much unemployment money will I actually get each month?",en,Social_Security_Law,53,en,benefits_calculation,"75% of last deductible wage in month 1, 65% month 2, 55% month 3, 45% months 4-6; capped at JOD 500/month net.",medium,"Article (53)
+a.	 Unemployment allowance shall be calculated during the unemployment period on the basis 
+of the percentages specified hereunder, from his/her last wage subject to deduction:
+1.	(75%) f"
+q22,"Will my pension go up over the years, or does it stay the same amount forever?",en,Social_Security_Law,90,en,benefits_calculation,"Increase each May, tied to whichever is lower of inflation or average-wage growth, capped at JOD 20; full linkage generally starts at age 60 (men)/55 (women), with some disability/death pensions linked earlier.",hard,"Article (90)1
+a.	 For the purposes of this Article:
+1.	The term “inflation” means the average growth rate of prices in the Consumer Price 
+Index for a previous year as adopted by the competent officia"
+q23,Where does the money for social security actually come from?,en,Social_Security_Law,19,en,scope,"Contributions, late-payment interest, fines, investment income, government loans, and grants/donations (a foreign source needs Cabinet approval).",easy,"Article (19)
+a. The financial resources of the Corporation shall comprise the following:
+1.	Monthly contributions paid by firms and insureds.
+2.	Default Interest on contributions in accordance with th"
+q24,إذا ظهرت عليّ أعراض مرض متعلق بعملي بعد تركي للوظيفة، هل ما زال يحق لي المطالبة بالتأمين؟,ar,Social_Security_Law,39,en,eligibility,"Cross-lingual: Arabic question, English-sourced article. Claim allowed if symptoms appear within 2 years of leaving that occupation, with the Medical Reference confirming the cause.",medium,"Article (39)
+The Corporation is committed to comply with the insurance rights stipulated in this Law 
+if symptoms of an occupational disease appear on the insured within (2) years from the 
+date on wh"
+q25,إذا توفيت، من من أفراد عائلتي يستحق راتبي من الضمان الاجتماعي؟,ar,Social_Security_Law,79,en,definitions,"Cross-lingual: Arabic question, English-sourced article. Lists widow/widower, sons/daughters, parents, dependent siblings, and an unborn child if born alive.",easy,"Article (79)
+The beneficiaries hereof refer to the family members of the insured, the pensioner, or 
+the disability pensioner who are specified in this Article and fulfill the eligibility conditions 
+"
+q26,"Once I've been told how much my pension is, can I still challenge that amount later?",en,Social_Security_Law,88,en,procedure,The decision becomes final and can no longer be challenged 90 days after the person is notified.,easy,"Article (88)
+The determined amounts of the Retirement Pension, the Disability Pension, and the lump 
+sum compensation are final, and may not be subject to challenge or objection by any 
+administrative"
+q27,"Do I still get paid while I'm on maternity leave, and does that time count toward my years of service?",en,Social_Security_Law,45,en,benefits_calculation,"Paid at her last deductible wage; the leave period counts as actual service, with insurance contributions deducted from the allowance paid.",easy,"Article (45)
+a.  The female insured shall be paid an allowance, during her maternity leave, equivalent to 
+her last wage subject to deduction at the beginning of her maternity leave.
+b.	 Maternity lea"
+q28,"Who's on the committee that runs the insurance side of Social Security, and what do they actually do?",en,Social_Security_Law,13,en,governance,"Chaired by the Director General; members include the Health Ministry's Secretary General, two Board-selected reps (labor + employer), and three outside experts; functions include proposing insurance policy and reviewing the annual report.",hard,"Article (13)
+a.  A council called the “Council of Insurances” shall be set up in the Corporation. Said council 
+shall be presided over by the Director General and shall comprise the following members:"
+q29,"If some other law says something different from the Social Security Law, which one wins?",en,Social_Security_Law,109,ar,scope,"Cross-lingual: English question, Arabic-sourced article. Any conflicting provision in another law is overridden to the extent of the conflict.",easy,"المادة (109)
+لا يعمل بأي نص ورد في أي تشريع آخر إلى المدى الذي يتعارض فيه مع أحكام هذا القانون."
+q30,من أين تأتي الأموال التي تغطي تأمين إصابات العمل؟,ar,Social_Security_Law,24,ar,scope,اشتراكات شهرية بنسبة 2% من أجور المؤمن عليهم تدفعها المنشأة، فوائد وغرامات عدم الالتزام، وعائد استثمار هذه الأموال.,easy,"المادة (24)
+تتكون مصادر تمويل تأمين إصابات العمل مما يلي:-
+أ- الاشتراكات الشهرية التي تؤديها المنشأة بنسبة (اثنين بالمائة) من أجور المؤمن عليهم.
+ب- الفوائد والغرامات التي تترتب على عدم التقيد بأحكام ه"
+q31,إذا أصبت بإصابة عمل، هل يمكنني مطالبة صاحب العمل بتعويض إضافي غير الذي يقدمه لي الضمان الاجتماعي؟,ar,Social_Security_Law,37,ar,rights,لا يجوز إلا إذا كانت الإصابة ناتجة عن خطأ جسيم من المنشأة.,medium,"المادة (37)
+مع مراعاة ما ورد في الفقرة (هـ) من المادة (٢٧) من هذا القانون لا يحق للمصاب أو لورثته أو
+للمستحقين عنه الرجوع على المنشأة للمطالبة بأي تعويض خلاف التعويضات الواردة في هذا
+القانون وذلك فيما"
+q32,إذا تسبب لي شخص آخر بإصابة عمل، هل ما زال الضمان الاجتماعي يغطيني؟,ar,Social_Security_Law,41,ar,rights,نعم، تبقى مسؤولية المؤسسة تجاه المصاب قائمة، ولها الرجوع على المتسبب لاسترداد تكاليف العناية الطبية والبدلات اليومية.,medium,"المادة (41)
+إذا وقعت إصابة العمل بفعل الغير تبقى مسؤولية المؤسسة قائمة تجاه المصاب المؤمن عليه وللمؤسسة الرجوع على الغير للمطالبة بكامل ما دفعته من تكاليف العناية الطبية المنصوص عليها في المادة (٢٦) م"
+q33,"At what age can I start collecting my retirement pension, and are there other requirements too?",en,Social_Security_Law,62,ar,eligibility,"Cross-lingual: English question, Arabic-sourced article. Age 60 for men / 55 for women, plus at least 180 total contributions (at least 84 of them actual, not credited). The rest of the article (paragraphs b-e) covers how the pension amount itself is calculated, which the question doesn't get into.",medium,"المادة (62)
+أ- يستحق المؤمن عليه راتب تقاعد الشيخوخة شريطة تحقق ما يلي:
+١. إكمال المؤمن عليه الذكر سن الستين والمؤمن عليها الأنثى سن الخامسة والخمسين.
+٢. أن تكون اشتراكاته في هذا التأمين (١٨٠) اشتراكا"
+q34,أنا أرملة، هل يمكنني الجمع بين راتبي التقاعدي وحصتي من راتب زوجي المتوفى؟,ar,Social_Security_Law,84,ar,rights,المادة طويلة وتغطي حالات متعددة (أرملة/أرمل، أبناء، والدين)؛ السؤال يركز على حالة الأرملة تحديدًا.,hard,"المادة (84)
+تعتمد القواعد التالية للجمع بين الرواتب والأجور والأنصبة للمستحقين من عائلة المؤمن عليه أو
+صاحب راتب التقاعد أو راتب الاعتلال.
+أ- الأرملة والأرمل:-
+١. يحق للأرملة الجمع بين راتبها التقاعدي"
+q35,إذا توفي المؤمن عليه، متى يبدأ صرف نصيب عائلته من الراتب؟,ar,Social_Security_Law,80,ar,benefits_calculation,من أول الشهر الذي حدثت فيه الوفاة (للمؤمن عليه) أو من أول الشهر التالي (لصاحب راتب تقاعد أو اعتلال متوفى)، وفق جدول توزيع الأنصبة.,medium,"المادة (80)
+إذا توفى المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال فيدفع لكل مستحق نصيبه
+من الراتب وفقاً للجدول رقم (٤) الملحق بهذا القانون، وذلك ابتداء من أول الشهر الذي حدثت فيه
+وفاة المؤمن"
+q36,هل يمكنني الجمع بين راتب تقاعدي من الضمان الاجتماعي وراتب تقاعد آخر من جهة مختلفة؟,ar,Social_Security_Law,85,ar,rights,يجوز الجمع ضمن سقف معين (لا يتجاوز مجموعهما ثلاثة أمثال الحد الأدنى للراتب)؛ المادة تتضمن فقرات إضافية عن التقاعد المبكر لم يتناولها السؤال.,hard,"المادة (85)
+أ- يحق الجمع بين أي من الرواتب المقررة بموجب أحكام هذا القانون وأي راتب تقاعد أو راتب
+اعتلال مقرر بموجب أي تشريعات أخرى.
+ب- يحق لصاحب راتب اعتلال العجز الجزئي الإصابي الدائم أو صاحب راتب ا"
+q37,What actually counts as a 'profession' under this law?,en,Professional_Work_Law_2019,2,en,definitions,"Defines profession as any compensated work, trade, or craft covered by the law; the article also defines Ministry, Minister, Business, and Inspector.",easy,"Article (2) :The following words and expressions shall have the meanings assigned 
+to them hereunder unless otherwise provided by context: 
+Ministry: 
+Ministry of Labor 
+Minister: 
+Minister of Labor 
+"
+q38,What happens if I run my business without getting it officially classified first?,en,Professional_Work_Law_2019,9,en,penalties,"Fine of 200-1000 JD for practicing without a classification certificate (or letting renewal lapse over 60 days); repeat/uncorrected violations can lead to temporary or permanent closure, and reopening a closed business without authorization is punishable by 1-6 months in prison.",medium,"Article (9) (a): The business owner shall be subject to a fine of no less than one 
+hundred dinars and no more than five hundred dinars for committing 
+any of the following violations: 
+1- Violating t"
+q39,هل ما زال القانون القديم لتنظيم العمل المهني لسنة 1999 ساري المفعول، أم تم إلغاؤه؟,ar,Professional_Work_Law_2019,10,ar,scope,أُلغي، لكن الأنظمة والتعليمات الصادرة بموجبه تبقى سارية حتى تُلغى أو تُعدَّل أو تُستبدل.,easy,"المادة (10)
+يلغى قانون تنظيم العمل المهني رقم (۲۷) لسنة ۱۹۹۹ على أن يستمر العمل بالأنظمة والتعليمات الصادرة بمقتضاه إلى أن تلغي أو
+تعدل أو يستبدل غيرها بها."
+q40,هل يتم تصنيف العاملين في المهن المختلفة إلى فئات معينة؟,ar,Professional_Work_Law_2019,6,ar,scope,نعم، يصنفون إلى فئات وتحدد مواصفاتهم ودرجاتهم ومسمياتهم بموجب إجازات مزاولة المهنة.,easy,"المادة (6)
+يصنف العاملون المهنيون الى فئات وتحدد مواصفاتهم ودرجاتهم ومسمياتهم في كل فئة وبموجب إجازات مزاولة المهنة وفقاً لأحكام
+التشريعات النافذة."

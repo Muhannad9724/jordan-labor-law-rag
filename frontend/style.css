@@ -1,0 +1,316 @@
+:root {
+  /* Limestone (Amman's white-limestone buildings) and basalt (Wadi Rum), with
+     the flag's olive-green and Petra-brick-red as the two accents. */
+  --stone: #e7e2d5;
+  --stone-deep: #d9d2bd;
+  --paper-raised: #fbfaf5;
+  --ink: #211d19;
+  --ink-muted: #6e6656;
+  --border: #d9d2bd;
+
+  --olive: #33513c;
+  --olive-dark: #253b2b;
+  --olive-tint: #e2e9dd;
+
+  --brick: #9c3b2b;
+  --brick-dark: #7e2f21;
+  --brick-tint: #f3e3de;
+
+  --error: #9c3b2b;
+  --error-tint: #f5e4e0;
+
+  --shadow: 0 1px 2px rgba(33, 29, 25, 0.06), 0 6px 16px rgba(33, 29, 25, 0.07);
+  --shadow-sm: 0 1px 2px rgba(33, 29, 25, 0.08);
+
+  --font-display: "Rockwell", "Roboto Slab", Georgia, "Iowan Old Style", serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", "Tahoma", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--stone);
+}
+
+.top-bar {
+  height: 6px;
+  background: var(--olive);
+  border-bottom: 2px solid var(--brick);
+}
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header ---------- */
+
+.app-header {
+  padding: 36px 4px 22px;
+  text-align: center;
+}
+
+.app-header h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: 0.01em;
+  margin: 0 0 10px;
+  color: var(--olive-dark);
+}
+
+.subtitle {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* ---------- Chat card ---------- */
+
+.chat-card {
+  display: flex;
+  flex-direction: column;
+  height: min(600px, 70vh);
+  margin: 8px 0 20px;
+  background: var(--paper-raised);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---------- Empty state / example prompts ---------- */
+
+.empty-state {
+  margin: auto;
+  text-align: center;
+  max-width: 460px;
+  padding: 0 12px;
+}
+
+.empty-state .mark {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  border: 2px solid var(--olive);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state .mark span {
+  width: 10px;
+  height: 10px;
+  background: var(--brick);
+  transform: rotate(45deg);
+}
+
+.empty-state p {
+  color: var(--ink-muted);
+  font-size: 0.92rem;
+  margin: 0 0 18px;
+}
+
+.example-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.example-chip {
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: var(--olive-dark);
+  background: var(--olive-tint);
+  border: 1px solid #cbdac5;
+  border-radius: 16px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.example-chip:hover {
+  background: #d3e0ce;
+}
+
+.example-chip[dir="rtl"] {
+  font-family: var(--font-ui);
+}
+
+/* ---------- Messages ---------- */
+
+.msg {
+  max-width: 82%;
+  padding: 13px 17px;
+  border-radius: 16px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  box-shadow: var(--shadow-sm);
+}
+
+.msg[dir="rtl"] { text-align: right; }
+
+.msg.user {
+  align-self: flex-end;
+  background: var(--olive-tint);
+  color: var(--olive-dark);
+  border: 1px solid #cbdac5;
+  border-bottom-right-radius: 4px;
+}
+
+.msg.user[dir="rtl"] { border-bottom-right-radius: 16px; border-bottom-left-radius: 4px; }
+
+.msg.assistant {
+  align-self: flex-start;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+
+.msg.assistant[dir="rtl"] { border-bottom-left-radius: 16px; border-bottom-right-radius: 4px; }
+
+.msg.error {
+  align-self: flex-start;
+  background: var(--error-tint);
+  color: var(--error);
+  border: 1px solid #e0b8ac;
+}
+
+.msg.pending {
+  align-self: flex-start;
+  color: var(--ink-muted);
+  font-style: italic;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  padding-left: 2px;
+}
+
+/* ---------- Sources ---------- */
+
+.sources {
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.sources summary {
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--olive);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.source-item {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--stone);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--brick);
+  border-radius: 6px;
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.source-item[dir="rtl"] {
+  text-align: right;
+  border-left: 1px solid var(--border);
+  border-right: 3px solid var(--brick);
+}
+
+.source-item .source-label {
+  font-weight: 700;
+  color: var(--olive-dark);
+  margin-bottom: 4px;
+}
+
+/* ---------- Composer ---------- */
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--paper-raised);
+}
+
+#question-input {
+  flex: 1;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.98rem;
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--stone);
+  color: var(--ink);
+  max-height: 160px;
+}
+
+#question-input:focus {
+  outline: none;
+  border-color: var(--olive);
+  box-shadow: 0 0 0 3px var(--olive-tint);
+}
+
+#send-btn {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--brick);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+#send-btn:not(:disabled):hover {
+  background: var(--brick-dark);
+}
+
+#send-btn:not(:disabled):active {
+  transform: scale(0.94);
+}
+
+#send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- Footer ---------- */
+
+.disclaimer {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.76rem;
+  padding: 4px 0 22px;
+  margin: 0;
+}

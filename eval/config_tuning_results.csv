@@ -1,0 +1,161 @@
+﻿config,top_k,temperature,question_id,cited_articles,hit_correct_article,fabricated_citation
+top5_default-temp,5,,q01,['23'],True,False
+top5_default-temp,5,,q02,['46'],True,False
+top5_default-temp,5,,q03,['61'],True,False
+top5_default-temp,5,,q04,['28'],True,False
+top5_default-temp,5,,q05,['59'],True,False
+top5_default-temp,5,,q06,['56'],True,False
+top5_default-temp,5,,q07,['19'],False,False
+top5_default-temp,5,,q08,[],False,False
+top5_default-temp,5,,q09,"['26', '28']",True,True
+top5_default-temp,5,,q10,['65'],True,False
+top5_default-temp,5,,q11,['45'],True,False
+top5_default-temp,5,,q12,['62'],True,False
+top5_default-temp,5,,q13,['66'],True,False
+top5_default-temp,5,,q14,['80'],True,False
+top5_default-temp,5,,q15,['19'],True,False
+top5_default-temp,5,,q16,['68'],True,False
+top5_default-temp,5,,q17,['86'],True,False
+top5_default-temp,5,,q18,['87'],True,False
+top5_default-temp,5,,q19,['12'],True,False
+top5_default-temp,5,,q20,['139'],True,False
+top5_default-temp,5,,q21,['53'],True,False
+top5_default-temp,5,,q22,['71'],False,False
+top5_default-temp,5,,q23,['19'],True,False
+top5_default-temp,5,,q24,['39'],True,False
+top5_default-temp,5,,q25,['81'],False,False
+top5_default-temp,5,,q26,['88'],True,False
+top5_default-temp,5,,q27,['45'],True,False
+top5_default-temp,5,,q28,['13'],True,False
+top5_default-temp,5,,q29,['107'],False,False
+top5_default-temp,5,,q30,['24'],True,False
+top5_default-temp,5,,q31,['89'],False,False
+top5_default-temp,5,,q32,['41'],True,False
+top5_default-temp,5,,q33,"['62', '64']",True,False
+top5_default-temp,5,,q34,['84'],True,False
+top5_default-temp,5,,q35,['80'],True,False
+top5_default-temp,5,,q36,['85'],True,False
+top5_default-temp,5,,q37,['2'],True,False
+top5_default-temp,5,,q38,['9'],True,False
+top5_default-temp,5,,q39,['10'],True,False
+top5_default-temp,5,,q40,[],False,False
+top5_temp0,5,0.0,q01,['23'],True,False
+top5_temp0,5,0.0,q02,['46'],True,False
+top5_temp0,5,0.0,q03,['61'],True,False
+top5_temp0,5,0.0,q04,['28'],True,False
+top5_temp0,5,0.0,q05,['59'],True,False
+top5_temp0,5,0.0,q06,['56'],True,False
+top5_temp0,5,0.0,q07,['19'],False,False
+top5_temp0,5,0.0,q08,['139'],True,False
+top5_temp0,5,0.0,q09,"['26', '28']",True,True
+top5_temp0,5,0.0,q10,['65'],True,False
+top5_temp0,5,0.0,q11,['45'],True,False
+top5_temp0,5,0.0,q12,['62'],True,False
+top5_temp0,5,0.0,q13,['66'],True,False
+top5_temp0,5,0.0,q14,['80'],True,False
+top5_temp0,5,0.0,q15,['19'],True,False
+top5_temp0,5,0.0,q16,['68'],True,False
+top5_temp0,5,0.0,q17,['86'],True,False
+top5_temp0,5,0.0,q18,['87'],True,False
+top5_temp0,5,0.0,q19,[],False,False
+top5_temp0,5,0.0,q20,['139'],True,False
+top5_temp0,5,0.0,q21,"['52', '53', '90']",True,True
+top5_temp0,5,0.0,q22,['71'],False,False
+top5_temp0,5,0.0,q23,"['19', '48']",True,False
+top5_temp0,5,0.0,q24,['39'],True,False
+top5_temp0,5,0.0,q25,['81'],False,False
+top5_temp0,5,0.0,q26,['88'],True,False
+top5_temp0,5,0.0,q27,['45'],True,False
+top5_temp0,5,0.0,q28,['13'],True,False
+top5_temp0,5,0.0,q29,['107'],False,False
+top5_temp0,5,0.0,q30,[],False,False
+top5_temp0,5,0.0,q31,['89'],False,False
+top5_temp0,5,0.0,q32,['41'],True,False
+top5_temp0,5,0.0,q33,"['62', '64']",True,False
+top5_temp0,5,0.0,q34,[],False,False
+top5_temp0,5,0.0,q35,['80'],True,False
+top5_temp0,5,0.0,q36,['85'],True,False
+top5_temp0,5,0.0,q37,['2'],True,False
+top5_temp0,5,0.0,q38,['9'],True,False
+top5_temp0,5,0.0,q39,['10'],True,False
+top5_temp0,5,0.0,q40,[],False,False
+top10_default-temp,10,,q01,['23'],True,False
+top10_default-temp,10,,q02,['46'],True,False
+top10_default-temp,10,,q03,['61'],True,False
+top10_default-temp,10,,q04,[],False,False
+top10_default-temp,10,,q05,['59'],True,False
+top10_default-temp,10,,q06,['56'],True,False
+top10_default-temp,10,,q07,['19'],False,False
+top10_default-temp,10,,q08,['139'],True,False
+top10_default-temp,10,,q09,"['26', '28']",True,True
+top10_default-temp,10,,q10,['65'],True,False
+top10_default-temp,10,,q11,['45'],True,False
+top10_default-temp,10,,q12,['62'],True,False
+top10_default-temp,10,,q13,['66'],True,False
+top10_default-temp,10,,q14,['80'],True,False
+top10_default-temp,10,,q15,['19'],True,False
+top10_default-temp,10,,q16,['68'],True,False
+top10_default-temp,10,,q17,['86'],True,False
+top10_default-temp,10,,q18,['87'],True,False
+top10_default-temp,10,,q19,['12'],True,False
+top10_default-temp,10,,q20,[],False,False
+top10_default-temp,10,,q21,['53'],True,False
+top10_default-temp,10,,q22,['71'],False,False
+top10_default-temp,10,,q23,"['19', '48']",True,False
+top10_default-temp,10,,q24,['39'],True,False
+top10_default-temp,10,,q25,[],False,False
+top10_default-temp,10,,q26,['88'],True,False
+top10_default-temp,10,,q27,['45'],True,False
+top10_default-temp,10,,q28,['13'],True,False
+top10_default-temp,10,,q29,['109'],True,False
+top10_default-temp,10,,q30,[],False,False
+top10_default-temp,10,,q31,"['37', '89']",True,False
+top10_default-temp,10,,q32,['41'],True,False
+top10_default-temp,10,,q33,['62'],True,False
+top10_default-temp,10,,q34,[],False,False
+top10_default-temp,10,,q35,['80'],True,False
+top10_default-temp,10,,q36,['85'],True,False
+top10_default-temp,10,,q37,['2'],True,False
+top10_default-temp,10,,q38,['9'],True,False
+top10_default-temp,10,,q39,['10'],True,False
+top10_default-temp,10,,q40,['6'],True,False
+top10_temp0,10,0.0,q01,['23'],True,False
+top10_temp0,10,0.0,q02,['46'],True,False
+top10_temp0,10,0.0,q03,['61'],True,False
+top10_temp0,10,0.0,q04,['28'],True,False
+top10_temp0,10,0.0,q05,['59'],True,False
+top10_temp0,10,0.0,q06,['56'],True,False
+top10_temp0,10,0.0,q07,"['19', '83']",True,False
+top10_temp0,10,0.0,q08,['139'],True,False
+top10_temp0,10,0.0,q09,"['26', '28']",True,True
+top10_temp0,10,0.0,q10,['65'],True,False
+top10_temp0,10,0.0,q11,['45'],True,False
+top10_temp0,10,0.0,q12,['62'],True,False
+top10_temp0,10,0.0,q13,['66'],True,False
+top10_temp0,10,0.0,q14,['80'],True,False
+top10_temp0,10,0.0,q15,['19'],True,False
+top10_temp0,10,0.0,q16,[],False,False
+top10_temp0,10,0.0,q17,['86'],True,False
+top10_temp0,10,0.0,q18,['87'],True,False
+top10_temp0,10,0.0,q19,['12'],True,False
+top10_temp0,10,0.0,q20,['139'],True,False
+top10_temp0,10,0.0,q21,"['52', '53', '90']",True,True
+top10_temp0,10,0.0,q22,"['71', '85']",False,False
+top10_temp0,10,0.0,q23,"['19', '48']",True,False
+top10_temp0,10,0.0,q24,['39'],True,False
+top10_temp0,10,0.0,q25,['81'],False,False
+top10_temp0,10,0.0,q26,['88'],True,False
+top10_temp0,10,0.0,q27,['45'],True,False
+top10_temp0,10,0.0,q28,['13'],True,False
+top10_temp0,10,0.0,q29,['109'],True,False
+top10_temp0,10,0.0,q30,[],False,False
+top10_temp0,10,0.0,q31,['89'],False,False
+top10_temp0,10,0.0,q32,['41'],True,False
+top10_temp0,10,0.0,q33,"['62', '64']",True,False
+top10_temp0,10,0.0,q34,[],False,False
+top10_temp0,10,0.0,q35,['80'],True,False
+top10_temp0,10,0.0,q36,['85'],True,False
+top10_temp0,10,0.0,q37,['2'],True,False
+top10_temp0,10,0.0,q38,['9'],True,False
+top10_temp0,10,0.0,q39,['10'],True,False
+top10_temp0,10,0.0,q40,['6'],True,False
