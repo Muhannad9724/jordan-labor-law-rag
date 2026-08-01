@@ -71,6 +71,23 @@ function enterReadingMode() {
   document.body.classList.add("reading");
 }
 
+// Suggestions land about a second after the answer, by which time the reader may have
+// started scrolling. Nudging the page under someone mid-sentence is worse than a chip
+// they have to scroll to find, so track *user-initiated* scrolling specifically.
+//
+// Deliberately not the "scroll" event: that also fires for our own smooth scrolling,
+// which would immediately mark every answer as user-scrolled and disable the nudge.
+let userScrolled = false;
+for (const evt of ["wheel", "touchmove"]) {
+  window.addEventListener(evt, () => { userScrolled = true; }, { passive: true });
+}
+window.addEventListener("keydown", (e) => {
+  if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)
+      && e.target !== input) {
+    userScrolled = true;
+  }
+});
+
 /* ------------------------- sources rail ------------------------- */
 
 function renderRailEmpty(message) {
@@ -165,6 +182,7 @@ function addQuestion(text) {
 
   thread.appendChild(block);
   enterReadingMode();
+  userScrolled = false;      // a new question restarts the reading position
   scrollIntoReading(block);
 }
 
@@ -244,6 +262,17 @@ function addSuggestions(answerBlock, questions) {
 
   strip.appendChild(row);
   answerBlock.appendChild(strip);
+
+  // Chips that render below the fold are, from the reader's side, chips that did not
+  // render. Nudge by the minimum needed to bring them into view -- scrollBy, not
+  // scrollIntoView, because the latter would jump the strip to the top of the screen
+  // and throw away the answer above it. Skipped entirely if the reader is scrolling.
+  if (userScrolled) return;
+  const overshoot = strip.getBoundingClientRect().bottom
+                    - (window.innerHeight - COMPOSER_CLEARANCE);
+  if (overshoot > 0) {
+    window.scrollBy({ top: overshoot + 12, behavior: reducedMotion ? "auto" : "smooth" });
+  }
 }
 
 function addFailure(message) {
@@ -330,11 +359,16 @@ async function fetchSuggestions(question, data, block) {
         chunk_ids: data.sources.map((s) => s.chunk_id),
       }),
     });
-    if (!resp.ok) return;                 // includes 429 -- silence is the right failure
+    if (!resp.ok) {                       // includes 429 -- silence is right for the user
+      console.warn("[followups] HTTP", resp.status);
+      return;
+    }
     const payload = await resp.json();
     addSuggestions(block, payload.suggestions);
   } catch (err) {
-    /* suggestions are optional; never surface their failure */
+    // Silent for the user, never for whoever has to debug it -- an empty catch here
+    // swallowed rendering errors as indistinguishably as network ones.
+    console.warn("[followups] failed:", err);
   }
 }
 
