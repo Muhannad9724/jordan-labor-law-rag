@@ -74,6 +74,35 @@ CHAT_MODEL = "command-a-03-2025"
 #
 # Cost of the added length: 12 rules instead of 8. Every one is anchored to a counted
 # failure, but rule dilution is a real risk and is part of what the next run measures.
+#
+# Phase 22 adds two more, from direct user feedback rather than a measured judge failure.
+#
+# Rule 11 rewritten: was "name the condition rather than assuming it either way" -- correct
+# per Phase 20/21 (it's why q15's gender-neutral-vs-female-specific error doesn't recur), but
+# only for conditions the documents themselves lay out as a short closed set. It said nothing
+# about facts that only the person asking could supply -- their age, years of service, a
+# date -- and the model would either guess one case or dump every branch. Now it asks.
+#
+# IMPORTANT LIMITATION, not solved by this prompt change: the API is single-turn. /ask takes
+# only `question`, no prior conversation, and retrieval runs fresh on whatever text comes in.
+# If the model asks "how many years have you contributed?" and the person replies with just
+# "12", that reply becomes an entirely new, context-free query -- retrieval has no idea it's
+# the answer to the model's own question, and the reply likely returns poor or unrelated
+# results. This rule makes the model ask a better question; it does not give this app a way
+# to hear the answer. Closing that gap needs actual conversation memory (thread history
+# passed into /ask and folded into retrieval), which is a real feature, not a prompt tweak,
+# and is not implemented here.
+#
+# Rule 13 (new "Judgment questions" section) is a different failure entirely: a question like
+# "should I join the optional social security?" is not a fact lookup, it is a request for a
+# personal decision, and the previous prompt had no instruction for that shape of question at
+# all. Rule 2 ("say so plainly if the documents don't answer") would fire wrong here -- the
+# documents DO describe the optional-insurance provisions, they just don't say what any given
+# person should do, and refusing outright would be unhelpful for a question people genuinely
+# ask. The other failure mode is the opposite one: giving a directive personal recommendation
+# ("yes, join") would be actual advice, not legal information, and is exactly the boundary the
+# closing disclaimer line already exists to keep. The rule threads between the two: state the
+# benefits and the obligations/costs the documents describe, neutrally, and stop there.
 SYSTEM_PROMPT = """You are a legal information assistant for Jordanian labour and social security law (the Labour Law 1996, the Professional Work Law 2019, and the Social Security Law). You will be given excerpts from law articles. Answer using only those excerpts.
 
 Grounding
@@ -93,8 +122,11 @@ Precision
 
 Usefulness
 10. The question usually describes someone's real situation. Answer that first, in a sentence or two, then give the supporting rules and citations. Do not open by restating the article.
-11. If the answer depends on a fact the person has not given, name the condition rather than assuming it either way.
+11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount -- ask them for it in one short question instead of guessing or covering every possible case. If the documents instead give a short, complete set of conditions you can state directly, state them.
 12. Reply in the language of the question -- an Arabic question gets an Arabic answer, an English question gets an English answer. Write plainly and without padding, but do not leave a relevant provision out in order to keep the answer short.
+
+Judgment questions
+13. Some questions ask for a personal decision or opinion ("should I...", "is it worth it...", "is it better to...") rather than a fact the documents state directly. If the documents describe the relevant provisions, lay out the concrete benefits and the obligations or costs they describe, neutrally and side by side, so the person can weigh it themselves. Do not tell them what to decide, and do not reason beyond what the documents state.
 
 Close with one short line noting this is general information, not legal advice, and that they should consult a licensed lawyer about their own case."""
 

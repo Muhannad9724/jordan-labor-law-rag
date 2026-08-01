@@ -18,8 +18,11 @@ const thread = document.getElementById("thread");
 const composer = document.getElementById("composer");
 const input = document.getElementById("question-input");
 const sendBtn = document.getElementById("send-btn");
+const resetBtn = document.getElementById("reset-btn");
 const railBody = document.getElementById("rail-body");
 const railCount = document.getElementById("rail-count");
+
+const RAIL_EMPTY_MESSAGE = "ستظهر هنا نصوص المواد القانونية التي استندت إليها الإجابة";
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const toArabicDigits = (v) => String(v).replace(/\d/g, (d) => AR_DIGITS[+d]);
@@ -395,9 +398,13 @@ function submitQuestion(question) {
   input.value = "";
   input.style.height = "auto";
   sendBtn.disabled = true;
+  // Resetting mid-answer would wipe #thread out from under a fetch that is still
+  // going to append its result into it -- see resetConversation()'s comment.
+  resetBtn.disabled = true;
 
   askQuestion(question).finally(() => {
     sendBtn.disabled = false;
+    resetBtn.disabled = false;
     input.focus();
   });
 }
@@ -408,6 +415,26 @@ composer.addEventListener("submit", (e) => {
   if (!question) return;
   submitQuestion(question);
 });
+
+// Purely client-side: the backend is stateless (every /ask call is independent, nothing
+// to tell it to forget), so "reset" just means rebuilding the page's own DOM state.
+// Guarded by resetBtn.disabled (see submitQuestion) rather than only hiding the button,
+// because the button is reachable the whole time a request is in flight -- without the
+// guard, resetting mid-answer would clear #thread out from under askQuestion(), and its
+// pending .then() would go on to append the answer into a thread that looks freshly
+// reset, which reads as a stale answer appearing from nowhere.
+function resetConversation() {
+  renderOpening();               // also clears #thread
+  renderRailEmpty(RAIL_EMPTY_MESSAGE);
+  document.body.classList.remove("reading");
+  lastUserScrollAt = 0;
+  input.value = "";
+  input.style.height = "auto";
+  window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+  input.focus();
+}
+
+resetBtn.addEventListener("click", resetConversation);
 
 input.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && !e.shiftKey) {
@@ -422,4 +449,4 @@ input.addEventListener("input", () => {
 });
 
 renderOpening();
-renderRailEmpty("ستظهر هنا نصوص المواد القانونية التي استندت إليها الإجابة");
+renderRailEmpty(RAIL_EMPTY_MESSAGE);

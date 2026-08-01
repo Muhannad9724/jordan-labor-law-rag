@@ -249,6 +249,21 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 22 — Ask instead of assume, neutral judgment answers, reset button ✅ done, not harness-evaluated
+`src/generation.py` (rules 11 & 13) + `frontend/` (reset button). Live-launched and spot-checked with single real questions, not a full eval run — the harness pass is a follow-up, not done here.
+
+**Rule 11 rewritten.** The Phase 20/21 version ("name the condition rather than assuming it either way") is correct for a short closed set of conditions the documents themselves lay out, but said nothing about facts only the person asking could supply -- age, years of service, a date. The model would either guess one case or dump every branch. It now asks for that fact in one short question instead, and only states conditions directly when the documents give a short complete set.
+
+**IMPORTANT, stated in the code comment and here: this does not close the loop.** The API is single-turn — `/ask` takes only `question`, no conversation history, and retrieval runs fresh on whatever text arrives. If the model asks "how many years have you contributed?" and the person replies "12", that reply is a brand-new, context-free query to the retriever, which has no way to know it's answering the model's own question. **This rule makes the model ask a better question; the app still can't hear the answer.** Closing that gap needs real conversation memory (thread history folded into `/ask` and into retrieval) — a feature, not a prompt tweak, and explicitly not built here.
+
+**New rule 13, "Judgment questions".** A question like "should I join the optional social security?" is a request for a personal decision, not a fact lookup, and the Phase 21 prompt had no instruction for that shape of question. Rule 2 ("say so if the documents don't answer") would fire wrong -- the documents *do* describe the optional-insurance provisions, they just don't say what any given person should do. The failure mode on the other side is giving an actual directive recommendation ("yes, join"), which is advice, not legal information -- the exact line the closing disclaimer exists to hold. The rule threads between the two: state the benefits and the obligations/costs the documents describe, neutrally, side by side, and stop there.
+
+**Reset button, frontend-only.** The backend is stateless -- every `/ask` call is independent, there is nothing server-side to tell to forget -- so "reset" is purely a client-side DOM rebuild (`resetConversation()` in `app.js`). Placed in the composer, not the masthead: the page scrolls (not an inner pane), so a header button would be unreachable without scrolling all the way up in a long conversation, while the composer is `position: sticky` and stays on screen throughout. Hidden until a conversation exists (tied to the same `body.reading` class the collapsing masthead already uses), and disabled alongside the send button while a request is in flight -- resetting mid-answer would otherwise clear `#thread` out from under a pending fetch, which would then append its result into a thread that looks freshly reset.
+
+**Verification:** balance/wiring checks on `app.js` (no JS engine on this machine, so this catches malformed edits, not logic bugs) and prompt-structure asserts on `SYSTEM_PROMPT` (13 rules, 5 sections, the two new behaviours present, the Phase 12b guardrail still intact) -- both free. Domain rename (`web-production-54d43` → `jordan-legal-guide.up.railway.app`) confirmed live serving the latest asset version. Prompt behaviour confirmed with single live questions against production, not a harness run.
+
+**Not done:** a full eval pass on rules 11/13 (needs a fresh go-ahead per standing project practice on paid runs); the actual multi-turn fix for rule 11's stated limitation.
+
 ## Phase 21 — Coverage rules + bilingual context ✅ done — **adopted; relevancy up, faithfulness held**
 `src/generation.py` (Coverage rules, bilingual `_format_context`, scorer fixes) + `scripts/prompt_coverage_eval.ipynb`.
 
