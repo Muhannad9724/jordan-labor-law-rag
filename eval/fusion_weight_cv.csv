@@ -1,0 +1,9 @@
+﻿model,config,test_mrr_mean,test_mrr_sd
+gemini-embedding-001,"RRF (w only, k=5)",0.923691111111111,0.03233847450535251
+gemini-embedding-001,RRF (k and w),0.92276,0.029385575196508064
+gemini-embedding-001,weighted sum (beta),0.9374777777777777,0.03224160528123733
+gemini-embedding-001,"production (w=0.85, k=5)",0.9297055555555556,0.025190074348421687
+cohere-embed-v4,"RRF (w only, k=5)",0.8354833333333334,0.03808660169134367
+cohere-embed-v4,RRF (k and w),0.8501033333333333,0.041630856478231525
+cohere-embed-v4,weighted sum (beta),0.8765711111111111,0.03434208094243549
+cohere-embed-v4,"production (w=0.85, k=5)",0.8369333333333333,0.035740446362249594
