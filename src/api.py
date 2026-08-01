@@ -146,5 +146,23 @@ def followups(request: Request, req: FollowupRequest):
     return {"suggestions": generator.suggest_followups(req.question, chunks, req.answer)}
 
 
+class NoCacheStaticFiles(StaticFiles):
+    """StaticFiles sends etag/last-modified but no Cache-Control at all. Without an
+    explicit directive, browsers apply RFC 7234 heuristic caching -- they may serve a
+    file, including index.html itself, straight from disk with ZERO network request,
+    not merely skip revalidation. That defeated the ?v=2 query-string cache-busting on
+    app.js/style.css entirely: if the *HTML document containing the new ?v=2 references*
+    is itself served from a heuristically-fresh cache, the browser never sees them and
+    keeps running whatever JS it loaded last. `no-cache` still allows the etag/
+    last-modified conditional GET (a fast 304 when nothing changed) -- it only forbids
+    skipping the round trip, which is the failure mode this closes.
+    """
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
 # Mounted last -- StaticFiles would otherwise shadow the API routes above at "/".
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+app.mount("/", NoCacheStaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")

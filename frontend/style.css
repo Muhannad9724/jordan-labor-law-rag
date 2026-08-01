@@ -46,8 +46,14 @@ body {
   background-attachment: fixed;
 }
 
+/* 1180px was a fixed cap regardless of viewport -- on a wide monitor that leaves
+   roughly 40% of the screen as plain background on either side, which reads as
+   unused rather than as intentional margin. clamp() lets the shell grow with the
+   viewport up to 1560px; text measure is capped separately below (.answer .body,
+   .question p) so the *extra* width goes to breathing room and a wider sources
+   rail, not to unreadably long lines of prose. */
 .shell {
-  max-width: 1180px;
+  max-width: clamp(1180px, 84vw, 1560px);
   margin: 0 auto;
   min-height: 100vh;
   padding: 0 24px;
@@ -180,6 +186,7 @@ body {
   font-weight: 400;
   line-height: 1.7;
   color: var(--parchment);
+  max-width: 70ch;
 }
 
 .answer {
@@ -195,11 +202,15 @@ body {
   color: var(--parchment);
   white-space: pre-wrap;
   word-wrap: break-word;
+  /* Caps the line, not the column -- the wider .shell above would otherwise stretch
+     prose to 150+ characters a line on a large monitor. */
+  max-width: 70ch;
 }
 
 .answer[dir="ltr"] .body {
   font-size: 1.06rem;
   line-height: 1.85;
+  max-width: 76ch;
 }
 
 .answer-actions {
@@ -369,7 +380,8 @@ body {
 .sources-rail {
   position: sticky;
   top: 20px;
-  flex: 0 0 336px;
+  /* Grows with the wider .shell, capped so it never crowds the conversation column. */
+  flex: 0 0 clamp(336px, 24vw, 400px);
   display: flex;
   flex-direction: column;
   background: var(--void-deep);
