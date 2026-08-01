@@ -617,3 +617,73 @@ body.reading .thread {
 .thread {
   padding-bottom: 92px;
 }
+
+
+/* ---------------- Follow-up suggestions ----------------
+   Rendered inside the answer block, below the citation button. They read as an
+   offer, not as part of the legal answer, so they sit on the quieter end of the
+   palette -- no brass fill, no weight. Nothing here may look like a citation. */
+
+.suggestions {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+  /* Suggestions arrive ~1s after the answer. Fading rather than popping keeps
+     that from reading as a layout glitch mid-sentence. */
+  animation: suggestions-in 260ms ease both;
+}
+
+@keyframes suggestions-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.suggestions-label {
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--parchment-faint);
+  margin-bottom: 10px;
+}
+
+.suggestion-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestion {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: right;
+  color: var(--parchment-dim);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 8px 13px;
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+  max-width: 100%;
+}
+
+.suggestion[dir="ltr"] { text-align: left; }
+
+.suggestion:hover,
+.suggestion:focus-visible {
+  border-color: var(--brass-dim);
+  color: var(--parchment);
+  background: rgba(201, 162, 39, 0.05);
+}
+
+.suggestion:focus-visible {
+  outline: 1px solid var(--brass-dim);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  /* Stacked full-width on narrow screens -- three wrapped chips of Arabic text
+     shred into unreadable fragments otherwise. */
+  .suggestion { width: 100%; }
+}

@@ -207,6 +207,43 @@ function addAnswer(text, sources) {
 
   thread.appendChild(block);
   revealAnswer(block);
+  return block;
+}
+
+// Suggestions arrive after the answer is already on screen, so they must never move
+// text the user has started reading. The strip is appended below the answer and the
+// page is not scrolled -- if the chips are below the fold, they are found by scrolling
+// down, which is where someone looks when they have finished reading anyway.
+function addSuggestions(answerBlock, questions) {
+  if (!questions || !questions.length) return;
+
+  const strip = document.createElement("div");
+  strip.className = "suggestions";
+
+  const label = document.createElement("div");
+  label.className = "suggestions-label";
+  label.textContent = "أسئلة ذات صلة";
+  strip.appendChild(label);
+
+  const row = document.createElement("div");
+  row.className = "suggestion-row";
+
+  for (const q of questions) {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "suggestion";
+    chip.textContent = q;
+    if (!isArabic(q)) chip.dir = "ltr";
+    chip.addEventListener("click", () => {
+      if (sendBtn.disabled) return;      // a question is already in flight
+      strip.remove();                    // a chip that has been taken is no longer a suggestion
+      submitQuestion(q);
+    });
+    row.appendChild(chip);
+  }
+
+  strip.appendChild(row);
+  answerBlock.appendChild(strip);
 }
 
 function addFailure(message) {
@@ -269,19 +306,39 @@ async function askQuestion(question) {
     }
 
     const data = await resp.json();
-    addAnswer(data.answer, data.sources);
+    const block = addAnswer(data.answer, data.sources);
     if (data.sources && data.sources.length) renderSources(data.sources);
+
+    // Not awaited: the answer is complete without it, and a slow or failed
+    // suggestion call must not hold the composer disabled.
+    fetchSuggestions(question, data, block);
   } catch (err) {
     pending.remove();
     addFailure("تعذّر الوصول إلى الخادم — تأكد من أن الخدمة قيد التشغيل.");
   }
 }
 
-composer.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const question = input.value.trim();
-  if (!question) return;
+async function fetchSuggestions(question, data, block) {
+  if (!data.sources || !data.sources.length) return;
+  try {
+    const resp = await fetch(`${API_BASE_URL}/followups`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question,
+        answer: data.answer,
+        chunk_ids: data.sources.map((s) => s.chunk_id),
+      }),
+    });
+    if (!resp.ok) return;                 // includes 429 -- silence is the right failure
+    const payload = await resp.json();
+    addSuggestions(block, payload.suggestions);
+  } catch (err) {
+    /* suggestions are optional; never surface their failure */
+  }
+}
 
+function submitQuestion(question) {
   addQuestion(question);
   input.value = "";
   input.style.height = "auto";
@@ -291,6 +348,13 @@ composer.addEventListener("submit", (e) => {
     sendBtn.disabled = false;
     input.focus();
   });
+}
+
+composer.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const question = input.value.trim();
+  if (!question) return;
+  submitQuestion(question);
 });
 
 input.addEventListener("keydown", (e) => {

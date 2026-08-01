@@ -17,6 +17,7 @@ a 10-question correctness/fabrication check (10/10 correct, 0 fabricated citatio
 the cheapest of the three at ~$0.0004/question). `Generator` (Cohere) is kept for that
 comparison, not used in production.
 """
+import json
 import os
 import re
 import time
@@ -308,6 +309,78 @@ class OpenAICompatibleGenerator:
         ]
 
         return {"answer": answer, "citations": citations, "response": resp}
+
+    def suggest_followups(self, query, chunks, answer, n=3):
+        """Follow-up questions grounded in `chunks`. Returns [] on any failure.
+
+        Never raises. This is a garnish on an answer the user already has, so a
+        malformed model response, a rate limit or a billing error must degrade to
+        "no chips" rather than break the response they actually asked for.
+
+        Article text is truncated hard -- proposing a question *about* an article only
+        needs to know what it covers, not to quote it.
+        """
+        lang = detect_language(query)
+        names = LAW_DISPLAY_NAMES_AR if lang == "ar" else LAW_DISPLAY_NAMES
+        listing = "\n".join(
+            f"- {names.get(c['law'], c['law'])} {c['article_number']}: "
+            f"{' '.join(str(c['text']).split())[:280]}"
+            for c in chunks
+        )
+        user_msg = (f"Articles available:\n{listing}\n\n"
+                    f"User's question: {query}\n\nAnswer they received: {str(answer)[:1200]}")
+        try:
+            resp = self.client.chat.completions.create(
+                model=self.model_id,
+                max_tokens=FOLLOWUP_MAX_TOKENS,
+                extra_body=self.extra_body,
+                messages=[{"role": "system", "content": FOLLOWUP_PROMPT},
+                          {"role": "user", "content": user_msg}],
+            )
+            content = (resp.choices[0].message.content or "") if resp.choices else ""
+            m = re.search(r"\[.*\]", content, re.DOTALL)
+            if not m:
+                return []
+            items = json.loads(m.group(0))
+        except Exception:
+            return []
+
+        out, seen = [], {query.strip()}
+        for q in items:
+            q = " ".join(str(q).split())
+            # Cheaper to drop a bad suggestion than to trust the model followed the rules.
+            if q and q not in seen and len(q) <= 120:
+                seen.add(q)
+                out.append(q)
+        return out[:n]
+
+
+# Follow-up suggestions shown under an answer. Grounded in the articles that were
+# actually retrieved, for one specific reason: an ungrounded model will happily suggest
+# "what about maternity leave for self-employed workers?" when nothing in the corpus
+# answers it, and a suggestion chip that leads to "the documents do not cover this" is
+# worse than no chip. Constraining it to the retrieved articles makes every suggestion
+# answerable by construction.
+#
+# This also does something the prompt could not. Phase 21 closed most omissions, but 7
+# questions still lose relevancy for skipping a second article that *was* in the context
+# (q01, q05, q09, q10, q19, q29, q35). Those articles are exactly what this proposes as
+# the next question -- the interface surfaces what the answer left out.
+FOLLOWUP_PROMPT = """You suggest follow-up questions for a Jordanian labour and social security law assistant.
+
+Below are the law articles that were retrieved for the user's question, and the answer they received. Propose exactly 3 short follow-up questions.
+
+Rules:
+- Each question must be answerable from the articles listed below. Do not propose anything they do not cover.
+- Prefer articles the answer did not already cover in full.
+- Write the way a person describes their situation, not the way a statute is titled. Not "What are the conditions for entitlement to the unemployment allowance?" but "Do I have to have worked a certain time to qualify?"
+- Keep each under 12 words.
+- Do not repeat the user's original question.
+- Write them in the SAME LANGUAGE as the user's question.
+
+Respond with ONLY a JSON array of 3 strings, no other text."""
+
+FOLLOWUP_MAX_TOKENS = 300
 
 
 PRODUCTION_MODEL_ID = "openai/gpt-4o-mini"

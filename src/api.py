@@ -67,6 +67,7 @@ class Citation(BaseModel):
 
 
 class Source(BaseModel):
+    chunk_id: str
     law: str
     language: str
     article_number: str
@@ -101,11 +102,48 @@ def ask(request: Request, req: AskRequest):
         answer=result["answer"],
         citations=[Citation(**c) for c in result["citations"]],
         sources=[
-            Source(law=c["law"], language=c["language"], article_number=c["article_number"],
-                   clause=c["clause"], text=c["text"])
+            Source(chunk_id=c["chunk_id"], law=c["law"], language=c["language"],
+                   article_number=c["article_number"], clause=c["clause"], text=c["text"])
             for c in chunks
         ],
     )
+
+
+class FollowupRequest(BaseModel):
+    question: str = Field(min_length=1, max_length=1000)
+    answer: str = Field(min_length=1, max_length=8000)
+    # The chunks /ask already returned. Sent as ids rather than as text so the payload
+    # stays small and, more importantly, so the client cannot inject article text the
+    # corpus does not contain -- the server resolves every id against its own index.
+    chunk_ids: list[str] = Field(min_length=1, max_length=20)
+
+
+@app.post("/followups")
+@limiter.limit("15/minute;150/day")
+def followups(request: Request, req: FollowupRequest):
+    """Suggested next questions for an answer the user already has.
+
+    Deliberately a second call rather than part of /ask: the answer renders the moment
+    it is ready and the chips arrive a beat later, so suggestions cost the user no
+    waiting. It also means a failure here cannot take the answer down with it.
+
+    Always 200. An empty list is a valid, expected response -- the frontend simply
+    shows no chips, and a suggestion feature is never worth surfacing an error for.
+    """
+    retriever: Retriever = _state["retriever"]
+    generator = _state["generator"]
+
+    by_id = retriever.chunks.set_index("chunk_id")
+    chunks = []
+    for cid in req.chunk_ids:
+        if cid in by_id.index:
+            row = by_id.loc[cid]
+            chunks.append({"chunk_id": cid, "law": row["law"], "language": row["language"],
+                           "article_number": str(row["article_number"]), "text": row["text"]})
+    if not chunks:
+        return {"suggestions": []}
+
+    return {"suggestions": generator.suggest_followups(req.question, chunks, req.answer)}
 
 
 # Mounted last -- StaticFiles would otherwise shadow the API routes above at "/".
