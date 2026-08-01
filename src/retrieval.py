@@ -53,10 +53,19 @@ a vector describing less text. 4 of 531 articles exceed it (ssl_ar_71, ssl_ar_64
 ssl_en_64). It won the comparison while carrying that handicap, so it is accepted, but any
 future corpus with longer articles needs this re-checked; nothing will raise to warn you.
 
-Rollback is cheap and total: set PINECONE_INDEX_NAME back to "jordan-labor-law-articles"
-and EMBED_PROVIDER to "cohere". That 1536-dim index is untouched and still holds all 531
-vectors. The clause-level chunks.parquet and "jordan-labor-law" index also remain intact
-for rolling back the Phase 12a granularity change.
+Rollback is still possible but is no longer instant. The Cohere and clause-level Pinecone
+indexes were deleted in Phase 19 once Gemini had been verified live, so switching
+EMBED_PROVIDER back to "cohere" now requires REBUILDING that index first -- the constant
+alone will point at an index that does not exist and queries will fail.
+
+To roll back to Cohere:
+  1. Rebuild the 1536-dim index. scripts/vector_store_gemini.ipynb is the template; the
+     Cohere article vectors are still cached at
+     eval/emb_cache/cohere-embed-v4__<corpus-hash>__corpus.npy, so this costs nothing if
+     that cache survives. If it does not, re-embed the 531 articles (~$0.02).
+  2. Set EMBED_PROVIDER = "cohere".
+To roll back the Phase 12a granularity change as well, chunks.parquet (739 clause chunks)
+is still on disk and would need re-embedding and a further index (~$0.02).
 """
 import os
 import re
@@ -77,9 +86,12 @@ COHERE_MODEL = "embed-v4.0"
 
 # The index must match the provider: dimensions differ (3072 vs 1536), so pointing at
 # the wrong one fails at query time rather than silently returning nonsense.
+# NOTE: only the gemini index currently exists. The cohere entry is kept so the rollback
+# path stays documented in code, but it must be rebuilt before use -- see the module
+# docstring.
 PINECONE_INDEX_BY_PROVIDER = {
     "gemini": "jordan-labor-law-articles-gemini",
-    "cohere": "jordan-labor-law-articles",
+    "cohere": "jordan-labor-law-articles",  # DELETED in Phase 19 -- rebuild before use
 }
 PINECONE_INDEX_NAME = PINECONE_INDEX_BY_PROVIDER[EMBED_PROVIDER]
 
