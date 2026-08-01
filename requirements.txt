@@ -1,9 +1,11 @@
 cohere==7.0.8
 fastapi==0.140.0
+google-genai==2.14.0
 numpy==2.4.6
 openai==2.48.0
 pandas==3.0.5
 pinecone==9.1.0
+pyarrow==25.0.0
 pydantic==2.13.4
 python-dotenv==1.2.2
 rank-bm25==0.2.2
