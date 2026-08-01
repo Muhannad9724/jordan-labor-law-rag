@@ -1,15 +1,67 @@
 """Hybrid retrieval: Pinecone semantic search + BM25 keyword search, combined via RRF.
 
-Config (k=5, w=0.85 for RRF; k1=1.5, b=0.75 for BM25) was chosen empirically in
-scripts/search_method_evaluation.ipynb -- see that notebook for the full comparison
+Config (k=5, w=0.90 for RRF; k1=1.5, b=0.75 for BM25). The k/k1/b values come from
+scripts/search_method_evaluation.ipynb (Phase 6) -- see that notebook for the comparison
 against pure semantic, pure keyword, weighted-sum hybrid, and the RRF/BM25 parameter
-sweeps. Do not change these constants without re-running that eval.
+sweeps. Do not change them without re-running that eval.
+
+RRF_W was 0.85 until Phase 18 and is now 0.90. scripts/fusion_weight_tuning.ipynb swept
+w across 0.00-1.00 in steps of 0.01 on eval_v3 at top_k=5 and found the curve is steep up
+to ~0.75 and then FLAT: every value in roughly [0.75, 0.90] performs the same. The
+difference between 0.85 and 0.90 is ~1 question in 60, and a power calculation puts the
+sample needed to resolve it at ~520 questions -- so 0.90 is a choice inside a plateau,
+not a measured improvement over 0.85.
+
+What that notebook did establish, and what should stop anyone re-tuning this:
+  - Tuning w on this eval set does NOT transfer. Under 500 split-half cross-validations
+    (tune on 30 questions, score the untouched 30), a tuned w scored *below* the untuned
+    setting for both candidate embedding models. A 2000-resample bootstrap had said the
+    optimum was stable -- it was, but stability of an argmax drawn from the same 60
+    questions is not evidence it generalises. Only held-out data showed the plateau.
+  - The keyword half contributes very little here. Against pure semantic (w=1.0) it helped
+    1 question and hurt 0 (Gemini), or helped 2 and hurt 0 (Cohere) -- not significant, but
+    never harmful. Exact-match queries were the best argument for keeping it and that was
+    tested and refuted: 12 article-number lookups ("ما نص المادة 65...", "What does Article
+    90 ... say?") were all found at rank 1-2 by pure semantic, with BM25 changing none.
+    It is retained because it costs ~1 ms/query against a 200-500 ms embedding call, has
+    never made a result worse, and insures against query shapes a 60-question eval cannot
+    cover.
+
+Granularity is one unit per *article*, not per clause. Phase 2 originally split long
+articles at their clauses; scripts/chunk_granularity_evaluation.ipynb tested that against
+whole articles and whole articles won every retrieval metric (recall@1 .875 vs .844,
+recall@10 1.000 vs .969, MRR .904 vs .874 over the 32 same-language eval questions).
+The reason is that these articles are single-topic -- SSL 71 is entirely about military
+insureds' pensions, SSL 64 entirely about early retirement -- so a clause is a fragment
+of one subject rather than a separable topic, and several were literally unreadable alone
+("Pension stipulated in Paragraph (a) ... shall be increased by (0.5%)" never says which
+pension). Six such near-identical fragments of Article 71 crowded the whole result list on
+q22 and pushed the correct article out entirely. Rebuilt in scripts/rechunking_articles.ipynb.
+
+Embedding model is Gemini `gemini-embedding-001` since Phase 19, replacing Cohere
+`embed-v4.0` which had held the slot since Phase 4. Phase 4's original comparison was
+re-run from scratch because every input to it had changed -- it scored clause chunks, on
+an eval set whose cross-lingual questions carried the whole argument, with two candidates
+capped at max_length=1024 despite supporting 8192. On the rebuilt setup Gemini wins
+11-2 on paired ranks (p = 0.022) under this exact hybrid configuration, at every RRF
+weight including Cohere's own optimum, and by +0.093 MRR -- about seven times what every
+fusion parameter in this file is worth combined. Full trail: scripts/embeddings_evaluation_v2
+.ipynb, embeddings_rescore_v3.ipynb, embeddings_hybrid_v3.ipynb, vector_store_gemini.ipynb.
+
+Known Gemini property: it **silently truncates input past 2,048 tokens** -- no error, just
+a vector describing less text. 4 of 531 articles exceed it (ssl_ar_71, ssl_ar_64, ssl_en_71,
+ssl_en_64). It won the comparison while carrying that handicap, so it is accepted, but any
+future corpus with longer articles needs this re-checked; nothing will raise to warn you.
+
+Rollback is cheap and total: set PINECONE_INDEX_NAME back to "jordan-labor-law-articles"
+and EMBED_PROVIDER to "cohere". That 1536-dim index is untouched and still holds all 531
+vectors. The clause-level chunks.parquet and "jordan-labor-law" index also remain intact
+for rolling back the Phase 12a granularity change.
 """
 import os
 import re
 from pathlib import Path
 
-import cohere
 import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
@@ -17,12 +69,22 @@ from pinecone import Pinecone
 from rank_bm25 import BM25Okapi
 
 PROJECT = Path(__file__).resolve().parent.parent
-CHUNKS_PATH = PROJECT / "0. cleaned_data" / "chunks.parquet"
-PINECONE_INDEX_NAME = "jordan-labor-law"
+CHUNKS_PATH = PROJECT / "0. cleaned_data" / "chunks_articles.parquet"
+
+EMBED_PROVIDER = "gemini"  # "gemini" | "cohere" -- see rollback note above
+GEMINI_MODEL = "gemini-embedding-001"
 COHERE_MODEL = "embed-v4.0"
 
+# The index must match the provider: dimensions differ (3072 vs 1536), so pointing at
+# the wrong one fails at query time rather than silently returning nonsense.
+PINECONE_INDEX_BY_PROVIDER = {
+    "gemini": "jordan-labor-law-articles-gemini",
+    "cohere": "jordan-labor-law-articles",
+}
+PINECONE_INDEX_NAME = PINECONE_INDEX_BY_PROVIDER[EMBED_PROVIDER]
+
 RRF_K = 5
-RRF_W = 0.85  # weight on the semantic ranker; keyword gets (1 - RRF_W)
+RRF_W = 0.90  # weight on the semantic ranker; keyword gets (1 - RRF_W) = 10%
 BM25_K1 = 1.5
 BM25_B = 0.75
 CANDIDATE_TOP_K = 50  # how many candidates each ranker contributes before fusing
@@ -44,6 +106,44 @@ def tokenize(text):
     return [t.lower() for t in WORD_RE.findall(text)]
 
 
+def _make_embedder(provider):
+    """Return a callable str -> list[float] for query embedding.
+
+    Kept as a small factory rather than an inline branch so that switching providers is
+    one constant, and so the client is built once at Retriever construction instead of
+    per request. Each provider is imported lazily: the deployed app only needs the SDK
+    for the provider it actually uses.
+    """
+    if provider == "gemini":
+        from google import genai
+        from google.genai import types
+
+        client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        cfg = types.EmbedContentConfig(task_type="RETRIEVAL_QUERY")
+
+        def embed(query):
+            # RETRIEVAL_QUERY vs RETRIEVAL_DOCUMENT is not cosmetic -- the corpus was
+            # indexed as RETRIEVAL_DOCUMENT, and mixing them degrades similarity.
+            resp = client.models.embed_content(model=GEMINI_MODEL, contents=[query], config=cfg)
+            return list(resp.embeddings[0].values)
+
+        return embed
+
+    if provider == "cohere":
+        import cohere
+
+        client = cohere.ClientV2(api_key=os.environ["COHERE_API_KEY"])
+
+        def embed(query):
+            resp = client.embed(texts=[query], model=COHERE_MODEL,
+                                input_type="search_query", embedding_types=["float"])
+            return resp.embeddings.float_[0]
+
+        return embed
+
+    raise ValueError(f"unknown EMBED_PROVIDER: {provider!r}")
+
+
 class Retriever:
     def __init__(self):
         load_dotenv(PROJECT / ".env")
@@ -53,7 +153,7 @@ class Retriever:
         self.chunk_ids = self.chunks["chunk_id"].tolist()
         self.id_to_row = {cid: i for i, cid in enumerate(self.chunk_ids)}
 
-        self.cohere_client = cohere.ClientV2(api_key=os.environ["COHERE_API_KEY"])
+        self.embedder = _make_embedder(EMBED_PROVIDER)
         self.pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
         self.index = self.pc.Index(PINECONE_INDEX_NAME)
 
@@ -61,10 +161,7 @@ class Retriever:
         self.bm25 = BM25Okapi(corpus_tokens, k1=BM25_K1, b=BM25_B)
 
     def _embed_query(self, query):
-        resp = self.cohere_client.embed(
-            texts=[query], model=COHERE_MODEL, input_type="search_query", embedding_types=["float"]
-        )
-        return resp.embeddings.float_[0]
+        return self.embedder(query)
 
     def _semantic_candidates(self, query, top_k):
         emb = self._embed_query(query)
@@ -76,14 +173,35 @@ class Retriever:
         top_idx = np.argsort(-scores)[:top_k]
         return [self.chunk_ids[i] for i in top_idx]
 
-    def retrieve(self, query, top_k=10):
+    def retrieve(self, query, top_k=5):
         """Hybrid retrieval: RRF-combine Pinecone semantic + BM25 keyword rankings.
 
-        top_k=10 (not 5) is the production default -- tested head-to-head against top_k=5
-        in scripts/generation_config_tuning.ipynb: same hit-rate/fabrication-rate on the
-        regex proxy, but noticeably better LLM-judge worst-case scores (min faithfulness
-        4 vs 2, min relevancy 3 vs 2), since a few eval questions have their correct
-        article sitting at rank 6-7 -- inside recall@10 but outside recall@5.
+        top_k was 10 from Phase 8b until Phase 16. That default was never about recall:
+        scripts/generation_config_tuning.ipynb found top_k=10 and top_k=5 tied on hit rate
+        and fabrication rate, and picked 10 only because it lifted the LLM-judge worst
+        cases (min faithfulness 4 vs 2, min relevancy 3 vs 2). That in turn traced to a
+        handful of questions -- q29 especially -- whose correct article sat at rank 6-7,
+        inside recall@10 but outside recall@5. The extra slots existed to catch those.
+
+        Measured again in scripts/embeddings_hybrid_v3.ipynb on article-level chunks,
+        searching 30 deep across both eval sets (120 question-runs): with the current
+        embedding model, *no* question puts its correct article between rank 6 and 10.
+        Worst rank is 4 on eval_v3, 2-3 on eval_v2. Slots 6-10 are padding, and they
+        are not free -- they double the context handed to the generator (mean 4172 ->
+        2218 tokens, worst case 21997 -> 11058), which is both cost and, per Phase 12a,
+        crowding risk.
+
+        Two caveats worth keeping in view:
+          - This is a retrieval measurement. Phase 8b's original argument was about
+            answer quality, and that has not been re-tested at top_k=5 under article
+            chunking; generation work is parked until the retriever is settled.
+          - Worst rank drifted 2-3 -> 4 as the eval questions got harder (statute-worded
+            v2 -> naturally-worded v3). Both stay inside 5, but the trend runs toward
+            deeper ranks, so a harder question set could change this.
+
+        Note this is model-dependent, not a universal property: on the same test,
+        qwen3-embedding-0.6b puts 9 of 60 correct articles in slots 6-10. If the
+        embedding model changes, re-run that check before trusting top_k=5.
         """
         semantic_ids = self._semantic_candidates(query, CANDIDATE_TOP_K)
         keyword_ids = self._keyword_candidates(query, CANDIDATE_TOP_K)

@@ -48,12 +48,17 @@ app.state.limiter = limiter
 
 @app.exception_handler(RateLimitExceeded)
 def rate_limit_handler(request: Request, exc: RateLimitExceeded):
-    return JSONResponse(status_code=429, content={"detail": "Too many questions -- please wait a bit and try again."})
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "عدد الأسئلة تجاوز الحد المسموح — يُرجى الانتظار قليلاً ثم المحاولة مجدداً."},
+    )
 
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=1000)
-    top_k: int = Field(default=10, ge=1, le=20)
+    # Keep in step with Retriever.retrieve()'s default -- this value shadows it on every
+    # request, so leaving it at 10 would have silently cancelled the Phase 16 change.
+    top_k: int = Field(default=5, ge=1, le=20)
 
 
 class Citation(BaseModel):
@@ -88,7 +93,7 @@ def ask(request: Request, req: AskRequest):
 
     chunks = retriever.retrieve(req.question, top_k=req.top_k)
     if not chunks:
-        raise HTTPException(status_code=404, detail="No relevant law articles found for this question.")
+        raise HTTPException(status_code=404, detail="لم يتم العثور على مواد قانونية ذات صلة بهذا السؤال.")
 
     result = generator.generate(req.question, chunks)
 
