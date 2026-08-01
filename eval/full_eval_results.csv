@@ -1,224 +1,216 @@
 ﻿question_id,cited_articles,hit_correct_article,fabricated_citation,fabricated_articles,answer
-q01,['23'],True,False,[],"If either you or your employer intends to terminate an unlimited-term employment contract, a written notice must be provided to the other party at least one month in advance. The notice cannot be cancelled unless both parties agree to it (Labor Law 1996, Article 23).
+q01,['23'],True,False,[],"If either you or your employer wants to end an unlimited-term employment contract, the other party must be notified in writing of the intention to terminate the contract at least one month in advance. The notice cannot be canceled except with the agreement of both parties. This is supported by Labor Law 1996, Article 23.
 
-Please remember, this information is general and not legal advice. Consult a licensed lawyer for your specific situation."
-q02,['46'],True,False,[],"Your employer must pay your wages and overtime within a period not exceeding seven days from the date of maturity (when the wages are due). This is stipulated in Labor Law 1996, Article 46.
-
-Please note that this information is general and not legal advice. Consult a licensed lawyer for your specific situation."
-q03,['61'],True,False,[],"According to the Labor Law 1996, Article 61, every worker is entitled to an annual leave with full pay for a period of fourteen days for each year of service. However, if the worker has spent five consecutive years with the same employer, the annual leave duration increases to twenty-one days. Therefore, yes, the number of paid vacation days increases the longer you stay with the employer (from fourteen days to twenty-one days after five years). 
-
-This information is supported by Labor Law 1996, Article 61.
-
-Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q04,['28'],True,False,[],"نعم، يحق لصاحب العمل فصل العامل دون إشعار في حالات معينة، وذلك وفقاً للمادة (28) من قانون العمل الأردني لعام 1996. من بين هذه الحالات: إذا ارتكب العامل خطأ نشأ عنه خسارة مادية جسيمة لصاحب العمل، أو إذا تغيب العامل دون سبب مشروع لأكثر من عشرة أيام متتالية، أو إذا أفشى العامل الأسرار الخاصة بالعمل، وغير ذلك من الأسباب المحددة في المادة.
-
-إن هذه المادة توضح الأوضاع التي تتيح لصاحب العمل اتخاذ قرار الفصل بطريقة قانونية ودون الحاجة لإشعار مسبق. 
-
-لذا، يجب مراجعة الأسباب المذكورة في المادة (28) لتحديد ما إذا كان فصل العامل مبرراً من قبل صاحب العمل.
-
-(قانون العمل 1996، المادة 28)
-
-هذا المعلومات هي معلومات عامة وليس نصيحة قانونية، ويجب على المستخدم استشارة محامي مرخص لحالته الخاصة."
-q05,['59'],True,False,[],"For working overtime, you are entitled to receive a compensation of not less than 125% of your regular wage for each overtime hour worked (Labor Law 1996, Article 59). 
-
-If you work on a holiday, you will receive additional compensation of not less than 150% of your regular wage for that day (Labor Law 1996, Article 59). 
-
-This information is general and not legal advice, and you should consult a licensed lawyer for your specific situation."
-q06,['56'],True,False,[],"According to the Labor Law 1996, Article 56, you cannot be legally asked to work more than eight hours per day or forty-eight hours per week, except in the cases specified by the law. Additionally, breaks for meals and rest are not counted as part of these hours. The total of working hours and break periods should not exceed eleven hours in a day. 
-
-For reference: Labor Law 1996, Article 56. 
+Please remember that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q02,['46'],True,False,[],"According to the Labor Law 1996, Article 46, the wage and overtime shall be paid within a period not exceeding seven days from the date of maturity. Therefore, your employer has a maximum of seven days after your wages are due to actually pay you (Labor Law 1996, Article 46).
 
 This is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q07,['19'],False,False,[],"Yes, your employer can require you to undergo a medical check-up before starting a job. According to Labor Law 1996, Article 19, workers must comply with medical examinations required by the nature of the work to ensure they are free of occupational or communicable diseases before commencing work. 
+q03,['61'],True,False,[],"According to the Labor Law 1996, Article 61, every worker is entitled to an annual leave with full pay for a period of fourteen days for each year of service. Additionally, if the worker has spent five consecutive years with the same employer, the annual leave duration increases to twenty-one days (Labor Law 1996, Article 61). 
 
-This is supported by the text: ""الخضوع للفحوصات الطبية اللازمة التي تقتضي طبيعة العمل ضرورة اجرائها قبل الالتحاق بالعمل"". 
+So, to summarize, you start with 14 days per year, which increases to 21 days after five years of consecutive service with the same employer.
 
-Please note this information is general and not legal advice; you should consult a licensed lawyer for your specific situation."
-q08,[],False,False,[],"إذا خالفت تعليمات صادرة عن قانون العمل ولم تكن هناك عقوبة محددة لتلك المخالفة، فإن أقصى مبلغ يمكن أن تُغرَم به هو 1000 دينار، وفقًا للمادة (139) من قانون العمل الأردني لعام 1996، التي تنص على أنه كل مخالفة لأحكام هذا القانون أو أي نظام صادر بمقتضاه تُعاقب بغرامة لا تقل عن 500 دينار ولا تزيد على 1000 دينار.
+This response is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
+q04,['28'],True,False,[],"لا يحق لصاحب العمل فصل العامل دون سابق إنذار إلا في حالات محددة وردت في المادة 28 من قانون Labor Law 1996، والتي تشمل على سبيل المثال انتحال شخصية أو هوية مغايرة، عدم الوفاء بالالتزامات، أو ارتكاب أخطاء تؤدي إلى خسارة مادية. إذا كان الفصل لا ينطبق على هذه الحالات المحددة، يجب على صاحب العمل إعطاء إشعار مسبق. 
 
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست استشارة قانونية، وينبغي عليك استشارة محامي مرخص للحصول على المشورة الدقيقة لحالتك الخاصة."
-q09,"['26', '28']",True,True,['28'],"Yes, if your employer terminates your fixed-term employment contract before the expiry of its term, you are entitled to receive all the rights and benefits stipulated in the contract and the wages that are due until the expiry of the remaining contract period, unless the termination is considered a dismissal according to Article 28 of the Labor Law. This is stated in Labor Law 1996, Article 26(a).
+لذلك، الإجابة تعتمد على السبب وراء الفصل. 
 
-Please note that this is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
-q10,['65'],True,False,[],"You are entitled to fourteen days of paid sick leave per year based on a report from an approved physician according to Labor Law 1996, Article 65. Additionally, this duration can be renewed for another fourteen days with full pay if you are an inpatient in a hospital, given that certain conditions are met regarding the size of the institution.
+المصدر: Labor Law 1996، المادة 28.
+
+يرجى ملاحظة أن هذه المعلومات هي معلومات عامة، وليست نصيحة قانونية، وينبغي عليك استشارة محامٍ مرخص لوضعك الخاص."
+q05,['59'],True,False,[],"If you work overtime, you are entitled to receive compensation of not less than 125% of your regular wage for each overtime hour worked. If you work on your weekly day off or on religious or official holidays, you should receive additional compensation of not less than 150% of your regular wage for that day. This information is supported by Labor Law 1996, Article 59.
 
 Please note that this is general information and not legal advice. It is recommended to consult a licensed lawyer for your specific situation."
-q11,['45'],True,False,[],"If your contract does not specify your wage, your wage will be determined based on the estimated wage for work of the same type, if such information exists. If there is no comparable work, then the wage will be estimated according to custom. If neither is available, the court will estimate the wage according to the provisions of the Labor Law, considering it as a labor dispute related to wages. This is supported by Labor Law 1996, Article 45.
+q06,['56'],True,False,[],"According to the Labor Law 1996, Article 56, you cannot be asked to work more than eight hours per day or forty-eight hours per week, except in special cases specified by the law. In those cases, the total working hours, along with break periods, should not exceed eleven hours per day. This is detailed in both the English and Arabic versions of the law (Labor Law 1996, Article 56).
 
-Please note this is general information and not legal advice; you should consult a licensed lawyer for your specific situation."
-q12,['62'],True,False,[],"نعم، يمكنك أخذ إجازتك السنوية على دفعات. ومع ذلك، يجب أن لا تقل مدة أي دفعة عن يومين. هذا ما نصت عليه المادة (62) من قانون العمل 1996. 
-
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست مشورة قانونية، وينبغي عليك استشارة محامٍ مرخص لحالتك الخاصة."
-q13,['66'],True,False,[],"نعم، يحق لك أخذ إجازة إذا التحقت بالجامعة أو معهد للدراسة، ولكن هذه الإجازة ستكون بدون أجر. وفقًا للمادة 66 من قانون العمل الأردني لسنة 1996، يحق للعامل الحصول على إجازة مدتها أربعة أشهر دون أجر إذا التحق للدراسة في جامعة أو معهد أو كلية معترف بها رسميًا.
-
-لذا، الإجابة هي أنك تستطيع أخذ الإجازة، لكنها غير مدفوعة الأجر (قانون العمل 1996، المادة 66).
-
-هذا معلومات عامة وليست نصيحة قانونية. يُنصح بالتشاور مع محام مرخص لحالتك الخاصة."
-q14,['80'],True,False,[],"Yes, your employer is required to take fire-safety precautions when storing flammable materials at work. According to the Labor Law 1996, Article 80, ""The employer shall take the necessary precautions to protect the institution and its workers from the dangers of fire and explosions, including the storage, transportation, or handling of flammable hazardous materials."" This means that appropriate technical means and devices must be provided in accordance with official authorities' instructions.
+Please note, this is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
+q07,['19'],False,False,[],"Yes, your employer can require you to undergo a medical check-up before you start a job. Article 19 of the Labor Law 1996 states that the worker shall undergo the medical examinations as required by the work nature before the commencement of work to check that the worker is free of occupational or communicable diseases. This requirement ensures that the worker is fit for the job at hand (Labor Law 1996, Article 19).
 
 Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q15,['19'],True,False,[],"بموجب قانون العمل الأردني لعام 1996، يجب على العامل الالتزام بالواجبات التالية كما ورد في المادة 19:
+q08,['139'],True,False,[],"إذا خالفت تعليمات صادرة عن قانون العمل ولم تكن هناك عقوبة محددة لتلك المخالفة، فإن أقصى مبلغ يمكن أن تُغرَم به هو 1000 دينار. وهذا ما نصت عليه المادة (139) من قانون العمل لعام 1996، حيث جاء فيها أنه ""كل مخالفة لأحكام هذا القانون أو أي نظام صادر بمقتضاه لم تعين لها عقوبة فيه يعاقب مرتكبها بغرامة لا تقل عن (٥٠٠) دينار ولا تزيد على (١٠٠٠) دينار"".
 
-أ - تأدية العمل بنفسه وأن يبذل عناية الشخص العادي في تأديته، والالتزام بأوامر صاحب العمل المتعلقة بتنفيذ العمل المتفق عليه، وذلك ضمن الحدود التي لا تعرضه للخطر أو تخالف أحكام القوانين المعمول بها.
+لذا، في حالة مخالفة تعليمات العمل، يمكنك مواجهة غرامة تصل إلى الحد الأقصى وهو 1000 دينار.
 
-ب - المحافظة على أسرار صاحب العمل الصناعية والتجارية وعدم إفشائها بأي صورة من الصور حتى بعد انقضاء عقد العمل.
+هذا مجرد معلومات عامة وليس استشارة قانونية، وينبغي عليك استشارة محامٍ مرخص حول حالتك الخاصة."
+q09,"['26', '28']",True,True,['28'],"Yes, if your employer terminates your fixed-term employment contract before the expiry of its term, you are entitled to receive all the rights and benefits stipulated in the contract and the wages that are due until the expiry of the remaining contract period, unless the termination is a dismissal according to Article 28. This is supported by Labor Law 1996, Article 26. 
 
-ج - الحرص على حفظ الأشياء المسلمة إليه لأداء العمل، مثل أدوات العمل والمواد وسائر اللوازم الخاصة بعمله.
+Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q10,['65'],True,False,[],"You are entitled to a paid sick leave of fourteen days per year, based on a report from a physician approved by the institution. This is outlined in the Labor Law 1996, Article 65. If you are an inpatient in a hospital, this sick leave may be renewed for another fourteen days with full pay, subject to certain conditions.
 
-د - الخضوع للفحوصات الطبية اللازمة التي قد تقتضي طبيعة العمل ضرورة إجرائها.
+Please remember that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q11,['45'],True,False,[],"If your contract does not specify the wage amount, your wage will be determined based on the estimated wage for work of the same type, if available. If no such wage exists, it will be estimated according to custom. If there is no custom to guide the determination, the court will estimate it according to the provisions of the Labor Law, treating it as a labor dispute regarding wages. This is supported by Labor Law 1996, Article 45. 
 
-هذه الواجبات منصوص عليها في قانون العمل 1996، المادة 19. 
+Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q12,['62'],True,False,[],"نعم، يمكنك أخذ إجازتك السنوية على دفعات. ولكن يجب ألا تقل مدة أي دفعة عن يومين في أي مرة، وذلك وفقاً للمادة (62) من قانون العمل الأردني 1996. 
 
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليس نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص لحالتك الخاصة."
-q16,['68'],True,False,[],"نعم، يحق لك أخذ إجازة بدون راتب إذا انتقل زوجك أو زوجتك للعمل في مكان بعيد، حيث ينص قانون العمل الأردني لعام 1996، المادة (68) على أن لكل من الزوجين العاملين الحق في الحصول على إجازة لمرة واحدة دون أجر لمدة لا تزيد على سنتين لمرافقة زوجه إذا انتقل إلى عمل آخر يقع خارج المحافظة أو إلى عمل يقع خارج المملكة.
+يرجى ملاحظة أن هذه المعلومات عامة وليست مشورة قانونية، وينبغي عليك استشارة محامٍ مرخص للحصول على معلومات دقيقة حول وضعك الخاص."
+q13,['66'],True,False,[],"نعم، يحق لك الحصول على إجازة مدتها أربعة أشهر دون أجر إذا التحقت للدراسة في جامعة أو معهد أو كلية معترف بها بصورة رسمية. هذا ينص عليه قانون العمل الأردني 1996، المادة 66، الفقرة (ب). 
 
-هذا يعتبر حقًا مكفولًا بموجب القانون المذكور. 
+تعليق: هذه معلومات عامة وليست نصيحة قانونية، يجب عليك استشارة محامٍ مرخص للحصول على المشورة الخاصة بحالتك."
+q14,['80'],True,False,[],"Yes, your employer is required to take necessary precautions to protect the workplace and its workers from the dangers of fire and explosions, including when storing flammable hazardous materials. This is mandated by Article 80 of the Labor Law 1996, which states that the employer must implement adequate technical means and devices in accordance with the instructions of the relevant official authorities.
 
-يرجى ملاحظة أن هذه المعلومات عامة وليست مشورة قانونية، ويجب عليك استشارة محامي مختص للحصول على نصيحة تناسب حالتك الخاصة."
-q17,['86'],True,False,[],"تنطبق أحكام إصابات العمل في قانون العمل بدلاً من قانون الضمان الاجتماعي على العمال الذين لا تسري عليهم أحكام قانون الضمان الاجتماعي المعمول به. وهذا ما ينص عليه قانون العمل 1996، المادة 86.
+(Labor Law 1996, Article 80)
 
-يجب عليك دائماً استشارة محامي مختص للحصول على مشورة قانونية تتناسب مع حالتك الخاصة."
-q18,['87'],True,False,[],"يجب على صاحب العمل أن يقوم بالنقاط التالية في حال تعرض العامل لإصابة عمل خطيرة:
+This response is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
+q15,['19'],True,False,[],"كموظف، يجب عليك القيام بما يلي تجاه صاحب العمل وفقاً للمادة (19) من قانون العمل الأردني لعام 1996:
+
+1. تأدية العمل بنفسك وبذل جهد الشخص العادي، والالتزام بأوامر صاحب العمل المتعلقة بالعمل المتفق عليه، ضمن الحدود التي لا تعرضك للخطر أو تخالف أحكام القوانين المعمول بها أو الآداب العامة.
+2. المحافظة على أسرار صاحب العمل الصناعية والتجارية وعدم إفشائها بأي صورة من الصور، حتى بعد انتهاء عقد العمل.
+3. الحرص على حفظ الأشياء المسلمة إليك لأداء العمل، مثل أدوات العمل والمواد وسائر اللوازم الخاصة بعملك.
+4. الخضوع للفحوصات الطبية اللازمة التي تقتضي طبيعة العمل ضرورة إجراؤها، للتحقق من خلوك من الأمراض المهنية والسارية.
+
+المصدر: قانون العمل الأردني لعام 1996، المادة (19).
+
+يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامي مرخص لحالتك الخاصة."
+q16,['68'],True,False,[],"نعم، يحق لك أخذ إجازة بدون راتب إذا انتقل زوجك أو زوجتك للعمل في مكان بعيد. وفقًا للمادة (68) من قانون العمل الأردني 1996، لكل من الزوجين العاملين الحق في الحصول على إجازة لمرة واحدة دون أجر لمدة لا تزيد على سنتين لمرافقة زوجه إذا انتقل إلى عمل آخر يقع خارج المحافظة التي يعمل فيها أو إلى عمل يقع خارج المملكة.
+
+يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست نصيحة قانونية، وينبغي لك استشارة محامٍ مرخص لحالتك الخاصة."
+q17,['86'],True,False,[],"تنطبق أحكام إصابات العمل في قانون العمل على العمال الذين لا تسري عليهم أحكام قانون الضمان الاجتماعي المعمول به. وهذا ما ينص عليه قانون العمل لعام 1996، المادة 86، حيث تقول: ""تطبق أحكام هذا الفصل المتعلقة بإصابات العمل وأمراض المهنة على العمال الذين لا تسري عليهم أحكام قانون الضمان الاجتماعي المعمول به."" 
+
+لذا، إذا كنت من العمال الذين لا تشملهم أحكام قانون الضمان الاجتماعي، فسوف تنطبق عليك أحكام إصابات العمل من قانون العمل.
+
+هذا هو تعريف واضح يتعلق بتطبيق أحكام إصابات العمل. لمزيد من المعلومات اعتمد على مشورة قانونية متخصصة في هذه المواضيع."
+q18,['87'],True,False,[],"عند تعرض عامل لإصابة عمل خطيرة، يجب على صاحب العمل أن يقوم بما يلي وفقاً للمادة (87) من قانون العمل الأردني 1996:
 
 1. نقل المصاب إلى مستشفى أو أي مركز طبي.
-2. تبليغ الجهات الأمنية المختصة بالحادث.
-3. إرسال إشعار إلى الوزارة بذلك خلال مدة لا تزيد على (48) ساعة من وقوع الحادث.
+2. إبلاغ الجهات الأمنية المختصة بالحادث.
+3. إرسال إشعار إلى الوزارة خلال مدة لا تزيد على (48) ساعة من وقوع الحادث.
 4. يتحمل صاحب العمل نفقات نقل المصاب إلى المستشفى أو المركز الطبي لمعالجته.
 
-هذا ما ينص عليه قانون العمل الأردني 1996، المادة (87).
+لذا يتوجب على صاحب العمل الالتزام بتلك الإجراءات بشكل عاجل.
 
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست مشورة قانونية، وينبغي على المستخدم استشارة محامي مرخص للحصول على نصيحة قانونية بشأن موقفه الخاص."
-q19,['12'],True,False,[],"نعم، يحتاج صاحب العمل إلى إذن رسمي من الوزير أو من يفوضه قبل أن يوظف عاملاً غير أردني. ينص ذلك في المادة 12 من قانون العمل الأردني 1996، حيث يؤكد أنه ""لا يجوز استقدام أو استخدام أي عامل غير أردني إلا بموافقة الوزير أو من يفوضه"" (قانون العمل 1996، المادة 12).
+هذه معلومات عامة وليست استشارة قانونية. يجب عليك استشارة محامي مرخص لحالتك الخاصة."
+q19,['12'],True,False,[],"نعم، يحتاج صاحب العمل إلى إذن رسمي قبل أن يوظف عاملاً غير أردني. وفقاً للمادة (12) من قانون العمل الأردني لعام 1996، يجب أن يتم استقدام أو استخدام أي عامل غير أردني بموافقة الوزير أو من يخولهم، بشرط أن يتطلب العمل خبرة وكفاءة غير متوافرة لدى العمال الأردنيين أو عدم توفر عدد كافي منهم لتلبية الحاجة. 
 
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست مشورة قانونية، وينبغي على المستخدم استشارة محامٍ مرخص لحالته الخاصة."
-q20,['139'],True,False,[],"نعم، إذا لم تكن هناك عقوبة محددة لمخالفة معينة في قانون العمل، فستكون العقوبة المفروضة على مرتكب المخالفة بغرامة لا تقل عن 500 دينار ولا تزيد على 1000 دينار، كما ينص على ذلك المادة 139 من قانون العمل. 
+(قانون العمل 1996، المادة 12)
 
-لذا، يمكنك أن تُعاقب في حال مخالفة أي أحكام لم تُحدد لها عقوبة في التشريع. 
+يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامي مرخص للحصول على مشورة حول وضعك الخاص."
+q20,['139'],True,False,[],"إذا لم تكن هناك عقوبة محددة لمخالفة معينة في قانون العمل، فإن هذه المخالفة تعاقب بغرامة لا تقل عن خمسمائة دينار ولا تزيد على ألف دينار، وذلك طبقاً للمادة (139) من قانون العمل 1996. وبالتالي، يمكنك أن تُعاقب حتى لو لم تحدد العقوبة في نص القانون.
 
-(قانون العمل 1996، المادة 139).
-
-هذا مُجرد معلومات عامة، وليس نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص لحالتك الخاصة."
-q21,"['52', '53', '90']",True,True,['90'],"If you lose your job, the amount of unemployment allowance you will receive each month is based on your last wage and follows these percentages: 
+لا تُعتبر هذه المعلومات مشورة قانونية، ويجب عليك استشارة محامٍ مرخص بشأن وضعك الخاص."
+q21,['53'],True,False,[],"If you lose your job, the unemployment allowance you will receive each month is based on your last wage, with the following percentages applied:
 
 1. 75% for the first month.
 2. 65% for the second month.
 3. 55% for the third month.
 4. 45% for the fourth, fifth, and sixth months.
 
-Furthermore, the maximum unemployment allowance net shall be JOD (500) per month. This allowance is subject to an annual adjustment corresponding to the inflation rate as defined in Article 90 of the Social Security Law. The net amount is calculated after deducting the contributions specified in Paragraph (b) of Article (52). 
+Additionally, the maximum unemployment allowance you can receive is JOD 500 per month, and this amount is subject to annual adjustments for inflation as specified in Article 53 of the Social Security Law.
 
-This information is supported by the Social Security Law, Article 53.
+Please note that this information is general and not legal advice, and you should consult a licensed lawyer for your specific situation."
+q22,"['89', '90']",True,False,[],"Your pension may increase over the years, but there are specific conditions under which this occurs. According to Article 90 of the Social Security Law, both the Retirement Pension and Disability Pension are linked to inflation or the annual growth rate for average wages, with a maximum increase of JOD 20 in May of each year. The increase is applicable for those who meet the age requirements: 60 years for males and 55 years for females (Social Security Law, Article 90).
 
-Please note that this is general information and not legal advice. It is advisable to consult a licensed lawyer for your specific situation."
-q22,['71'],False,False,[],"Yes, your pension can increase over the years. According to the Social Security Law, Article 71, the Partial Permanent Natural Disability Pension is increased by (0.5%) for each year of actual contributions if the total reaches (60) contributions or more. If the total number of contributions reaches (120) or more, the increase is (1%) for each year of contributions. 
+Additionally, the minimum Retirement Pension and Disability Pension, as stated in Article 89, is subject to a JOD 40 increase when allocated, with certain conditions for early retirement.
 
-Therefore, depending on your contribution years, your pension may rise over time.
+Thus, under the applicable laws, your pension can potentially increase over time based on these adjustments. 
+
+This response is general information and not legal advice; please consult a licensed lawyer for your specific situation."
+q23,['48'],False,False,[],"The money for social security is financed from several sources as outlined in the Social Security Law. According to Article 48, the sources include:
+
+1. Monthly contributions paid by firms at a rate of 0.5% of the insured's wages.
+2. Monthly contributions deducted by firms at a rate of 1% of the insured's wages.
+3. Interest and fines imposed due to non-compliance with the provisions of this insurance.
+4. Any contributions paid by the State Treasury to finance this insurance.
+5. Revenues from investing the funds obtained from these sources.
+
+This information is supported by Article 48 of the Social Security Law (Arabic) and Article 48 (English).
+
+Please note that this is general information and not legal advice. For your specific situation, you should consult a licensed lawyer."
+q24,['39'],True,False,[],"نعم، يحق لك المطالبة بالتأمين إذا ظهرت أعراض مرض متعلق بعملك خلال سنتين من تاريخ انتهاء خدمة العمل. يجب أن تقدم قرارًا من المرجع الطبي يؤكد أن مهنته كانت السبب في إصابته بالمرض. هذه المعلومات مدعومة بالمادة (39) من قانون الضمان الاجتماعي.
+
+لذا، يمكنك المطالبة بالتأمين إذا كانت الشروط المذكورة مستوفاة.
+
+يرجى ملاحظة أن هذه المعلومات عامة وليست نصيحة قانونية، وعليك استشارة محامي مرخص للحصول على مشورة تناسب حالتك الخاصة."
+q25,"['79', '81']",True,False,[],"إذا توفيت، فإن أفراد عائلتك الذين يستحقون راتب الضمان الاجتماعي وفقاً لقانون الضمان الاجتماعي هم:
+
+1. الأرملة أو الأرمل.
+2. الأبناء (ذكور وإناث).
+3. الوالدان.
+4. الإخوة والأخوات المعالين، بشرط ثبوت الإعالة.
+
+هذا حسب المادة (79) والمادة (81) من قانون الضمان الاجتماعي. 
+
+تذكر أن هذه المعلومات عامة وليست نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص للحصول على مشورة قانونية تناسب وضعك الخاص."
+q26,['88'],True,False,[],"According to Article 88 of the Social Security Law, the determined amounts of the Retirement Pension, Disability Pension, and lump sum compensation are final and may not be subject to challenge or objection by any administrative or judicial body after the expiry of 90 days from the date of notification of the decision to allocate the pension or compensation. Therefore, once you have been notified of your pension amount, you cannot challenge it after this 90-day period has passed.
+
+This information is supported by:
+- Social Security Law, Article 88.
 
 Please note that this is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
-q23,['19'],True,False,[],"The money for social security comes from various sources, which include:
+q27,['45'],True,False,[],"Yes, you will receive full pay during your maternity leave as stipulated in Article 45 of the Social Security Law, which states that the female insured shall be paid an allowance equivalent to her last wage during her maternity leave. Additionally, Article 45(b) mentions that maternity leave is considered an actual service period for the purposes of including it in such provisions. 
 
-1. Monthly contributions paid by firms and insured individuals.
-2. Default interest on contributions if they are late, accruing 60 days after the insured's employment.
-3. Fines imposed due to non-compliance with the provisions of the law.
-4. Revenue generated from investing the funds of the Corporation.
-5. Loans provided by the government to cover any financial deficit.
-6. Grants, subsidies, donations, wills, loans, and any other revenues approved by the Board.
+Therefore, your maternity leave is paid and counts toward your years of service.
 
-These sources are detailed in the Social Security Law, particularly Article 19. 
+This information is based on the Social Security Law, Articles 45(a) and 45(b).
 
-Please note that this is general information and not legal advice. It's advisable to consult a licensed lawyer for your specific situation."
-q24,['39'],True,False,[],"نعم، يحق لك المطالبة بالتأمين إذا ظهرت عليك أعراض مرض متعلق بعملك خلال سنتين من تاريخ انتهاء خدمتك في المهنة المحددة، بشرط أن تقدم قرارًا من المرجع الطبي يثبت أن وظيفتك كانت سببًا في إصابتك بالمرض المهني. (قانون الضمان الاجتماعي، المادة 39).
-
-يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامٍ مرخص للحصول على المشورة بشأن وضعك الخاص."
-q25,['81'],False,False,[],"إذا توفي المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال، يستحق راتب الضمان الاجتماعي المستحقون كما يلي:
-
-1. الذكور من أولاد المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال الذين لا تتجاوز أعمارهم الثلاث والعشرين سنة عند الوفاة.
-2. أرملة المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال وبناته وأخواته العازبات والأرامل والمطلقات عند الوفاة.
-3. زوج المؤمن عليها أو صاحبة راتب التقاعد أو صاحبة راتب الاعتلال المتوفاة بشرط أن يكون مصاباً بالعجز الكلي.
-4. والد ووالدة المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال المتوفى.
-
-وتوزع الرواتب وفقاً للأحكام المعمول بها في الجدول رقم (4) الملحق بالقانون (Social Security Law، Article 81).
-
-يرجى ملاحظة أن هذا هو مجرد معلومات عامة وليس استشارة قانونية. يجب عليك استشارة محامٍ مرخص للحصول على نصيحة قانونية تتعلق بالوضع الخاص بك."
-q26,['88'],True,False,[],"No, once you have been notified of the amount of your pension, you cannot challenge that amount after 90 days. This is outlined in the Social Security Law, Article 88, which states that the determined amounts of the Retirement Pension, the Disability Pension, and the lump sum compensation are final and may not be subject to challenge or objection after the expiry of 90 days from the date of notification.
-
-Therefore, you must act within that time frame if you wish to contest the decision.
-
-This is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q27,['45'],True,False,[],"Yes, you will be paid during your maternity leave, receiving an allowance equivalent to your last wage during this period, as stated in the Social Security Law, Article 45(a). Additionally, this maternity leave is considered an actual service period for the purposes of including it in your years of service, as per Article 45(b) of the same law.
-
-Please note that this information serves as general information and should not be considered legal advice. It is recommended to consult a licensed lawyer for your specific situation."
-q28,['13'],True,False,[],"The committee that runs the insurance side of Social Security is called the ""Council of Insurances."" It is presided over by the Director General and consists of:
+Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q28,['13'],True,False,[],"The committee that runs the insurance side of Social Security is called the ""Council of Insurances."" It is presided over by the Director General of the Social Security Corporation and includes the following members:
 
 1. The Secretary General of the Ministry of Health.
-2. Two members selected by the Board, one from the laborers’ representatives and the other from the employers’ representatives.
+2. Two members selected by the Board from among its members, one of whom shall represent laborers and the other employers.
 3. Three external experienced specialists appointed by the Council of Ministers upon recommendation by the Board.
 
-The Council of Insurances has the following functions and authorities:
+The functions and authorities of the Council of Insurances include:
 
 1. Proposing the general insurance policy and submitting it to the Board for approval.
 2. Overseeing the implementation of the Corporation’s insurance policy and developing the required plans and programs.
-3. Making recommendations regarding the approval of the insurance aspect of the Corporation’s annual budget.
-4. Submitting periodic reports to the Board on insurance activities and job performance.
-5. Reviewing the insurance activities part in the annual report and relevant financial statements and recommending approval.
-6. Designating committees needed for insurance work.
-7. Drafting implementing regulations for the insurance aspect and submitting them to the Board.
-8. Any other authorities assigned by the Board.
+3. Making recommendations regarding the approval of the insurance aspect of the Corporation’s annual budget and stating the different expenditures.
+4. Submitting periodic reports to the Board on insurance activities.
+5. Reviewing the part on insurance activities in the annual report and making recommendations for approval.
+6. Designating committees needed for insurance work according to the Implementing Regulations.
+7. Drafting the Implementing Regulations for the insurance aspect to ensure the achievement of the Corporation’s objectives.
 
 This information is supported by the Social Security Law, Article 13.
 
-Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q29,['107'],False,False,[],"The Social Security Law states in Article 107 that the previous law, Social Security Law No. (19) for the year 2001, and its amendments are deemed null and void, while by-laws and instructions remain valid until replaced in accordance with this Law. However, it does not explicitly mention which law takes precedence if other laws contradict it. Therefore, based on the provided documents, there is insufficient information to determine which law would prevail in the case of a conflict with another law.
+Please note that this is general information and not legal advice. It is recommended to consult a licensed lawyer for specific situations."
+q29,['109'],True,False,[],"According to the Social Security Law, Article 109 states that any provision in any other legislation shall be repealed to the extent it conflicts with the provisions of this Law. Therefore, the Social Security Law takes precedence over conflicting provisions in other laws (Social Security Law, Article 109).
 
-Disclaimer: This is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q30,['24'],True,False,[],"تأتي الأموال التي تغطي تأمين إصابات العمل من المصادر التالية وفقًا للمادة (24) من قانون الضمان الاجتماعي:
+This is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
+q30,['24'],True,False,[],"تتكون مصادر تمويل تأمين إصابات العمل من المصادر التالية:
 
-أ- الاشتراكات الشهرية التي تؤديها المنشأة بنسبة (2%) من أجور المؤمن عليهم.  
-ب- الفوائد والغرامات التي تترتب على عدم التقيد بأحكام هذا التأمين.  
-ج- ريع استثمار الأموال المتأتية من هذه المصادر.
+1. الاشتراكات الشهرية التي تؤديها المنشأة بنسبة (اثنين بالمائة) من أجور المؤمن عليهم.
+2. الفوائد والغرامات التي تترتب على عدم التقيد بأحكام هذا التأمين.
+3. ريع استثمار الأموال المتأتية من هذه المصادر.
 
-لذا، فإن المصادر تشمل الاشتراكات الشهرية، الفوائد والغرامات، وريع الاستثمار. 
+المصدر: قانون الضمان الاجتماعي، المادة (24).
 
-هذه المعلومات مستندة إلى قانون الضمان الاجتماعي، المادة (24). 
+يرجى ملاحظة أن هذه المعلومات هي معلومات عامة وليست مشورة قانونية، وينبغي عليك استشارة محامٍ مختص لحالتك الخاصة."
+q31,"['37', '89']",True,False,[],"لا يحق للمصاب أو للمستحق عنه مطالبة صاحب العمل بأي تعويضات غير واردة في هذا القانون فيما يتعلق بإصابات العمل، إلا إذا كانت الإصابة ناشئة عن خطأ صاحب العمل، وذلك وفقاً للمادة (89) من قانون العمل 1996. 
 
-هذا هو مجرد معلومات عامة، وليس نصيحة قانونية، ويجب على المستخدم استشارة محامي مرخص لحالته الخاصة."
-q31,['89'],False,False,[],"لا يحق للمصاب أو للمستحق عنه مطالبة صاحب العمل بأي تعويضات غير واردة في هذا القانون فيما يتعلق بإصابات العمل إلا إذا كانت الإصابة ناشئة عن خطأ صاحب العمل. (قانون العمل 1996، المادة 89)
+بالإضافة إلى ذلك، تشير المادة (37) من قانون الضمان الاجتماعي إلى أنه لا يحق للمصاب أو لورثته أو للمستحقين عنه الرجوع على المنشأة للمطالبة بأي تعويض خلاف التعويضات الواردة في هذا القانون، إلا إذا كانت الإصابة ناشئة عن خطأ جسيم من المنشأة.
 
-لذلك، إذا كنت قد تعرضت لإصابة عمل، فلا يمكنك مطالبته بتعويض إضافي غير المقدم من الضمان الاجتماعي ما لم يكن هناك خطأ من جانب صاحب العمل.
+لذا، إذا لم يكن هناك خطأ من صاحب العمل أو المنشأة، فلا يمكنك المطالبة بتعويضات إضافية عن تلك التي تقدمها الضمان الاجتماعي.
 
-يرجى ملاحظة أن هذه المعلومات عامة وليست مشورة قانونية. يجب عليك استشارة محامٍ مرخص للحصول على المشورة بشأن وضعك الخاص."
-q32,['41'],True,False,[],"نعم، إذا وقعت إصابة العمل بفعل الغير، تبقى مسؤولية المؤسسة قائمة تجاه المصاب المؤمن عليه، وللمؤسسة الرجوع على الغير للمطالبة بكامل ما دفعته من تكاليف العناية الطبية والبدلات اليومية. هذا ينص عليه في المادة (41) من قانون الضمان الاجتماعي.
+هذه المعلومات هي معلومات عامة وليست استشارة قانونية. ينصح بالتشاور مع محامٍ مرخص للحصول على نصيحة حول الوضع الخاص بك."
+q32,['41'],True,False,[],"نعم، إذا وقعت إصابة العمل بفعل الغير، تبقى مسؤولية المؤسسة العامة للضمان الاجتماعي قائمة تجاه المصاب المؤمن عليه، وللمؤسسة حق الرجوع على الغير للمطالبة بكامل ما دفعته من تكاليف العناية الطبية والبدلات اليومية. وذلك وفقاً للمادة (41) من قانون الضمان الاجتماعي.
 
-ومع ذلك، يجب التأكيد على أن التفاصيل حول استحقاقاتك المحددة أو استمرارية تغطية الضمان الاجتماعي قد تتطلب مشورة قانونية محددة بناءً على حالتك.
+يرجى ملاحظة أن هذه المعلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامٍ مرخص لحالتك الخاصة."
+q33,['62'],True,False,[],"You can start collecting your retirement pension when you reach the age of 60 if you are male, or 55 if you are female. Additionally, you must have made at least 180 contributions to the Old-Age Insurance, with at least 84 of those contributions being actual periods of service (Social Security Law, Article 62).
 
-هذا مجرد معلومات عامة، وليس نصيحة قانونية. يجب عليك استشارة محامٍ مرخص للحصول على المشورة بشأن وضعك الخاص."
-q33,"['62', '64']",True,False,[],"You can start collecting your retirement pension at the age of 60 for males and 55 for females, provided that you have paid contributions for Old-age Insurance which are not less than 180 contributions, with at least 84 of those being for actual periods of service (Social Security Law, Article 62).
+Please note this is general information and not legal advice; you should consult a licensed lawyer for your specific situation."
+q34,['84'],True,False,[],"نعم، يحق لك كأرملة الجمع بين راتبك التقاعدي وحصتك من راتب التقاعد أو راتب الاعتلال الذي يؤول إليك من زوجك المتوفى. وهذا ينص عليه قانون الضمان الاجتماعي، المادة (84)، الفقرة (أ) رقم 1.
 
-Additionally, there are provisions for early retirement pensions as well. For early retirement, you can request a pension if you are at least 50 years old with at least 252 contributions for males and 228 contributions for females (Social Security Law, Article 64).
+هذه المعلومات هي للإرشاد العام فقط، وينبغي عليك استشارة محامي مرخص للحصول على نصيحة قانونية مخصصة لحالتك."
+q35,['80'],True,False,[],"يبدأ صرف نصيب عائلة المؤمن عليه من الراتب اعتباراً من أول الشهر الذي حدثت فيه وفاة المؤمن عليه أو من أول الشهر الذي يلي الشهر الذي حدثت فيه وفاته، حسب مقتضى الحال. (قانون الضمان الاجتماعي، المادة 80).
 
-This information serves as general knowledge and should not be considered legal advice. It’s advisable to consult a licensed lawyer for your specific situation."
-q34,['84'],True,False,[],"نعم، يحق للأرملة الجمع بين راتبها التقاعدي أو راتبها بسبب الاعتلال وحصتها من راتب التقاعد أو راتب الاعتلال الذي يؤول إليها من زوجها المتوفى. هذا ما نصت عليه المادة (84) من قانون الضمان الاجتماعي.
+يرجى ملاحظة أن هذه المعلومات عامة وليست نصيحة قانونية. يجب عليك استشارة محامٍ مرخص لموقفك الخاص."
+q36,['85'],True,False,[],"نعم، يُسمح لك الجمع بين أي من الرواتب المقررة بموجب أحكام قانون الضمان الاجتماعي وأي راتب تقاعد أو راتب اعتلال مقرر بموجب أي تشريعات أخرى، وفقًا للمادة (85) من قانون الضمان الاجتماعي.
 
-يرجى ملاحظة أن هذه المعلومات عامة، وليس مشورة قانونية، وينبغي عليك استشارة محامٍ مرخص لحالتك الخاصة."
-q35,['80'],True,False,[],"يبدأ صرف نصيب عائلة المؤمن عليه من الراتب اعتباراً من أول الشهر الذي حدثت فيه وفاة المؤمن عليه أو من أول الشهر الذي يلي الشهر الذي حدثت فيه وفاته، حسب مقتضى الحال (قانون الضمان الاجتماعي، المادة 80). 
+يرجى مراعاة أن المجموع لا يجب أن يتجاوز ثلاثة أمثال الحد الأدنى لراتب التقاعد أو راتب الاعتلال، وإذا تجاوز أحد الراتبين هذا الحد، فستستحق الراتب الأكثر.
 
-هذا مجرد معلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامي مرخص لحالتك الخاصة."
-q36,['85'],True,False,[],"نعم، يمكنك الجمع بين راتب تقاعدي من الضمان الاجتماعي وراتب تقاعد آخر من جهة مختلفة، وذلك وفقًا للمادة (85) من قانون الضمان الاجتماعي، التي تنص على أنه يحق الجمع بين أي من الرواتب المقررة بموجب أحكام هذا القانون وأي راتب تقاعد أو راتب اعتلال مقرر بموجب أي تشريعات أخرى. 
-
-لذا، في حالتك، ينطبق ما جاء في ""قانون الضمان الاجتماعي، المادة 85، الفقرة أ"".
-
-يرجى ملاحظة أن هذه المعلومات عامة وليست نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص لمساعدتك في حالتك المحددة."
+دعني أؤكد أنه يجب عليك استشارة محامي مختص للحصول على مشورة قانونية تتناسب مع حالتك الخاصة."
 q37,['2'],True,False,[],"Under the Professional Work Law 2019, a 'profession' is defined as any work, trade, or craft practiced by an individual for which they receive compensation, and it is subject to the provisions of this Law (Professional Work Law 2019, Article 2). 
 
-Please note that this is general information, not legal advice, and you should consult a licensed lawyer for your specific situation."
-q38,['9'],True,False,[],"If you operate your business without obtaining the required classification certificate, you will be subject to a fine of no less than two hundred dinars and no more than one thousand dinars according to the Professional Work Law 2019, Article 9(b). Additionally, the competent court may decide to temporarily close your business until the violation is corrected, and if the situation is not corrected within a year, the court may permanently close the business and cancel the classification certificate (Professional Work Law 2019, Article 9(c)).
+This is general information and not legal advice. You should consult a licensed lawyer for your specific situation."
+q38,['9'],True,False,[],"If you run your business without obtaining the official classification certificate, you will be fined an amount no less than two hundred dinars and no more than one thousand dinars. Additionally, if you practice a profession without the classification certificate or are late in renewing it for more than sixty days, this applies as well (Professional Work Law 2019, Article 9). 
 
-This is general information and not legal advice. Consult a licensed lawyer for your specific situation."
-q39,['10'],True,False,[],"تم إلغاء قانون تنظيم العمل المهني رقم (27) لسنة 1999، لكن الأنظمة والتعليمات الصادرة بمقتضاه ستظل سارية المفعول حتى يتم إلغاؤها أو تعديلها أو استبدالها بقوانين جديدة. هذا ما ينص عليه قانون تنظيم العمل المهني لعام 2019، المادة (10). 
+This response serves as general information and is not legal advice; for specific situations, please consult a licensed lawyer."
+q39,['10'],True,False,[],"تم إلغاء قانون تنظيم العمل المهني رقم (27) لسنة 1999 بموجب المادة (10) من قانون تنظيم العمل المهني لسنة 2019. ومع ذلك، تستمر الأنظمة والتعليمات الصادرة بمقتضاه إلى أن تلغى أو تعدل أو يتم استبدال غيرها بها. 
 
-لذا، القانون القديم لم يعد ساري المفعول، ولكن بعض الأنظمة والتعليمات منه ما زالت سارية حتى يتم تعديلها.
+المرجع: القانون المهني لعام 2019، المادة (10).
 
-هذه المعلومات هي معلومات عامة وليست نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص للحصول على مشورتك القانونية الخاصة."
-q40,[],False,False,[],"نعم، يتم تصنيف العاملين في المهن المختلفة إلى فئات معينة. وفقاً للمادة (6) من قانون العمل المهني لسنة 2019، يتم تصنيف العاملين المهنيين إلى فئات، وتحدد مواصفاتهم ودرجاتهم ومسمياتهم في كل فئة بموجب إجازات مزاولة المهنة وفقاً لأحكام التشريعات النافذة.
+يرجى ملاحظة أن هذه معلومات عامة وليس مشورة قانونية، ويجب استشارة محام مرخص لحالتك الخاصة."
+q40,['6'],True,False,[],"نعم، يتم تصنيف العاملين في المهن المختلفة إلى فئات معينة. وفقاً للمادة (6) من قانون العمل المهني 2019، ""يصنف العاملون المهنيون الى فئات وتحدد مواصفاتهم ودرجاتهم ومسمياتهم في كل فئة وبموجب إجازات مزاولة المهنة وفقاً لأحكام التشريعات النافذة"". 
 
-هذا مجرد معلومات عامة، وليس نصيحة قانونية، وينبغي عليك استشارة محامي مرخص لحالتك الخاصة."
+هذه المعلومات تشير إلى وجود تصنيف واضح للعاملين في المهن بموجب القانون.
+
+يرجى ملاحظة أن هذه المعلومات عامة وليست مشورة قانونية، وينبغي عليك استشارة محامٍ مرخص للحصول على نصيحة محددة تناسب حالتك."

@@ -95,7 +95,13 @@ CONTEXT_SYSTEM_PROMPT = SYSTEM_PROMPT + """
 
 You will be given a list of source documents, each labeled with its law and article number. When you cite a claim, name the actual law and article number directly in your answer text (e.g., "Labor Law 1996, Article 61") -- do not refer to documents by number (e.g. do not write "Document 1")."""
 
-ARTICLE_NUM_RE = re.compile(r"[Aa]rticle\D{0,15}?(\d+)|المادة\D{0,5}?(\d+)")
+# Arabic attaches prefixes directly onto the definite article, and "ل" elides its alef
+# (ل + ال -> لل), so the literal string "المادة" does not occur inside "للمادة" -- the
+# common way to write "according to article N". The original pattern anchored on
+# "المادة" and therefore scored those correct citations as misses (6 of 29 Arabic
+# citations in the Phase 8 answers). Anchor on the invariant stem "مادة" instead and
+# allow the definite-article/preposition prefixes that can precede it.
+ARTICLE_NUM_RE = re.compile(r"[Aa]rticle\D{0,15}?(\d+)|[وف]?(?:ال|لل|[بك]ال)?مادة\D{0,5}?(\d+)")
 
 
 def _format_context(chunks):
@@ -112,13 +118,15 @@ def _format_context(chunks):
 class OpenAICompatibleGenerator:
     """Generator for any OpenAI-compatible chat endpoint (OpenAI direct, or OpenRouter for open models)."""
 
-    def __init__(self, model_id, api_key_env, base_url=None, extra_body=None, temperature=None):
+    def __init__(self, model_id, api_key_env, base_url=None, extra_body=None, temperature=None,
+                 system_prompt=None):
         load_dotenv(PROJECT / ".env")
         from openai import OpenAI
         self.client = OpenAI(api_key=os.environ[api_key_env], base_url=base_url)
         self.model_id = model_id
         self.extra_body = extra_body
         self.temperature = temperature  # None = provider default (unset, untested -- see scripts/generation_config_tuning.ipynb)
+        self.system_prompt = system_prompt or CONTEXT_SYSTEM_PROMPT
 
     def generate(self, query, chunks, max_retries=5):
         context = _format_context(chunks)
@@ -131,7 +139,7 @@ class OpenAICompatibleGenerator:
                 resp = self.client.chat.completions.create(
                     model=self.model_id,
                     messages=[
-                        {"role": "system", "content": CONTEXT_SYSTEM_PROMPT},
+                        {"role": "system", "content": self.system_prompt},
                         {"role": "user", "content": f"Documents:\n{context}\n\nQuestion: {query}"},
                     ],
                     extra_body=self.extra_body,
@@ -164,11 +172,12 @@ PRODUCTION_API_KEY_ENV = "OPENROUTER_API_KEY"
 PRODUCTION_BASE_URL = "https://openrouter.ai/api/v1"
 
 
-def get_production_generator(temperature=None):
+def get_production_generator(temperature=None, system_prompt=None):
     """The chosen generation backend for this project -- see module docstring."""
     return OpenAICompatibleGenerator(
         model_id=PRODUCTION_MODEL_ID,
         api_key_env=PRODUCTION_API_KEY_ENV,
         base_url=PRODUCTION_BASE_URL,
         temperature=temperature,
+        system_prompt=system_prompt,
     )
