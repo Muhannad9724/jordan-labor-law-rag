@@ -9,6 +9,22 @@ __pycache__/
 # Jupyter
 *.ipynb_checkpoints
 
+# Cached embedding vectors (regenerable, hundreds of MB).
+# Keyed by a corpus hash, so they self-invalidate when the corpus changes.
+eval/emb_cache/
+
+# Word lock files created while a .docx is open
+~$*
+
+# Timestamped knowledge-base backups written by scripts/kb_watermark_cleanup.ipynb.
+# Kept on disk as a safety net, but they are duplicates of tracked source files.
+*.backup_*.xlsx
+
+# Personal working notes, not project content -- this repo is going public.
+# Delete this line if you'd rather track it (Questions.docx and the issues doc are tracked).
+0. Notes.docx
+
 # Local tool config, not project content
 .claude/settings.local.json
 .vscode/
+start_server.bat
