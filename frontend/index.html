@@ -1,39 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jordan Labor &amp; Social Security Law Assistant</title>
+  <title>دليل قانون العمل والضمان الاجتماعي الأردني</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="top-bar" aria-hidden="true"></div>
-  <div class="page">
-    <header class="app-header">
-      <h1>Jordan Labor &amp; Social Security Law Assistant</h1>
-      <p class="subtitle">Ask in English or Arabic &middot; answers cite the Labor Law 1996, its 2019 Professional Work Law amendment, and the Social Security Law</p>
+  <div class="shell">
+
+    <header class="masthead">
+      <svg class="seal" viewBox="0 0 28 28" aria-hidden="true">
+        <polygon points="14,2 16.39,9.04 23.38,6.52 19.36,12.78 25.70,16.67 18.30,17.43 19.21,24.81 14,19.5 8.79,24.81 9.70,17.43 2.30,16.67 8.64,12.78 4.62,6.52 11.61,9.04" />
+      </svg>
+      <div class="masthead-text">
+        <h1>دليل قانون العمل والضمان الاجتماعي</h1>
+        <p class="tagline">اسأل بالعربية أو الإنجليزية — كل إجابة مستندة إلى نصّ المادة القانونية ومصدرها</p>
+      </div>
+      <div class="masthead-laws">
+        <span>قانون العمل ١٩٩٦</span>
+        <span>العمل المهني ٢٠١٩</span>
+        <span>الضمان الاجتماعي</span>
+      </div>
     </header>
 
-    <div class="chat-card">
-      <main class="chat" id="chat" aria-live="polite"></main>
+    <div class="workspace">
 
-      <form class="composer" id="composer">
-        <textarea
-          id="question-input"
-          placeholder="Ask a question, e.g. How much notice does my employer need to give before ending my contract?"
-          rows="1"
-          required
-        ></textarea>
-        <button type="submit" id="send-btn" aria-label="Send">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-      </form>
+      <section class="conversation">
+        <div class="thread" id="thread" aria-live="polite"></div>
+
+        <form class="composer" id="composer">
+          <textarea
+            id="question-input"
+            placeholder="اكتب سؤالك هنا… مثلاً: كم مدة الإشعار قبل إنهاء عقد العمل؟"
+            rows="1"
+            required
+          ></textarea>
+          <button type="submit" id="send-btn" aria-label="إرسال">
+            <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 5 5 12 12 19"></polyline>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <aside class="sources-rail" id="sources-rail">
+        <header class="rail-head">
+          <h2>المواد المستند إليها</h2>
+          <span class="rail-count" id="rail-count"></span>
+        </header>
+        <div class="rail-body" id="rail-body"></div>
+      </aside>
+
     </div>
 
-    <p class="disclaimer">General legal information, not legal advice. Consult a licensed lawyer for your specific situation.</p>
+    <footer class="disclaimer">
+      هذه معلومات عامة وليست استشارة قانونية — يُرجى مراجعة محامٍ مرخّص لحالتك الخاصة
+    </footer>
+
   </div>
 
   <script src="app.js"></script>

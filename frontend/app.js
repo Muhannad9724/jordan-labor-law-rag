@@ -1,106 +1,226 @@
-// Same-origin now that FastAPI serves this frontend directly (src/api.py) -- no CORS needed.
+// Same-origin -- FastAPI serves this frontend directly (src/api.py), so no CORS.
 const API_BASE_URL = "";
 
-const LAW_DISPLAY_NAMES = {
-  ssl: "Social Security Law",
-  labor96: "Labor Law 1996",
-  prof19: "Professional Work Law 2019",
+const LAW_NAMES_AR = {
+  ssl: "قانون الضمان الاجتماعي",
+  labor96: "قانون العمل لسنة ١٩٩٦",
+  prof19: "قانون العمل المهني لسنة ٢٠١٩",
 };
 
-const chat = document.getElementById("chat");
+const SEED_QUESTIONS = [
+  "كم يوم إجازة سنوية مدفوعة الأجر أستحق؟",
+  "ما مدة الإشعار المطلوبة قبل إنهاء عقد العمل؟",
+  "هل يحق لصاحب العمل فصلي من دون إنذار؟",
+  "متى يحق لي الحصول على راتب التقاعد المبكر؟",
+];
+
+const thread = document.getElementById("thread");
 const composer = document.getElementById("composer");
 const input = document.getElementById("question-input");
 const sendBtn = document.getElementById("send-btn");
+const railBody = document.getElementById("rail-body");
+const railCount = document.getElementById("rail-count");
 
-const EXAMPLE_QUESTIONS = [
-  "How much notice does my employer need to give before ending my contract?",
-  "How many paid vacation days am I entitled to per year?",
-  "كم يوم إجازة سنوية مدفوعة الأجر أستحق؟",
-  "What happens to my pension if I retire early?",
-];
+const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+const toArabicDigits = (v) => String(v).replace(/\d/g, (d) => AR_DIGITS[+d]);
 
-function renderEmptyState() {
-  chat.innerHTML = "";
-  const wrap = document.createElement("div");
-  wrap.className = "empty-state";
-  wrap.innerHTML = `
-    <div class="mark"><span></span></div>
-    <p>Ask a question about Jordanian labor or social security law to get started.</p>
-    <div class="example-chips"></div>
-  `;
-  const chipRow = wrap.querySelector(".example-chips");
-  for (const q of EXAMPLE_QUESTIONS) {
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.className = "example-chip";
-    chip.textContent = q;
-    if (isArabic(q)) chip.dir = "rtl";
-    chip.addEventListener("click", () => {
-      input.value = q;
-      composer.requestSubmit();
-    });
-    chipRow.appendChild(chip);
-  }
-  chat.appendChild(wrap);
-}
-
-// Arabic script block (with presentation forms) -- if a meaningful share of a
-// string's letters fall in this range, render that message right-to-left.
+// Arabic script blocks (incl. presentation forms). A message is rendered RTL when a
+// meaningful share of its letters are Arabic -- lets an Arabic and an English answer
+// sit in the same thread, each set correctly.
 const ARABIC_RE = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/g;
 function isArabic(text) {
   const letters = text.replace(/[^\p{L}]/gu, "");
   if (!letters) return false;
-  const arabicCount = (letters.match(ARABIC_RE) || []).length;
-  return arabicCount / letters.length > 0.3;
+  return (letters.match(ARABIC_RE) || []).length / letters.length > 0.3;
 }
 
-function scrollToBottom() {
-  chat.scrollTop = chat.scrollHeight;
+// The page scrolls, not an inner pane. Bring a new question up near the top so the
+// answer that follows it renders into open space instead of below the fold.
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function scrollIntoReading(el) {
+  const top = el.getBoundingClientRect().top + window.scrollY - 88;
+  window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
 }
 
-function appendMessage(role, text) {
-  const emptyState = chat.querySelector(".empty-state");
-  if (emptyState) emptyState.remove();
+/* ------------------------- sources rail ------------------------- */
 
+function renderRailEmpty(message) {
+  railCount.textContent = "";
+  railBody.innerHTML = "";
+  const p = document.createElement("p");
+  p.className = "rail-empty";
+  p.textContent = message;
+  railBody.appendChild(p);
+}
+
+function renderSources(sources) {
+  railBody.innerHTML = "";
+  railCount.textContent = toArabicDigits(sources.length);
+
+  for (const s of sources) {
+    const card = document.createElement("article");
+    card.className = "article-card";
+
+    const top = document.createElement("div");
+    top.className = "card-top";
+
+    const numeral = document.createElement("div");
+    numeral.className = "card-numeral";
+    numeral.textContent = toArabicDigits(s.article_number);
+    top.appendChild(numeral);
+
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
+
+    const law = document.createElement("div");
+    law.className = "card-law";
+    law.textContent = LAW_NAMES_AR[s.law] || s.law;
+    meta.appendChild(law);
+
+    const label = document.createElement("div");
+    label.className = "card-article-label";
+    label.textContent = `المادة ${toArabicDigits(s.article_number)}${s.clause ? " — الفقرة " + s.clause : ""}`;
+    meta.appendChild(label);
+
+    top.appendChild(meta);
+
+    const chip = document.createElement("span");
+    chip.className = `lang-chip ${s.language}`;
+    chip.textContent = s.language === "ar" ? "عربي" : "EN";
+    top.appendChild(chip);
+
+    card.appendChild(top);
+
+    const body = document.createElement("div");
+    body.className = "card-text";
+    if (!isArabic(s.text)) body.dir = "ltr";
+    body.textContent = s.text;
+    card.appendChild(body);
+
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "card-more";
+    more.textContent = "عرض النص كاملاً";
+    more.addEventListener("click", () => {
+      const open = body.classList.toggle("expanded");
+      more.textContent = open ? "طيّ النص" : "عرض النص كاملاً";
+    });
+    card.appendChild(more);
+
+    railBody.appendChild(card);
+  }
+  railBody.scrollTop = 0;
+}
+
+/* ------------------------- thread entries ------------------------- */
+
+function clearOpening() {
+  const opening = thread.querySelector(".opening");
+  if (opening) opening.remove();
+}
+
+function addQuestion(text) {
+  clearOpening();
+  const block = document.createElement("div");
+  block.className = "question";
+  if (!isArabic(text)) block.dir = "ltr";
+
+  const label = document.createElement("div");
+  label.className = "entry-label";
+  label.textContent = "سؤالك";
+  block.appendChild(label);
+
+  const p = document.createElement("p");
+  p.textContent = text;
+  block.appendChild(p);
+
+  thread.appendChild(block);
+  scrollIntoReading(block);
+}
+
+function addThinking() {
   const el = document.createElement("div");
-  el.className = `msg ${role}`;
-  if (isArabic(text)) el.dir = "rtl";
-  el.textContent = text;
-  chat.appendChild(el);
-  scrollToBottom();
+  el.className = "thinking";
+  el.textContent = "جارٍ البحث في نصوص القانون";
+  thread.appendChild(el);
   return el;
 }
 
-function renderSources(container, sources) {
-  if (!sources || sources.length === 0) return;
-  const details = document.createElement("details");
-  details.className = "sources";
-  const summary = document.createElement("summary");
-  summary.textContent = `Sources (${sources.length})`;
-  details.appendChild(summary);
+function addAnswer(text, sources) {
+  const block = document.createElement("div");
+  block.className = "answer";
+  if (!isArabic(text)) block.dir = "ltr";
 
-  for (const s of sources) {
-    const item = document.createElement("div");
-    item.className = "source-item";
-    if (isArabic(s.text)) item.dir = "rtl";
+  const label = document.createElement("div");
+  label.className = "entry-label";
+  label.textContent = "الإجابة";
+  block.appendChild(label);
 
-    const label = document.createElement("div");
-    label.className = "source-label";
-    const lawName = LAW_DISPLAY_NAMES[s.law] || s.law;
-    label.textContent = `${lawName}, Article ${s.article_number}${s.clause ? "." + s.clause : ""} (${s.language})`;
-    item.appendChild(label);
+  const body = document.createElement("div");
+  body.className = "body";
+  body.textContent = text;
+  block.appendChild(body);
 
-    const body = document.createElement("div");
-    body.textContent = s.text;
-    item.appendChild(body);
+  if (sources && sources.length) {
+    const actions = document.createElement("div");
+    actions.className = "answer-actions";
 
-    details.appendChild(item);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "cite-btn";
+    btn.textContent = `عرض المواد المستند إليها (${toArabicDigits(sources.length)})`;
+    btn.addEventListener("click", () => renderSources(sources));
+    actions.appendChild(btn);
+
+    block.appendChild(actions);
   }
-  container.appendChild(details);
+
+  thread.appendChild(block);
 }
 
+function addFailure(message) {
+  const el = document.createElement("div");
+  el.className = "failure";
+  el.textContent = message;
+  thread.appendChild(el);
+}
+
+function renderOpening() {
+  thread.innerHTML = "";
+  const wrap = document.createElement("div");
+  wrap.className = "opening";
+
+  const h2 = document.createElement("h2");
+  h2.textContent = "اسأل عن حقوقك في العمل أو الضمان الاجتماعي، وستأتيك الإجابة من نصّ القانون نفسه.";
+  wrap.appendChild(h2);
+
+  const hint = document.createElement("p");
+  hint.className = "hint";
+  hint.textContent = "أو ابدأ بأحد هذه الأسئلة";
+  wrap.appendChild(hint);
+
+  const seeds = document.createElement("div");
+  seeds.className = "seeds";
+  for (const q of SEED_QUESTIONS) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "seed";
+    b.textContent = q;
+    b.addEventListener("click", () => {
+      input.value = q;
+      composer.requestSubmit();
+    });
+    seeds.appendChild(b);
+  }
+  wrap.appendChild(seeds);
+
+  thread.appendChild(wrap);
+}
+
+/* ------------------------- request ------------------------- */
+
 async function askQuestion(question) {
-  const pending = appendMessage("assistant pending", "Thinking...");
+  const pending = addThinking();
   try {
     const resp = await fetch(`${API_BASE_URL}/ask`, {
       method: "POST",
@@ -108,22 +228,20 @@ async function askQuestion(question) {
       body: JSON.stringify({ question }),
     });
 
+    pending.remove();
+
     if (!resp.ok) {
-      const body = await resp.json().catch(() => ({}));
-      const detail = typeof body.detail === "string" ? body.detail : "The server couldn't answer that question.";
-      pending.remove();
-      appendMessage("error", detail);
+      const payload = await resp.json().catch(() => ({}));
+      addFailure(typeof payload.detail === "string" ? payload.detail : "تعذّر الحصول على إجابة لهذا السؤال.");
       return;
     }
 
     const data = await resp.json();
-    pending.remove();
-    const answerEl = appendMessage("assistant", data.answer);
-    renderSources(answerEl, data.sources);
-    scrollToBottom();
+    addAnswer(data.answer, data.sources);
+    if (data.sources && data.sources.length) renderSources(data.sources);
   } catch (err) {
     pending.remove();
-    appendMessage("error", "Couldn't reach the server. Is the backend running?");
+    addFailure("تعذّر الوصول إلى الخادم — تأكد من أن الخدمة قيد التشغيل.");
   }
 }
 
@@ -132,7 +250,7 @@ composer.addEventListener("submit", (e) => {
   const question = input.value.trim();
   if (!question) return;
 
-  appendMessage("user", question);
+  addQuestion(question);
   input.value = "";
   input.style.height = "auto";
   sendBtn.disabled = true;
@@ -152,7 +270,8 @@ input.addEventListener("keydown", (e) => {
 
 input.addEventListener("input", () => {
   input.style.height = "auto";
-  input.style.height = `${Math.min(input.scrollHeight, 160)}px`;
+  input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
 });
 
-renderEmptyState();
+renderOpening();
+renderRailEmpty("ستظهر هنا نصوص المواد القانونية التي استندت إليها الإجابة");
