@@ -71,20 +71,26 @@ function enterReadingMode() {
   document.body.classList.add("reading");
 }
 
-// Suggestions land about a second after the answer, by which time the reader may have
-// started scrolling. Nudging the page under someone mid-sentence is worse than a chip
-// they have to scroll to find, so track *user-initiated* scrolling specifically.
+// Suggestions land about a second after the answer, by which time the reader may be
+// mid-scroll. Nudging the page under someone's thumb is worse than a chip they have to
+// scroll to find, so track *user-initiated* scrolling -- but as a timestamp, not a
+// one-way flag. A flag stays true for the rest of the answer's life the instant it is
+// set, so a single ordinary scroll while reading -- which a longer answer, a taller
+// font, or a higher browser zoom all make more likely -- permanently disables the
+// nudge, even though the actual scroll gesture finished a second ago. Only refuse to
+// nudge if a scroll happened *recently*, i.e. the reader is scrolling right now.
 //
 // Deliberately not the "scroll" event: that also fires for our own smooth scrolling,
-// which would immediately mark every answer as user-scrolled and disable the nudge.
-let userScrolled = false;
+// which would immediately read as "the user just scrolled" and disable the nudge.
+let lastUserScrollAt = 0;
+const SCROLL_RECENCY_MS = 600;
 for (const evt of ["wheel", "touchmove"]) {
-  window.addEventListener(evt, () => { userScrolled = true; }, { passive: true });
+  window.addEventListener(evt, () => { lastUserScrollAt = Date.now(); }, { passive: true });
 }
 window.addEventListener("keydown", (e) => {
   if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)
       && e.target !== input) {
-    userScrolled = true;
+    lastUserScrollAt = Date.now();
   }
 });
 
@@ -182,7 +188,7 @@ function addQuestion(text) {
 
   thread.appendChild(block);
   enterReadingMode();
-  userScrolled = false;      // a new question restarts the reading position
+  lastUserScrollAt = 0;      // a new question restarts the reading position
   scrollIntoReading(block);
 }
 
@@ -266,8 +272,10 @@ function addSuggestions(answerBlock, questions) {
   // Chips that render below the fold are, from the reader's side, chips that did not
   // render. Nudge by the minimum needed to bring them into view -- scrollBy, not
   // scrollIntoView, because the latter would jump the strip to the top of the screen
-  // and throw away the answer above it. Skipped entirely if the reader is scrolling.
-  if (userScrolled) return;
+  // and throw away the answer above it. Skipped only if the reader is scrolling right
+  // now, not if they scrolled at any point while reading -- see the note above
+  // SCROLL_RECENCY_MS for why that distinction matters.
+  if (Date.now() - lastUserScrollAt < SCROLL_RECENCY_MS) return;
   const overshoot = strip.getBoundingClientRect().bottom
                     - (window.innerHeight - COMPOSER_CLEARANCE);
   if (overshoot > 0) {
