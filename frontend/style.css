@@ -563,3 +563,57 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+
+/* ---------------- Reading mode ----------------
+   Answers roughly doubled in length when the Coverage rules landed (mean 463 ->
+   831 chars), and they now carry per-article structure instead of one paragraph.
+   The masthead is a landing device: it introduces the tool before the first
+   question and is pure overhead afterwards. Once a conversation starts, collapse
+   it and reclaim the vertical space for the answer.
+
+   Deliberately not `position: sticky` -- a pinned header would keep costing the
+   same pixels it is being shrunk to save. */
+
+.masthead {
+  transition: padding 220ms ease;
+}
+
+body.reading .masthead {
+  padding-top: 14px;
+  padding-bottom: 12px;
+}
+
+body.reading .seal {
+  width: 26px;
+  height: 26px;
+}
+
+body.reading .masthead h1 {
+  font-size: 1.12rem;
+  margin-bottom: 0;
+}
+
+/* The tagline explains the tool; the law chips list the corpus. Both have done
+   their job by the time an answer is on screen. */
+body.reading .tagline,
+body.reading .masthead-laws {
+  display: none;
+}
+
+body.reading .workspace {
+  padding-top: 16px;
+}
+
+/* min-height reserves space for an empty thread so the opening screen is not
+   cramped. Once there is real content it only pushes the answer down. */
+body.reading .thread {
+  min-height: 0;
+}
+
+/* The composer is sticky at the viewport bottom, so it floats over the last
+   ~76px of the thread. Without clearance the final lines of an answer sit
+   underneath it and read as missing rather than as scrolled-off. */
+.thread {
+  padding-bottom: 92px;
+}

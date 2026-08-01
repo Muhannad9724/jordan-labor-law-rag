@@ -37,9 +37,38 @@ function isArabic(text) {
 // The page scrolls, not an inner pane. Bring a new question up near the top so the
 // answer that follows it renders into open space instead of below the fold.
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-function scrollIntoReading(el) {
-  const top = el.getBoundingClientRect().top + window.scrollY - 88;
+function scrollIntoReading(el, offset = 88) {
+  const top = el.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
+}
+
+// Height of the sticky composer plus its breathing room -- the part of the viewport
+// that is not actually available for reading. Keep in step with .composer and the
+// .thread padding-bottom in style.css.
+const COMPOSER_CLEARANCE = 92;
+const READING_GUTTER = 20;
+
+// Scrolling the *question* to the top was only ever half the job: the answer then
+// rendered below it and, at the length answers now run, started below the fold. Put
+// the answer itself at the top of the viewport instead, which is the most reading
+// space the layout can give it.
+//
+// Two deliberate refusals:
+//   - Do nothing when the answer already fits on screen. Scrolling a fully visible
+//     answer is a jump with no payoff, and it throws away the question above it.
+//   - Never scroll past the answer's own top. A long answer is read from its first
+//     line, not its last, so this is not the usual chat "pin to bottom" behaviour.
+function revealAnswer(el) {
+  const rect = el.getBoundingClientRect();
+  const room = window.innerHeight - COMPOSER_CLEARANCE;
+  if (rect.top >= 0 && rect.bottom <= room) return;   // already fully readable
+  scrollIntoReading(el, READING_GUTTER);
+}
+
+// The masthead is a landing device. Collapse it once the thread has real content so
+// the space goes to the answer; see "Reading mode" in style.css.
+function enterReadingMode() {
+  document.body.classList.add("reading");
 }
 
 /* ------------------------- sources rail ------------------------- */
@@ -135,6 +164,7 @@ function addQuestion(text) {
   block.appendChild(p);
 
   thread.appendChild(block);
+  enterReadingMode();
   scrollIntoReading(block);
 }
 
@@ -176,6 +206,7 @@ function addAnswer(text, sources) {
   }
 
   thread.appendChild(block);
+  revealAnswer(block);
 }
 
 function addFailure(message) {
@@ -183,6 +214,7 @@ function addFailure(message) {
   el.className = "failure";
   el.textContent = message;
   thread.appendChild(el);
+  revealAnswer(el);   // an error is as useless below the fold as an answer is
 }
 
 function renderOpening() {
