@@ -234,10 +234,19 @@ function addAnswer(text, sources) {
   return block;
 }
 
-// Suggestions arrive after the answer is already on screen, so they must never move
-// text the user has started reading. The strip is appended below the answer and the
-// page is not scrolled -- if the chips are below the fold, they are found by scrolling
-// down, which is where someone looks when they have finished reading anyway.
+// Inserted at the TOP of the answer -- right after the "الإجابة" label, before the
+// body text -- not appended at the end. Two reasons:
+//   - It reads first, so someone who already knows what they want to ask next never
+//     has to read (or scroll past) the whole answer to find it.
+//   - It lands exactly where revealAnswer() already scrolled the viewport to, since
+//     that targets the top of this same block. Chips at the bottom needed their own
+//     scroll-into-view logic to ever be seen; chips at the top mostly don't.
+//
+// Cost: suggestions still arrive ~1-2s after the answer body (a separate /followups
+// call, so the answer itself is never delayed), so inserting them above the text the
+// reader may already be reading pushes that text down when they land. The fade-in
+// softens the pop but does not remove the shift -- accepted as the trade for having
+// the chips actually be seen without hunting for them.
 function addSuggestions(answerBlock, questions) {
   if (!questions || !questions.length) return;
 
@@ -267,14 +276,15 @@ function addSuggestions(answerBlock, questions) {
   }
 
   strip.appendChild(row);
-  answerBlock.appendChild(strip);
+  // Before the body, not appended at the end -- see the comment above this function.
+  answerBlock.insertBefore(strip, answerBlock.querySelector(".body"));
 
-  // Chips that render below the fold are, from the reader's side, chips that did not
-  // render. Nudge by the minimum needed to bring them into view -- scrollBy, not
-  // scrollIntoView, because the latter would jump the strip to the top of the screen
-  // and throw away the answer above it. Skipped only if the reader is scrolling right
-  // now, not if they scrolled at any point while reading -- see the note above
-  // SCROLL_RECENCY_MS for why that distinction matters.
+  // Usually a no-op now: the strip lands where revealAnswer() already scrolled to.
+  // Still needed for the case where the reader scrolled away in the ~1-2s gap before
+  // suggestions arrived (back up to reread an earlier answer, say) -- scrollBy, not
+  // scrollIntoView, so a chip that's already visible is never jumped to the top of
+  // the screen. Skipped only if the reader is scrolling right now, not if they
+  // scrolled at any point while reading -- see the note above SCROLL_RECENCY_MS.
   if (Date.now() - lastUserScrollAt < SCROLL_RECENCY_MS) return;
   const overshoot = strip.getBoundingClientRect().bottom
                     - (window.innerHeight - COMPOSER_CLEARANCE);

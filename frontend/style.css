@@ -632,16 +632,19 @@ body.reading .thread {
 
 
 /* ---------------- Follow-up suggestions ----------------
-   Rendered inside the answer block, below the citation button. They read as an
-   offer, not as part of the legal answer, so they sit on the quieter end of the
-   palette -- no brass fill, no weight. Nothing here may look like a citation. */
+   Rendered inside the answer block, above the body text (right after the "الإجابة"
+   label) so they're seen before anyone has to read or scroll past the answer to find
+   them. They read as an offer, not as part of the legal answer, so they sit on the
+   quieter end of the palette -- no brass fill, no weight. Nothing here may look like
+   a citation. */
 
 .suggestions {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--rule-soft);
-  /* Suggestions arrive ~1s after the answer. Fading rather than popping keeps
-     that from reading as a layout glitch mid-sentence. */
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule-soft);
+  /* Suggestions arrive ~1-2s after the answer, via a separate call, so they land on
+     top of text that may already be on screen. Fading in and pushing the body down
+     smoothly reads as content arriving, not as a layout glitch mid-sentence. */
   animation: suggestions-in 260ms ease both;
 }
 
