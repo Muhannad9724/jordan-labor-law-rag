@@ -249,6 +249,48 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 20 — Prompt rewrite + full end-to-end evaluation ✅ done — **the new reference point**
+`src/generation.py` (`SYSTEM_PROMPT` rewritten) + `scripts/final_evaluation_v3.ipynb`. Every generation number this project had published was stale: faithfulness 4.90 / relevancy 4.80 / correct-article 35/40 were all measured on Cohere embeddings, clause chunks, `top_k=10`, `RRF_W=0.85` and the statute-worded 40-question v1 eval set. **Not one of those inputs still exists.**
+
+**One arm, deliberately.** Running the old prompt as a control was proposed and rejected: it was written for clause fragments and statute-shaped questions, so it would characterise a configuration that will never ship. **The consequence is stated rather than buried — this run cannot claim the new prompt is better than the old one.** It establishes where the system stands; future changes get measured against *these* numbers.
+
+**Prompt changes (Phase 7 five rules → Phase 20 eight).** New rule 4 (name the lettered paragraph, never merge two) targets the Phase 12a regression where whole-article chunks let the model fuse Article 85(a) and (b) into one rule — impossible under clause chunking, so the old prompt never needed it. New rule 6 (answer the person's situation first) targets eval_v3's situational phrasing. Rule 1's second clause — *do not reason about how two provisions relate unless a document says so* — is the survivor of Phase 12b, where a "cover every consequence and exception" rule **caused** a faithfulness regression (q29, 5→3, an invented connective claim between two articles).
+
+### Retrieval (60/60)
+recall@1 **0.867** · recall@5 **1.000** · MRR **0.922** · worst rank **4** · misses **0** · full coverage 0.950. Identical recall in both languages. Reproduces the Phase 19 live check exactly, and confirms `top_k=5` on the full set — nothing landed past rank 4.
+
+**Retrieval is no longer the bottleneck, and that redirects the work.** In **16 of the 19** questions the judge penalised, the gold article was retrieved at **rank 1**. The text was in front of the model and the answer still lost points; no amount of further retrieval tuning fixes any of those.
+
+### Generation — regex proxy
+correct article cited **55/60 (91.7%)** · all correct articles cited **51/60** · flagged fabrications **1/60 → 0/60 after inspection**.
+
+The lone flag (q34) is a **false positive**: the answer's phrase "unless the termination was a dismissal in accordance with Article 28" is quoted from the retrieved Article 26(a), whose own text contains that cross-reference. Reproducing a cross-reference inside the source is the most faithful behaviour available, and the check penalised it for naming an article not separately retrieved. **51 of 531 corpus units cross-reference another article**, so this is a systematic limit — future fabrication counts must exclude articles named inside retrieved text.
+
+### Generation — LLM judge (Claude Sonnet, 1–5)
+| | mean | median | min | 5/4/3/2/1 |
+|---|---|---|---|---|
+| faithfulness | **4.70** | 5.0 | 1 | 46/12/1/0/1 |
+| relevancy | **4.55** | 5.0 | 2 | 41/12/6/1/0 |
+
+By law: labor96 4.77/4.77 · prof19 4.75/4.75 · **ssl 4.63/4.33**. By language: faithfulness 4.70 both; relevancy ar 4.43 vs en 4.67. SSL is the weak arm on both axes — it is also the longest and most cross-referential of the three laws.
+
+### The dominant failure is omission, not hallucination
+26 of 60 scored below 5. **18 of the 19 relevancy penalties are omission complaints**, in near-identical judge wording ("omits Article 30", "omits the 6-month contribution requirement", "omits the 36-contribution condition"). 4 of the 14 faithfulness penalties say the same thing. Median answer length by relevancy score: 5→445 chars, 4→482, **3→324, 2→258** — the lowest-scoring answers are the shortest.
+
+Rule 8 ends "Keep it brief." Phase 12b's completeness rule was *removed* for causing over-reach. So the prompt's two tested states are **brief and incomplete** or **complete and over-reaching**; it has never been tested asking for completeness *within* a provision while still forbidding inference *across* provisions. That is the next experiment, and it is a prompt change, not a retrieval change.
+
+### Two defects that are ours, not the model's
+1. **Arabic answers cite in English — 8 of 30 (27%)** (q16, q27, q44, q46, q47, q48, q53, q56). `_format_context` labels every document with the English-only `LAW_DISPLAY_NAMES`, so an Arabic question gets Arabic article text under an English heading and the model cites what it was shown. Bodies are correctly Arabic; only the citation is not. Fix: bilingual display names keyed on answer language.
+2. **Wrong law named — 3 of 60** (q03, q05, q16), all SSL questions answered from the Labour Law, with both laws in context. **The regex proxy scores all three as correct** because it reads article numbers and never the law name. For q03/q05 the pick is defensible — SSL 27 and labor96 87 both impose injury reporting with a 48-hour deadline; SSL 30 and labor96 90 both set death/disability compensation — which points at ground-truth breadth in `eval_v3` as much as at the model, since the questions name no law but the ground truth admits only one.
+
+**q16 is the one real failure** (faithfulness 1, relevancy 2, gold article at rank 1). Asked whether work-injury insurance is deducted from the worker's salary, it opens **"نعم، يُخصم من راتبك"** — yes, it is — then correctly quotes that the establishment alone pays the 2%. Self-contradictory, wrong part first, wrong law attributed, and **scored correct by the proxy**. Rule 6 tells the model to answer the situation "first, in a sentence or two"; committing to yes/no before working through the article is exactly this failure's shape, and that link is untested.
+
+### Infrastructure lesson (cost a real run)
+The judge cell first ran with `max_tokens` **unset**. OpenRouter reserves credit against the request's `max_tokens` *ceiling*, not actual usage, so each call demanded credit for the model's 65,536-token maximum to produce a ~200-token verdict and 402'd with ~60,000 tokens of balance available. It died at question 31 of 60, and because the eval set is ordered by law, **every judged question was an SSL question and the entire Labour Law block was unmeasured** — the aborted half was not a random half, and the partial numbers (faith 4.63 / rel 4.33) understated the finished ones. Retries were futile since the ceiling never changed. Both extremes are now on record: unset → 402, and 300 (Phase 12b) → empty content as Claude's reasoning consumed the budget. **`JUDGE_MAX_TOKENS = 2000`.** Incremental persistence meant resuming cost only the missing 30 calls.
+
+### What this run does not measure
+No comparison arm, so nothing here attributes the result to the prompt. The judge scores faithfulness **to the retrieved context, not correctness against ground truth** — for q03 it wrote that the answer "accurately reflects Article 87(a)" while the ground truth is SSL 27, so an answer grounded in the wrong retrieved article can still score 5. Single judge, single run: Phase 12b measured a real noise floor for judge scores and this run did not re-establish one, so small future differences are unreadable without it.
+
 ## Phase 18 — Semantic/keyword balance re-tuned ✅ done — **nothing adopted, deliberately**
 `scripts/fusion_weight_tuning.ipynb`. Zero API cost (cached vectors + local BM25). Swept RRF `w` (0→1, step 0.01), RRF `k` (1→60), and weighted-sum `beta`, all at the new `top_k=5`, for both Gemini and Cohere.
 
