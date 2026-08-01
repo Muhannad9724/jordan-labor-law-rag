@@ -249,6 +249,41 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 21 — Coverage rules + bilingual context ✅ done — **adopted; relevancy up, faithfulness held**
+`src/generation.py` (Coverage rules, bilingual `_format_context`, scorer fixes) + `scripts/prompt_coverage_eval.ipynb`.
+
+**The problem, from Phase 20:** the dominant failure was omission, and it was *not* retrieval — 9 of 10 "omitted" articles were already in the context, the gold article was at rank 1 in 16 of 19 penalised questions, and answers named a mean of **1.22 of 3.87** articles offered (48 of 60 cited exactly one). The behaviour was **instructed**: "Keep it brief", "answer in a sentence or two", "do not reason about how two provisions relate" — three pushes toward short single-source answers, with nothing telling the model to check every document.
+
+**Why a model swap was rejected as the first move:** a bigger model told to be brief is also brief. Changing the model while the prompt still caused the effect would have been the Phase 8b confound again. Fix the instruction, then a model comparison becomes a clean instruction-following test.
+
+**Design: paired on identical context.** Retrieval didn't change, so the notebook replays Phase 20's saved retrieval rather than re-querying. Both arms see byte-identical documents (no Pinecone approximate-NN drift between calls) and retrieval costs nothing.
+
+**Two changes.** (1) Prompt 8 → 12 rules, adding Coverage (4–6) — address every article that bears on the question, cover every lettered paragraph of one you cite, and *state each provision on its own terms without explaining how they combine*. That guardrail sits immediately after the coverage rules because Phase 12b's regression happened at exactly that spot. (2) `_format_context` is now bilingual, scaffolding included — English headings ("Law:", "Article:") were pulling Arabic answers into English citations, so localising only the law name would have left the pull in place.
+
+### Coverage — the mechanism took
+mean articles cited **1.22 → 1.55**; answers citing exactly one **48 → 34**; **19 questions cite more, 0 cite fewer**; mean length 463 → 831 chars.
+
+### Judge, paired, ties excluded
+| axis | P20 | P21 | delta | better/worse | sign test |
+|---|---|---|---|---|---|
+| faithfulness | 4.700 | 4.800 | +0.100 | 12 / 8 | **p = 0.50 — noise** |
+| relevancy | 4.550 | **4.800** | **+0.250** | **14 / 3** | **p = 0.013 — real** |
+
+**Relevancy is a real gain; faithfulness is a wash and is reported as "held", not "improved"** — +0.100 sits at the Phase 12b noise floor and 12–8 is a coin flip. Worst cases improved on both axes (faithfulness min 1 → 3, relevancy min 2 → 3; below-4 counts 2 → 1 and **7 → 2**). Perfect 5/5 on both axes **34/60 → 43/60**. Biggest movements are exactly where Phase 20 was weakest: **ssl relevancy 4.33 → 4.70**, **Arabic relevancy 4.43 → 4.83**.
+
+### Citation defects
+**Arabic answers citing in English 8/30 → 0/30.** Wrong law named **3/60 → 1/60** (q05 survives; it is the ambiguous case where labor96 Art 90 arguably does answer a question naming no law). **q16, Phase 20's worst answer, is fixed: faithfulness 1 → 4, relevancy 2 → 5** — though this run cannot say whether the prompt or the Arabic labels did it.
+
+### Proxy, and two scorer bugs closed
+correct article **55 → 58/60**, all correct **51 → 55/60**, **real fabrications 0 → 0**. Flags rose 1 → 4 and **all four are false positives** — numbers quoted from inside the retrieved text (Article 25's own text says "entitlements specified in articles (32) and (33) of this Law"). **The flag count rises with faithfulness, not against it**, since longer answers quote more source. Both scorer defects are now fixed in `src/generation.py` with asserts: `grounded_article_numbers()` treats in-text cross-references (singular, plural, Arabic dual) as legitimate, and `extract_cited_articles()` normalises Arabic-Indic digits — latent until Arabic citations started actually happening, since "المادة (٦٥)" never equals "65".
+
+### The cost, stated plainly
+8 questions lost faithfulness and **5 of the 8 are the judge describing the model relating two provisions**: q09, q08, q18, q17, q23. Phase 12b's failure mode is **attenuated, not eliminated** — rule 6 held it to a level where relevancy won clearly and faithfulness broke even, but "cover more provisions" and "start relating provisions" stay coupled.
+
+**q09 is the lesson worth keeping.** Mid-run it looked like the flagship success: Phase 20 cited only Article 40 and the judge said Article 85 was missing; Phase 21 picked up Article 85(b) and named the paragraph. It then **misapplied** it — 85(b) governs combining a pension with *another pension*, not with *wages* — and faithfulness fell 4 → 3. More coverage is not automatically better coverage, and a partial result read mid-run is not a result.
+
+**Limits:** one run per arm, so the noise floor is imported from Phase 12b rather than re-measured; two variables moved together (mostly separable by instrument, but q16 is not attributable); the judge still scores faithfulness *to the retrieved context*, so an answer citing the wrong law can still score 5. Residual work list — below 5 in **both** arms: q01, q05, q09, q10, q19, q29, q35 (cross-article omissions the rule didn't reach), q42, q49 (precision, not coverage).
+
 ## Phase 20 — Prompt rewrite + full end-to-end evaluation ✅ done — **the new reference point**
 `src/generation.py` (`SYSTEM_PROMPT` rewritten) + `scripts/final_evaluation_v3.ipynb`. Every generation number this project had published was stale: faithfulness 4.90 / relevancy 4.80 / correct-article 35/40 were all measured on Cohere embeddings, clause chunks, `top_k=10`, `RRF_W=0.85` and the statute-worded 40-question v1 eval set. **Not one of those inputs still exists.**
 

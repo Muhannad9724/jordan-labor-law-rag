@@ -103,6 +103,38 @@ LAW_DISPLAY_NAMES = {
     "prof19": "Professional Work Law 2019",
 }
 
+# Phase 21 fix. `_format_context` labelled every document with the English names above, so
+# an Arabic question got Arabic article text under an English heading -- and the model cited
+# what it was shown: 8 of 30 Arabic answers in the Phase 20 run wrote "Article 65" instead of
+# "المادة (65)" (q16, q27, q44, q46, q47, q48, q53, q56). The answer bodies were correctly
+# Arabic; only the citations were not, which is why no answer was flagged as wrong-language.
+# The context scaffolding is localised too, not just the law name -- an Arabic heading reading
+# "Article: 65" would reintroduce the same pull toward an English citation.
+LAW_DISPLAY_NAMES_AR = {
+    "ssl": "قانون الضمان الاجتماعي",
+    "labor96": "قانون العمل لسنة 1996",
+    "prof19": "قانون العمل المهني لسنة 2019",
+}
+
+CONTEXT_LABELS = {
+    "en": {"doc": "Document", "law": "Law", "article": "Article",
+           "language": "Language", "text": "Text"},
+    "ar": {"doc": "وثيقة", "law": "القانون", "article": "المادة",
+           "language": "اللغة", "text": "النص"},
+}
+
+_ARABIC_RE = re.compile(r"[؀-ۿ]")
+
+
+def detect_language(text):
+    """'ar' if the text contains Arabic script, else 'en'.
+
+    Deliberately simple: the eval set and the live app both send a question in one language,
+    and rule 12 already tells the model to answer in the question's language. This only picks
+    which labels the context carries.
+    """
+    return "ar" if _ARABIC_RE.search(str(text)) else "en"
+
 
 class Generator:
     def __init__(self):
@@ -153,7 +185,7 @@ class Generator:
 
 CONTEXT_SYSTEM_PROMPT = SYSTEM_PROMPT + """
 
-You will be given a list of source documents, each labeled with its law and article number. When you cite a claim, name the actual law and article number directly in your answer text (e.g., "Labor Law 1996, Article 61") -- do not refer to documents by number (e.g. do not write "Document 1")."""
+You will be given a list of source documents, each labeled with its law and article number. When you cite a claim, name the actual law and article number directly in your answer text -- in English "Labor Law 1996, Article 61", in Arabic "قانون العمل لسنة 1996، المادة (61)". Write the citation in the same language as the rest of your answer. Do not refer to documents by number (e.g. do not write "Document 1")."""
 
 # Arabic attaches prefixes directly onto the definite article, and "ل" elides its alef
 # (ل + ال -> لل), so the literal string "المادة" does not occur inside "للمادة" -- the
@@ -163,14 +195,62 @@ You will be given a list of source documents, each labeled with its law and arti
 # allow the definite-article/preposition prefixes that can precede it.
 ARTICLE_NUM_RE = re.compile(r"[Aa]rticle\D{0,15}?(\d+)|[وف]?(?:ال|لل|[بك]ال)?مادة\D{0,5}?(\d+)")
 
+# Arabic-Indic digits. Latent until Phase 21 made Arabic citations actually happen: an answer
+# writing "المادة (٦٥)" yields the citation "٦٥", which never equals the ground truth "65".
+# Python's \d matches these, so the regex finds them and the *comparison* silently fails --
+# the same shape of bug as the المادة/للمادة one above. Measured at 3 of 60 answers in the
+# Phase 21 run, none of which flipped a score, but normalise before comparing regardless.
+_ARABIC_INDIC_DIGITS = {ord(c): str(i % 10) for i, c in enumerate("٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹")}
 
-def _format_context(chunks):
+
+def normalize_digits(text):
+    """Map Arabic-Indic and extended Arabic-Indic digits onto ASCII 0-9."""
+    return str(text).translate(_ARABIC_INDIC_DIGITS)
+
+
+def extract_cited_articles(answer):
+    """Article numbers an answer cites, digit-normalised. Use this, not ARTICLE_NUM_RE directly."""
+    return {a or b for a, b in ARTICLE_NUM_RE.findall(normalize_digits(answer))}
+
+
+# Matches how the *statutes themselves* name other articles, including plurals and lists:
+# "articles (32) and (33)", "المادتين (32) و (33)", "المواد ...". Needed for the fabrication
+# check below -- Article 25's own text says "entitlements specified in articles (32) and (33)
+# of this Law", so an answer quoting it verbatim was being scored as inventing Article 32.
+_XREF_RE = re.compile(r"(?:[Aa]rticles?|[وف]?(?:ال|لل|[بك]ال)?ماد(?:ة|تين|تي)|المواد)"
+                      r"((?:\s*\(?\d+\)?(?:\s*(?:and|و|,|،)\s*)?)+)")
+
+
+def grounded_article_numbers(chunks):
+    """Article numbers an answer may legitimately name: the retrieved articles, plus any
+    article those articles cross-reference in their own text.
+
+    51 of the 531 corpus units cross-reference another article, so treating "cited but not
+    retrieved" as fabrication produces false positives at a rate that scales with how much
+    of the source the model quotes -- i.e. it penalises faithfulness. Phase 20 flagged 1 and
+    Phase 21 flagged 4; by this definition both arms have 0 real fabrications.
+    """
+    nums = {c["article_number"] for c in chunks}
+    for c in chunks:
+        for grp in _XREF_RE.findall(normalize_digits(c["text"])):
+            nums |= set(re.findall(r"\d+", grp))
+    return nums
+
+
+def _format_context(chunks, lang="en"):
+    """Format retrieved chunks as labelled documents, in `lang` ('en' or 'ar').
+
+    The label language follows the *question*, not the chunk -- a chunk's own language is
+    still stated in its `language` field. See LAW_DISPLAY_NAMES_AR for why this matters.
+    """
+    names = LAW_DISPLAY_NAMES_AR if lang == "ar" else LAW_DISPLAY_NAMES
+    lb = CONTEXT_LABELS.get(lang, CONTEXT_LABELS["en"])
     parts = []
     for i, c in enumerate(chunks, start=1):
-        law_name = LAW_DISPLAY_NAMES.get(c["law"], c["law"])
+        law_name = names.get(c["law"], c["law"])
         parts.append(
-            f"[Document {i}]\nLaw: {law_name}\nArticle: {c['article_number']}\n"
-            f"Language: {c['language']}\nText: {c['text']}"
+            f"[{lb['doc']} {i}]\n{lb['law']}: {law_name}\n{lb['article']}: {c['article_number']}\n"
+            f"{lb['language']}: {c['language']}\n{lb['text']}: {c['text']}"
         )
     return "\n\n".join(parts)
 
@@ -189,7 +269,10 @@ class OpenAICompatibleGenerator:
         self.system_prompt = system_prompt or CONTEXT_SYSTEM_PROMPT
 
     def generate(self, query, chunks, max_retries=5):
-        context = _format_context(chunks)
+        lang = detect_language(query)
+        context = _format_context(chunks, lang)
+        user_msg = (f"الوثائق:\n{context}\n\nالسؤال: {query}" if lang == "ar"
+                    else f"Documents:\n{context}\n\nQuestion: {query}")
         available_articles = {c["article_number"] for c in chunks}
 
         resp = None
@@ -200,7 +283,7 @@ class OpenAICompatibleGenerator:
                     model=self.model_id,
                     messages=[
                         {"role": "system", "content": self.system_prompt},
-                        {"role": "user", "content": f"Documents:\n{context}\n\nQuestion: {query}"},
+                        {"role": "user", "content": user_msg},
                     ],
                     extra_body=self.extra_body,
                     **({"temperature": self.temperature} if self.temperature is not None else {}),
