@@ -1,0 +1,181 @@
+[
+ {
+  "question_id": "r01",
+  "sub_queries": [
+   "ما هي النسبة التي تتحملها الشركة في الضمان الاجتماعي عن الموظف؟",
+   "ما هي نسبة مساهمة الموظف في الضمان الاجتماعي؟"
+  ],
+  "chunk_ids": [
+   "ssl_ar_20",
+   "ssl_ar_59",
+   "ssl_ar_53",
+   "ssl_ar_72",
+   "ssl_en_62"
+  ]
+ },
+ {
+  "question_id": "r02",
+  "sub_queries": [
+   "What percentage of my salary does my employer contribute to social security in Jordan?",
+   "What is the monthly cap on employer contributions to social security in Jordan?",
+   "Are there any additional contributions my employer must make for social security benefits?",
+   "What are the specific social security benefits that my employer's contributions fund?"
+  ],
+  "chunk_ids": [
+   "ssl_en_20",
+   "ssl_en_59",
+   "ssl_en_60",
+   "ssl_en_62",
+   "ssl_en_85",
+   "ssl_en_72",
+   "ssl_en_19",
+   "labor96_en_47",
+   "ssl_en_2",
+   "ssl_en_4",
+   "ssl_en_53",
+   "ssl_en_22"
+  ]
+ },
+ {
+  "question_id": "r03",
+  "sub_queries": [
+   "ما هي النسبة المئوية التي يُخصم من الراتب للضمان الاجتماعي في الأردن؟",
+   "هل يختلف مقدار الاقتطاع للضمان الاجتماعي حسب نوع العمل أو القطاع في الأردن؟"
+  ],
+  "chunk_ids": [
+   "ssl_en_59",
+   "ssl_en_62",
+   "ssl_en_4",
+   "ssl_ar_20",
+   "ssl_ar_85",
+   "ssl_ar_53"
+  ]
+ },
+ {
+  "question_id": "r04",
+  "sub_queries": [
+   "هل يجب على صاحب العمل دفع تعويض إذا تعرضت لحادث في العمل؟",
+   "ما هي الالتزامات المالية لصاحب العمل تجاه العمال في حالة الحوادث المهنية؟",
+   "ما هي شروط تغطية الحوادث في العمل بموجب القانون الأردني؟"
+  ],
+  "chunk_ids": [
+   "labor96_ar_90",
+   "labor96_ar_88",
+   "labor96_en_87",
+   "labor96_ar_89",
+   "ssl_ar_32",
+   "ssl_en_27",
+   "ssl_ar_4",
+   "labor96_ar_92",
+   "labor96_en_93"
+  ]
+ },
+ {
+  "question_id": "r05",
+  "sub_queries": [
+   "هل يتم دفع تأمين الأمومة للموظف الذكر في الأردن؟",
+   "ما هي حقوق الموظف الذكر بالنسبة لتأمين الأمومة في قانون العمل الأردني؟"
+  ],
+  "chunk_ids": [
+   "ssl_ar_45",
+   "ssl_ar_43",
+   "labor96_en_66",
+   "ssl_ar_42",
+   "ssl_ar_44",
+   "labor96_ar_70"
+  ]
+ },
+ {
+  "question_id": "r06",
+  "sub_queries": [
+   "من يتحمل دفع تأمين التعطل في حالة فقدان الوظيفة، الموظف أم صاحب العمل؟",
+   "ما هي الأحكام المتعلقة بدفع تأمين التعطل في قانون العمل الأردني؟",
+   "ما هي حقوق العامل في حالة فقدان الوظيفة وتأمين التعطل في الأردن؟"
+  ],
+  "chunk_ids": [
+   "ssl_ar_48",
+   "ssl_ar_52",
+   "ssl_ar_58",
+   "ssl_ar_57",
+   "ssl_ar_49",
+   "ssl_ar_54",
+   "ssl_ar_53",
+   "ssl_ar_51"
+  ]
+ },
+ {
+  "question_id": "r07",
+  "sub_queries": [
+   "ما هي التأمينات الاجتماعية المخصصة للعمال في الزراعة في الأردن؟",
+   "كيف يتم تسجيل العمال في التأمينات الاجتماعية بالقطاع الزراعي في الأردن؟",
+   "ما هي حقوق العمال في مزرعة من حيث التأمينات الصحية؟",
+   "هل هناك تأمين ضد الحوادث المهنية للعمال في المزارع؟"
+  ],
+  "chunk_ids": [
+   "ssl_ar_3",
+   "ssl_ar_25",
+   "ssl_ar_4",
+   "ssl_ar_32",
+   "ssl_ar_59",
+   "ssl_en_27",
+   "ssl_ar_24",
+   "ssl_en_62",
+   "ssl_ar_21",
+   "ssl_ar_5",
+   "ssl_ar_72",
+   "labor96_en_86"
+  ]
+ },
+ {
+  "question_id": "r08",
+  "sub_queries": [
+   "ما هي نسبة الاشتراكات التي تدفعها الجهة التي أعمل بها عني في التأمينات الاجتماعية؟",
+   "كيف يتم احتساب المساهمات المالية التي تتحملها الجهة التي أعمل بها عني؟"
+  ],
+  "chunk_ids": [
+   "ssl_ar_20",
+   "ssl_ar_59",
+   "ssl_en_42",
+   "ssl_ar_72",
+   "ssl_ar_19",
+   "ssl_ar_22",
+   "ssl_ar_21"
+  ]
+ },
+ {
+  "question_id": "r09",
+  "sub_queries": [
+   "هل هناك تخفيضات للوافدين الجدد في نظام التأمينات الاجتماعية في الأردن؟",
+   "ما هي الشروط للحصول على تخفيض في الاشتراكات التأمينية في الأردن؟"
+  ],
+  "chunk_ids": [
+   "ssl_en_62",
+   "ssl_en_64",
+   "ssl_ar_59",
+   "ssl_en_89",
+   "ssl_ar_7",
+   "ssl_en_104",
+   "ssl_ar_20",
+   "ssl_en_4"
+  ]
+ },
+ {
+  "question_id": "r10",
+  "sub_queries": [
+   "What is the contribution rate for self-employed individuals in Jordanian social security?",
+   "Are there different categories of contributions for voluntary social security participation in Jordan?",
+   "What benefits do self-employed individuals receive upon joining the Jordanian social security system?"
+  ],
+  "chunk_ids": [
+   "ssl_en_59",
+   "ssl_en_7",
+   "ssl_en_4",
+   "ssl_en_62",
+   "ssl_en_20",
+   "ssl_en_85",
+   "ssl_en_8",
+   "ssl_en_72",
+   "ssl_en_64"
+  ]
+ }
+]

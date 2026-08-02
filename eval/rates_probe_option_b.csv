@@ -1,0 +1,11 @@
+﻿qid,n_gold,n_subs,B k=5,B k=5_full,B k=8,B k=8_full
+r01,4,2,0.25,False,0.25,False
+r02,4,4,0.25,False,0.25,False
+r03,2,2,0.0,False,0.0,False
+r04,1,3,0.0,False,0.0,False
+r05,2,2,1.0,True,1.0,True
+r06,1,3,1.0,True,1.0,True
+r07,1,4,1.0,True,1.0,True
+r08,1,2,1.0,True,1.0,True
+r09,1,2,1.0,True,1.0,True
+r10,1,3,1.0,True,1.0,True

@@ -1,0 +1,11 @@
+﻿qid,n_gold,baseline (today),baseline (today)_full,baseline (today)_k,A1 lang-aware dedup,A1 lang-aware dedup_full,A1 lang-aware dedup_k,A2 +siblings k=5,A2 +siblings k=5_full,A2 +siblings k=5_k,A4 +siblings k=8,A4 +siblings k=8_full,A4 +siblings k=8_k,A5 adaptive (5 or 8),A5 adaptive (5 or 8)_full,A5 adaptive (5 or 8)_k
+r01,4,0.25,False,5,0.25,False,5,1.0,True,5,1.0,True,8,1.0,True,8
+r02,4,0.25,False,5,0.5,False,5,1.0,True,5,1.0,True,8,1.0,True,8
+r03,2,0.0,False,5,0.0,False,5,0.0,False,5,0.5,False,8,0.0,False,5
+r04,1,0.0,False,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,5
+r05,2,1.0,True,5,1.0,True,5,0.5,False,5,1.0,True,8,1.0,True,8
+r06,1,1.0,True,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,8
+r07,1,1.0,True,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,8
+r08,1,1.0,True,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,8
+r09,1,1.0,True,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,8
+r10,1,1.0,True,5,1.0,True,5,1.0,True,5,1.0,True,8,1.0,True,8
