@@ -146,6 +146,32 @@ FAMILY_MARKERS = {"ar": "تتكون مصادر تمويل", "en": "shall be fina
 # would push out relevant non-family articles -- measured: it cost r05 half its
 # coverage. Questions that touch no family keep the Phase 17 default of 5.
 FAMILY_TOP_K = 8
+# Phase 24b. A single "top-5" trigger missed exactly the case the feature exists for:
+# stating a salary ("راتبي 1000 دينار كم ادفع للضمان الاجتماعي") DILUTES the query enough
+# that the funding articles drop out of the top 5-8 -- sometimes much deeper than
+# expected. Firing requires >=2 family members within FAMILY_TRIGGER_DEPTH, not "the
+# single best one within top_k": one member showing up is incidental, several
+# clustered together is the topic.
+#
+# The depth constant below was picked from the TRUE unexpanded RRF ranking -- i.e. the
+# ranking _expand_families itself receives, before it runs. An earlier attempt measured
+# positions by calling retrieve(top_k=30), which internally calls _expand_families and
+# so returns an ALREADY-REORDERED list; that produced clustered-looking positions
+# (5,6,7,8) that were an artifact of the very trigger being tuned, not the raw ranking.
+# Recomputing directly from _semantic_candidates/_keyword_candidates before fusion-
+# ordering was ever touched, the real positions for salary-stated questions are much
+# deeper and more scattered, e.g. [14, 35] for the reported failure, [13, 34, 49] for a
+# near-paraphrase, [6, 33, 35, 47] for another. Depth 20 (the first, contaminated pick)
+# fires on 0 of these; depth 35 fires on 6 of 7 -- the seventh is a bare "راتبي 1000
+# دينار" fragment with no verb or question, where only ONE family member appears
+# anywhere in the top 50 candidates, so no depth-based trigger can reach it.
+#
+# At depth 35 / count 2: fires on the eval/eval_rates.jsonl probe set 10/10, and on
+# eval_v3 (60 general questions) only 2/60 (q10, q16) -- both confirmed to cost
+# nothing on retrieval metrics (recall@1/@5, MRR, full coverage all unchanged; see
+# scripts/24. deterministic_calculation.ipynb).
+FAMILY_TRIGGER_DEPTH = 35
+FAMILY_TRIGGER_COUNT = 2
 
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
 
@@ -296,39 +322,61 @@ class Retriever:
         top_idx = np.argsort(-scores)[:top_k]
         return [self.chunk_ids[i] for i in top_idx]
 
-    def _expand_families(self, chunk_ids, language, trigger_depth):
-        """Promote every sibling of the best-ranked family member to sit beside it.
+    def _expand_families(self, chunk_ids, language):
+        """Bring every member of a triggered family to the front, in relative rank order.
 
-        Returns (ids, fired). A sibling is pulled in because a relative was retrieved,
-        not because of its own rank -- which is the point: SSL 48 never appeared in the
-        top 30 for "how much does the company pay", but SSL 59 did.
+        Returns (ids, fired). Fires when >= FAMILY_TRIGGER_COUNT members of the SAME
+        family are clustered within the first FAMILY_TRIGGER_DEPTH candidates -- one
+        member showing up is incidental, several clustered together is the topic. See
+        FAMILY_TRIGGER_DEPTH/COUNT above for why a single-member "top_k" trigger missed
+        the case this feature exists for.
 
-        `trigger_depth` bounds where the *triggering* article may sit. The first version
-        scanned the whole candidate list, so a family member at rank 40 -- an article the
-        question was never going to be shown -- still widened the window to FAMILY_TOP_K.
-        Measured on eval_v3: expansion fired on 37 of 60 questions and pushed mean slots
-        to 6.85, spending context on siblings of an article nobody was going to read.
-        The rule that makes sense is the one the feature was built for: if the answer is
-        going to show one member of a family, show the rest of it too.
+        Members are moved to the FRONT rather than inserted beside the trigger. That is
+        not cosmetic: the caller slices the returned list to FAMILY_TOP_K afterward, and
+        a trigger at rank 14-17 (routine once a salary figure dilutes the query) means
+        `chunk_ids[:i+1]` alone already exceeds FAMILY_TOP_K -- prepending it, as an
+        earlier version did, pushed every sibling past the slice before the caller ever
+        saw them. Confirmed with a scratch repro before this rewrite: the old insertion
+        delivered 0 of 3 siblings into an 8-slot answer when the trigger sat at rank 14.
+        Members already in chunk_ids keep their relative rank order; a sibling that was
+        never independently retrieved (a real case -- SSL 48 does not surface in the top
+        30 for some phrasings) is appended after them, since there is no rank to sort by.
         """
         if not self._families:
             return chunk_ids, False
-        for i, cid in enumerate(chunk_ids[:trigger_depth]):
+        pos = {cid: i for i, cid in enumerate(chunk_ids)}
+        window = chunk_ids[:FAMILY_TRIGGER_DEPTH]
+        seen = set()
+        for cid in window:
             row = self.chunks.iloc[self.id_to_row[cid]]
             groups = self._families.get((row["law"], language)) or []
             # only the scope group this article belongs to -- see _build_families
             fam = next((g for g in groups if str(row["article_number"]) in g), None)
-            if not fam:
+            if fam is None:
                 continue
-            sibs = []
+            key = (row["law"], frozenset(fam))
+            if key in seen:
+                continue
+            seen.add(key)
+
+            present = sum(
+                1 for c2 in window
+                if self.chunks.iloc[self.id_to_row[c2]]["law"] == row["law"]
+                and str(self.chunks.iloc[self.id_to_row[c2]]["article_number"]) in fam
+            )
+            if present < FAMILY_TRIGGER_COUNT:
+                continue
+
+            member_ids = []
             for art in sorted(fam, key=lambda a: int(re.sub(r"\D", "", a) or 0)):
                 sid = self._article_chunk_id(row["law"], language, art)
-                if sid and sid != cid:
-                    sibs.append(sid)
-            if not sibs:
-                return chunk_ids, False
-            rest = [c for c in chunk_ids[i + 1:] if c not in sibs]
-            return chunk_ids[:i + 1] + sibs + rest, True
+                if sid:
+                    member_ids.append(sid)
+            if not member_ids:
+                continue
+            member_ids.sort(key=lambda c: pos.get(c, 10**9))
+            rest = [c for c in chunk_ids if c not in member_ids]
+            return member_ids + rest, True
         return chunk_ids, False
 
     def _article_chunk_id(self, law, language, article_number):
@@ -394,8 +442,7 @@ class Retriever:
 
         ordered = [cid for cid, _ in
                    sorted(rrf_scores.items(), key=lambda kv: kv[1], reverse=True)]
-        ordered, fired = self._expand_families(ordered, lang or detect_language(query),
-                                               trigger_depth=top_k)
+        ordered, fired = self._expand_families(ordered, lang or detect_language(query))
         limit = FAMILY_TOP_K if (fired and top_k <= FAMILY_TOP_K) else top_k
         ranked = [(cid, rrf_scores.get(cid, 0.0)) for cid in ordered[:limit]]
 

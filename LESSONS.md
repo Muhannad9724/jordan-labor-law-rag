@@ -588,6 +588,31 @@ after everything underneath them had changed.
 > component changes, mark every number downstream of it as stale — immediately,
 > not when someone notices.
 
+### 6.4 Measuring a system with the system's own output
+
+**What happened.** A retrieval trigger was firing too narrowly, so a live question
+started losing its needed context. Fixing it meant measuring where the missing
+articles actually ranked — so the "raw ranking" was pulled by calling
+`retrieve(query, top_k=30)` and reading off the positions.
+
+Except `retrieve()` doesn't return a raw ranking. It **calls the very trigger being
+tuned** before it returns anything. The positions read off were already reordered
+by the old rule, not the underlying ranking a new rule needed to be designed
+against. The new rule, tuned on that, would have fired on **zero** of the real
+failures it was built to fix — it looked correct because the tool used to check it
+had the same blind spot as the thing being replaced.
+
+**What caught it:** running the *actual rewritten function*, end to end, on the
+real failing question — not trusting the tuning script's own numbers about itself.
+The very first end-to-end run showed the target case still failing, which is what
+forced the positions to be recomputed from the layer underneath the trigger.
+
+> **The rule:** when measuring a component to redesign it, make sure the
+> measurement doesn't route through that same component. A `get_state()` that
+> quietly calls the very logic under test will make a broken redesign look
+> validated — check what a measurement function calls internally, not just what
+> it returns.
+
 ---
 
 ## The short version
@@ -610,8 +635,10 @@ If this document were one page:
     the model narrate.**
 14. **An identical wrong answer across trials is deterministic, so it is yours, not
     the model's.**
+15. **When you measure a component to redesign it, check that the measurement
+    doesn't call the component itself.**
 
 ---
 
-*Compiled after Phase 24, from the failures recorded across all 24 phases in
+*Compiled after Phase 24c, from the failures recorded across all 24 phases in
 `ROADMAP.md`.*
