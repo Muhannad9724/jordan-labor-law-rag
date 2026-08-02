@@ -120,6 +120,33 @@ CANDIDATE_TOP_K = 50  # how many candidates each ranker contributes before fusin
 # audit above, not on the eval numbers.
 FILTER_BY_LANGUAGE = True
 
+# Sibling expansion. Some questions are answered by a *set* of parallel articles
+# rather than one: "how much does the company pay into social security" is the sum
+# of four separate insurances, each funded by its own article (SSL 24 work injury,
+# 42 maternity, 48 unemployment, 59 old-age/disability/death, 72 public sector).
+#
+# Ranking alone cannot fix that. Measured on the rates probe, asking generally put
+# those articles at ranks 11, 25 and worse-than-30 -- yet asking about one branch by
+# name put the same article at rank 1. Each article is strongly about its own branch
+# and only weakly about the general question, so a general query never gathers them.
+#
+# The families are not hand-listed. They are read off a structural phrase the statute
+# uses to introduce a funding article, which independently yields the same five
+# articles in both languages. If any member is retrieved, the rest are promoted to
+# sit beside it.
+#
+# Query decomposition was tested as the alternative and scored exactly baseline while
+# costing an LLM call per question: the model split "how much does the company pay"
+# into "employer rate" and "employee rate" -- paraphrases -- because nothing in the
+# question names the four branches and it has no way to know they exist. The structure
+# lives in the corpus, not in the question.
+EXPAND_FAMILIES = True
+FAMILY_MARKERS = {"ar": "تتكون مصادر تمويل", "en": "shall be financed"}
+# When expansion fires the window widens, because injecting siblings into a fixed 5
+# would push out relevant non-family articles -- measured: it cost r05 half its
+# coverage. Questions that touch no family keep the Phase 17 default of 5.
+FAMILY_TOP_K = 8
+
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
 
 
@@ -203,6 +230,26 @@ class Retriever:
         corpus_tokens = [tokenize(t) for t in self.chunks["text"].tolist()]
         self.bm25 = BM25Okapi(corpus_tokens, k1=BM25_K1, b=BM25_B)
         self._masks = {}  # language -> boolean mask over chunk rows, built once
+        self._families = self._build_families()
+
+    def _build_families(self):
+        """{(law, language): {article numbers}} for articles sharing a structural phrase.
+
+        Derived from the text, not declared by hand, so it stays correct if the corpus
+        is rebuilt. Both markers independently return the same five SSL articles.
+        """
+        fams = {}
+        if not EXPAND_FAMILIES:
+            return fams
+        for (law, lang), grp in self.chunks.groupby(["law", "language"]):
+            marker = FAMILY_MARKERS.get(lang)
+            if not marker:
+                continue
+            members = {str(r.article_number) for r in grp.itertuples()
+                       if marker in str(r.text)}
+            if len(members) > 1:
+                fams[(law, lang)] = members
+        return fams
 
     def _embed_query(self, query):
         return self.embedder(query)
@@ -222,6 +269,39 @@ class Retriever:
             scores = np.where(self._lang_mask(language), scores, -np.inf)
         top_idx = np.argsort(-scores)[:top_k]
         return [self.chunk_ids[i] for i in top_idx]
+
+    def _expand_families(self, chunk_ids, language):
+        """Promote every sibling of the best-ranked family member to sit beside it.
+
+        Returns (ids, fired). A sibling is pulled in because a relative was retrieved,
+        not because of its own rank -- which is the point: SSL 48 never appeared in the
+        top 30 for "how much does the company pay", but SSL 59 did.
+        """
+        if not self._families:
+            return chunk_ids, False
+        for i, cid in enumerate(chunk_ids):
+            row = self.chunks.iloc[self.id_to_row[cid]]
+            fam = self._families.get((row["law"], language))
+            if not fam or str(row["article_number"]) not in fam:
+                continue
+            sibs = []
+            for art in sorted(fam, key=lambda a: int(re.sub(r"\D", "", a) or 0)):
+                sid = self._article_chunk_id(row["law"], language, art)
+                if sid and sid != cid:
+                    sibs.append(sid)
+            if not sibs:
+                return chunk_ids, False
+            rest = [c for c in chunk_ids[i + 1:] if c not in sibs]
+            return chunk_ids[:i + 1] + sibs + rest, True
+        return chunk_ids, False
+
+    def _article_chunk_id(self, law, language, article_number):
+        if not hasattr(self, "_by_article"):
+            self._by_article = {
+                (r.law, r.language, str(r.article_number)): r.chunk_id
+                for r in self.chunks.itertuples()
+            }
+        return self._by_article.get((law, language, str(article_number)))
 
     def _lang_mask(self, language):
         if language not in self._masks:
@@ -276,7 +356,11 @@ class Retriever:
         for rank, cid in enumerate(keyword_ids, start=1):
             rrf_scores[cid] = rrf_scores.get(cid, 0.0) + (1 - RRF_W) / (RRF_K + rank)
 
-        ranked = sorted(rrf_scores.items(), key=lambda kv: kv[1], reverse=True)[:top_k]
+        ordered = [cid for cid, _ in
+                   sorted(rrf_scores.items(), key=lambda kv: kv[1], reverse=True)]
+        ordered, fired = self._expand_families(ordered, lang or detect_language(query))
+        limit = FAMILY_TOP_K if (fired and top_k <= FAMILY_TOP_K) else top_k
+        ranked = [(cid, rrf_scores.get(cid, 0.0)) for cid in ordered[:limit]]
 
         results = []
         for cid, score in ranked:

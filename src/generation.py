@@ -134,6 +134,13 @@ Usefulness
 Judgment questions
 13. Some questions ask for a personal decision or opinion ("should I...", "is it worth it...", "is it better to...") rather than a fact the documents state directly. If the documents describe the relevant provisions, lay out the concrete benefits and the obligations or costs they describe, neutrally and side by side, so the person can weigh it themselves. Do not tell them what to decide, and do not reason beyond what the documents state.
 
+Totals and calculations
+14. When the question asks for a total, a combined rate, or an amount worked out from a figure the person gave, account for EVERY provision in the documents that contributes to it -- not only the most prominent one. Contributions in particular are set by several separate articles, one per type of insurance, and answering from one of them understates the answer.
+15. Before calculating, restate any rate that the documents write in words as a numeral (the conversion aid under each document gives it). A rate written in words counts exactly as much as one written in digits -- do not skip it because it is harder to read.
+16. Show each component on its own line with the article it comes from, then the total. Separate what the employer pays from what is deducted from the employee, and never add the two together into a single figure unless the person asked for the combined total.
+17. Apply any ceiling or floor on the amount that the documents state, and say plainly when it does not affect the figure given.
+18. Rule 6 does not forbid this. Adding up rates that the documents each state outright is arithmetic, not interpretation. Rule 6 still governs everything else: do not reason about how provisions qualify or override one another, and if the total depends on which category the person falls into, say which case you have calculated and name the others.
+
 Close with one short line noting this is general information, not legal advice, and that they should consult a licensed lawyer about their own case."""
 
 LAW_DISPLAY_NAMES = {
@@ -157,12 +164,75 @@ LAW_DISPLAY_NAMES_AR = {
 
 CONTEXT_LABELS = {
     "en": {"doc": "Document", "law": "Law", "article": "Article",
-           "language": "Language", "text": "Text"},
+           "language": "Language", "text": "Text",
+           "rates": "Rates written in words, as numerals (conversion aid, not statute text)"},
     "ar": {"doc": "وثيقة", "law": "القانون", "article": "المادة",
-           "language": "اللغة", "text": "النص"},
+           "language": "اللغة", "text": "النص",
+           "rates": "نسب مكتوبة بالحروف، مقابلها بالأرقام (للحساب فقط، وليست من نص المادة)"},
 }
 
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
+
+# Rates spelled out in words instead of digits. Most articles write "(١١%)", but a few
+# write "(اثنين بالمائة)" or "ثلاثة أرباع الواحد بالمائة". That difference is not
+# cosmetic -- it was measured breaking the system twice over:
+#   retrieval  -- asked "how much does the company pay", the spelled-out articles ranked
+#                 11, 25 and worse-than-30 while the digit one ranked 3
+#   generation -- even with all four articles in context and an explicit instruction to
+#                 convert words to numerals, the model summed 11% + 2% + 0.5% and
+#                 silently dropped the 0.75% maternity rate, under-reporting the
+#                 employer total as 135 JD instead of 142.5 JD
+#
+# `_format_context` therefore appends a clearly-labelled conversion note per document.
+# The statute text itself is never rewritten: the model must still quote and cite the
+# article as written, and a numeral the law does not contain must not appear inside a
+# quotation. The note is an aid beside the text, not a substitute for it.
+#
+# The vocabulary is closed and small -- 25 occurrences across the whole corpus, seven
+# distinct number words -- so this is a lookup, not a general Arabic number parser.
+AR_NUMBER_WORDS = {
+    "نصف": 0.5, "ربع": 0.25, "ثلث": 1 / 3,
+    "واحد": 1, "واحدة": 1, "اثنين": 2, "اثنان": 2, "ثلاثة": 3, "ثلاث": 3,
+    "أربعة": 4, "اربعة": 4, "خمسة": 5, "ستة": 6, "سبعة": 7, "ثمانية": 8,
+    "تسعة": 9, "عشرة": 10, "عشرين": 20, "ثلاثين": 30, "ثلاثون": 30,
+    "أربعين": 40, "اربعين": 40, "خمسين": 50, "ستين": 60, "سبعين": 70,
+    "ثمانين": 80, "تسعين": 90, "مئة": 100, "مائة": 100,
+}
+# Multi-word fractions, checked before single words so "ثلاثة أرباع الواحد" is not read as 3.
+AR_NUMBER_PHRASES = {
+    "ثلاثة أرباع الواحد": 0.75, "ثلاثة ارباع الواحد": 0.75,
+    "ثلاثة أرباع": 0.75, "ثلاثة ارباع": 0.75,
+    "واحد ونصف": 1.5, "اثنين ونصف": 2.5,
+}
+_PCT_WORDS_RE = re.compile(r"((?:[^\s()]+\s+){0,3}[^\s()]+)\s*بالما?ئة")
+
+
+def _strip_ar(tok):
+    return tok.strip("()[]،.,:؛").replace("ـ", "")
+
+
+def spelled_out_rates(text):
+    """[(phrase, numeric percent)] for rates written in words rather than digits."""
+    out, seen = [], set()
+    for m in _PCT_WORDS_RE.finditer(str(text)):
+        toks = [_strip_ar(t) for t in m.group(1).split() if _strip_ar(t)]
+        val, phrase = None, None
+        for n in (3, 2):                       # longest phrase first
+            if len(toks) >= n:
+                cand = " ".join(toks[-n:])
+                if cand in AR_NUMBER_PHRASES:
+                    val, phrase = AR_NUMBER_PHRASES[cand], cand
+                    break
+        if val is None and toks and toks[-1] in AR_NUMBER_WORDS:
+            val, phrase = AR_NUMBER_WORDS[toks[-1]], toks[-1]
+        if val is None:
+            continue
+        label = f"{phrase} بالمائة"
+        if label not in seen:
+            seen.add(label)
+            pretty = f"{val:g}"
+            out.append((label, f"{pretty}%"))
+    return out
 
 
 def detect_language(text):
@@ -287,10 +357,15 @@ def _format_context(chunks, lang="en"):
     parts = []
     for i, c in enumerate(chunks, start=1):
         law_name = names.get(c["law"], c["law"])
-        parts.append(
+        block = (
             f"[{lb['doc']} {i}]\n{lb['law']}: {law_name}\n{lb['article']}: {c['article_number']}\n"
             f"{lb['language']}: {c['language']}\n{lb['text']}: {c['text']}"
         )
+        rates = spelled_out_rates(c["text"])
+        if rates:
+            pairs = "، ".join(f"{w} = {n}" for w, n in rates)
+            block += f"\n{lb['rates']}: {pairs}"
+        parts.append(block)
     return "\n\n".join(parts)
 
 
