@@ -447,9 +447,10 @@ class OpenAICompatibleGenerator:
         calc = None
         try:
             from .calc import (compute_contributions, compute_end_of_service,
-                               compute_gender_conditions, extract_salary, extract_service,
-                               extract_sex, format_calculation_block,
-                               format_end_of_service_block, format_gender_block)
+                               compute_gender_conditions, compute_overtime, compute_leave_accrual,
+                               extract_salary, extract_service, extract_sex, extract_hourly_wage,
+                               format_calculation_block, format_end_of_service_block,
+                               format_gender_block, format_overtime_block, format_leave_block)
             salary = extract_salary(query)
             calc = compute_contributions(chunks, salary=salary)
             if calc:
@@ -470,6 +471,18 @@ class OpenAICompatibleGenerator:
             if gender:
                 context += "\n\n" + format_gender_block(gender, lang, sex=sex)
                 calc = {**(calc or {}), "gender_conditions": gender}
+            # Overtime (Art 59) and leave accrual (Art 61) -- same "read the rate from the
+            # text, decline rather than invent" discipline as everything above. Neither
+            # needs a precondition question the way end-of-service does; see src/calc.py
+            # for why each stops short of a JD amount / a single blended total.
+            ot = compute_overtime(chunks, hourly_wage=extract_hourly_wage(query))
+            if ot:
+                context += "\n\n" + format_overtime_block(ot, lang)
+                calc = {**(calc or {}), "overtime": ot}
+            leave = compute_leave_accrual(chunks, years=extract_service(query))
+            if leave:
+                context += "\n\n" + format_leave_block(leave, lang)
+                calc = {**(calc or {}), "leave_accrual": leave}
         except Exception:
             calc = None  # never let the aid break an answer the model could still give
 
@@ -570,6 +583,41 @@ class OpenAICompatibleGenerator:
                 out.append(q)
         return out[:n]
 
+    def review_and_revise(self, query, chunks, draft_answer):
+        """Check `draft_answer` against every retrieved document and revise if
+        something relevant was skipped. Returns (answer, revised: bool).
+
+        Never raises -- any failure returns the draft unchanged, same "degrade to
+        today's behaviour" discipline as rewrite_for_retrieval/suggest_followups. See
+        REVIEW_PROMPT above for why this exists (the 7-of-9 generation-gap finding).
+
+        Full article TEXT is given here, unlike suggest_followups' truncated topic
+        listing -- checking completeness requires actually reading the paragraphs, not
+        just knowing a document's subject.
+        """
+        listing = "\n\n".join(
+            f"{LAW_DISPLAY_NAMES.get(c['law'], c['law'])}, Article {c['article_number']} "
+            f"({c['language']}):\n{c['text']}"
+            for c in chunks
+        )
+        user_msg = f"Documents given:\n{listing}\n\nQuestion: {query}\n\nDraft answer:\n{draft_answer}"
+        try:
+            resp = self.client.chat.completions.create(
+                model=self.model_id,
+                max_tokens=REVIEW_MAX_TOKENS,
+                extra_body=self.extra_body,
+                messages=[{"role": "system", "content": REVIEW_PROMPT},
+                          {"role": "user", "content": user_msg}],
+            )
+            content = (resp.choices[0].message.content or "").strip() if resp.choices else ""
+        except Exception:
+            return draft_answer, False
+        # Guard against an empty response or a runaway generation -- either falls back
+        # to the draft rather than risk showing something worse than what already existed.
+        if not content or len(content) > len(draft_answer) * 4 + 1000:
+            return draft_answer, False
+        return content, content != draft_answer.strip()
+
 
 # Follow-up suggestions shown under an answer. Grounded in the articles that were
 # actually retrieved, for one specific reason: an ungrounded model will happily suggest
@@ -597,6 +645,49 @@ Rules:
 Respond with ONLY a JSON array of 3 strings, no other text."""
 
 FOLLOWUP_MAX_TOKENS = 300
+
+# Second-pass completeness review. See OpenAICompatibleGenerator.review_and_revise.
+#
+# A subagent diagnosed the 9 eval_v3 questions that survived Phase 21's coverage rule
+# in both the before and after arms: 7 of 9 (q01, q05, q09-Phase20, q19, q29, q35, q49)
+# were GENERATION gaps, not retrieval ones -- the missing article, or a specific
+# lettered paragraph within an article already cited, was fully present in the SAME
+# context the model already had. More coverage-rule wording was not going to close
+# this: Phase 21 already told the model to "read every document" and "cover every
+# lettered paragraph", and these 7 are exactly the cases where that instruction did
+# not fire, in a single generative pass where the model stops once it has found one
+# article that satisfies the question.
+#
+# The FOLLOWUP_PROMPT comment above already names this same pattern -- the missed
+# article is literally what gets proposed as a follow-up chip. That is a UI
+# workaround (surface what was skipped as the NEXT question), not a fix to the
+# answer that was actually given. This is the fix attempt: a second, separate model
+# call that re-reads the full document list against the draft AFTER a "good enough"
+# answer already exists -- the exact point the first pass stops checking -- rather
+# than hoping the first pass keeps reading before it commits to an answer.
+#
+# Cost: one extra LLM call per question, roughly doubling generation cost and
+# latency. Not wired into generate() or /ask by default -- see the eval notebook
+# (scripts/28. completeness_review.ipynb) for the measured decision before this
+# is adopted in production.
+REVIEW_PROMPT = """You review a draft answer from a Jordanian labour and social security law assistant for completeness against the documents it was given.
+
+You will be shown the documents that were retrieved for a question, the question itself, and a draft answer already written from those documents.
+
+Task: check whether every article, and every lettered paragraph within an article, that bears on the question is reflected in the draft. "Bears on the question" means it adds a condition, an exception, a limit, an amount, or a further step relevant to what was asked -- not every provision that happens to sit in the same article.
+
+If the draft already covers everything relevant: return it completely unchanged, word for word.
+
+If something relevant was missed: rewrite the answer to include it, keeping everything the draft already got right. Follow the same rules the draft was written under:
+- Every statement must come from the documents given. Do not add outside knowledge, and cite only articles you were actually given.
+- State what each provision says on its own terms. Do not explain how two provisions combine, qualify or override one another unless a document says so -- add the missing provision beside the existing ones, do not reason about how they relate.
+- Reproduce durations, percentages, amounts, ages and deadlines exactly as the documents give them.
+- Reply in the same language as the draft.
+- Answer the person's situation first, then the supporting rules and citations -- do not open by restating an article.
+
+Respond with ONLY the final answer text -- the unchanged draft, or your revised version. No preamble, no explanation of what you changed, no markdown fencing."""
+
+REVIEW_MAX_TOKENS = 1500
 
 # Query rewriting for multi-turn. See OpenAICompatibleGenerator.rewrite_for_retrieval.
 #

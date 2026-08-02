@@ -776,3 +776,212 @@ def format_gender_block(conditions, lang="en", sex=None):
         else:
             lines.append(lb["row"].format(label=label, art=c["article"], m=c["male"], f=c["female"]))
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Overtime pay, Labour Law 1996 Article 59.
+#
+# The rate itself is clean: 125% of the regular hourly wage per overtime hour,
+# 150% for work on the weekly day off or a holiday. What is NOT clean is
+# turning a stated MONTHLY salary into an hourly figure -- no article anywhere
+# in the corpus gives that conversion (Art 56 sets 8 hours/day, 48 hours/week,
+# but never states a divisor for wage-per-hour). Inventing one (/26 working
+# days, /8 hours, whatever) would be exactly the ungrounded-number failure this
+# module exists to prevent, so this calculator ALWAYS reports the two rates
+# (safe -- pure text extraction, nothing about the person needed) and only
+# reports a JD figure if the person states an HOURLY wage directly. A bare
+# "my salary is 800 JD" is left as a percentage, never silently divided.
+_OT_HOURLY_RE = re.compile(
+    r"([٠-٩\d][٠-٩\d,\.]*)\s*(?:دينار|دنانير|jods?|jd|dinars?)\s*(?:في|بال|/|per)\s*(?:ال)?(?:ساعة|hour)"
+    r"|(?:ساعة|hour)\s*(?:بـ|بمبلغ|:)?\s*([٠-٩\d][٠-٩\d,\.]*)\s*(?:دينار|دنانير|jods?|jd|dinars?)",
+    re.I)
+
+
+def extract_hourly_wage(question):
+    """An hourly wage the person stated explicitly (JD/hour), or None.
+
+    Deliberately narrower than `extract_salary` -- a bare currency figure is a
+    MONTHLY wage everywhere else in this module, so this only fires when an
+    hour qualifier sits right next to the figure, never assumed.
+    """
+    m = _OT_HOURLY_RE.search(str(question))
+    if not m:
+        return None
+    raw = m.group(1) or m.group(2)
+    try:
+        val = float(str(raw).translate(AR_DIGITS).replace(",", ""))
+    except ValueError:
+        return None
+    return val if val > 0 else None
+
+
+def compute_overtime(chunks, hourly_wage=None):
+    """Overtime pay rates under Art 59, or None if the article was not
+    retrieved or its two rates could not be found (reworded, amended --
+    decline rather than guess which figure is which).
+    """
+    for c in chunks:
+        if c.get("law") != "labor96" or str(c.get("article_number")) != "59":
+            continue
+        lang = c.get("language", "en")
+        text = str(c["text"])
+        pcts = [_to_num(m.group(1)) for m in _PCT_RE.finditer(text)]
+        if len(pcts) != 2:
+            continue
+        ordinary_rate, holiday_rate = pcts
+        return {
+            "law": "labor96", "article": "59", "language": lang,
+            "ordinary_rate": ordinary_rate, "holiday_rate": holiday_rate,
+            "hourly_wage": hourly_wage,
+            "ordinary_amount": _amount(hourly_wage, ordinary_rate) if hourly_wage else None,
+            "holiday_amount": _amount(hourly_wage, holiday_rate) if hourly_wage else None,
+        }
+    return None
+
+
+_OT_LABELS = {
+    "en": {
+        "head": "COMPUTED FIGURES -- overtime pay (Article 59, rates already read from the text)",
+        "rates": ("Ordinary overtime: {o:g}% of the regular hourly wage, per overtime hour. Work "
+                  "on the weekly day off or a holiday: {h:g}% of the regular hourly wage."),
+        "amounts": ("On the stated hourly wage of {w:g} JD: {oa:g} JD per ordinary overtime hour, "
+                    "{ha:g} JD per hour on a day off or holiday."),
+        "nowage": ("The person did not state an HOURLY wage, so give the rates as percentages of "
+                   "their regular hourly wage -- do not invent a JD figure from a monthly salary; "
+                   "the documents do not state how to convert one into the other."),
+    },
+    "ar": {
+        "head": "أرقام محسوبة مسبقاً -- العمل الإضافي (المادة 59، النسب مقروءة من النص)",
+        "rates": ("العمل الإضافي العادي: {o:g}% من أجر الساعة المعتاد عن كل ساعة إضافية. العمل في "
+                  "يوم العطلة الأسبوعية أو عطلة رسمية: {h:g}% من أجر الساعة المعتاد."),
+        "amounts": ("على أجر الساعة المذكور {w:g} دينار: {oa:g} دينار لكل ساعة عمل إضافي عادية، "
+                    "{ha:g} دينار لكل ساعة في يوم العطلة أو العطلة الرسمية."),
+        "nowage": ("لم يذكر الشخص أجر الساعة، فاذكر النسب كنسبة من أجر الساعة المعتاد -- لا تخترع "
+                   "رقماً بالدينار من راتب شهري، فالوثائق لا تنص على طريقة التحويل بينهما."),
+    },
+}
+
+
+def format_overtime_block(result, lang="en"):
+    """Render `compute_overtime` output for injection into the model's context."""
+    lb = _OT_LABELS.get(lang, _OT_LABELS["en"])
+    lines = [f"[{lb['head']}]",
+             lb["rates"].format(o=result["ordinary_rate"], h=result["holiday_rate"])]
+    if result["hourly_wage"] and result["ordinary_amount"] is not None:
+        lines.append(lb["amounts"].format(w=result["hourly_wage"], oa=result["ordinary_amount"],
+                                           ha=result["holiday_amount"]))
+    else:
+        lines.append(lb["nowage"])
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Annual leave accrual, Labour Law 1996 Article 61 (and Article 63's cash-out
+# on unused leave, mentioned only -- see below).
+#
+# The rate: 14 days per year of service, rising to 21 once the worker has
+# completed 5 consecutive years WITH THE SAME EMPLOYER. `years` from
+# `extract_service` is treated as continuous service with the current
+# employer -- the same simplifying read end-of-service already makes.
+#
+# What this deliberately does NOT do: collapse a span that crosses the
+# threshold into one blended total. "6 years of service" is not "6 x 21 days"
+# -- the first 5 years accrued at 14 days/year, and this module has no hire
+# date, only a total years figure, so it cannot know exactly when the 21-day
+# rate started applying. Multiplying the CURRENT rate by the WHOLE span would
+# be precisely the confident-but-wrong pattern the rest of this module exists
+# to avoid (see compute_contributions' completeness guard, compute_end_of_service's
+# precondition). Past the threshold this returns the two rates and the
+# threshold, not a single number, and tells the model to state it that way.
+#
+# The cash value of unused leave (Art 63) is NOT computed here at all: same
+# problem as overtime, no article states how to derive a daily wage from a
+# monthly one, so a JD figure here would be invented, not read.
+_LEAVE_BASE_RE = {"en": re.compile(r"fourteen\s+days", re.I),
+                  "ar": re.compile(r"أربعة\s*عشر\s*يوماً")}
+_LEAVE_EXT_RE = {"en": re.compile(r"twenty-one\s+days", re.I),
+                 "ar": re.compile(r"واحداً?\s*وعشرين\s*يوماً")}
+_LEAVE_THRESHOLD_RE = {"en": re.compile(r"five\s+consecutive\s+years", re.I),
+                       "ar": re.compile(r"خمس\s*سنوات\s*متصلة")}
+_LEAVE_BASE_RATE, _LEAVE_EXT_RATE, _LEAVE_THRESHOLD_YEARS = 14, 21, 5
+
+
+def compute_leave_accrual(chunks, years=None):
+    """Annual leave entitlement under Art 61, or None if the article was not
+    retrieved or its wording no longer matches the rates above (decline, don't
+    guess -- same discipline as `compute_end_of_service`'s rate phrase match).
+    """
+    for c in chunks:
+        if c.get("law") != "labor96" or str(c.get("article_number")) != "61":
+            continue
+        lang = c.get("language", "en")
+        text = _norm(c["text"])
+        if not (_LEAVE_BASE_RE[lang].search(text) and _LEAVE_EXT_RE[lang].search(text)
+                and _LEAVE_THRESHOLD_RE[lang].search(text)):
+            continue
+        result = {
+            "law": "labor96", "article": "61", "language": lang,
+            "base_rate_days": _LEAVE_BASE_RATE, "extended_rate_days": _LEAVE_EXT_RATE,
+            "extended_threshold_years": _LEAVE_THRESHOLD_YEARS,
+            "years": years, "accrued_days": None, "threshold_crossed": None,
+        }
+        if years is not None and years > 0:
+            crossed = years >= _LEAVE_THRESHOLD_YEARS
+            result["threshold_crossed"] = crossed
+            if not crossed:
+                result["accrued_days"] = _times(_LEAVE_BASE_RATE, years)
+        return result
+    return None
+
+
+_LEAVE_LABELS = {
+    "en": {
+        "head": "COMPUTED FIGURES -- annual leave entitlement (Article 61, rates already read from the text)",
+        "rate": ("Rate: {b:g} days per year of service, rising to {e:g} days per year once {t:g} "
+                 "consecutive years have been completed with the same employer."),
+        "total": ("Service stated: {y:g} years, below the {t:g}-year threshold -- accrued at "
+                  "{b:g} days/year: {d:g} days."),
+        "crossed": ("Service stated: {y:g} years, past the {t:g}-year threshold. The current "
+                    "entitlement is {e:g} days/year, and the years before the threshold accrued at "
+                    "{b:g} days/year. DO NOT calculate a total by splitting the {y:g} years into a "
+                    "block at {b:g} days/year and a remaining block at {e:g} days/year -- the exact "
+                    "date the {t:g}-year mark was reached is not known here, so that split is an "
+                    "assumption you would be inventing, not something the documents state. State "
+                    "only the two rates and the {t:g}-year threshold, and say plainly that a single "
+                    "total cannot be given without knowing when the threshold was reached."),
+        "nototal": "Years of service were not stated, so give the rate only, not a total.",
+        "nocash": ("The cash value of unused leave (Article 63) is not computed here -- it needs a "
+                   "daily wage, and the documents do not state how to convert a monthly wage into one."),
+    },
+    "ar": {
+        "head": "أرقام محسوبة مسبقاً -- استحقاق الإجازة السنوية (المادة 61، النسب مقروءة من النص)",
+        "rate": ("المعدل: {b:g} يوماً عن كل سنة خدمة، ويرتفع إلى {e:g} يوماً بعد إتمام {t:g} سنوات "
+                 "متصلة لدى صاحب العمل نفسه."),
+        "total": ("مدة الخدمة المذكورة: {y:g} سنة، أقل من عتبة الـ {t:g} سنوات -- محسوبة بمعدل "
+                  "{b:g} يوماً/سنة: {d:g} يوماً."),
+        "crossed": ("مدة الخدمة المذكورة: {y:g} سنة، تجاوزت عتبة الـ {t:g} سنوات. الاستحقاق الحالي "
+                   "{e:g} يوماً/سنة، والسنوات التي سبقت العتبة كانت بمعدل {b:g} يوماً/سنة. لا تحسب "
+                   "رقماً إجمالياً بتقسيم الـ {y:g} سنة إلى قسم بمعدل {b:g} وقسم بمعدل {e:g} -- "
+                   "التاريخ الفعلي لتجاوز عتبة الـ {t:g} سنوات غير معروف هنا، فهذا التقسيم افتراض "
+                   "من عندك وليس منصوصاً عليه في الوثائق. اذكر المعدلين وعتبة الـ {t:g} سنوات فقط، "
+                   "وقل بوضوح إنه لا يمكن إعطاء رقم إجمالي واحد دون معرفة تاريخ بلوغ العتبة."),
+        "nototal": "لم تُذكر مدة الخدمة، فاذكر المعدل فقط دون رقم إجمالي.",
+        "nocash": ("القيمة النقدية للإجازة غير المستخدمة (المادة 63) غير محسوبة هنا -- فهي تحتاج "
+                   "أجراً يومياً، والوثائق لا تنص على طريقة تحويل الراتب الشهري إليه."),
+    },
+}
+
+
+def format_leave_block(result, lang="en"):
+    """Render `compute_leave_accrual` output for injection into the model's context."""
+    lb = _LEAVE_LABELS.get(lang, _LEAVE_LABELS["en"])
+    b, e, t = result["base_rate_days"], result["extended_rate_days"], result["extended_threshold_years"]
+    lines = [f"[{lb['head']}]", lb["rate"].format(b=b, e=e, t=t)]
+    if result["years"] is None:
+        lines.append(lb["nototal"])
+    elif result["threshold_crossed"]:
+        lines.append(lb["crossed"].format(y=result["years"], t=t, e=e, b=b))
+    else:
+        lines.append(lb["total"].format(y=result["years"], t=t, b=b, d=result["accrued_days"]))
+    lines.append(lb["nocash"])
+    return "\n".join(lines)

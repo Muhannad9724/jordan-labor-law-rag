@@ -16,8 +16,10 @@ sys.path.insert(0, str(PROJECT))
 
 from src.calc import (  # noqa: E402
     article_components, compute_contributions, compute_end_of_service,
-    compute_gender_conditions, extract_salary, extract_service, extract_sex,
+    compute_gender_conditions, compute_overtime, compute_leave_accrual,
+    extract_salary, extract_service, extract_sex, extract_hourly_wage,
     format_calculation_block, format_end_of_service_block, format_gender_block,
+    format_overtime_block, format_leave_block,
     _private_funding_articles,
 )
 
@@ -305,6 +307,67 @@ for q, hist, want in sex_cases:
     got = extract_sex(q, hist)
     assert got == want, f"extract_sex({q!r}, {hist!r}) = {got}, expected {want}"
 print("extract_sex: reads the person's own words only, ignores the assistant's recitation\n")
+
+# --------------------------------------------------------- overtime, Art 59
+# Ground truth read directly from the article text: 125% ordinary overtime,
+# 150% for the weekly day off / a holiday, both languages.
+for lang in ("ar", "en"):
+    r = compute_overtime([chunk("labor96", lang, "59")])
+    assert r is not None, f"{lang}: Article 59 in context but returned None"
+    assert r["ordinary_rate"] == 125.0 and r["holiday_rate"] == 150.0, r
+    assert r["ordinary_amount"] is None and r["holiday_amount"] is None
+    block = format_overtime_block(r, lang)
+    assert "125" in block and "150" in block
+    # no hourly wage stated -> the rates alone, never a JD figure invented from a
+    # monthly salary
+    assert "ASK" not in block and "اسأل" not in block  # not a fact to ask for, just absent
+print("overtime: 125%/150% read from Article 59 text, both languages")
+
+# hourly wage stated -> JD amounts computed; a bare monthly salary must NOT trigger this
+r = compute_overtime([chunk("labor96", "en", "59")], hourly_wage=4.0)
+assert r["ordinary_amount"] == 5.0 and r["holiday_amount"] == 6.0, r  # 4 * 125% / 4 * 150%
+assert extract_hourly_wage("my salary is 800 JD") is None
+assert extract_hourly_wage("I earn 4 JD per hour") == 4.0
+assert extract_hourly_wage("أجري بالساعة 4 دينار") == 4.0
+print("overtime: JD amounts only from an explicit hourly wage, never a monthly one")
+
+# wrong article in context -> decline
+assert compute_overtime([chunk("labor96", "en", "58")]) is None
+print("overtime: declines when Article 59 was not retrieved\n")
+
+# ---------------------------------------------------- annual leave, Art 61
+# Ground truth read directly from the article text: 14 days/year base, 21
+# after 5 consecutive years with the same employer, both languages.
+for lang in ("ar", "en"):
+    r = compute_leave_accrual([chunk("labor96", lang, "61")], years=3.0)
+    assert r is not None, f"{lang}: Article 61 in context but returned None"
+    assert r["base_rate_days"] == 14 and r["extended_rate_days"] == 21 \
+        and r["extended_threshold_years"] == 5, r
+    assert r["threshold_crossed"] is False and r["accrued_days"] == 42.0, r  # 14 * 3
+    block = format_leave_block(r, lang)
+    assert "42" in block
+print("leave accrual: 14/21 days and the 5-year threshold read from Article 61, both languages")
+
+# below the threshold -> exact total; at/past it -> no blended total, both rates stated
+below = compute_leave_accrual([chunk("labor96", "en", "61")], years=4.5)
+assert below["accrued_days"] == 63.0 and below["threshold_crossed"] is False  # 14 * 4.5
+crossed = compute_leave_accrual([chunk("labor96", "en", "61")], years=6.0)
+assert crossed["threshold_crossed"] is True and crossed["accrued_days"] is None, crossed
+block = format_leave_block(crossed, "en")
+assert "21" in block and "14" in block and "DO NOT calculate" in block
+print("leave accrual: exact total below 5 years; no invented blended total once past it")
+
+# no years stated -> rate only, no total
+no_years = compute_leave_accrual([chunk("labor96", "en", "61")], years=None)
+assert no_years["accrued_days"] is None and no_years["threshold_crossed"] is None
+assert "not stated" in format_leave_block(no_years, "en")
+# Article 63 cash-out is deliberately never computed -- no daily-wage conversion in the law
+assert "not computed" in format_leave_block(below, "en")
+print("leave accrual: no years stated -> rate only; Art 63 cash value never invented")
+
+# wrong article in context -> decline
+assert compute_leave_accrual([chunk("labor96", "en", "63")], years=3.0) is None
+print("leave accrual: declines when Article 61 was not retrieved\n")
 
 print(format_calculation_block(
     compute_contributions(family("ar") + [chunk("ssl", "ar", "20")], salary=1000), "ar"))
