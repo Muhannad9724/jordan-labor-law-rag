@@ -110,6 +110,33 @@ const olThenPara = render("1. First\n\n2. Second\n\nNot a list item, just text."
 check("list still ends at a real paragraph after a gap", olThenPara.querySelectorAll("ol").length === 1
   && olThenPara.querySelectorAll("li").length === 2 && olThenPara.querySelectorAll("p").length === 1);
 
+/* regression: the actual reported case -- a numbered header owns a bullet
+   sublist elaborating it, then a blank line, then the next numbered header.
+   The bullets must nest INSIDE the header's <li> so the outer <ol> stays
+   open across all three headers and the browser numbers them 1, 2, 3. */
+const nested = render(
+  "1. الإجازة السنوية المدفوعة الأجر:\n" +
+  "- أربعة عشر يوماً عن كل سنة خدمة.\n" +
+  "- المادة (61) (أ).\n" +
+  "\n" +
+  "1. الإجازة المرضية:\n" +
+  "- أربعة عشر يوماً بأجر كامل.\n" +
+  "- يجوز تمديدها.\n" +
+  "- المادة (65).\n" +
+  "\n" +
+  "1. الإجازة الإضافية:\n" +
+  "- أربعة عشر يوماً بأجر."
+);
+check("header+bullets pattern makes ONE outer <ol>", nested.querySelectorAll(":scope > ol").length === 1
+  && nested.querySelectorAll("ol").length === 1);
+check("outer <ol> has 3 top-level items (one per header)",
+  nested.querySelector("ol").children.length === 3);
+check("each header's bullets nest inside its own <li>, not the container",
+  Array.from(nested.querySelectorAll("ol > li")).every((li) => li.querySelector("ul") !== null)
+  && nested.querySelectorAll(":scope > ul").length === 0);
+check("nested bullets keep their own item counts (2, 3, 1)",
+  Array.from(nested.querySelectorAll("ol > li")).map((li) => li.querySelectorAll("ul > li").length).join(",") === "2,3,1");
+
 /* --- tables ------------------------------------------------------------- */
 const tbl = render("| Article | Rate |\n|---|---|\n| 59 | 11% |\n| 24 | 2% |");
 check("pipe table becomes <table>", tbl.querySelector("table") !== null);

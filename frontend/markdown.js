@@ -40,6 +40,54 @@ function isBlockStart(line) {
     || RE_NUMBER.test(line) || RE_ROW.test(line);
 }
 
+// Builds one <ol>/<ul> starting at lines[start]. Returns [element, nextIndex].
+//
+// Two things a flat parser gets wrong on real model output:
+//  1. Items are often multi-sentence, so the model separates them with a
+//     blank line. A flat parser closes the list on any non-matching line,
+//     so a blank line splits "1. A" / "1. B" / "1. C" into three separate
+//     one-item <ol>s -- and since <li> numbering restarts per <ol>, every
+//     item renders as "1.". Fix: swallow a blank line and keep going if
+//     another item of the SAME type follows it.
+//  2. A numbered item is sometimes followed by a bullet list elaborating
+//     it ("1. Header:\n- detail\n- detail\n\n2. Header:..."). The bullets
+//     are a different marker, so a flat parser closes the outer <ol> right
+//     there -- same "1." bug, one level up. Fix: when a differently-typed
+//     list immediately follows an item (blank line allowed), nest it
+//     inside that item's <li> instead of ending the outer list.
+function parseList(lines, start, ordered) {
+  const re = ordered ? RE_NUMBER : RE_BULLET;
+  const nestedRe = ordered ? RE_BULLET : RE_NUMBER;
+  const list = document.createElement(ordered ? "ol" : "ul");
+  let i = start;
+  while (i < lines.length) {
+    if (!lines[i].trim()) {
+      let j = i + 1;
+      while (j < lines.length && !lines[j].trim()) j += 1;
+      if (j < lines.length && re.test(lines[j])) {
+        i = j;
+        continue;
+      }
+      break;
+    }
+    const m = lines[i].match(re);
+    if (!m) break;
+    const li = document.createElement("li");
+    appendInline(li, ordered ? m[2] : m[1]);
+    list.appendChild(li);
+    i += 1;
+
+    let k = i;
+    while (k < lines.length && !lines[k].trim()) k += 1;
+    if (k < lines.length && nestedRe.test(lines[k])) {
+      const [sub, ni] = parseList(lines, k, !ordered);
+      li.appendChild(sub);
+      i = ni;
+    }
+  }
+  return [list, i];
+}
+
 function renderMarkdown(text, container) {
   const lines = String(text).replace(/\r\n?/g, "\n").split("\n");
   let i = 0;
@@ -102,32 +150,9 @@ function renderMarkdown(text, container) {
 
     if (RE_BULLET.test(line) || RE_NUMBER.test(line)) {
       const ordered = RE_NUMBER.test(line);
-      const re = ordered ? RE_NUMBER : RE_BULLET;
-      const list = document.createElement(ordered ? "ol" : "ul");
-      while (i < lines.length) {
-        const m = lines[i].match(re);
-        if (m) {
-          const li = document.createElement("li");
-          appendInline(li, ordered ? m[2] : m[1]);
-          list.appendChild(li);
-          i += 1;
-          continue;
-        }
-        // A blank line only ends the list if what follows isn't another item of
-        // it -- otherwise each item lands in its own <ol> and every <li> renders
-        // as "1." (numbering restarts per list; the model writes items separated
-        // by blank lines when each has multiple sentences).
-        if (!lines[i].trim()) {
-          let j = i + 1;
-          while (j < lines.length && !lines[j].trim()) j += 1;
-          if (j < lines.length && re.test(lines[j])) {
-            i = j;
-            continue;
-          }
-        }
-        break;
-      }
+      const [list, ni] = parseList(lines, i, ordered);
       container.appendChild(list);
+      i = ni;
       continue;
     }
 
