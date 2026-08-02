@@ -101,6 +101,37 @@ BM25_K1 = 1.5
 BM25_B = 0.75
 CANDIDATE_TOP_K = 50  # how many candidates each ranker contributes before fusing
 
+# Restrict retrieval to the question's own language. Adopted after measuring it on
+# eval_v3 (60 questions): recall@1 0.867 -> 0.900, MRR 0.922 -> 0.939, full coverage
+# unchanged at 0.950, no question lost coverage, worst rank still 4.
+#
+# The reason it helps has nothing to do with answer language. Every article exists
+# twice, once per language, so roughly half of the CANDIDATE_TOP_K candidates were
+# the other-language copy of something already in the list. They consumed the
+# candidate budget without adding an article, making the effective search depth
+# about 25 rather than 50. Filtering doubles it: measured on a rates probe, one
+# article moved from worse-than-rank-30 to rank 22, another from 25 to 13.
+#
+# What this gives up: exactly one article in the corpus (prof19 Article 13) exists
+# in English only, so it is unreachable from an Arabic question. Everything else is
+# perfectly parallel -- 111/111 ssl, 142/142 labor96 -- so cross-language retrieval
+# was buying almost nothing. Note that eval_v2 and eval_v3 contain no cross-lingual
+# questions, so neither set can measure that loss; the claim rests on the corpus
+# audit above, not on the eval numbers.
+FILTER_BY_LANGUAGE = True
+
+_ARABIC_RE = re.compile(r"[؀-ۿ]")
+
+
+def detect_language(text):
+    """'ar' if the text contains any Arabic script, else 'en'.
+
+    Same rule as generation.detect_language, duplicated rather than imported so
+    retrieval keeps no dependency on generation. If the two ever diverge, retrieval
+    would filter to one language while the answer is written in the other.
+    """
+    return "ar" if _ARABIC_RE.search(str(text)) else "en"
+
 AR_DIACRITICS = re.compile(r"[ؗ-ًؚ-ْٰـ]")
 WORD_RE = re.compile(r"\w+", re.UNICODE)
 
@@ -171,21 +202,33 @@ class Retriever:
 
         corpus_tokens = [tokenize(t) for t in self.chunks["text"].tolist()]
         self.bm25 = BM25Okapi(corpus_tokens, k1=BM25_K1, b=BM25_B)
+        self._masks = {}  # language -> boolean mask over chunk rows, built once
 
     def _embed_query(self, query):
         return self.embedder(query)
 
-    def _semantic_candidates(self, query, top_k):
+    def _semantic_candidates(self, query, top_k, language=None):
         emb = self._embed_query(query)
-        res = self.index.query(vector=emb, top_k=top_k, include_metadata=False)
+        kwargs = {"vector": emb, "top_k": top_k, "include_metadata": False}
+        if language:
+            kwargs["filter"] = {"language": {"$eq": language}}
+        res = self.index.query(**kwargs)
         return [m["id"] for m in res["matches"]]  # already rank-ordered, best first
 
-    def _keyword_candidates(self, query, top_k):
+    def _keyword_candidates(self, query, top_k, language=None):
         scores = self.bm25.get_scores(tokenize(query))
+        if language:
+            # -inf rather than dropping rows, so positions still line up with chunk_ids
+            scores = np.where(self._lang_mask(language), scores, -np.inf)
         top_idx = np.argsort(-scores)[:top_k]
         return [self.chunk_ids[i] for i in top_idx]
 
-    def retrieve(self, query, top_k=5):
+    def _lang_mask(self, language):
+        if language not in self._masks:
+            self._masks[language] = (self.chunks["language"] == language).to_numpy()
+        return self._masks[language]
+
+    def retrieve(self, query, top_k=5, language=None):
         """Hybrid retrieval: RRF-combine Pinecone semantic + BM25 keyword rankings.
 
         top_k was 10 from Phase 8b until Phase 16. That default was never about recall:
@@ -215,8 +258,17 @@ class Retriever:
         qwen3-embedding-0.6b puts 9 of 60 correct articles in slots 6-10. If the
         embedding model changes, re-run that check before trusting top_k=5.
         """
-        semantic_ids = self._semantic_candidates(query, CANDIDATE_TOP_K)
-        keyword_ids = self._keyword_candidates(query, CANDIDATE_TOP_K)
+        lang = (language or detect_language(query)) if FILTER_BY_LANGUAGE else None
+        semantic_ids = self._semantic_candidates(query, CANDIDATE_TOP_K, lang)
+        keyword_ids = self._keyword_candidates(query, CANDIDATE_TOP_K, lang)
+
+        # Fall back to an unfiltered search rather than returning nothing. This should
+        # not fire -- both languages cover the whole corpus -- but a wrong language
+        # guess on a code-switched question would otherwise search an empty pool, and
+        # degrading to today's behaviour beats degrading to no answer.
+        if lang and not semantic_ids:
+            semantic_ids = self._semantic_candidates(query, CANDIDATE_TOP_K)
+            keyword_ids = self._keyword_candidates(query, CANDIDATE_TOP_K)
 
         rrf_scores = {}
         for rank, cid in enumerate(semantic_ids, start=1):
