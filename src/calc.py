@@ -60,6 +60,28 @@ AR_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 # The marker that defines a funding article, shared with src/retrieval.py.
 FUNDING_MARKERS = {"ar": "تتكون مصادر تمويل", "en": "shall be financed"}
 
+# The insurance TYPE each article's rate belongs to (Work Injury, Maternity, ...) is
+# not in `format_calculation_block` -- it's read out of the same marker sentence.
+# Measured live: without a name attached to each line, the model cites the article and
+# percent correctly but omits what the rate is FOR in some trials and states it in
+# others (inconsistent, not wrong), because nothing forces it to. Extracted the same
+# way as everywhere else in this module -- from the text, not hardcoded -- so a
+# re-extracted corpus or a renamed insurance type carries through automatically.
+_INSURANCE_NAME_AR = re.compile(r"تتكون مصادر تمويل\s+(.+?)\s+مما يلي")
+_INSURANCE_NAME_EN = re.compile(r"(.+?)\s+shall be financed", re.I)
+_LEADING_MARKER_RE = re.compile(r"^[a-zA-Z]\.\s*")
+
+
+def _insurance_name(text, language):
+    """The insurance type an article's funding clause names, or None if unmatched."""
+    pat = _INSURANCE_NAME_AR if language == "ar" else _INSURANCE_NAME_EN
+    m = pat.search(str(text))
+    if not m:
+        return None
+    name = re.sub(r"\s+", " ", m.group(1)).strip()
+    name = _LEADING_MARKER_RE.sub("", name).strip()
+    return name or None
+
 # Who bears the cost -- keyed on the VERB (trap 1). Order within a list is
 # irrelevant; the nearest match wins (trap 2).
 BEARER_CUES = {
@@ -252,9 +274,10 @@ def compute_contributions(chunks, salary=None):
 
         comps = []
         for art in sorted(expected, key=int):
+            name = _insurance_name(arts[art], language)
             for c in article_components(arts[art]):
                 if c["scope"] == "private" and c["bearer"]:
-                    comps.append({"article": art, **c})
+                    comps.append({"article": art, "name": name, **c})
         if not comps:
             continue
 
@@ -473,7 +496,8 @@ def format_calculation_block(result, lang="en"):
             continue
         lines.append(f"{lb[key]}:")
         for c in rows:
-            line = f"  {art} ({c['article']}): {c['rate']:g}%"
+            label = f" ({c['name']})" if c.get("name") else ""
+            line = f"  {art} ({c['article']}){label}: {c['rate']:g}%"
             if c.get("amount") is not None:
                 line += f" = {c['amount']:g} {cur}"
             lines.append(line)

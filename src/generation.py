@@ -128,7 +128,7 @@ Precision
 
 Usefulness
 10. The question usually describes someone's real situation. Answer that first, in a sentence or two, then give the supporting rules and citations. Do not open by restating the article.
-11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, or which law covers them -- ask them for it in one short question instead of guessing or covering every possible case. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it.
+11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for it in one short question instead of guessing or covering every possible case. Never silently default to one case (e.g. the male figures) when a provision states both. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it.
 12. Reply in the language of the question -- an Arabic question gets an Arabic answer, an English question gets an English answer. Write plainly and without padding, but do not leave a relevant provision out in order to keep the answer short.
 
 Judgment questions
@@ -137,7 +137,7 @@ Judgment questions
 Totals and calculations
 14. When the question asks for a total, a combined rate, or an amount worked out from a figure the person gave, account for EVERY provision in the documents that contributes to it -- not only the most prominent one. Contributions in particular are set by several separate articles, one per type of insurance, and answering from one of them understates the answer.
 15. Before calculating, restate any rate that the documents write in words as a numeral (the conversion aid under each document gives it). A rate written in words counts exactly as much as one written in digits -- do not skip it because it is harder to read.
-16. Show each component on its own line with the article it comes from, then the total. Separate what the employer pays from what is deducted from the employee, and never add the two together into a single figure unless the person asked for the combined total.
+16. Show each component on its own line with the article it comes from and, when a computed block names one, which type of insurance the rate is for -- do not drop the name even when it is obvious to you, since the answer is for someone who may not know the branches exist. Then the total. Separate what the employer pays from what is deducted from the employee, and never add the two together into a single figure unless the person asked for the combined total.
 17. Apply any ceiling or floor on the amount that the documents state, and say plainly when it does not affect the figure given.
 18. Rule 6 does not forbid this. Adding up rates that the documents each state outright is arithmetic, not interpretation. Rule 6 still governs everything else: do not reason about how provisions qualify or override one another, and if the total depends on which category the person falls into, say which case you have calculated and name the others.
 19. Where a block of computed figures follows the documents, the arithmetic in it has already been done and checked. Use those rates, amounts and totals exactly as given -- do not re-add the components, do not re-derive a total, do not round differently, and never state a figure that contradicts the block. Rules 14 to 17 are already satisfied by it. You still write the answer: cite the article beside each rate as the block shows it, and add anything the documents say that the block does not cover.
@@ -626,7 +626,7 @@ REWRITE_MAX_TOKENS = 200
 # rule 11 without it.
 MULTITURN_REMINDER = """Before answering the question below, judge it on its own terms.
 
-If answering it correctly depends on a fact about this person that they have not stated -- their age, years of service, marital status, a date, an amount, or which law covers them -- ask them for that one fact in a short question instead of answering as though it were settled.
+If answering it correctly depends on a fact about this person that they have not stated -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for that one fact in a short question instead of answering as though it were settled. Never silently pick one case (e.g. the male figures) when the documents give both.
 
 How earlier turns in this conversation were answered does not decide this. If the fact is still missing now, ask for it now."""
 # How much history each step sees. Rewriting only needs the immediately preceding

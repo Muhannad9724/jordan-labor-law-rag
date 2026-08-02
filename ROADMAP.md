@@ -249,6 +249,23 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 24d — Two more live reports: insurance names, sex as an askable fact ✅ done
+`src/calc.py`, `src/generation.py` (rules 11/16, `MULTITURN_REMINDER`). Two more reports from the same session, both against the freshly-deployed calculator.
+
+**1. Component lines didn't say what each rate was FOR.** A live answer for a 1400 JD salary listed "Article 24: 2%, Article 42: 0.75%, Article 48: 0.5%, Article 59: 11%" with no statement of which insurance branch each rate belongs to — numerically correct, unreadable to someone who doesn't already know the four branches exist. Inconsistent across trials rather than uniformly missing, because nothing forced the model to include it.
+
+Fixed the same way as every other figure in `calc.py`: the insurance name is **read out of the same funding-marker sentence** already used to build `FAMILY_MARKERS` in `src/retrieval.py` (`تتكون مصادر تمويل X مما يلي` / `X shall be financed`), not hardcoded, so a corpus re-extraction carries it through automatically. English needed light cleanup (a stray list marker like `"a.\t The"` before the name). Attached to each component and rendered in the block: `Article (24) (Work Injury Insurance): 2% = 28 JD`. Rule 16 updated to require naming it. **Measured: 0/6 → 6/6** trials named all four types.
+
+**2. Pension eligibility silently assumed male.** User asked, across two turns (200 subscriptions, then "عمري 50"), how many subscriptions remained until retirement. The answer used the **male-only** thresholds throughout — Article 62's retirement age (60) and Article 64's early-retirement subscription count (252) — without ever asking, though both articles state separate figures for women in the same sentence (55 / 228). Confirmed against the corpus: **3 SSL articles differentiate by sex** (62, 64, and 71, the last a definitions article and irrelevant here).
+
+Root cause: rule 11's list of example "facts to ask for" (age, years of service, marital status, a date, an amount, which law covers them) never named sex, so the model had no signal that this was a fact it was assuming rather than being given.
+
+Fixed rule 11 first — **2/6 asked, 2/6 still silently defaulted to male, 1/6 gave a mixed answer.** Traced the shortfall to `MULTITURN_REMINDER`: per Phase 23a, it is injected as the *last* thing the model reads before the current turn specifically because it dominates over a rule sitting thousands of tokens earlier in the system prompt — and it still carried the **old** example list. Fixing rule 11 without it meant fixing the rule that loses the tie-break. Same addition made there. **After both: 4/6** — some trials asked outright, others proactively stated both figures side by side ("52 more if male, 28 more if female"), which is arguably better than a bare question.
+
+**Residual 2/6 still silently default to male — stated plainly, not absorbed into the headline number.** This is a probabilistic instruction-following ceiling, the same shape of limit `LESSONS.md` 5.4 already named: a prompt narrows a failure mode, it does not make an unreliable capability reliable. Closing the remaining gap would mean a **deterministic pension-eligibility checker** — Article 64 alone carries multiple sub-clauses gated on historical transition dates, considerably more branching than the contribution-rate calculator — which is a new feature decision, not a wording fix, and was not built without asking first.
+
+**Not measured against the broader eval set.** Both changes are system-prompt edits; their effect outside the two reported cases is unmeasured and folds into the pending judge-run item.
+
 ## Phase 24c — Live fabrication traced to a contaminated measurement ✅ done — **fixed and live**
 `src/retrieval.py` (`_expand_families`, `FAMILY_TRIGGER_DEPTH`/`COUNT`). Triggered by two live reports from the user in the same session, on a fresh, single-turn conversation:
 

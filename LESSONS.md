@@ -538,6 +538,29 @@ scored as a model failure, the fix would have gone into the prompt and never wor
 > sampling failure — it is deterministic, so it comes from your code, not the model.
 > Use the variance as the diagnostic: noisy means the model, stable means you.
 
+### 5.5 A fixed rule, and its unfixed twin
+
+**What happened.** A rule listed the personal facts worth asking about — age,
+years of service, which law applies — and a real case showed the list was
+missing one: sex, where two articles state separate numbers for men and women.
+Added it. Measured: still wrong half the time.
+
+**The cause.** The exact same list existed in a second place — the reminder from
+5.3, injected right before the final answer specifically *because* it outweighs
+the main instruction once a conversation has history. Fixing the rule the model
+reads first did nothing for the copy that actually wins the tie-break, because
+that copy still had the old list.
+
+**The fix:** find every place a list like this is duplicated — not by memory,
+by `grep` — and update them together. Two half-measures rarely combine into one
+whole one: they measured roughly independent, so fixing only one moved the
+outcome from "wrong" to "wrong half the time," not to "fixed."
+
+> **The rule:** when a fix means widening a list of examples, check whether that
+> list has a duplicate anywhere else in the prompt before declaring it fixed.
+> A reminder that overrides the main instruction (5.3) is exactly where a stale
+> copy hides, because it was deliberately made to be the thing that wins.
+
 ---
 
 ## Part 6 — Deciding what to work on
@@ -637,8 +660,10 @@ If this document were one page:
     the model's.**
 15. **When you measure a component to redesign it, check that the measurement
     doesn't call the component itself.**
+16. **A widened example list can have a duplicate elsewhere in the prompt —
+    find every copy before calling the fix done.**
 
 ---
 
-*Compiled after Phase 24c, from the failures recorded across all 24 phases in
+*Compiled after Phase 24d, from the failures recorded across all 24 phases in
 `ROADMAP.md`.*

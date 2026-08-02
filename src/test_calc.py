@@ -142,6 +142,31 @@ for lang in ("ar", "en"):
         assert decoy not in block, f"{lang}: decoy {decoy} reached the block"
 print("rendered block carries every component, both totals and no decoy")
 
+# --------------------------------------------------- insurance name per component
+# Live report: the model cited article+percent correctly but sometimes dropped what
+# the rate was FOR, inconsistently across trials, because nothing forced it to.
+# Fixed by extracting the insurance name from the same funding-marker sentence
+# already used elsewhere and putting it in the block itself.
+EXPECTED_NAMES = {
+    ("24", "ar"): "تأمين إصابات العمل", ("24", "en"): "Work Injury Insurance",
+    ("42", "ar"): "تأمين الأمومة", ("48", "ar"): "تأمين التعطل عن العمل",
+    ("59", "ar"): "تأمين الشيخوخة والعجز والوفاة",
+}
+for lang in ("ar", "en"):
+    res = compute_contributions(family(lang), salary=1000)
+    by_art = {c["article"]: c.get("name") for c in res["components"]}
+    for art in ("24", "42", "48", "59"):
+        assert by_art[art], f"{lang}: article {art} has no insurance name attached"
+        want = EXPECTED_NAMES.get((art, lang))
+        if want:
+            assert by_art[art] == want, f"{lang} {art}: got {by_art[art]!r}, expected {want!r}"
+    block = format_calculation_block(res, lang)
+    assert "Insurance" in block or "تأمين" in block, f"{lang}: no insurance name reached the block"
+    # 42/48/59's English text opens with a stray list marker ("a.\t The ...") -- must be
+    # stripped, not leaked into the block
+    assert "a." not in block.split("\n")[0] and "\t" not in block
+print("insurance name (Work Injury / Maternity / Unemployment / Old-age) attached per component")
+
 # ------------------------------------------- ceiling exception, Article 20(c)(1)
 # Anyone insured before 15/10/2009 has a 5,000 ceiling, not 3,000. Which one applies
 # is a fact about the person that the question never gives, so the calculator must
