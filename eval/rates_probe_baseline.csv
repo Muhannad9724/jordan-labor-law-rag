@@ -1,0 +1,11 @@
+﻿question_id,lang,n_gold,rank,found_in_top5,coverage,full_coverage,distinct_articles_in_top5,gold_ranks
+r01,ar,4,3,1,0.25,False,3,"24@25, 42@11, 48@>30, 59@3"
+r02,en,4,2,1,0.25,False,3,"24@8, 42@16, 48@24, 59@2"
+r03,ar,2,7,0,0.0,False,5,"48@>30, 59@7"
+r04,ar,1,8,0,0.0,False,3,24@8
+r05,ar,2,2,2,1.0,True,4,"42@2, 43@4"
+r06,ar,1,1,1,1.0,True,5,48@1
+r07,ar,1,5,1,1.0,True,4,59@5
+r08,ar,1,1,1,1.0,True,3,72@1
+r09,ar,1,2,1,1.0,True,3,59@2
+r10,en,1,1,1,1.0,True,3,59@1
