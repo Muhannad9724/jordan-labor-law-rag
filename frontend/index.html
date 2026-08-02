@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>دليل قانون العمل والضمان الاجتماعي الأردني</title>
+  <title data-i18n="pageTitle">دليل قانون العمل والضمان الاجتماعي الأردني</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <!-- ?v= is a cache buster. Without it the browser keeps serving the css/js it
        already has and a deploy looks like it silently did nothing. Bump on change. -->
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
   <div class="shell">
@@ -19,14 +19,15 @@
         <polygon points="14,2 16.39,9.04 23.38,6.52 19.36,12.78 25.70,16.67 18.30,17.43 19.21,24.81 14,19.5 8.79,24.81 9.70,17.43 2.30,16.67 8.64,12.78 4.62,6.52 11.61,9.04" />
       </svg>
       <div class="masthead-text">
-        <h1>دليل قانون العمل والضمان الاجتماعي</h1>
-        <p class="tagline">اسأل بالعربية أو الإنجليزية — كل إجابة مستندة إلى نصّ المادة القانونية ومصدرها</p>
+        <h1 data-i18n="h1">دليل قانون العمل والضمان الاجتماعي</h1>
+        <p class="tagline" data-i18n="tagline">اسأل بالعربية أو الإنجليزية — كل إجابة مستندة إلى نصّ المادة القانونية ومصدرها</p>
       </div>
       <div class="masthead-laws">
-        <span>قانون العمل ١٩٩٦</span>
-        <span>العمل المهني ٢٠١٩</span>
-        <span>الضمان الاجتماعي</span>
+        <span data-i18n="lawLabor96">قانون العمل ١٩٩٦</span>
+        <span data-i18n="lawProf19">العمل المهني ٢٠١٩</span>
+        <span data-i18n="lawSsl">الضمان الاجتماعي</span>
       </div>
+      <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English" title="Switch to English">EN</button>
     </header>
 
     <div class="workspace">
@@ -40,21 +41,22 @@
         <div class="suggestions-dock" id="suggestions-dock" hidden></div>
 
         <form class="composer" id="composer">
-          <button type="button" id="reset-btn" aria-label="محادثة جديدة" title="بدء محادثة جديدة">
+          <button type="button" id="reset-btn" data-i18n-aria="resetLabel" data-i18n-title="resetTitle" aria-label="محادثة جديدة" title="بدء محادثة جديدة">
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
               <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
             </svg>
-            <span class="reset-label">محادثة جديدة</span>
+            <span class="reset-label" data-i18n="resetLabel">محادثة جديدة</span>
           </button>
           <textarea
             id="question-input"
+            data-i18n-placeholder="placeholder"
             placeholder="اكتب سؤالك هنا… مثلاً: كم مدة الإشعار قبل إنهاء عقد العمل؟"
             rows="1"
             required
           ></textarea>
-          <button type="submit" id="send-btn" aria-label="إرسال">
+          <button type="submit" id="send-btn" data-i18n-aria="sendAria" aria-label="إرسال">
             <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 5 5 12 12 19"></polyline>
@@ -66,7 +68,7 @@
 
       <aside class="sources-rail" id="sources-rail">
         <header class="rail-head">
-          <h2>المواد المستند إليها</h2>
+          <h2 data-i18n="railHead">المواد المستند إليها</h2>
           <span class="rail-count" id="rail-count"></span>
         </header>
         <div class="rail-body" id="rail-body"></div>
@@ -74,13 +76,13 @@
 
     </div>
 
-    <footer class="disclaimer">
+    <footer class="disclaimer" data-i18n="disclaimer">
       هذه معلومات عامة وليست استشارة قانونية — يُرجى مراجعة محامٍ مرخّص لحالتك الخاصة
     </footer>
 
   </div>
 
-  <script src="markdown.js?v=9"></script>
-  <script src="app.js?v=9"></script>
+  <script src="markdown.js?v=10"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>

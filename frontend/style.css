@@ -76,7 +76,7 @@ body {
   content: "";
   position: absolute;
   bottom: -1px;
-  right: 0;
+  inset-inline-start: 0;
   width: 132px;
   height: 1px;
   background: var(--brass);
@@ -117,7 +117,7 @@ body {
   flex-direction: column;
   gap: 5px;
   flex-shrink: 0;
-  text-align: left;
+  text-align: end;
 }
 
 .masthead-laws span {
@@ -125,8 +125,34 @@ body {
   font-weight: 400;
   letter-spacing: 0.03em;
   color: var(--parchment-faint);
-  padding-left: 11px;
-  border-left: 2px solid var(--rule);
+  padding-inline-end: 11px;
+  border-inline-end: 2px solid var(--rule);
+}
+
+.lang-toggle {
+  flex-shrink: 0;
+  height: 30px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--brass);
+  background: transparent;
+  border: 1px solid var(--brass-dim);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.lang-toggle:hover { background: var(--brass-glow); }
+
+.lang-toggle:focus-visible {
+  outline: 1px solid var(--brass);
+  outline-offset: 2px;
 }
 
 /* ---------------- Workspace ---------------- */
@@ -150,7 +176,8 @@ body {
    reading them inside a cropped pane is miserable. */
 .thread {
   flex: 1;
-  padding: 4px 6px 26px 14px;
+  padding-block: 4px 26px;
+  padding-inline: 6px 14px;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -167,17 +194,13 @@ body {
   margin-bottom: 7px;
 }
 
+/* Logical properties resolve against this element's own dir attribute (set per-message
+   in app.js by isArabic(), independent of the page's overall UI language), so one rule
+   correctly mirrors both an Arabic and an English question without a [dir="ltr"] override. */
 .question {
-  border-right: 2px solid var(--brass);
-  padding-right: 15px;
-}
-
-.question[dir="ltr"] {
-  border-right: none;
-  border-left: 2px solid var(--brass);
-  padding-right: 0;
-  padding-left: 15px;
-  text-align: left;
+  border-inline-start: 2px solid var(--brass);
+  padding-inline-start: 15px;
+  text-align: start;
 }
 
 .question p {
@@ -190,10 +213,9 @@ body {
 }
 
 .answer {
-  padding-right: 17px;
+  padding-inline-start: 17px;
+  text-align: start;
 }
-
-.answer[dir="ltr"] { padding-right: 0; padding-left: 17px; text-align: left; }
 
 .answer .body {
   font-family: var(--font-law);
@@ -312,7 +334,7 @@ body {
   color: var(--parchment-faint);
   font-style: normal;
   letter-spacing: 0.02em;
-  padding-right: 17px;
+  padding-inline-start: 17px;
 }
 
 .thinking::after {
@@ -328,8 +350,8 @@ body {
 }
 
 .failure {
-  border-right: 2px solid var(--clay);
-  padding-right: 15px;
+  border-inline-start: 2px solid var(--clay);
+  padding-inline-start: 15px;
   background: var(--clay-tint);
   padding-top: 11px;
   padding-bottom: 11px;
@@ -367,12 +389,13 @@ body {
   font-family: var(--font-ui);
   font-size: 0.87rem;
   font-weight: 300;
-  text-align: right;
+  text-align: start;
   color: var(--parchment-dim);
   background: transparent;
   border: none;
   border-top: 1px solid var(--rule-soft);
-  padding: 13px 2px 13px 0;
+  padding-block: 13px;
+  padding-inline: 2px 0;
   cursor: pointer;
   transition: color 0.18s ease, padding 0.18s ease;
   position: relative;
@@ -380,15 +403,19 @@ body {
 
 .seeds .seed:last-child { border-bottom: 1px solid var(--rule-soft); }
 
+/* The arrow's direction should match the way the line reads, not stay a fixed glyph --
+   otherwise an English (LTR) row would show a chevron pointing backwards. */
 .seed::before {
   content: "←";
   color: var(--brass);
   opacity: 0;
-  margin-left: 9px;
+  margin-inline-end: 9px;
   transition: opacity 0.18s ease;
 }
 
-.seed:hover { color: var(--parchment); padding-right: 5px; }
+html[dir="ltr"] .seed::before { content: "→"; }
+
+.seed:hover { color: var(--parchment); padding-inline-start: 5px; }
 .seed:hover::before { opacity: 1; }
 
 /* ---------------- Composer ---------------- */
@@ -709,8 +736,8 @@ body.reading #reset-btn { display: inline-flex; }
   .shell { padding: 0 16px; }
 
   .masthead { flex-wrap: wrap; gap: 14px; padding-top: 22px; }
-  .masthead-laws { flex-direction: row; flex-wrap: wrap; gap: 8px; width: 100%; text-align: right; }
-  .masthead-laws span { border-left: none; border-right: 2px solid var(--rule); padding-left: 0; padding-right: 9px; }
+  .masthead-laws { flex-direction: row; flex-wrap: wrap; gap: 8px; width: 100%; text-align: start; }
+  .masthead-laws span { border-inline-end: none; border-inline-start: 2px solid var(--rule); padding-inline-end: 0; padding-inline-start: 9px; }
 
   .workspace { flex-direction: column; gap: 20px; }
   .thread { min-height: 40vh; }
@@ -825,7 +852,7 @@ body.reading .thread {
   font-size: 0.8rem;
   font-weight: 300;
   line-height: 1.5;
-  text-align: right;
+  text-align: start;
   color: var(--parchment-dim);
   background: transparent;
   border: 1px solid var(--rule);
@@ -835,8 +862,6 @@ body.reading .thread {
   transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
   max-width: 100%;
 }
-
-.suggestion[dir="ltr"] { text-align: left; }
 
 .suggestion:hover,
 .suggestion:focus-visible {
