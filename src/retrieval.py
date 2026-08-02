@@ -170,7 +170,21 @@ FAMILY_TOP_K = 8
 # eval_v3 (60 general questions) only 2/60 (q10, q16) -- both confirmed to cost
 # nothing on retrieval metrics (recall@1/@5, MRR, full coverage all unchanged; see
 # scripts/24. deterministic_calculation.ipynb).
-FAMILY_TRIGGER_DEPTH = 35
+#
+# Phase 25 widened 35 -> 37. Two new probe questions ("راتبي 1000 دينار كم يُقتطع
+# مني" and a رواتب+"وضح كل نسبة" phrasing) each had only ONE family member within
+# depth 35 (Article 42 at true raw rank 36 and 37 respectively) -- one member is
+# exactly the "incidental" case COUNT=2 exists to reject, so neither fired and both
+# fell back to an incomplete family. Swept depth 35-40 against eval_v3 + eval_rates
+# + the two new probes with FAMILY_TOP_K's own slicing (8 when fired, not 5) applied
+# correctly this time -- an earlier pass of this same sweep truncated to 5
+# unconditionally and wrongly read eval_rates as 9/10 instead of the true 10/10.
+# 37 is the exact minimum that catches both new probes (36 catches only one) with
+# recall@1/@5, MRR and full coverage on eval_v3 bit-identical to depth 35 (same two
+# questions fire, nothing new). 39+ starts firing on q05/q12/q43, which stays
+# "covered" within the widened 8 slots but costs recall@1/MRR by knocking the
+# correct article off rank 1 -- so wider is not free past this point.
+FAMILY_TRIGGER_DEPTH = 37
 FAMILY_TRIGGER_COUNT = 2
 
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
