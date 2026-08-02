@@ -249,6 +249,40 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 24a — Ceiling exception, end of service, markdown rendering ✅ done — **all three live**
+`src/calc.py`, `frontend/markdown.js`, `frontend/render-test.html`. Two user corrections recorded at the same time: the English Professional Work Law is **not** outdated (that open issue is closed), and the Gemini account is **paid**, so the free-tier rate-limit risk carried since Phase 19 does not apply.
+
+**1. The ceiling had an exception and Phase 24 stated it flatly.** Article 20(ج)(1) gives a **5,000 JD** contributory ceiling to anyone insured before 15/10/2009. Yesterday's calculator asserted 3,000 unconditionally — wrong for everyone that paragraph exempts, and stated with the same confidence as everything else in the block.
+
+Which one applies is a fact about the person the question never contains, so the calculator no longer picks: it computes on the ordinary ceiling, reports both figures and the cutoff date parsed from the text, and instructs the model to **ask** (rule 11). Raised only above 3,000 JD, where it could change the answer — below it, asking would be noise.
+
+Measured, 4 trials at 4,000 JD: amounts **4/4**, exemption raised **4/4** — three ending "هل شُملت بالتأمين قبل 15/10/2009؟" and one phrasing it as an instruction to check.
+
+**A scorer bug worth recording.** That run first scored 1/4 on "mentions 5000" and 3/4 on "asks about 2009", which read like a failure. Reading the answers showed all four raised the exemption: the behaviour was one thing and my scorer had split it across two flags, crediting neither. Re-scored from the persisted answers at zero cost — the entire reason answers are persisted. Same family of mistake as `LESSONS.md` 2.4.
+
+**2. End-of-service remuneration, Labour Law Art 32.** Looks like a multiplication. It is not, and the reason is the article's opening clause:
+
+> "A worker who is **NOT SUBJECT** to the provisions of the Social Security Law and whose service ends … is entitled to an end of service remuneration at the rate of one month's wage for each year of their actual service."
+
+**Most Jordanian workers are subject to the Social Security Law**, so this remuneration does not arise for them. An answer that simply multiplies wage by years is wrong for the majority of people who would ask — while looking perfectly authoritative. The precondition is surfaced as a question the model must put to the person, exactly like the ceiling exemption.
+
+The rate is matched as a **phrase** rather than hardcoded: if the law is amended to half a month per year, the phrase stops matching and the calculator **declines** instead of quietly applying the old rate. Years and months are parsed from the question and pro-rated per the article's own "parts of a year" clause.
+
+| case | expected | result |
+|---|---|---|
+| contributions 1000 JD (regression) | 75 · 142.5 | **4/4** |
+| ceiling exception, 4000 JD | 225 · 427.5 on the capped base | **4/4** |
+| — raises the pre-2009 exemption | ask, don't assume | **4/4** |
+| end of service, 10 years (ar) | 10 months = 10,000 JD | **4/4** |
+| end of service, 4.5 years (en) | 4.5 months = 3,825 JD | **3/3** |
+| — raises the not-in-social-security condition | ask, don't assume | **7/7** |
+
+**3. Markdown rendering.** `frontend/app.js` set `body.textContent`, so answers displayed literal `**` and `|` — and it got *worse* the day the calculator started emitting component lists and tables. `renderMarkdown()` builds DOM nodes and routes every string through `createTextNode`/`textContent`. **Nothing is ever assigned to `innerHTML`**, so model output cannot become markup at all, rather than depending on escaping being correct on every path. Extracted to `frontend/markdown.js` so it is testable on its own.
+
+**Verification, and its limit.** This environment has no browser and no JS engine, so the renderer could not be executed while it was written — only parsed and structurally checked offline (esprima). `frontend/render-test.html` runs the real function against 30 assertions, including that `<img onerror>` and `<script>` in model text stay inert, and prints PASS/FAIL. **The user opened it in a browser and confirmed it working (2026-08-02).**
+
+**Live and verified in production** at `jordan-legal-guide.up.railway.app`. The deploy gate that mattered was startup: `_build_families` now imports and calls `calc` at `Retriever.__init__`, so a failure there would crash-loop the container — the same class of failure as the missing `google-genai` in Phase 19. Booted locally first, then confirmed live: the original bug question returns **14.25% broken out by insurance branch**, and 1,000 JD returns 75 / 142.5 / 217.5 over real HTTP.
+
 ## Phase 24 — Contribution arithmetic moved into code ✅ done — **adopted; 3/6 → 6/6**
 `src/calc.py`, `src/test_calc.py`, `scripts/24. deterministic_calculation.ipynb`, plus changes to `src/retrieval.py` and `src/generation.py`.
 
