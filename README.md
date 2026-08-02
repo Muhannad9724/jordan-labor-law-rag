@@ -75,6 +75,8 @@ Open `http://127.0.0.1:8000` — the backend serves the frontend directly.
 - `0. cleaned_data/` — extracted article tables and the chunked corpus
 - `1. data/` — the source PDFs
 - `notes/` — working notes, not part of the pipeline
+- `EXPLAINER.md` — how the whole system works, from scratch, in plain language
+- `LESSONS.md` — the mistakes made along the way and what each one taught
 - `ROADMAP.md` — full phase-by-phase build log with reasoning for every choice
 
 ## Disclaimer
