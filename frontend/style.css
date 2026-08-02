@@ -23,58 +23,8 @@
   --clay: #b5654a;
   --clay-tint: rgba(181, 101, 74, 0.13);
 
-  /* Thin overlays used on top of --panel/--void surfaces (inline code, table rules,
-     drop shadows). These invert per theme below -- a white-tinted overlay that reads
-     as a highlight on a dark surface reads as almost nothing on a light one. */
-  --overlay-soft: rgba(255, 255, 255, 0.07);
-  --overlay-border: rgba(255, 255, 255, 0.14);
-  --overlay-weak: rgba(255, 255, 255, 0.05);
-  --shadow-strong: rgba(13, 11, 9, 0.85);
-  --shadow-soft: rgba(13, 11, 9, 0.7);
-  --bg-glow-1: rgba(201, 162, 39, 0.055);
-  --bg-glow-2: rgba(62, 122, 94, 0.045);
-  /* A step darker/more saturated than --rule -- used where a raised surface (composer,
-     suggestions dock) needs a border that reads as a distinct edge, not just a hairline. */
-  --border-strong: #4a4032;
-
   --font-law: "Amiri", "Traditional Arabic", "Times New Roman", serif;
   --font-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
-}
-
-/* Light theme -- same "legal codex" world (ink on paper, brass rules), just lit from
-   the opposite direction: warm paper ground instead of basalt, dark ink instead of
-   parchment-pale text. Toggled via [data-theme] on <html>, set in app.js and persisted
-   to localStorage the same way uiLang is. Falls back to the system preference on first
-   visit (see app.js) rather than defaulting blind, since this is a genuine accessibility
-   preference and not a content choice like page language. */
-:root[data-theme="light"] {
-  --void: #f4efe3;
-  --void-deep: #ffffff;
-  --panel: #ece2cd;
-  --panel-raised: #fffdf8;
-  --rule: #d9cbac;
-  --rule-soft: #e6dabd;
-
-  --parchment: #2a2416;
-  --parchment-dim: #5c5138;
-  --parchment-faint: #8a7c5c;
-
-  --brass: #96730f;
-  --brass-dim: #b3985e;
-  --brass-glow: rgba(150, 115, 15, 0.1);
-
-  --verdigris: #2c6a4d;
-  --clay: #a34f33;
-  --clay-tint: rgba(163, 79, 51, 0.1);
-
-  --overlay-soft: rgba(0, 0, 0, 0.05);
-  --overlay-border: rgba(0, 0, 0, 0.12);
-  --overlay-weak: rgba(0, 0, 0, 0.035);
-  --shadow-strong: rgba(90, 78, 55, 0.22);
-  --shadow-soft: rgba(90, 78, 55, 0.16);
-  --bg-glow-1: rgba(150, 115, 15, 0.05);
-  --bg-glow-2: rgba(44, 106, 77, 0.045);
-  --border-strong: #cbb98d;
 }
 
 * { box-sizing: border-box; }
@@ -87,13 +37,12 @@ html, body {
   font-family: var(--font-ui);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 180ms ease, color 180ms ease;
 }
 
 body {
   background-image:
-    radial-gradient(ellipse 900px 500px at 70% -10%, var(--bg-glow-1), transparent 70%),
-    radial-gradient(ellipse 700px 400px at 10% 110%, var(--bg-glow-2), transparent 70%);
+    radial-gradient(ellipse 900px 500px at 70% -10%, rgba(201, 162, 39, 0.055), transparent 70%),
+    radial-gradient(ellipse 700px 400px at 10% 110%, rgba(62, 122, 94, 0.045), transparent 70%);
   background-attachment: fixed;
 }
 
@@ -180,13 +129,6 @@ body {
   border-inline-end: 2px solid var(--rule);
 }
 
-.toggle-group {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .lang-toggle {
   flex-shrink: 0;
   height: 30px;
@@ -212,38 +154,6 @@ body {
   outline: 1px solid var(--brass);
   outline-offset: 2px;
 }
-
-/* Icon-only twin of .lang-toggle, sitting right beside it -- same size, same visual
-   weight, so the two read as one control group rather than one being an afterthought. */
-.theme-toggle {
-  flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--brass);
-  background: transparent;
-  border: 1px solid var(--brass-dim);
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease;
-}
-
-.theme-toggle:hover { background: var(--brass-glow); }
-
-.theme-toggle:focus-visible {
-  outline: 1px solid var(--brass);
-  outline-offset: 2px;
-}
-
-/* The icon shown is the mode a click switches *to* -- a sun while dark (click for
-   light), a moon while light (click for dark) -- matching the convention .lang-toggle
-   already uses (button shows "EN" while the page reads Arabic). */
-.theme-toggle .icon-moon { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: inline; }
 
 /* ---------------- Workspace ---------------- */
 
@@ -341,7 +251,7 @@ body {
   font-size: 0.86em;
   padding: 0.1em 0.36em;
   border-radius: 3px;
-  background: var(--overlay-soft);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .answer .body h3,
@@ -365,7 +275,7 @@ body {
 
 .answer .body hr {
   border: 0;
-  border-top: 1px solid var(--overlay-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 /* Tables scroll inside their own box so a wide one never scrolls the page sideways. */
@@ -383,7 +293,7 @@ body {
 .answer .body th,
 .answer .body td {
   padding: 0.42em 0.85em;
-  border: 1px solid var(--overlay-border);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   text-align: start;
   /* Figures in a column line up regardless of glyph widths. */
   font-variant-numeric: tabular-nums;
@@ -393,7 +303,7 @@ body {
   font-family: var(--font-ui);
   font-size: 0.85em;
   font-weight: 600;
-  background: var(--overlay-weak);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .answer-actions {
@@ -533,17 +443,17 @@ html[dir="ltr"] .seed::before { content: "→"; }
   gap: 11px;
   padding: 15px 16px;
   background: var(--panel-raised);
-  border: 1px solid var(--border-strong);
+  border: 1px solid #4a4032;
   border-top: 1px solid var(--brass-dim);
   border-radius: 3px;
-  box-shadow: 0 10px 32px var(--shadow-strong), 0 0 0 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 32px rgba(13, 11, 9, 0.85), 0 0 0 1px rgba(0, 0, 0, 0.35);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .composer:focus-within {
   border-color: var(--brass-dim);
   border-top-color: var(--brass);
-  box-shadow: 0 10px 32px var(--shadow-strong), 0 0 0 1px var(--brass-glow);
+  box-shadow: 0 10px 32px rgba(13, 11, 9, 0.85), 0 0 0 1px var(--brass-glow);
 }
 
 #question-input {
@@ -608,7 +518,7 @@ html[dir="ltr"] .seed::before { content: "→"; }
   white-space: nowrap;
   background: var(--panel);
   color: var(--parchment-dim);
-  border: 1px solid var(--border-strong);
+  border: 1px solid #4a4032;
   border-radius: 2px;
   cursor: pointer;
   transition: border-color 0.18s ease, color 0.18s ease,
@@ -937,10 +847,10 @@ body.reading .thread {
 
 .suggestions-dock {
   background: var(--panel-raised);
-  border: 1px solid var(--border-strong);
+  border: 1px solid #443a2d;
   border-radius: 3px;
   padding: 11px 14px;
-  box-shadow: 0 8px 26px var(--shadow-soft);
+  box-shadow: 0 8px 26px rgba(13, 11, 9, 0.7);
   /* Suggestions arrive ~1-2s after the answer. Fading in rather than popping keeps
      that from reading as a layout glitch. */
   animation: suggestions-in 260ms ease both;

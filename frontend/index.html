@@ -4,19 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title data-i18n="pageTitle">دليل قانون العمل والضمان الاجتماعي الأردني</title>
-  <!-- Runs before style.css paints anything, so the page never flashes the default
-       dark theme and then swaps to a stored/system light preference a moment later.
-       Kept tiny and duplicated from app.js's own theme init on purpose -- this has to
-       run synchronously pre-paint, before app.js (loaded at the end of body) exists. -->
-  <script>
-    (function () {
-      var stored = localStorage.getItem("theme");
-      var theme = stored === "light" || stored === "dark"
-        ? stored
-        : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-      document.documentElement.setAttribute("data-theme", theme);
-    })();
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -40,25 +27,7 @@
         <span data-i18n="lawProf19">العمل المهني ٢٠١٩</span>
         <span data-i18n="lawSsl">الضمان الاجتماعي</span>
       </div>
-      <div class="toggle-group">
-        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch to light mode" title="Switch to light mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="4"></circle>
-            <line x1="12" y1="2" x2="12" y2="4.5"></line>
-            <line x1="12" y1="19.5" x2="12" y2="22"></line>
-            <line x1="4.22" y1="4.22" x2="5.95" y2="5.95"></line>
-            <line x1="18.05" y1="18.05" x2="19.78" y2="19.78"></line>
-            <line x1="2" y1="12" x2="4.5" y2="12"></line>
-            <line x1="19.5" y1="12" x2="22" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.95" y2="18.05"></line>
-            <line x1="18.05" y1="5.95" x2="19.78" y2="4.22"></line>
-          </svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-        </button>
-        <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English" title="Switch to English">EN</button>
-      </div>
+      <button type="button" id="lang-toggle" class="lang-toggle" aria-label="Switch to English" title="Switch to English">EN</button>
     </header>
 
     <div class="workspace">
