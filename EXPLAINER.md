@@ -449,7 +449,8 @@ no user data stored anywhere.
 | `src/generation.py` | the prompt, the answer, the query rewriter |
 | `src/api.py` | web service |
 | `frontend/` | the chat UI |
-| `scripts/01…26` | every decision notebook, in the order the work happened |
+| `scripts/01…23` | every decision notebook, in the order the work happened |
+| `evallib/` | shared evaluation helpers, with an equivalence proof |
 | `eval/` | the question sets and every run's results |
 | `ROADMAP.md` | the formal build log |
 | `LESSONS.md` | what went wrong and what it taught |

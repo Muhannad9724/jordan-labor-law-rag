@@ -40,7 +40,7 @@ Also tuned BM25's own `k1`/`b` parameters (25-combo grid, RRF held fixed at k=5/
 The cross-lingual eval questions still matter for regression-checking retrieval quality — Cohere's cross-lingual Recall@10 (0.625) is real and worth keeping an eye on, not zero. Optional/deferred: reranking, metadata-scoped search.
 
 ## Phase 7 — Generation / answer synthesis ✅ done
-Initial pick was Cohere `command-a-03-2025` (`scripts/07. generation.ipynb`, native `documents`/`citation_options` grounding, spot-checked on 4 cases, all correct) — but that choice was made without comparing it against anything, unlike every other phase in this project. Went back and actually tested it in `scripts/08. generation_llm_comparison.ipynb` against OpenAI `gpt-4o-mini` and Qwen2.5-72B (via OpenRouter/DeepInfra) on 10 real eval questions + 1 out-of-domain honesty trap, scored on correct-article-citation rate and a fabricated-citation check (does the answer mention an article number that wasn't even in the retrieved context):
+Initial pick was Cohere `command-a-03-2025` (`scripts/07. generation_model_choice.ipynb`, native `documents`/`citation_options` grounding, spot-checked on 4 cases, all correct) — but that choice was made without comparing it against anything, unlike every other phase in this project. Went back and actually tested it in `scripts/07. generation_model_choice.ipynb` against OpenAI `gpt-4o-mini` and Qwen2.5-72B (via OpenRouter/DeepInfra) on 10 real eval questions + 1 out-of-domain honesty trap, scored on correct-article-citation rate and a fabricated-citation check (does the answer mention an article number that wasn't even in the retrieved context):
 
 | Model | Correct article (10 q) | Fabricated citations | Cost/question |
 |---|---|---|---|
@@ -63,7 +63,7 @@ This surfaced two real defects the citation check was blind to: Cohere's relevan
 Implementation: `src/generation.py` — `get_production_generator()` is the single entry point (GPT-4o-mini via OpenRouter); `Generator` (Cohere) and `OpenAICompatibleGenerator` (OpenAI-compatible, used for both GPT-4o-mini and Qwen) both still live in the file for the comparison. System prompt enforces: answer only from provided documents, admit honestly when they don't have the answer, cite law + article, match the question's language, close with a "not legal advice" disclaimer. One infra fix along the way: OpenRouter's automatic provider fallback for the Qwen test was routing to a broken provider after DeepInfra rate-limited — fixed by pinning the request to DeepInfra only and adding proper retry-with-backoff around both empty responses and thrown exceptions.
 
 ## Phase 8 — Evaluation harness ✅ done
-Ran all 40 eval questions through the full production pipeline (`Retriever` → `get_production_generator()`) in `scripts/09. evaluation_harness.ipynb`. **Retrieval: exact match with Phase 6** — recall@1 0.675, recall@5 0.825, recall@10 0.900, MRR 0.744, no regression at full scale.
+Ran all 40 eval questions through the full production pipeline (`Retriever` → `get_production_generator()`) in `scripts/08. evaluation_harness.ipynb`. **Retrieval: exact match with Phase 6** — recall@1 0.675, recall@5 0.825, recall@10 0.900, MRR 0.744, no regression at full scale.
 
 **Generation (regex proxy): 35/40 (87.5%) correct-article rate, 2/40 fabricated citations.** (Originally reported as 33/40 — the scorer, not the model, was wrong; see the regex fix below.) Traced every one of the 7 originally-flagged misses individually (re-queried the retriever directly rather than trusting a first manual read, which had errors — see notebook for the corrected version): only **1 is a genuine generation defect** (q07 — cited the wrong article despite the right chunk retrieved at rank 1) and **1 a genuine retrieval miss** (q22 — Article 90 never surfaced in top 10, model substituted a related-but-wrong article). Of the rest, 3 were retrieved but outside production `top_k=5` (the known recall@5-vs-10 gap, q25/q29/q31) and 2 were pure scoring bugs (q08/q40).
 
@@ -76,7 +76,7 @@ Ran all 40 eval questions through the full production pipeline (`Retriever` → 
 Bottom line: Phase 6/7 decisions confirmed at full scale, no regressions. Three scoped follow-ups logged for Phase 12, none actioned: fix the `ARTICLE_NUM_RE` regex, look at why Article 90 didn't retrieve for q22, and check whether SSL pension articles need finer chunking or a disambiguation prompt nudge. Results in `eval/full_eval_results.csv` (per-question answers + citation checks) and `eval/full_eval_judge_scores.csv` (faithfulness/relevancy scores + reasons).
 
 ## Phase 8b — Generation config tuning ✅ done
-Two defaults surfaced by the Phase 8 failure analysis had never actually been tested: `top_k=5` for the generator's context (inherited from the retrieval eval's recall@5 checkpoint, not chosen for generation quality) and `temperature` (never set, running at the provider default ~1.0). Ran a 2×2 grid (`top_k` ∈ {5, 10} × `temperature` ∈ {default, 0.0}) across all 40 questions in `scripts/10. generation_config_tuning.ipynb`, scored with the same regex proxy + LLM-judge as Phase 8:
+Two defaults surfaced by the Phase 8 failure analysis had never actually been tested: `top_k=5` for the generator's context (inherited from the retrieval eval's recall@5 checkpoint, not chosen for generation quality) and `temperature` (never set, running at the provider default ~1.0). Ran a 2×2 grid (`top_k` ∈ {5, 10} × `temperature` ∈ {default, 0.0}) across all 40 questions in `scripts/09. generation_config_tuning.ipynb`, scored with the same regex proxy + LLM-judge as Phase 8:
 
 | config | hit rate | fabrication rate | mean faithfulness (min) | mean relevancy (min) |
 |---|---|---|---|---|
@@ -88,7 +88,7 @@ Two defaults surfaced by the Phase 8 failure analysis had never actually been te
 `temperature=0` didn't help — it raised the fabrication rate at both `top_k` settings and lowered hit rate at `top_k=5`, not adopted. `top_k=10` matched `top_k=5`'s hit/fabrication rate while clearing the worst-case failures: dug into the min-faithfulness=1 outlier (`top5_temp0`/q29, "which law takes precedence") and confirmed it's the same q29 Phase 8 found retrieved at rank 7 — missing at `top_k=5`, present at `top_k=10`, and the faithfulness failure (misapplying Article 107) disappears entirely once the model actually has the right article. **Decision: production default changed to `top_k=10`, temperature left unset** — `src/retrieval.py`'s `Retriever.retrieve()` default updated from 5 to 10.
 
 ## Phase 8c — Reranker evaluation ✅ done, not adopted
-Tested whether a hosted reranker (Cohere `rerank-v3.5`, ~$0.002/query) beats RRF, in three configurations (`scripts/11. reranker_evaluation.ipynb`): RRF alone, reranking the raw pooled semantic+keyword candidates (bypassing RRF), and RRF-then-rerank (RRF top-20 → rerank).
+Tested whether a hosted reranker (Cohere `rerank-v3.5`, ~$0.002/query) beats RRF, in three configurations (`scripts/10. reranker_evaluation.ipynb`): RRF alone, reranking the raw pooled semantic+keyword candidates (bypassing RRF), and RRF-then-rerank (RRF top-20 → rerank).
 
 | | RRF only (production) | Rerank raw pool | RRF → rerank |
 |---|---|---|---|
@@ -104,7 +104,7 @@ Dug into why reranking hurts same-language specifically (q03: RRF ranked the cor
 ## Phase 9 — Backend service ✅ done
 FastAPI wrapper in `src/api.py`: `POST /ask` (`{question, top_k}` → `{answer, citations, sources}`) and `GET /health`. `Retriever` and the production generator are built once at startup via FastAPI's `lifespan` handler (both are expensive to construct — 739 chunks, BM25 index, Pinecone/Cohere/OpenRouter clients), not per-request. Pydantic validates `question` (1–1000 chars) and `top_k` (1–20) before any retrieval/generation cost is incurred. CORS currently wide open (`allow_origins=["*"]`) — tighten to the real frontend origin in Phase 11.
 
-Demoed end-to-end in `scripts/12. api_demo.ipynb` — starts the real server as a subprocess, hits it over actual HTTP (not just calling the Python objects directly), for both an English and an Arabic question; both correctly retrieve and cite Labor Law 1996 Article 61. Added `requirements.txt` (pins `fastapi`, `uvicorn` alongside the existing deps) for Phase 11 deployment.
+Demoed end-to-end in `scripts/11. api_demo.ipynb` — starts the real server as a subprocess, hits it over actual HTTP (not just calling the Python objects directly), for both an English and an Arabic question; both correctly retrieve and cite Labor Law 1996 Article 61. Added `requirements.txt` (pins `fastapi`, `uvicorn` alongside the existing deps) for Phase 11 deployment.
 
 Not yet done: rate limiting / usage caps (needed before a public link goes live, see Phase 11), auth (not needed for a public demo), and the two smaller open issues from Phase 8 (the `ARTICLE_NUM_RE` "للمادة" regex bug, and investigating the q22 retrieval miss) are still outstanding.
 
@@ -131,7 +131,7 @@ Not yet done: actually deploying to Railway (requires the user to log in via bro
 ## Phase 12a — Chunk granularity: whole articles ✅ done, adopted
 Phase 8's q22 failure ("will my pension go up over the years?", ground truth SSL Article 90) turned out not to be a ranking problem at all. Article 90 sat at semantic rank 11 — it was **crowded out**: seven of the ten slots were separate clauses of SSL Article 71, all saying "the pension shall be increased by X%". Across the eval set 5 of 40 questions lose ≥3 slots to same-article duplicates, and two of those (q22, q33) were outright retrieval failures — half of all "never retrieved" cases traced to this one cause.
 
-Three options were tested on the 32 same-language questions in `scripts/14. chunk_granularity_evaluation.ipynb`, scored on retrieval **and** on real generated answers graded by the independent LLM judge:
+Three options were tested on the 32 same-language questions in `scripts/13. chunk_granularity_evaluation.ipynb`, scored on retrieval **and** on real generated answers graded by the independent LLM judge:
 
 | | recall@1 | recall@5 | recall@10 | MRR |
 |---|---|---|---|---|
@@ -143,7 +143,7 @@ Three options were tested on the 32 same-language questions in `scripts/14. chun
 
 Generation-side scores (hit rate, faithfulness, relevancy) differed by 1–2 questions and ≤0.09 of a 5-point scale across A/B/C — inside the noise floor for n=32, especially with the generator running at default temperature (non-deterministic) and only one run per config. **Retrieval metrics are deterministic and reproducible; the generation-side gaps are not**, so the decision rests on retrieval. Noted as a methodology gap: no repeat runs were done to establish that noise floor.
 
-**Rebuilt in `scripts/15. rechunking_articles.ipynb`:** 739 clause chunks → 531 article units, all 477,249 characters preserved exactly, largest article 17,842 bytes (within Pinecone's 40 KB metadata cap). Only 21 articles are actually split, so 510 units are byte-identical to their old chunk. New index `jordan-labor-law-articles`; the clause-level `chunks.parquet` and `jordan-labor-law` index are both left intact, so rollback is a two-line edit in `src/retrieval.py`.
+**Rebuilt in `scripts/14. rechunking_articles.ipynb`:** 739 clause chunks → 531 article units, all 477,249 characters preserved exactly, largest article 17,842 bytes (within Pinecone's 40 KB metadata cap). Only 21 articles are actually split, so 510 units are byte-identical to their old chunk. New index `jordan-labor-law-articles`; the clause-level `chunks.parquet` and `jordan-labor-law` index are both left intact, so rollback is a two-line edit in `src/retrieval.py`.
 
 **Live production numbers after the switch (full 40 questions):**
 
@@ -158,7 +158,7 @@ Generation-side scores (hit rate, faithfulness, relevancy) differed by 1–2 que
 
 Nothing regressed; same-language recall@10 is now perfect and cross-lingual recall@5 improved as a free side effect. The only two questions still outside the top 10 (q04, q08) are both cross-lingual. Verified end-to-end through the API: the q22 pension question now answers from Article 90 correctly, where clause-level production answered from the wrong article (Article 71) and scored faithfulness 3 / relevancy 2 in Phase 8.
 
-**Full Phase 8 harness re-run on article granularity** (`scripts/09. evaluation_harness.ipynb`, results in `eval/full_eval_results.csv`; the clause-level run is preserved as `*_clauselevel.csv`):
+**Full Phase 8 harness re-run on article granularity** (`scripts/08. evaluation_harness.ipynb`, results in `eval/full_eval_results.csv`; the clause-level run is preserved as `*_clauselevel.csv`):
 
 | | clause-level (top_k=5) | article-level (top_k=10) |
 |---|---|---|
@@ -182,7 +182,7 @@ Phase 12a's follow-up: sharpen the system prompt so the model stops blending adj
 > 7. *(original wording)* Cover every bearing paragraph/article; report every consequence and exception, not just the first one found.
 > 8. Say explicitly when a provision governs only a sub-category, and prefer the provision that actually governs over an adjacent narrower one.
 
-**First real noise-floor measurement in this project.** Every prior generation-side comparison (Phase 8b, Phase 12a's A/B/C) read a 1–2 question gap off a single run, at default (non-zero) temperature, with no idea how much of that gap was sampling noise. `scripts/17. prompt_clause_precision.ipynb` fixed that: the current prompt was run **twice** under identical conditions alongside the revised prompt, all three arms sharing identical retrieved context (retrieval executed once per question). Whatever changes between the two identical runs is the noise floor a real effect has to clear.
+**First real noise-floor measurement in this project.** Every prior generation-side comparison (Phase 8b, Phase 12a's A/B/C) read a 1–2 question gap off a single run, at default (non-zero) temperature, with no idea how much of that gap was sampling noise. `scripts/16. prompt_clause_precision.ipynb` fixed that: the current prompt was run **twice** under identical conditions alongside the revised prompt, all three arms sharing identical retrieved context (retrieval executed once per question). Whatever changes between the two identical runs is the noise floor a real effect has to clear.
 
 | | baseline mean | revised | noise floor (run1 vs run2) | revised vs run1 | revised vs run2 |
 |---|---|---|---|---|---|
@@ -201,10 +201,10 @@ Hit rate and fabrication rate stayed within noise — hit rate was already near 
 
 Re-running the same three-arm/noise-floor test with this wording before promoting anything into `src/generation.py`'s production `SYSTEM_PROMPT`. Production is unchanged pending that result.
 
-**Infra note, worth keeping:** OpenRouter reserves credit against a request's `max_tokens` *ceiling*, not its actual usage — an unset `max_tokens` defaults to the model's max (65,536 for Claude Sonnet 5 here) and can 402 a run even with a healthy balance. Three runs of this notebook died before that was diagnosed and fixed; the notebook now also persists generations and judge scores to disk incrementally and resumes from what's already there, so a future crash costs only the unfinished calls, not the whole pass. Worth backporting the same persistence pattern into the other eval notebooks (`09. evaluation_harness.ipynb`, `10. generation_config_tuning.ipynb`, `11. reranker_evaluation.ipynb`, `14. chunk_granularity_evaluation.ipynb`) — none of them have it yet.
+**Infra note, worth keeping:** OpenRouter reserves credit against a request's `max_tokens` *ceiling*, not its actual usage — an unset `max_tokens` defaults to the model's max (65,536 for Claude Sonnet 5 here) and can 402 a run even with a healthy balance. Three runs of this notebook died before that was diagnosed and fixed; the notebook now also persists generations and judge scores to disk incrementally and resumes from what's already there, so a future crash costs only the unfinished calls, not the whole pass. Worth backporting the same persistence pattern into the other eval notebooks (`08. evaluation_harness.ipynb`, `09. generation_config_tuning.ipynb`, `10. reranker_evaluation.ipynb`, `13. chunk_granularity_evaluation.ipynb`) — none of them have it yet.
 
 ## Phase 13 — Embedding model re-review ✅ done, incumbent kept
-First step of a deliberate phase-by-phase re-review of the whole project. `scripts/19. embeddings_evaluation_v2.ipynb`.
+First step of a deliberate phase-by-phase re-review of the whole project. `scripts/18. embeddings_evaluation_v2.ipynb`.
 
 **Why re-run Phase 4 at all.** Every input to the original comparison had changed: it scored on 739 *clause* chunks (production has served 531 whole articles since Phase 12a), on the 40-question v1 set whose 8 cross-lingual questions *were* the entire Cohere-vs-bge-m3 argument (v2 has none), with bge-m3 and Qwen3 capped at `max_length=1024` despite supporting 8192+, and with OpenAI judged solely on its cheap `text-embedding-3-small`. Prior numbers were treated as void, not as a baseline.
 
@@ -233,7 +233,7 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 **Still open:** confirm the ranking holds under hybrid RRF (free, from cache); verify whether Gemini silently truncates at its 2,048-token cap — no API error fired, so it is unestablished either way.
 
 ## Phase 19 — Switched to Gemini embeddings ✅ **done and live**
-`scripts/24. vector_store_gemini.ipynb`. Closes the decision that had been blocking everything since Phase 13.
+`scripts/21. vector_store_gemini.ipynb`. Closes the decision that had been blocking everything since Phase 13.
 
 **Why:** `gemini-embedding-001` beats Cohere `embed-v4.0` **11–2 on paired ranks (p = 0.022)** under production's exact hybrid config, at every RRF weight including Cohere's own optimum, worth **+0.093 MRR** — about 7× every fusion parameter combined. Phase 13's pre-committed rule technically didn't fire only because recall@5 was saturated at 1.000 for both, a flaw in the rule rather than a case for the incumbent.
 
@@ -288,7 +288,7 @@ The control retrieves definitions and scope boilerplate -- exactly the failure t
 **Not done:** a full eval pass on rules 11/13 (needs a fresh go-ahead per standing project practice on paid runs); the actual multi-turn fix for rule 11's stated limitation.
 
 ## Phase 21 — Coverage rules + bilingual context ✅ done — **adopted; relevancy up, faithfulness held**
-`src/generation.py` (Coverage rules, bilingual `_format_context`, scorer fixes) + `scripts/26. prompt_coverage_eval.ipynb`.
+`src/generation.py` (Coverage rules, bilingual `_format_context`, scorer fixes) + `scripts/23. prompt_coverage_eval.ipynb`.
 
 **The problem, from Phase 20:** the dominant failure was omission, and it was *not* retrieval — 9 of 10 "omitted" articles were already in the context, the gold article was at rank 1 in 16 of 19 penalised questions, and answers named a mean of **1.22 of 3.87** articles offered (48 of 60 cited exactly one). The behaviour was **instructed**: "Keep it brief", "answer in a sentence or two", "do not reason about how two provisions relate" — three pushes toward short single-source answers, with nothing telling the model to check every document.
 
@@ -323,7 +323,7 @@ correct article **55 → 58/60**, all correct **51 → 55/60**, **real fabricati
 **Limits:** one run per arm, so the noise floor is imported from Phase 12b rather than re-measured; two variables moved together (mostly separable by instrument, but q16 is not attributable); the judge still scores faithfulness *to the retrieved context*, so an answer citing the wrong law can still score 5. Residual work list — below 5 in **both** arms: q01, q05, q09, q10, q19, q29, q35 (cross-article omissions the rule didn't reach), q42, q49 (precision, not coverage).
 
 ## Phase 20 — Prompt rewrite + full end-to-end evaluation ✅ done — **the new reference point**
-`src/generation.py` (`SYSTEM_PROMPT` rewritten) + `scripts/25. final_evaluation_v3.ipynb`. Every generation number this project had published was stale: faithfulness 4.90 / relevancy 4.80 / correct-article 35/40 were all measured on Cohere embeddings, clause chunks, `top_k=10`, `RRF_W=0.85` and the statute-worded 40-question v1 eval set. **Not one of those inputs still exists.**
+`src/generation.py` (`SYSTEM_PROMPT` rewritten) + `scripts/22. final_evaluation_v3.ipynb`. Every generation number this project had published was stale: faithfulness 4.90 / relevancy 4.80 / correct-article 35/40 were all measured on Cohere embeddings, clause chunks, `top_k=10`, `RRF_W=0.85` and the statute-worded 40-question v1 eval set. **Not one of those inputs still exists.**
 
 **One arm, deliberately.** Running the old prompt as a control was proposed and rejected: it was written for clause fragments and statute-shaped questions, so it would characterise a configuration that will never ship. **The consequence is stated rather than buried — this run cannot claim the new prompt is better than the old one.** It establishes where the system stands; future changes get measured against *these* numbers.
 
@@ -365,7 +365,7 @@ The judge cell first ran with `max_tokens` **unset**. OpenRouter reserves credit
 No comparison arm, so nothing here attributes the result to the prompt. The judge scores faithfulness **to the retrieved context, not correctness against ground truth** — for q03 it wrote that the answer "accurately reflects Article 87(a)" while the ground truth is SSL 27, so an answer grounded in the wrong retrieved article can still score 5. Single judge, single run: Phase 12b measured a real noise floor for judge scores and this run did not re-establish one, so small future differences are unreadable without it.
 
 ## Phase 18 — Semantic/keyword balance re-tuned ✅ done — **nothing adopted, deliberately**
-`scripts/23. fusion_weight_tuning.ipynb`. Zero API cost (cached vectors + local BM25). Swept RRF `w` (0→1, step 0.01), RRF `k` (1→60), and weighted-sum `beta`, all at the new `top_k=5`, for both Gemini and Cohere.
+`scripts/20. fusion_weight_tuning.ipynb`. Zero API cost (cached vectors + local BM25). Swept RRF `w` (0→1, step 0.01), RRF `k` (1→60), and weighted-sum `beta`, all at the new `top_k=5`, for both Gemini and Cohere.
 
 **Finding 1 — re-tuning RRF `w` is not worth doing; the apparent gain is overfitting.** In-sample the sweep looked convincing: Cohere peaks at `w=0.83` (MRR 0.850) vs production `0.85` (0.838), and a 2,000-resample **bootstrap agreed the peak was stable** (median 0.82, 90% CI [0.75, 0.83], `w=0.85` chosen in 0/2000). But 500 split-half CVs (tune on 30, score the untouched 30) put **tuned RRF *below* untuned production for both models** — gemini 0.9237 vs 0.9297, cohere 0.8355 vs 0.8369; per split, tuned RRF beats production in **0%** of splits for gemini (mean −0.0071) and 56% for cohere (mean −0.0016, i.e. loses bigger than it wins). **Key methodological lesson: a stable bootstrap optimum is NOT evidence that moving to it helps** — every resample is drawn from the same 60 questions, so the bootstrap can only confirm the argmax is reliably located, never that it generalises. Only held-out data exposes that the curve near the top is flat and chasing the peak buys nothing. This is precisely the trap Phase 6 fell into. **`RRF_W=0.85` and `RRF_K=5` left alone.**
 
@@ -375,7 +375,7 @@ No comparison arm, so nothing here attributes the result to the prompt. The judg
 
 **Not adopted:** the weighted-sum switch. If the project stays on Cohere, pool-normalised weighted sum at `beta≈0.80` is a modest genuine win and would need `_semantic_candidates` to stop discarding Pinecone's scores. If it switches to Gemini, leave fusion alone entirely.
 
-**Reproducibility note:** `23. fusion_weight_tuning.ipynb`, `22. embeddings_hybrid_v3.ipynb` and `21. embeddings_rescore_v3.ipynb` all `from src.retrieval import RRF_W`, so a re-run now computes at 0.90 while their stored outputs were produced at 0.85. The stored outputs are the historical record of the decision; expect a small mismatch on re-execution and read the constant, not the prose, as current.
+**Reproducibility note:** `20. fusion_weight_tuning.ipynb`, `19. embeddings_rescore_and_hybrid_v3.ipynb` and `19. embeddings_rescore_and_hybrid_v3.ipynb` all `from src.retrieval import RRF_W`, so a re-run now computes at 0.90 while their stored outputs were produced at 0.85. The stored outputs are the historical record of the decision; expect a small mismatch on re-execution and read the constant, not the prose, as current.
 
 **Finding 3 — BM25's measurable contribution is ~nothing, but it is also ~free.** Asked directly: why not go 100% semantic, given eval_v3 deliberately avoids statute vocabulary? Tested `w=0.85` vs `w=1.00` per question: gemini **1 question helped, 0 hurt, 59 identical** (sign test p=1.00); cohere **2 helped, 0 hurt, 58 identical** (p=0.50). Not significant either way — but **0 questions were ever made worse, in either model**. The strongest hypothesis for keeping it was exact-match queries (article-number lookups), a type eval_v3 contains none of — **tested and refuted**: 12 probes like "ما نص المادة 65 من قانون العمل؟" / "What does Article 90 of the Labour Law say?" were found 12/12 at rank 1-2 by **pure semantic**, with BM25 changing not one of them. Cost measured on this corpus: **121 ms once at startup, 1.8 MB, 1.06 ms/query** — against a 200-500 ms embedding API call, i.e. ~0.3% of request latency. So the honest position is that the choice is near-free in both directions: keep it as cheap insurance against query types a 60-question eval cannot cover (and for the resume value of a named hybrid-retrieval technique, the same logic that chose Pinecone over Qdrant in Phase 5), or drop it for simplicity at a cost of ~1 question. **Kept at `w=0.85`, on robustness and CV grounds rather than on a claim that the data proves it helps.**
 
@@ -390,7 +390,7 @@ First production code change of the re-review. `src/retrieval.py`'s `retrieve()`
 
 **Why the old default existed, and why the reason is gone.** Phase 8b did not pick `top_k=10` for recall — it found 10 and 5 tied on hit rate and fabrication rate, and chose 10 only because it lifted LLM-judge worst cases (min faithfulness 4 vs 2, min relevancy 3 vs 2). That traced to a few questions, notably q29, whose correct article sat at **rank 6-7** — inside recall@10, outside recall@5. The extra slots existed to catch those.
 
-**Re-measured on article chunks** (`scripts/22. embeddings_hybrid_v3.ipynb`, searching 30 deep across both eval sets = 120 question-runs): with Gemini or Cohere, **zero questions put the correct article in slots 6-10**. Worst rank 4 on v3, 2-3 on v2. The failure `top_k=10` was adopted to fix no longer occurs under article-level chunking.
+**Re-measured on article chunks** (`scripts/19. embeddings_rescore_and_hybrid_v3.ipynb`, searching 30 deep across both eval sets = 120 question-runs): with Gemini or Cohere, **zero questions put the correct article in slots 6-10**. Worst rank 4 on v3, 2-3 on v2. The failure `top_k=10` was adopted to fix no longer occurs under article-level chunking.
 
 **What it buys:** context handed to the generator roughly halves — mean **4,172 → 2,218** tokens, median 2,954 → 1,642, worst case **21,997 → 11,058**. That is input cost on every question, plus reduced crowding risk of the kind that drove the Phase 12a chunking change.
 
@@ -399,7 +399,7 @@ First production code change of the re-review. `src/retrieval.py`'s `retrieve()`
 **Gotcha worth remembering:** `AskRequest.top_k` shadows the `Retriever` default on every HTTP request, so changing only `retrieval.py` would have left the deployed app on 10 and produced no effect at all. Two places, not one. (The frontend never sends `top_k`, so it inherits the default.)
 
 ## Phase 16 — Hybrid confirmation ✅ done — the Gemini result holds
-`scripts/22. embeddings_hybrid_v3.ipynb`. **Zero API calls** — corpus *and* query vectors for all 7 models were already cached from Phases 13/15, and BM25 runs locally. Pure arithmetic on cached arrays.
+`scripts/19. embeddings_rescore_and_hybrid_v3.ipynb`. **Zero API calls** — corpus *and* query vectors for all 7 models were already cached from Phases 13/15, and BM25 runs locally. Pure arithmetic on cached arrays.
 
 **Hybrid RRF at production constants (`k=5, w=0.85, k1=1.5, b=0.75`) does not change the ranking.** Hybrid MRR: gemini **0.931** · openai-3-large 0.838 · cohere 0.838 · bge-m3 0.835 · e5-instruct 0.751 · openai-3-small 0.692 · qwen3 0.674. Paired sign test on hybrid ranks: **gemini beats cohere 11–2, p = 0.0225** — slightly stronger than semantic-only. openai-3-large vs cohere **8–8, p = 1.000**, still a dead tie.
 
@@ -412,7 +412,7 @@ First production code change of the re-review. `src/retrieval.py`'s `retrieve()`
 **Conclusion: the evidence supports switching to `gemini-embedding-001`.** Every check that could have overturned Phase 15 has been run and none did — holds under production hybrid, holds across the whole weight range including Cohere's own optimum, significant on paired tests in both modes (p=0.035 semantic / p=0.0225 hybrid), and achieved *while* silently truncating 4 articles Cohere reads in full. The lone dissenting metric (recall@5, tied at 1.000) is saturated and cannot express a difference. **Not executed unilaterally** — `src/retrieval.py` is still on Cohere. Switching requires: a new 3072-dim Pinecone index, an embedder abstraction in `src/retrieval.py`, and a check of Gemini's production rate limits (the failure mode that removed Voyage in Phase 13).
 
 ## Phase 15 — Re-scoring on eval v3 ✅ done — Phase 13's answer does not survive
-`scripts/21. embeddings_rescore_v3.ipynb`. Near-free: `eval/emb_cache/` already held all seven models' 531 corpus vectors, so only 60 queries per model needed embedding.
+`scripts/19. embeddings_rescore_and_hybrid_v3.ipynb`. Near-free: `eval/emb_cache/` already held all seven models' 531 corpus vectors, so only 60 queries per model needed embedding.
 
 **Every model dropped.** Mean **recall@1 −0.233**, mean **MRR −0.155**, on identical ground truth with only the wording changed — so roughly a quarter of the v2 scores were an artifact of questions echoing their own answers. Measured, not inferred, because the design is paired.
 
@@ -436,10 +436,10 @@ First production code change of the re-review. `src/retrieval.py`'s `retrieve()`
 
 **Before any switch:** (1) confirm under hybrid RRF, not semantic-only — free from cache; (2) Gemini is 3072-dim vs the index's 1536, so a new Pinecone index plus an embedder abstraction in `src/retrieval.py`; (3) check Gemini's free-tier request limits against a live app — the same class of problem that removed Voyage in Phase 13.
 
-**Process note:** this notebook was first written without the retry and per-model guard that `19. embeddings_evaluation_v2.ipynb` had *already been fixed* to include, and a transient `ConnectTimeout` on the first Cohere call killed the whole run. Same defect, repeated in a new file. Both are now in place here too.
+**Process note:** this notebook was first written without the retry and per-model guard that `18. embeddings_evaluation_v2.ipynb` had *already been fixed* to include, and a transient `ConnectTimeout` on the first Cohere call killed the whole run. Same defect, repeated in a new file. Both are now in place here too.
 
 ## Phase 14 — Eval set v3: natural phrasing ✅ built and scored (see Phase 15)
-`scripts/20. eval_set_v3.ipynb` → `eval/eval_v3.jsonl` + `.csv`. Direct response to Phase 13's finding that `eval_v2` had run out of discriminating power (5 of 7 models at recall@5 = 1.000, total spread 4 questions).
+`scripts/17. eval_set_v2_and_v3.ipynb` → `eval/eval_v3.jsonl` + `.csv`. Direct response to Phase 13's finding that `eval_v2` had run out of discriminating power (5 of 7 models at recall@5 = 1.000, total spread 4 questions).
 
 **Root cause:** v2's questions were written *by reading the articles*, so they reused the statute's vocabulary and each question sat close to a paraphrase of its own answer — "What are the conditions for entitlement to the unemployment allowance?" against SSL Art 50, which is headed exactly that.
 
