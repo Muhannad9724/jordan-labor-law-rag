@@ -92,6 +92,13 @@ CHAT_MODEL = "command-a-03-2025"
 # the follow-up is rewritten into a standalone question *before* retrieval runs, since
 # retrieval is semantic and "12" embeds to nothing useful. See rewrite_for_retrieval().
 #
+# Multi-turn then introduced its own regression, caught on the first real test: with the
+# same question and BYTE-IDENTICAL retrieved articles, the model asked for the missing
+# fact when history was empty and skipped the question when an earlier turn had already
+# answered something similar. Conversational context was overriding the rule -- a model
+# will not re-ask what the transcript shows as already settled. Hence rule 11's closing
+# sentence, which scopes the rule to the current question rather than the thread.
+#
 # Rule 13 (new "Judgment questions" section) is a different failure entirely: a question like
 # "should I join the optional social security?" is not a fact lookup, it is a request for a
 # personal decision, and the previous prompt had no instruction for that shape of question at
@@ -121,7 +128,7 @@ Precision
 
 Usefulness
 10. The question usually describes someone's real situation. Answer that first, in a sentence or two, then give the supporting rules and citations. Do not open by restating the article.
-11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount -- ask them for it in one short question instead of guessing or covering every possible case. If the documents instead give a short, complete set of conditions you can state directly, state them.
+11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, or which law covers them -- ask them for it in one short question instead of guessing or covering every possible case. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it.
 12. Reply in the language of the question -- an Arabic question gets an Arabic answer, an English question gets an English answer. Write plainly and without padding, but do not leave a relevant provision out in order to keep the answer short.
 
 Judgment questions
