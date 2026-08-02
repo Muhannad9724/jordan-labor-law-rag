@@ -102,14 +102,30 @@ function renderMarkdown(text, container) {
 
     if (RE_BULLET.test(line) || RE_NUMBER.test(line)) {
       const ordered = RE_NUMBER.test(line);
+      const re = ordered ? RE_NUMBER : RE_BULLET;
       const list = document.createElement(ordered ? "ol" : "ul");
       while (i < lines.length) {
-        const m = lines[i].match(ordered ? RE_NUMBER : RE_BULLET);
-        if (!m) break;
-        const li = document.createElement("li");
-        appendInline(li, ordered ? m[2] : m[1]);
-        list.appendChild(li);
-        i += 1;
+        const m = lines[i].match(re);
+        if (m) {
+          const li = document.createElement("li");
+          appendInline(li, ordered ? m[2] : m[1]);
+          list.appendChild(li);
+          i += 1;
+          continue;
+        }
+        // A blank line only ends the list if what follows isn't another item of
+        // it -- otherwise each item lands in its own <ol> and every <li> renders
+        // as "1." (numbering restarts per list; the model writes items separated
+        // by blank lines when each has multiple sentences).
+        if (!lines[i].trim()) {
+          let j = i + 1;
+          while (j < lines.length && !lines[j].trim()) j += 1;
+          if (j < lines.length && re.test(lines[j])) {
+            i = j;
+            continue;
+          }
+        }
+        break;
       }
       container.appendChild(list);
       continue;

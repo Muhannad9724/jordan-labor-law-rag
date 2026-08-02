@@ -89,6 +89,27 @@ const ol = render("1. First step\n2. Second step");
 check("numbered list becomes <ol>", ol.querySelector("ol") !== null);
 check("ordered list has 2 items", ol.querySelectorAll("li").length === 2);
 
+/* regression: model writes each multi-sentence item as its own paragraph,
+   separated by a blank line -- these must merge into ONE <ol>, or every
+   <li> lands in its own list and the browser renders every marker as "1." */
+const olGap = render(
+  "1. إجازة سنوية: لك الحق في إجازة سنوية. (المادة 61)\n" +
+  "\n" +
+  "1. إجازة مرضية: لك الحق في إجازة مرضية. (المادة 65)\n" +
+  "\n" +
+  "1. إجازة إضافية: تشمل الإجازة المخصصة. (المادة 66)"
+);
+check("blank-line-separated numbered items merge into one <ol>", olGap.querySelectorAll("ol").length === 1);
+check("merged ordered list keeps all 3 items", olGap.querySelectorAll("li").length === 3);
+
+const ulGap = render("- Article (48): 1%\n\n- Article (59): 6.5%\n\n- Article (24): 2%");
+check("blank-line-separated bullet items merge into one <ul>", ulGap.querySelectorAll("ul").length === 1);
+check("merged bullet list keeps all 3 items", ulGap.querySelectorAll("li").length === 3);
+
+const olThenPara = render("1. First\n\n2. Second\n\nNot a list item, just text.");
+check("list still ends at a real paragraph after a gap", olThenPara.querySelectorAll("ol").length === 1
+  && olThenPara.querySelectorAll("li").length === 2 && olThenPara.querySelectorAll("p").length === 1);
+
 /* --- tables ------------------------------------------------------------- */
 const tbl = render("| Article | Rate |\n|---|---|\n| 59 | 11% |\n| 24 | 2% |");
 check("pipe table becomes <table>", tbl.querySelector("table") !== null);
