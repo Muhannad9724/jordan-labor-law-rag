@@ -1,0 +1,398 @@
+﻿question_id,trial,question_text,question_language,question_category,answer,calculation
+c01,1,راتبي 1000 دينار، كم يدفع صاحب العمل عني للضمان الاجتماعي؟,ar,calculator_contributions,"يدفع صاحب العمل عنك للضمان الاجتماعي مجموعة من الاشتراكات بناءً على راتبك البالغ 1000 دينار. التفاصيل كالتالي:
+
+1. تأمين إصابات العمل: 2% = 20 دينار (قانون الضمان الاجتماعي، المادة 24)
+2. تأمين الأمومة: 0.75% = 7.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+3. تأمين التعطل عن العمل: 0.5% = 5 دينار (قانون الضمان الاجتماعي، المادة 48)
+4. تأمين الشيخوخة والعجز والوفاة: 11% = 110 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+المجموع الكلي الذي يدفعه صاحب العمل: 20 دينار + 7.5 دينار + 5 دينار + 110 دينار = 142.5 دينار.
+
+يرجى ملاحظة أن هذه المعلومات عامة وليست استشارة قانونية، وينبغي عليك استشارة محامٍ معتمد للحصول على مشورة خاصة بحالتك.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c01,2,راتبي 1000 دينار، كم يدفع صاحب العمل عني للضمان الاجتماعي؟,ar,calculator_contributions,"يدفع صاحب العمل عنك للضمان الاجتماعي مبلغ 142.5 دينار. يتوزع هذا المبلغ كما يلي:
+
+- تأمين إصابات العمل: 2% من الأجر = 20 دينار (قانون الضمان الاجتماعي، المادة 24)
+- تأمين الأمومة: 0.75% من الأجر = 7.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+- تأمين التعطل عن العمل: 0.5% من الأجر = 5 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 11% من الأجر = 110 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+المجموع الكلي الذي يدفعه صاحب العمل هو 142.5 دينار. 
+
+هذه المعلومات هي معلومات عامة وليست نصيحة قانونية. يجب عليك استشارة محامٍ مرخص بشأن حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c01,3,راتبي 1000 دينار، كم يدفع صاحب العمل عني للضمان الاجتماعي؟,ar,calculator_contributions,"صاحب العمل سيدفع عنك 142.5 دينار إلى الضمان الاجتماعي. تتوزع المبالغ كما يلي:
+
+- المادة (24) (تأمين إصابات العمل): 2% = 20 دينار
+- المادة (42) (تأمين الأمومة): 0.75% = 7.5 دينار
+- المادة (48) (تأمين التعطل عن العمل): 0.5% = 5 دينار
+- المادة (59) (تأمين الشيخوخة والعجز والوفاة): 11% = 110 دينار
+
+المجموع الكلي الذي سيدفعه صاحب العمل: 14.25% = 142.5 دينار.
+
+هذه معلومات عامة، وليست استشارة قانونية. يرجى مراجعة محامٍ مرخص للحصول على نصيحة بشأن حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c01,4,راتبي 1000 دينار، كم يدفع صاحب العمل عني للضمان الاجتماعي؟,ar,calculator_contributions,"يدفع صاحب العمل عنك للضمان الاجتماعي مجموعاً قدره 142.5 دينار. يتكون هذا المبلغ من:
+
+- تأمين إصابات العمل: 20 دينار (قانون الضمان الاجتماعي، المادة 24)
+- تأمين الأمومة: 7.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+- تأمين التعطل عن العمل: 5 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 110 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+إجمالي ما يدفعه صاحب العمل: 142.5 دينار.
+
+هذا المعلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامٍ مرخص حول حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c02,1,راتبي 1000 دينار، كم يُقتطع مني أنا للضمان الاجتماعي؟,ar,calculator_contributions,"سيتم اقتطاع 75 ديناراً من راتبك للضمان الاجتماعي، وهذه النسب موزعة كالتالي:
+
+- تأمين التعطل عن العمل: 1% من أجور المؤمن عليهم = 10 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 6.5% من أجور المؤمن عليهم = 65 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+إجمالي ما يُقتطع منك: 7.5% = 75 دينار.
+
+هذه معلومات عامة وليست نصيحة قانونية، وينبغي استشارة محامي مرخص لمناقشة حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c02,2,راتبي 1000 دينار، كم يُقتطع مني أنا للضمان الاجتماعي؟,ar,calculator_contributions,"سيُقتطع من راتبك الشهري 75 دينار كاشتراكات ضمان اجتماعي، بالتفصيل كالتالي:
+
+- تأمين التعطل عن العمل: 1% من 1000 دينار = 10 دينار (قانون الضمان الاجتماعي، المادة 48).
+- تأمين الشيخوخة والعجز والوفاة: 6.5% من 1000 دينار = 65 دينار (قانون الضمان الاجتماعي، المادة 59).
+
+إجمالي الاقتطاعات هو 75 دينار. 
+
+هذه معلومات عامة وليست نصيحة قانونية، يجب عليك استشارة محامي مختص حول حالتك.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c02,3,راتبي 1000 دينار، كم يُقتطع مني أنا للضمان الاجتماعي؟,ar,calculator_contributions,"سوف يتم اقتطاع 75 دينار من راتبك البالغ 1000 دينار للضمان الاجتماعي.  
+
+هذا هو التفصيل:
+
+- تأمين التعطل عن العمل: 1% = 10 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 6.5% = 65 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+**المجموع الكلي للاقتطاعات: 7.5% = 75 دينار**. 
+
+هذا مجرد معلومات عامة، وليس استشارة قانونية. يُنصح بالتشاور مع محامٍ مرخص بشأن قضيتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c02,4,راتبي 1000 دينار، كم يُقتطع مني أنا للضمان الاجتماعي؟,ar,calculator_contributions,"سيتم اقتطاع 75 دينار من راتبك الذي يبلغ 1000 دينار لصالح التأمينات الاجتماعية. 
+
+الإقتطاعات هي كالتالي:
+- تأمين التعطل عن العمل: 1% = 10 دينار (قانون الضمان الاجتماعي، المادة (48))
+- تأمين الشيخوخة والعجز والوفاة: 6.5% = 65 دينار (قانون الضمان الاجتماعي، المادة (59))
+
+المجموع الذي يُقتطع من المؤمن عليه: 
+- 7.5% = 75 دينار
+
+**هذا معلومات عامة، وليست نصيحة قانونية، ويجب عليك استشارة محامي مرخص بخصوص حالتك الخاصة.**","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 20.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 5.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 10.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 110.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 65.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1000.0, ""base"": 1000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 75.0, ""employer_amount"": 142.5, ""total_amount"": 217.5}"
+c03,1,راتبي 4000 دينار، كم يدفع صاحب العمل للضمان الاجتماعي؟,ar,calculator_ceiling_exception,"يدفع صاحب العمل للضمان الاجتماعي بمجموع 427.5 دينار شهريًا وفقًا للتالي:
+
+1. تأمين إصابات العمل: 2% = 60 دينار (قانون الضمان الاجتماعي، المادة 24)
+2. تأمين الأمومة: 0.75% = 22.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+3. تأمين التعطل عن العمل: 0.5% = 15 دينار (قانون الضمان الاجتماعي، المادة 48)
+4. تأمين الشيخوخة والعجز والوفاة: 11% = 330 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+المجموع الكلي: 14.25% = 427.5 دينار.
+
+الأجر يتجاوز الحد الأعلى للأجر الخاضع للاقتطاع في المادة 20، لذلك حُسبت المبالغ أعلاه على 3000 دينار وليس على الأجر المذكور. هل شُملت بالتأمين قبل 15/10/2009؟ هذا يساعد في تحديد المبالغ الخاصة بك لو كان هناك حد أعلى أكبر. 
+
+هذا هو معلومات عامة، وينبغي عليك استشارة محامي مرخص بشأن حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 60.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 22.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 15.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 30.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 330.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 195.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 4000.0, ""base"": 3000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": true, ""capped"": true, ""employee_amount"": 225.0, ""employer_amount"": 427.5, ""total_amount"": 652.5}"
+c03,2,راتبي 4000 دينار، كم يدفع صاحب العمل للضمان الاجتماعي؟,ar,calculator_ceiling_exception,"صاحب العمل يدفع إجمالي يبلغ 427.5 دينار كاشتراكات للضمان الاجتماعي، والذي يتضمن:
+
+- تأمين إصابات العمل: 2% = 60 دينار (قانون الضمان الاجتماعي، المادة 24)
+- تأمين الأمومة: 0.75% = 22.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+- تأمين التعطل عن العمل: 0.5% = 15 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 11% = 330 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+مجموع ما تؤديه المنشأة: 14.25% = 427.5 دينار.
+
+لأن الأجر يتجاوز الحد الأعلى للأجر الخاضع للاقتطاع، تم احتساب المبالغ بناءً على 3000 دينار. هل شُملت بالتأمين قبل 15/10/2009؟ 
+
+هذا مجرد معلومات عامة، لا تعتبر استشارة قانونية، ويجب عليك استشارة محامي مرخص بخصوص حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 60.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 22.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 15.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 30.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 330.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 195.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 4000.0, ""base"": 3000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": true, ""capped"": true, ""employee_amount"": 225.0, ""employer_amount"": 427.5, ""total_amount"": 652.5}"
+c03,3,راتبي 4000 دينار، كم يدفع صاحب العمل للضمان الاجتماعي؟,ar,calculator_ceiling_exception,"صاحب العمل سيدفع 427.5 دينار للضمان الاجتماعي على راتب قدره 4000 دينار. هذا المبلغ مقسم كالتالي:
+
+- تأمين إصابات العمل: 60 دينار (قانون الضمان الاجتماعي، المادة 24)
+- تأمين الأمومة: 22.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+- تأمين التعطل عن العمل: 15 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 330 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+المجموع الكلي لما تؤديه المنشأة: 427.5 دينار.
+
+هل شُملت بالتأمين قبل 15/10/2009؟","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 60.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 22.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 15.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 30.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 330.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 195.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 4000.0, ""base"": 3000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": true, ""capped"": true, ""employee_amount"": 225.0, ""employer_amount"": 427.5, ""total_amount"": 652.5}"
+c03,4,راتبي 4000 دينار، كم يدفع صاحب العمل للضمان الاجتماعي؟,ar,calculator_ceiling_exception,"صاحب العمل يدفع إجمالي 427.5 دينار للضمان الاجتماعي. يتوزع المبلغ كالتالي:
+
+- تأمين إصابات العمل: 2% = 60 دينار (قانون الضمان الاجتماعي، المادة 24)
+- تأمين الأمومة: 0.75% = 22.5 دينار (قانون الضمان الاجتماعي، المادة 42)
+- تأمين التعطل عن العمل: 0.5% = 15 دينار (قانون الضمان الاجتماعي، المادة 48)
+- تأمين الشيخوخة والعجز والوفاة: 11% = 330 دينار (قانون الضمان الاجتماعي، المادة 59)
+
+مجموع ما تؤديه المنشأة: 14.25% = 427.5 دينار.
+
+هل شُمل بالتأمين قبل 15/10/2009؟ 
+
+هذا هو معلومات عامة وليست نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص بشأن حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 60.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 22.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 15.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 30.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 330.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 195.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 4000.0, ""base"": 3000.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": true, ""capped"": true, ""employee_amount"": 225.0, ""employer_amount"": 427.5, ""total_amount"": 652.5}"
+c04,1,عملت عشر سنوات براتب 800 دينار، كم مكافأة نهاية الخدمة التي أستحقها؟,ar,calculator_end_of_service,"حسب قانون العمل لسنة 1996، المادة (32) يحق للعامل غير الخاضع لأحكام قانون الضمان الاجتماعي الحصول على مكافأة نهاية الخدمة بمعدل أجر شهر عن كل سنة من خدمته الفعلية. لذلك، إذا كانت مدة الخدمة عشر سنوات، فإن المكافأة المحددة تساوي:
+
+10 سنوات × 800 دينار (آخر أجر شهري) = 8000 دينار.
+
+وبذلك، مكافأة نهاية الخدمة التي تستحقها هي 8000 دينار. 
+
+هذا مجرد معلومات عامة وليست نصيحة قانونية، ومن الأفضل استشارة محامي مرخص حول حالتك الخاصة.","{""gender_conditions"": [{""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c04,2,عملت عشر سنوات براتب 800 دينار، كم مكافأة نهاية الخدمة التي أستحقها؟,ar,calculator_end_of_service,"لديك الحق في الحصول على مكافأة نهاية الخدمة بمعدل أجر شهر عن كل سنة من خدمتك الفعلية، وفي حالتك، عملت لمدة عشر سنوات براتب 800 دينار.
+
+المكافأة تحسب كما يلي:
+
+- **عدد سنوات الخدمة**: 10 سنوات
+- **معدل الأجر**: 800 دينار
+
+لذا، مكافأة نهاية الخدمة ستكون:
+
+- 10 × 800 = 8000 دينار
+
+وبذلك، مبلغ مكافأة نهاية الخدمة الذي تستحقه هو **8000 دينار**.
+
+يحق للعامل غير الخاضع لأحكام قانون الضمان الاجتماعي وتنتهي خدمته لأي سبب من الأسباب الحصول على مكافأة نهاية الخدمة بمعدل أجر شهر عن كل سنة من خدمته الفعلية. وتحسب المكافأة على أساس آخر أجر تقاضاه خلال مدة استخدامه. (قانون العمل لسنة 1996، المادة 32).
+
+هذا مجرد معلومات عامة، وليس استشارة قانونية. يجب عليك استشارة محامٍ مرخص بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c04,3,عملت عشر سنوات براتب 800 دينار، كم مكافأة نهاية الخدمة التي أستحقها؟,ar,calculator_end_of_service,"لديك الحق في الحصول على مكافأة نهاية الخدمة، والتي تُحسب بمعدل أجر شهر عن كل سنة من خدمتك الفعلية. بما أنك عملت لمدة عشر سنوات براتب 800 دينار، فإن مكافأتك ستكون كالتالي:
+
+1. **المكافأة عن السنوات**: 10 سنوات × 800 دينار = 8000 دينار.
+2. **مكافأة نهاية الخدمة**: تحتسب على أساس آخر أجر تقاضاه العامل، والذي هو 800 دينار في هذه الحالة.
+
+لذا، إجمالي مكافأة نهاية الخدمة التي تستحقها هي **8000 دينار**.
+
+**الأساس القانوني**:
+- قانون العمل لسنة 1996، المادة (32) تنص على أن ""يحق للعامل غير الخاضع لأحكام قانون الضمان الاجتماعي وتنتهي خدمته لأي سبب من الاسباب الحصول على مكافأة نهاية الخدمة بمعدل أجر شهر عن كل سنة من خدمته الفعلية"". 
+
+هذا هو قانون عام وليس نصيحة قانونية، يُفضل استشارة محامي مرخص بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c04,4,عملت عشر سنوات براتب 800 دينار، كم مكافأة نهاية الخدمة التي أستحقها؟,ar,calculator_end_of_service,"بناءً على المعلومات التي قدمتها، فإنك عملت لمدة عشر سنوات براتب شهري قدره 800 دينار. 
+
+1. حسب المادة (32) من قانون العمل لسنة 1996، يحق لك الحصول على مكافأة نهاية الخدمة بمعدل أجر شهر عن كل سنة من خدمتك الفعلية، أي:
+   - مكافأة نهاية الخدمة = 10 سنوات × 800 دينار = 8000 دينار.
+
+2. وبما أن خدمتك تصل إلى عشر سنوات، فإن المكافأة ستكون كاملة بدون أي خصومات أو كسور، حسب ما ورد في نفس المادة والتي تنص على: ""ويعطى عن كسور السنة مكافأة نسبية"".
+
+لذا، فإن مكافأة نهاية الخدمة التي تستحقها هي 8000 دينار.
+
+هذه المعلومات تبقى عامة وليست مشورة قانونية، ومن الأفضل استشارة محامي مرخص بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c05,1,لدي 200 اشتراك في الضمان الاجتماعي، كم متبقي لي حتى التقاعد المبكر؟,ar,calculator_gender_conditions,"لديك 200 اشتراك في الضمان الاجتماعي، لذا يتعين عليك إضافة المزيد من الاشتراكات لتصل إلى الحد المطلوب للتقاعد المبكر. 
+
+إذا كنت ذكراً، تحتاج إلى 252 اشتراكاً، لذا المتبقي لك هو:
+252 - 200 = 52 اشتراكاً.
+
+إذا كنت أنثى، تحتاج إلى 228 اشتراكاً، لذا المتبقي لك هو:
+228 - 200 = 28 اشتراكاً.
+
+المصادر:
+- عدد الاشتراكات المطلوب (التقاعد المبكر) (المادة 64) للذكر 252 وأنثى 228.
+
+هذه المعلومات عامة، وليست استشارة قانونية. يُنصح بالتشاور مع محامٍ معتمد بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c05,2,لدي 200 اشتراك في الضمان الاجتماعي، كم متبقي لي حتى التقاعد المبكر؟,ar,calculator_gender_conditions,"إذا كان لديك 200 اشتراك في الضمان الاجتماعي، فإليك ما تحتاجه للتقاعد المبكر:
+
+- إذا كنت ذكراً، تحتاج إلى 252 اشتراكاً، لذا تحتاج إلى 52 اشتراكاً إضافياً.
+- إذا كنت أنثى، تحتاج إلى 228 اشتراكاً، لذا تحتاج إلى 28 اشتراكاً إضافياً.
+
+بالتالي:
+
+- للذكر: 252 - 200 = 52 اشتراكاً متبقيين.
+- للأنثى: 228 - 200 = 28 اشتراكاً متبقيين.
+
+المعلومات المذكورة مستندة إلى قانون الضمان الاجتماعي، المادة 64. 
+
+هذا هو معلومات عامة، وليس نصيحة قانونية، ينبغي عليك استشارة محامٍ مرخص بشأن قضيتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c05,3,لدي 200 اشتراك في الضمان الاجتماعي، كم متبقي لي حتى التقاعد المبكر؟,ar,calculator_gender_conditions,"إذا كان لديك 200 اشتراك في الضمان الاجتماعي، تحتاج إلى 252 اشتراك إذا كنت ذكراً أو 228 اشتراك إذا كنت أنثى لتكون مؤهلاً للتقاعد المبكر. 
+
+لذا:
+
+- **إذا كان ذكراً**: تحتاج إلى 52 اشتراكا إضافيا لتصل إلى 252 اشتراكا.
+- **إذا كانت أنثى**: تحتاج إلى 28 اشتراكا إضافيا لتصل إلى 228 اشتراكا.
+
+من أجل المزيد من التفاصيل حول الشروط الإضافية، يمكنك الرجوع إلى قانون الضمان الاجتماعي، المادة 64. 
+
+هذه المعلومات هي معلومات عامة، وليست نصيحة قانونية، ويجب عليك استشارة محامي مرخص حول حالتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c05,4,لدي 200 اشتراك في الضمان الاجتماعي، كم متبقي لي حتى التقاعد المبكر؟,ar,calculator_gender_conditions,"لديك 200 اشتراك في الضمان الاجتماعي. بحسب أحكام المادة 64 من قانون الضمان الاجتماعي:
+
+إذا كنت ذكراً، تحتاج إلى 252 اشتراكاً، لذا يتبقى لك 52 اشتراكاً.  
+إذا كنت أنثى، تحتاجين إلى 228 اشتراكاً، لذا يتبقى لك 28 اشتراكاً.
+
+إذن، المتبقي لك حتى التقاعد المبكر هو:
+- إذا كنت ذكراً: 52 اشتراكاً.
+- إذا كنت أنثى: 28 اشتراكاً.
+
+هذا هو نص المعلومات المقدمة وليس نصيحة قانونية، وينبغي عليك استشارة محامي مرخص حول حالتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c06,1,عمري 50 ولدي 200 اشتراك في الضمان الاجتماعي، هل يمكنني التقاعد المبكر؟,ar,calculator_gender_conditions,"لا يمكنك التقاعد المبكر. إذ يجب أن يكون لديك عدد اشتراكات لا يقل عن 252 للاعمار الذكور أو 228 للاعمار الإناث وتجاوز سن الخمسين بالنسبة للذكور أو الخمسين بالنسبة للإناث.
+
+المستندات المعنية:
+1. ""أن لا يقل عدد اشتراكاته وفقاً لأحكام هذا القانون عن (٣٦) اشتراكا قبل تاريخ استحقاقه لبدل التعطل عن العمل... "" (قانون الضمان الاجتماعي، المادة 50).
+2. ""على المؤسسة بناءً على طلب المؤمن عليه تخصيص راتب تقاعد مبكر له إذا انتهت خدمته... ان يكون قد أكمل سن الخمسين على الأقل وان تكون اشتراكاته في هذا التأمين قد بلغت على الأقل (252) اشتراكاً فعلياً بالنسبة للذكر..."" (قانون الضمان الاجتماعي، المادة 64(a)). 
+
+لذا، نظراً لعدد اشتراكاتك الحالي (200) وعمر (50) فإنك لا تستوفي الشروط المطلوبة للتقاعد المبكر. 
+
+هذه معلومات عامة، وليس نصيحة قانونية، ويجب عليك استشارة محامٍ مرخص بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c06,2,عمري 50 ولدي 200 اشتراك في الضمان الاجتماعي، هل يمكنني التقاعد المبكر؟,ar,calculator_gender_conditions,"لا يمكنك التقاعد المبكر في حالتك. قانون الضمان الاجتماعي يشترط أن تكون لديك عدد معين من الاشتراكات وسن مناسب لتستحق راتب التقاعد المبكر. وفقًا لما جاء في القوانين:
+
+1. وفقًا للمادة (64) من قانون الضمان الاجتماعي، يجب أن تكون لديك 252 اشتراكًا فعليًا إذا كنت ذكرًا، أو 228 اشتراكًا فعليًا إذا كنت أنثى، وهذا شرط أساسي لاستحقاق راتب التقاعد المبكر.
+2. إذا كنت ذكرًا، يجب أن تكون قد أكملت سن الخمسين، وهذا الشرط تحققته، ولكن لا تملك العدد المطلوب من الاشتراكات. إذا كنت أنثى، يجب أن تكون قد أكملت سن الخامسة والأربعين، ولكن أيضًا لا تملك العدد المطلوب من الاشتراكات.
+
+لذلك، لا يمكنك التقاعد المبكر لأن لديك 200 اشتراك فقط، والحاجة هي 252 للذكور و228 للإناث.
+
+هذه المعلومات عامة وليست نصيحة قانونية، ومن الأفضل استشارة محامي مختص بشأن حالتك.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c06,3,عمري 50 ولدي 200 اشتراك في الضمان الاجتماعي، هل يمكنني التقاعد المبكر؟,ar,calculator_gender_conditions,"لا يمكنك التقاعد المبكر لأنك لم تكمل الحد الأدنى من الاشتراكات المطلوبة، وأيضًا لم تصل إلى السن المحدد.
+
+وفقًا لقانون الضمان الاجتماعي:
+1. يشترط أن تكون اشتراكاته في التأمين (٢٥٢) اشتراكًا فعليًا بالنسبة للذكر، وهذا يعني أنك تحتاج إلى 52 اشتراكًا إضافيًا لتلبية هذا الشرط (قانون الضمان الاجتماعي، المادة 64/أ).
+2. كما يشترط أن لا يقل سن المؤمن عليه عن (٤٥) سنة، وقد أكملت ذلك لأن عمرك 50 سنة (قانون الضمان الاجتماعي، المادة 64/أ).
+
+لذا، لا يمكنك التقاعد المبكر. 
+
+هذا معلومات عامة وليست نصيحة قانونية. ينبغي عليك استشارة محامي مرخص بشأن حالتك.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c06,4,عمري 50 ولدي 200 اشتراك في الضمان الاجتماعي، هل يمكنني التقاعد المبكر؟,ar,calculator_gender_conditions,"لا يمكنك التقاعد المبكر لأنك لم تكمل الحد الأدنى المطلوب من الاشتراكات. حسب قانون الضمان الاجتماعي، يجب أن تكون لديك على الأقل 252 اشتراكًا إذا كنت ذكرًا، و228 اشتراكًا إذا كنت أنثى، وكذلك يجب أن يكون عمرك 45 سنة أو أكثر. 
+
+بالنسبة لعمرك البالغ 50 عامًا، هذا يناسب شرط العمر، لكن لم تستوفِ عدد الاشتراكات.
+
+**الدليل:**
+- عدد الاشتراكات المطلوب للتقاعد المبكر (قانون الضمان الاجتماعي، المادة 64):
+  - للذكر: 252 اشتراكاً.
+  - للأنثى: 228 اشتراكاً.
+- يجب أن يكون عمر المؤمن عليه 45 سنة على الأقل (قانون الضمان الاجتماعي، المادة 64).
+
+هذه معلومات عامة وليست نصيحة قانونية، وينبغي عليك استشارة محامٍ مرخص بشأن حالتك الخاصة.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""ar"", ""label"": ""عدد الاشتراكات المطلوب (التقاعد المبكر)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""ar"", ""label"": ""سن التقاعد (تقاعد الشيخوخة)"", ""male"": 60, ""female"": 55}]}"
+c07,1,I'm 45 years old and have 200 social security subscriptions. When can I retire early?,en,calculator_gender_conditions,"You cannot retire early at the age of 45 with 200 subscriptions, as you do not meet the required conditions.
+
+According to Article 64(a), to qualify for an Early Retirement Pension, you must have completed at least:
+1. (50) years of age and (252) contributions for males, or (228) contributions for females.
+2. (300) actual contributions and completed the age of (45).
+
+Additionally, under Article 64(b), the following applies:
+1. If you are aged 46, you need a minimum of (228) contributions for males and (192) for females, and you must have completed the age of (44) prior to the effective date of this Law.
+2. If you are aged 47, you need (240) contributions for males and (204) for females with the same age requirement.
+
+Since you are currently 45 years old and have only 200 subscriptions, you do not meet any of the stated conditions for early retirement.
+
+This is general information, not legal advice. Please consult a licensed lawyer about your own case.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""en"", ""label"": ""required subscriptions (early retirement)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""en"", ""label"": ""retirement age (old-age pension)"", ""male"": 60.0, ""female"": 55.0}]}"
+c07,2,I'm 45 years old and have 200 social security subscriptions. When can I retire early?,en,calculator_gender_conditions,"You cannot retire early with 200 subscriptions at the age of 45. According to the Social Security Law:
+
+1. You must be at least 50 years old and have at least 252 actual contributions if you are male (Social Security Law, Article 64(a)(1)).
+2. Alternatively, you can be aged 45 with a minimum of 300 contributions. Since you have only 200 contributions, this also does not apply (Social Security Law, Article 64(a)(2)).
+
+Therefore, based on the current information, you do not qualify for early retirement. 
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""en"", ""label"": ""required subscriptions (early retirement)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""en"", ""label"": ""retirement age (old-age pension)"", ""male"": 60.0, ""female"": 55.0}]}"
+c07,3,I'm 45 years old and have 200 social security subscriptions. When can I retire early?,en,calculator_gender_conditions,"At 45 years old with 200 social security subscriptions, you do not meet the requirements for early retirement. According to Article 64(a) of the Social Security Law, you need to be at least 50 years old with 252 contributions for men (or 228 for women), or have 300 contributions and be at least 45 years old. 
+
+Additionally, under Article 64(b), even if you meet other specific age and contribution conditions, you currently do not satisfy any of those since you have not reached the minimum age of 46.
+
+You will need to continue working and contributing to meet either the age and contribution requirement or the total contribution requirement before you can qualify for early retirement. 
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""en"", ""label"": ""required subscriptions (early retirement)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""en"", ""label"": ""retirement age (old-age pension)"", ""male"": 60.0, ""female"": 55.0}]}"
+c07,4,I'm 45 years old and have 200 social security subscriptions. When can I retire early?,en,calculator_gender_conditions,"At 45 years old with 200 social security subscriptions, you do not meet the requirements for early retirement as per the following provisions:
+
+1. **Social Security Law, Article 64(a)**: For early retirement, you must be at least 50 years old and have at least 252 contributions for men or 228 for women, which you do not meet.
+
+2. **Social Security Law, Article 64(b)**: You do not meet the conditions set for ages 46 through 48 to qualify for early retirement with your current contributions.
+
+3. **Social Security Law, Article 64(c)**: While you are not yet of age for hazardous professions consideration, you do not meet the subscription requirements (216 for men, 180 for women) for early retirement in hazardous jobs.
+
+With 200 contributions and at the age of 45, you need to increase your contributions or reach a qualifying age before you can retire early. Please confirm if you would like to know about other retirement options available to you. 
+
+This is general information and not legal advice; please consult a licensed lawyer about your specific case.","{""gender_conditions"": [{""article"": ""64"", ""kind"": ""subscriptions"", ""language"": ""en"", ""label"": ""required subscriptions (early retirement)"", ""male"": 252.0, ""female"": 228.0}, {""article"": ""62"", ""kind"": ""age"", ""language"": ""en"", ""label"": ""retirement age (old-age pension)"", ""male"": 60.0, ""female"": 55.0}]}"
+c08,1,راتبي 1400 دينار، تدفع الشركة عني اشتراكات الضمان الاجتماعي، وضح لي كل نسبة على حدة وما الذي تغطيه,ar,calculator_insurance_names,"تدفع الشركة عنك اشتراكات الضمان الاجتماعي وفق النسب التالية:
+
+1. **تأمين إصابات العمل**: 
+   - نسبة الاشتراك: **2%** 
+   - المبلغ المدفوع: **28 دينار** 
+   - تغطي إصابات العمل. (قانون الضمان الاجتماعي، المادة 24)
+
+2. **تأمين الأمومة**: 
+   - نسبة الاشتراك: **0.75%** 
+   - المبلغ المدفوع: **10.5 دينار** 
+   - تغطي برامج التأمين الخاصة بالأمومة. (قانون الضمان الاجتماعي، المادة 42)
+
+3. **تأمين التعطل عن العمل**: 
+   - نسبة الاشتراك: **0.5%** 
+   - المبلغ المدفوع: **7 دينار** 
+   - تغطي التعويضات في حالات التعطل عن العمل. (قانون الضمان الاجتماعي، المادة 48)
+
+4. **تأمين الشيخوخة والعجز والوفاة**: 
+   - نسبة الاشتراك: **11%** 
+   - المبلغ المدفوع: **154 دينار** 
+   - تغطي رواتب التقاعد والعجز والوفاة. (قانون الضمان الاجتماعي، المادة 59)
+
+**الإجمالي**:
+- مجموع ما تدفعه الشركة عنك هو **199.5 دينار**.
+
+تُقتطع من راتبك أيضاً: 
+1. **تأمين التعطل عن العمل**: 
+   - نسبة الاشتراك: **1%** 
+   - المبلغ المدفوع: **14 دينار** 
+2. **تأمين الشيخوخة والعجز والوفاة**: 
+   - نسبة الاشتراك: **6.5%** 
+   - المبلغ المدفوع: **91 دينار** 
+   
+**الإجمالي**: 
+- مجموع ما يُقتطع منك هو **105 دينار**.
+
+إذاً، المجموع الكلي الذي تعيد الشركة ويدفع للمؤسسة هو **304.5 دينار**.
+
+هذه المعلومات عامة وليست نصيحة قانونية، ويُنصح بمراجعة محامٍ مرخص لبحث حالتك الخاصة.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 28.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 10.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 14.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 154.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 91.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1400.0, ""base"": 1400.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 105.0, ""employer_amount"": 199.5, ""total_amount"": 304.5}"
+c08,2,راتبي 1400 دينار، تدفع الشركة عني اشتراكات الضمان الاجتماعي، وضح لي كل نسبة على حدة وما الذي تغطيه,ar,calculator_insurance_names,"تدفع الشركة عنك اشتراكات الضمان الاجتماعي بنسبة معينة لكل نوع من التأمينات. إليك التفاصيل:
+
+1. **تأمين الشيخوخة والعجز والوفاة**:
+   - **نسبة الاشتراك**: 11%
+   - **المبلغ المدفوع**: 154 دينار
+   - **المادة**: قانون الضمان الاجتماعي، المادة (59)
+
+2. **تأمين إصابات العمل**:
+   - **نسبة الاشتراك**: 2%
+   - **المبلغ المدفوع**: 28 دينار
+   - **المادة**: قانون الضمان الاجتماعي، المادة (24)
+
+3. **تأمين الأمومة**:
+   - **نسبة الاشتراك**: 0.75%
+   - **المبلغ المدفوع**: 10.5 دينار
+   - **المادة**: قانون الضمان الاجتماعي، المادة (42)
+
+4. **تأمين التعطل عن العمل**:
+   - **نسبة الاشتراك**: 0.5%
+   - **المبلغ المدفوع**: 7 دينار
+   - **المادة**: قانون الضمان الاجتماعي، المادة (48)
+
+**مجموع ما تؤديه المنشأة** هو 199.5 دينار.
+
+هذا يوضح كيف تتوزع الاشتراكات على أنواع التأمينات وأغلبها يتعلق بحماية الأفراد في حالات الشيخوخة أو العجز، التعطل عن العمل، إصابات العمل، والأمومة. 
+
+هذا هو المعلومات العامة، وليس استشارة قانونية، ومن الأفضل استشارة محامي مرخص بشأن حالتك.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 28.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 10.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 14.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 154.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 91.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1400.0, ""base"": 1400.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 105.0, ""employer_amount"": 199.5, ""total_amount"": 304.5}"
+c08,3,راتبي 1400 دينار، تدفع الشركة عني اشتراكات الضمان الاجتماعي، وضح لي كل نسبة على حدة وما الذي تغطيه,ar,calculator_insurance_names,"تدفع الشركة عنك اشتراكات الضمان الاجتماعي وفق النسب التالية:
+
+1. تأمين الشيخوخة والعجز والوفاة:
+   - نسبة 11% من أجرك (1400 دينار) = 154 دينار (قانون الضمان الاجتماعي، المادة 59).
+
+2. تأمين إصابات العمل:
+   - نسبة 2% من أجرك (1400 دينار) = 28 دينار (قانون الضمان الاجتماعي، المادة 24).
+
+3. تأمين الأمومة:
+   - نسبة 0.75% من أجرك (1400 دينار) = 10.5 دينار (قانون الضمان الاجتماعي، المادة 42).
+
+4. تأمين التعطل عن العمل:
+   - نسبة 0.5% من أجرك (1400 دينار) = 7 دينار (قانون الضمان الاجتماعي، المادة 48).
+
+بالتالي، إجمالي ما تدفعه الشركة عنك هو 199.5 دينار.
+
+هذه الاشتراكات تساهم في تأمين حقوقك المتعلقة بالتأمينات الاجتماعية المختلفة، مثل تأمين الشيخوخة، تأمين الإصابات، تأمين الأمومة، وتغطية التعطل عن العمل. 
+
+*هذه معلومات عامة وليست استشارة قانونية، يُنصح بالتشاور مع محامٍ مرخص بخصوص حالتك الخاصة.*","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 28.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 10.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 14.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 154.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 91.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1400.0, ""base"": 1400.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 105.0, ""employer_amount"": 199.5, ""total_amount"": 304.5}"
+c08,4,راتبي 1400 دينار، تدفع الشركة عني اشتراكات الضمان الاجتماعي، وضح لي كل نسبة على حدة وما الذي تغطيه,ar,calculator_insurance_names,"تدفع الشركة عنك اشتراكات الضمان الاجتماعي وفق النسب التالية:
+
+1. **تأمين إصابات العمل**: 2% من الأجر = 28 دينار (قانون الضمان الاجتماعي، المادة 24).
+   
+2. **تأمين الأمومة**: 0.75% من الأجر = 10.5 دينار (قانون الضمان الاجتماعي، المادة 42).
+   
+3. **تأمين التعطل عن العمل**: 0.5% من الأجر = 7 دينار (قانون الضمان الاجتماعي، المادة 48).
+   
+4. **تأمين الشيخوخة والعجز والوفاة**: 11% من الأجر = 154 دينار (قانون الضمان الاجتماعي، المادة 59).
+
+**المجموع الكلي لما تؤديه المنشأة**: 14.25% من الأجر = 199.5 دينار.
+
+هذا المجموع يغطي مجموعة من التأمينات الاجتماعية المقدمة لحماية المؤمن عليهم في حال الإصابة، الأمومة، التعطل عن العمل، والتقاعد أو العجز.
+
+تُقتطع منك أيضاً نسب للمساهمة في هذه الاشتراكات، والتي تشمل: 
+
+1. **تأمين التعطل عن العمل**: 1% = 14 دينار (قانون الضمان الاجتماعي، المادة 48).
+   
+2. **تأمين الشيخوخة والعجز والوفاة**: 6.5% = 91 دينار (قانون الضمان الاجتماعي، المادة 59).
+  
+**المجموع الكلي للخصومات من المؤمن عليه**: 7.5% من الأجر = 105 دينار.
+
+هذا يتيح لك الاستفادة من التغطيات الاجتماعية التي توفر الحماية ضد المخاطر التي قد تواجهها في العمل أو بعد انتهاء خدماتك. 
+
+هذه معلومات عامة ولا تمثل استشارة قانونية، يُفضّل استشارة محامي مرخص للحصول على مشورة قانونية تناسب حالتك.","{""language"": ""ar"", ""components"": [{""article"": ""24"", ""name"": ""تأمين إصابات العمل"", ""rate"": 2.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 28.0}, {""article"": ""42"", ""name"": ""تأمين الأمومة"", ""rate"": 0.75, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 10.5}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 0.5, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 7.0}, {""article"": ""48"", ""name"": ""تأمين التعطل عن العمل"", ""rate"": 1.0, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 14.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 11.0, ""bearer"": ""employer"", ""scope"": ""private"", ""amount"": 154.0}, {""article"": ""59"", ""name"": ""تأمين الشيخوخة والعجز والوفاة"", ""rate"": 6.5, ""bearer"": ""employee"", ""scope"": ""private"", ""amount"": 91.0}], ""employee_rate"": 7.5, ""employer_rate"": 14.25, ""total_rate"": 21.75, ""salary"": 1400.0, ""base"": 1400.0, ""ceiling"": 3000.0, ""ceiling_article"": ""20"", ""ceiling_exception"": 5000.0, ""ceiling_exception_date"": ""15/10/2009"", ""ceiling_exception_applies"": false, ""capped"": false, ""employee_amount"": 105.0, ""employer_amount"": 199.5, ""total_amount"": 304.5}"

@@ -1,0 +1,9 @@
+﻿question_id,chunk_ids,full_coverage,n_found
+c01,"[""ssl_ar_59"", ""ssl_ar_42"", ""ssl_ar_24"", ""ssl_ar_48"", ""ssl_ar_20"", ""ssl_ar_53"", ""ssl_ar_89"", ""labor96_ar_90""]",True,4
+c02,"[""ssl_ar_59"", ""ssl_ar_42"", ""ssl_ar_24"", ""ssl_ar_48"", ""ssl_ar_20"", ""ssl_ar_53"", ""ssl_ar_89"", ""ssl_ar_85""]",True,2
+c03,"[""ssl_ar_59"", ""ssl_ar_42"", ""ssl_ar_24"", ""ssl_ar_48"", ""ssl_ar_20"", ""ssl_ar_53"", ""ssl_ar_85"", ""ssl_ar_4""]",True,5
+c04,"[""labor96_ar_32"", ""ssl_ar_103"", ""ssl_ar_62"", ""ssl_ar_102"", ""ssl_ar_68""]",True,1
+c05,"[""ssl_ar_64"", ""ssl_ar_62"", ""ssl_ar_89"", ""ssl_ar_50"", ""ssl_ar_66""]",True,2
+c06,"[""ssl_ar_50"", ""ssl_ar_64"", ""ssl_ar_62"", ""ssl_ar_85"", ""ssl_ar_89""]",True,2
+c07,"[""ssl_en_64"", ""ssl_en_62"", ""ssl_en_85"", ""ssl_en_89"", ""ssl_en_90""]",True,2
+c08,"[""ssl_ar_59"", ""ssl_ar_42"", ""ssl_ar_24"", ""ssl_ar_48"", ""ssl_ar_20"", ""ssl_ar_53"", ""ssl_ar_67"", ""ssl_ar_72""]",True,4

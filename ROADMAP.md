@@ -249,6 +249,56 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 25 — Revaluation: the pending judge run, plus a calculator-focused eval set ✅ done
+
+`scripts/25. revaluation_v4.ipynb`, `eval/eval_calc_v4.jsonl` (8 new questions). Closes the item CLAUDE.md had carried open since Phase 21: no full judge-scored run has covered Phase 22's rules, Phase 23/23a's multi-turn work (not testable here — `eval_v3` is single-turn by construction), or any of Phase 24's calculator work. `eval_v3` itself contains no question that states a salary, so it has never been able to measure the calculator at all — every Phase 24c/24d/24e number was 3-6 manual trial reps, never run through a harness.
+
+Two tracks, reported separately, never blended.
+
+### A retrieval fix landed before this run
+
+Building ground truth for the 8 new questions surfaced a live gap: two salary-stated phrasings ("راتبي 1000 دينار، كم يُقتطع مني" and a "وضح كل نسبة على حدة" variant) still failed to retrieve the full SSL contribution family (24/42/48/59) at `top_k=5` under `FAMILY_TRIGGER_DEPTH=35`/`COUNT=2`. Diagnosed against the raw pre-expansion RRF ranking (not `retrieve()`'s own already-reordered output — the Phase 24c contamination lesson applied a third time): each had exactly one family member inside depth 35 (Article 42 at raw rank 36 and 37), so `COUNT=2`'s "incidental vs topic" gate correctly declined to fire.
+
+Swept depth 35-40 against `eval_v3` (60), `eval_rates.jsonl` (10, Phase 24c's own probe set) and the two new probes, with `FAMILY_TOP_K`'s actual slicing (8 slots once fired, not 5) applied correctly — an earlier pass of the same sweep truncated to 5 unconditionally and wrongly read `eval_rates` as 9/10 instead of the true 10/10, a reminder that a "free" diagnostic script needs the same scrutiny as production code. **Depth 37 is the exact minimum that fixes both probes**, with every `eval_v3` retrieval metric bit-identical to depth 35 (same two questions fire — q10, q16 — nothing new). Depth 39+ starts firing on previously-untouched questions (q05, q12, q43) and costs recall@1/MRR even though full coverage happens to stay flat. Verified end-to-end with the real `Retriever`, not just the sweep. Committed and pushed (`d668d32`) before this notebook ran, so Track 1's numbers below already reflect it.
+
+### Track 1 — `eval_v3` (60 q) regression vs Phase 21
+
+**Retrieval:** recall@1 **0.883**, recall@5 **1.000**, MRR **0.926**, full coverage **0.950**, worst rank 5 (Phase 24c reported 4; recall@5 stayed 1.000 either way — attributed to Pinecone's approximate-NN, already a documented source of small variation, not a regression).
+
+**Regex proxy:** correct article cited **59/60 (98.3%)**, all correct **55/60**, fabrications **0/60**.
+
+**LLM judge**, same judge/prompt/model as Phase 20/21 via `evallib`:
+
+| axis | Phase 21 | Phase 25 | delta | better/worse/same | sign test |
+|---|---|---|---|---|---|
+| faithfulness | 4.800 | 4.700 | −0.100 | 6/10/44 | p = 0.45 — noise |
+| relevancy | 4.800 | 4.717 | −0.083 | 6/9/45 | p = 0.61 — noise |
+
+Both deltas sit at or inside the Phase 12b noise floor and neither sign test is close to significant — **read as held, not regressed**, the same standard Phase 21 applied to its own +0.100 faithfulness move. Not a clean A/B: retrieval changed since Phase 21, unlike the controlled Phase 20→21 pair.
+
+**A print-statement bug, caught by not trusting my own summary line.** Cell 5 reported "calculator fired 60/60" — obviously wrong on a set with no salary-stated questions. Root cause: `s not in (None, 'null')` was applied to a `calculation` column that had round-tripped through `to_csv`/`read_csv`; pandas reads the bare unquoted string `null` back as `NaN` by default, and `NaN not in (None, 'null')` is `True`, so every row counted as "fired" by accident. Doesn't affect any scoring above — retrieval/proxy/judge never read that column — but the true count, read directly from the saved answers, is **6/60**: 4 `gender_conditions`, 2 `contributions`, 0 `end_of_service`.
+
+**That correction surfaced a real design gap.** `compute_gender_conditions` has no completeness/relevance guard — unlike contributions (needs the whole funding family) or end-of-service (needs Article 32 *and* a stated duration), it fires whenever SSL Article 62 or 64 merely appears in retrieved context, whatever the question is actually about. It fired on 4/60 `eval_v3` questions (q14, q15, q27, q28), none of which ask about sex-differentiated pensions. **2 of those 4 (q15, q27) are among the 15 questions that scored worse than Phase 21** — a plausible contributing factor, not a proven one: the judge's stated reasons for both are wrong-sub-clause precision (64(b) vs 64(a)(2) for q15; 63(a) vs 63(c) for q27), consistent with either the injected block or ordinary retrieval crowding from the same siblings. Not fixed here — flagged below.
+
+### Track 2 — the calculator itself, 8 new questions × 4 trials
+
+One question per real live bug found this session (salary-stated contributions — the 5.25% fabrication, the ceiling exception, end-of-service, gender conditions in Arabic/English/age-only, insurance names per component). Retrieval checked once per question (8/8 full coverage after the depth-37 fix); generation repeated 4× per question at production temperature, since Phase 24e already found the block being present doesn't guarantee correct narration. Graded against `res["calculation"]` directly — the exact structure the model was handed — plus a check that the narrated answer actually says it. No LLM judge on this track: a structure/regex check is strictly more precise than a judge would be for "does 142.5 appear," and free.
+
+**Calc-structure correctness:** c01/c02/c03/c05/c06/c07/c08 — **4/4 every one**. **c04 (end-of-service): 0/4** — not a `compute_end_of_service` defect. `extract_service` only parses digit-form years ("10 سنوات"), not the spelled-out word form this question used ("عشر سنوات"); confirmed directly, `extract_service(...)` returns `None`. A real, previously-undocumented gap: `_AGE_WORDS_AR` solved exactly this problem for ages in Phase 24e, but years-of-service was never given the same treatment.
+
+**Narration correctness:** c01/c02/c03/c05/c08 — **4/4**. c06/c07 — **3/4** each, and the one failing trial in both is a genuine silent-male-default (states only the male threshold, never mentions the female figure), matching Phase 24e's own disclosed ~1-in-6 residual rate on this exact failure mode — not a new regression.
+
+**c04's proxy-reported 3/4 overstates it, and this is the most important finding of the run.** The check only tested for the keywords "الضمان الاجتماعي"/"خاضع"/"Social Security"/"subject" appearing anywhere in the answer — which Article 32's own retrieved text contains regardless of what the model does with it. Reading all 4 trials by hand: trials 1-3 quote the "not subject to Social Security" precondition verbatim and then immediately state 8,000 JD as what "you are entitled to," never asking or conditioning the figure on it; trial 4 omits the precondition entirely. **The true narration success rate is 0/4.** Every trial reproduces exactly the pre-Phase-24a failure mode — a confident wage×years answer for a provision that does not apply to most people who would ask — because the calculator never engaged for this phrasing. A natural, plausible way to state years of service silently bypasses the deterministic guard Phase 24a built, and the fallback is the original bug, not a safe default.
+
+### Two follow-ups flagged, neither executed (need a decision, not a judgment call)
+
+1. Add Arabic word-number support to `extract_service`, mirroring `_AGE_WORDS_AR` — closes the c04 gap above.
+2. Add a completeness/relevance guard to `compute_gender_conditions`, the same shape as the other two calculators, so it stops firing on ordinary questions where Article 62/64 is present only as retrieval crowding.
+
+### Limits of this run
+
+No comparison arm for Track 2 — Phase 24's own numbers were never run through a harness, so this **is** the reference point going forward, not a before/after. Track 1's judge comparison is confounded by retrieval having changed since Phase 21. Single run per arm throughout; Track 1's noise floor is imported from Phase 12b, not re-measured. A background `nbconvert --execute` run crashed once mid-Track-2 on a variable-name collision (`for r in worse.itertuples()` in the Track 1 results cell left a stray pandas row bound to `r`, which a later `Retriever() if "r" not in dir() else r` picked up instead of building a fresh instance) — Track 1's results were already fully saved by then, so the resumable-CSV pattern meant the fix cost only the missing Track 2 cells, not a full re-run.
+
 ## Phase 24e — Pension eligibility made deterministic ✅ done — LIVE
 `src/calc.py` (`compute_gender_conditions`, `extract_sex`, `format_gender_block`), `src/generation.py` (rules 11/20, `MULTITURN_REMINDER`).
 
