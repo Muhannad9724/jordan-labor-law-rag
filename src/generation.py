@@ -370,9 +370,15 @@ class OpenAICompatibleGenerator:
         # something that is not in *this* turn's context -- the fabrication failure mode
         # the citation check exists to catch.
         messages = [{"role": "system", "content": self.system_prompt}]
-        for m in (history or [])[-GENERATION_HISTORY_TURNS:]:
+        trimmed = (history or [])[-GENERATION_HISTORY_TURNS:]
+        for m in trimmed:
             role = "user" if m.get("role") == "user" else "assistant"
             messages.append({"role": role, "content": str(m.get("content", ""))[:2000]})
+        # Recency beats the system prompt when the transcript demonstrates the opposite
+        # behaviour -- see MULTITURN_REMINDER. Only when there is a transcript to compete
+        # with; a first turn follows rule 11 on its own.
+        if trimmed:
+            messages.append({"role": "system", "content": MULTITURN_REMINDER})
         messages.append({"role": "user", "content": user_msg})
 
         resp = None
@@ -501,6 +507,27 @@ Rules:
 - If the latest message is already self-contained, return it unchanged."""
 
 REWRITE_MAX_TOKENS = 200
+
+# Injected as a system message AFTER the history and immediately BEFORE the current
+# question -- position is the entire point.
+#
+# Rule 11 alone does not survive multi-turn, and this was measured rather than assumed:
+# with a prior turn in history, the model asked for a missing fact in 0 of 6 trials both
+# locally and in production, with byte-identical retrieved articles and the same question
+# that asks reliably with no history. Strengthening rule 11's wording in the system prompt
+# changed nothing (still 0/6).
+#
+# The reason is that the assistant's own earlier answer sits in the transcript as a
+# concrete demonstration of answering without asking. An in-context example outweighs an
+# instruction in a 13-rule system prompt, so the model imitates its own prior turn. The
+# counter is recency: restate the rule in the last position before the question, where it
+# competes on equal footing. Only sent when history exists -- a first turn already obeys
+# rule 11 without it.
+MULTITURN_REMINDER = """Before answering the question below, judge it on its own terms.
+
+If answering it correctly depends on a fact about this person that they have not stated -- their age, years of service, marital status, a date, an amount, or which law covers them -- ask them for that one fact in a short question instead of answering as though it were settled.
+
+How earlier turns in this conversation were answered does not decide this. If the fact is still missing now, ask for it now."""
 # How much history each step sees. Rewriting only needs the immediately preceding
 # exchange to resolve a reference, so it stays tight and cheap; generation gets a longer
 # window so the thread reads coherently. Both are capped -- unbounded history would grow
