@@ -233,22 +233,48 @@ class Retriever:
         self._families = self._build_families()
 
     def _build_families(self):
-        """{(law, language): {article numbers}} for articles sharing a structural phrase.
+        """{(law, language): [{article numbers}, ...]} -- sibling groups, split by scope.
 
         Derived from the text, not declared by hand, so it stays correct if the corpus
         is rebuilt. Both markers independently return the same five SSL articles.
+
+        The scope split is not cosmetic. The marker groups {24, 42, 48, 59, 72}, but
+        **Article 72 is the public-sector and military funding regime** -- an alternative
+        to the other four, not a fifth component of the same total. It carries its own
+        11% and 6.5%, numerically identical to the private-sector ones, plus 17%, 21.5%
+        and 26%. Promoting all five together put 16 percentages in front of the model
+        when only 6 answered the question, and measured 3/6 on the resulting arithmetic.
+
+        Members are therefore grouped by scope, and expansion promotes only the group
+        the retrieved article belongs to: a private-sector question gets {24, 42, 48, 59}
+        and a military one gets 72 alone.
         """
         fams = {}
         if not EXPAND_FAMILIES:
             return fams
+        from .calc import article_components  # local: keeps the import graph one-way
+
         for (law, lang), grp in self.chunks.groupby(["law", "language"]):
             marker = FAMILY_MARKERS.get(lang)
             if not marker:
                 continue
-            members = {str(r.article_number) for r in grp.itertuples()
-                       if marker in str(r.text)}
-            if len(members) > 1:
-                fams[(law, lang)] = members
+            by_scope = {}
+            for r in grp.itertuples():
+                text = str(r.text)
+                if marker not in text:
+                    continue
+                comps = article_components(text)
+                # "private" if the article states any ordinary private-sector rate;
+                # otherwise the scope its components actually describe.
+                if any(c["scope"] == "private" and c["bearer"] for c in comps):
+                    scope = "private"
+                else:
+                    scopes = [c["scope"] for c in comps] or ["private"]
+                    scope = max(set(scopes), key=scopes.count)
+                by_scope.setdefault(scope, set()).add(str(r.article_number))
+            groups = [m for m in by_scope.values() if len(m) > 1]
+            if groups:
+                fams[(law, lang)] = groups
         return fams
 
     def _embed_query(self, query):
@@ -270,19 +296,29 @@ class Retriever:
         top_idx = np.argsort(-scores)[:top_k]
         return [self.chunk_ids[i] for i in top_idx]
 
-    def _expand_families(self, chunk_ids, language):
+    def _expand_families(self, chunk_ids, language, trigger_depth):
         """Promote every sibling of the best-ranked family member to sit beside it.
 
         Returns (ids, fired). A sibling is pulled in because a relative was retrieved,
         not because of its own rank -- which is the point: SSL 48 never appeared in the
         top 30 for "how much does the company pay", but SSL 59 did.
+
+        `trigger_depth` bounds where the *triggering* article may sit. The first version
+        scanned the whole candidate list, so a family member at rank 40 -- an article the
+        question was never going to be shown -- still widened the window to FAMILY_TOP_K.
+        Measured on eval_v3: expansion fired on 37 of 60 questions and pushed mean slots
+        to 6.85, spending context on siblings of an article nobody was going to read.
+        The rule that makes sense is the one the feature was built for: if the answer is
+        going to show one member of a family, show the rest of it too.
         """
         if not self._families:
             return chunk_ids, False
-        for i, cid in enumerate(chunk_ids):
+        for i, cid in enumerate(chunk_ids[:trigger_depth]):
             row = self.chunks.iloc[self.id_to_row[cid]]
-            fam = self._families.get((row["law"], language))
-            if not fam or str(row["article_number"]) not in fam:
+            groups = self._families.get((row["law"], language)) or []
+            # only the scope group this article belongs to -- see _build_families
+            fam = next((g for g in groups if str(row["article_number"]) in g), None)
+            if not fam:
                 continue
             sibs = []
             for art in sorted(fam, key=lambda a: int(re.sub(r"\D", "", a) or 0)):
@@ -358,7 +394,8 @@ class Retriever:
 
         ordered = [cid for cid, _ in
                    sorted(rrf_scores.items(), key=lambda kv: kv[1], reverse=True)]
-        ordered, fired = self._expand_families(ordered, lang or detect_language(query))
+        ordered, fired = self._expand_families(ordered, lang or detect_language(query),
+                                               trigger_depth=top_k)
         limit = FAMILY_TOP_K if (fired and top_k <= FAMILY_TOP_K) else top_k
         ranked = [(cid, rrf_scores.get(cid, 0.0)) for cid in ordered[:limit]]
 

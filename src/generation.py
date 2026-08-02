@@ -140,6 +140,7 @@ Totals and calculations
 16. Show each component on its own line with the article it comes from, then the total. Separate what the employer pays from what is deducted from the employee, and never add the two together into a single figure unless the person asked for the combined total.
 17. Apply any ceiling or floor on the amount that the documents state, and say plainly when it does not affect the figure given.
 18. Rule 6 does not forbid this. Adding up rates that the documents each state outright is arithmetic, not interpretation. Rule 6 still governs everything else: do not reason about how provisions qualify or override one another, and if the total depends on which category the person falls into, say which case you have calculated and name the others.
+19. Where a block of computed figures follows the documents, the arithmetic in it has already been done and checked. Use those rates, amounts and totals exactly as given -- do not re-add the components, do not re-derive a total, do not round differently, and never state a figure that contradicts the block. Rules 14 to 17 are already satisfied by it. You still write the answer: cite the article beside each rate as the block shows it, and add anything the documents say that the block does not cover.
 
 Close with one short line noting this is general information, not legal advice, and that they should consult a licensed lawyer about their own case."""
 
@@ -435,6 +436,22 @@ class OpenAICompatibleGenerator:
     def generate(self, query, chunks, history=None, max_retries=5):
         lang = detect_language(query)
         context = _format_context(chunks, lang)
+
+        # Contribution arithmetic is done in code, not by the model -- see src/calc.py.
+        # Measured at 3/6 and 2/6 correct when the model summed the six rates itself,
+        # with every article already in context. `compute_contributions` returns None
+        # unless the full private funding family was retrieved, so an incomplete
+        # context leaves the model to answer unaided rather than handing it a
+        # confidently wrong total.
+        calc = None
+        try:
+            from .calc import compute_contributions, extract_salary, format_calculation_block
+            calc = compute_contributions(chunks, salary=extract_salary(query))
+            if calc:
+                context += "\n\n" + format_calculation_block(calc, lang)
+        except Exception:
+            calc = None  # never let the aid break an answer the model could still give
+
         user_msg = (f"الوثائق:\n{context}\n\nالسؤال: {query}" if lang == "ar"
                     else f"Documents:\n{context}\n\nQuestion: {query}")
         available_articles = {c["article_number"] for c in chunks}
@@ -485,7 +502,8 @@ class OpenAICompatibleGenerator:
             for a in cited_articles
         ]
 
-        return {"answer": answer, "citations": citations, "response": resp}
+        return {"answer": answer, "citations": citations, "response": resp,
+                "calculation": calc}
 
     def suggest_followups(self, query, chunks, answer, n=3):
         """Follow-up questions grounded in `chunks`. Returns [] on any failure.
