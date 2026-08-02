@@ -88,6 +88,10 @@ const I18N = {
     collapseText: "طيّ النص",
     langToggleLabel: "EN",
     langToggleAria: "التبديل إلى الإنجليزية",
+    themeToggleAriaToLight: "التبديل إلى الوضع الفاتح",
+    themeToggleAriaToDark: "التبديل إلى الوضع الداكن",
+    contactLabel: "تواصل معي عبر لينكدإن",
+    contactAria: "تواصل معي عبر لينكدإن (يفتح في نافذة جديدة)",
   },
   en: {
     pageTitle: "Jordanian Labor & Social Security Law Guide",
@@ -120,6 +124,10 @@ const I18N = {
     collapseText: "Collapse text",
     langToggleLabel: "AR",
     langToggleAria: "Switch to Arabic",
+    themeToggleAriaToLight: "Switch to light mode",
+    themeToggleAriaToDark: "Switch to dark mode",
+    contactLabel: "Connect on LinkedIn",
+    contactAria: "Connect on LinkedIn (opens in a new tab)",
   },
 };
 
@@ -141,6 +149,29 @@ const railCount = document.getElementById("rail-count");
 const suggestionsDock = document.getElementById("suggestions-dock");
 const composerDock = document.querySelector(".composer-dock");
 const langToggleBtn = document.getElementById("lang-toggle");
+const themeToggleBtn = document.getElementById("theme-toggle");
+
+/* ------------------------- theme ------------------------- */
+
+// Unlike uiLang (which defaults to Arabic regardless of the browser, since that's a
+// content choice), light/dark is an accessibility preference -- honor the system
+// setting on a first visit, then remember whatever the person actually picks.
+const storedTheme = localStorage.getItem("theme");
+let theme = storedTheme === "light" || storedTheme === "dark"
+  ? storedTheme
+  : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+
+function setTheme(next) {
+  theme = next;
+  localStorage.setItem("theme", theme);
+  document.documentElement.setAttribute("data-theme", theme);
+
+  const ariaKey = theme === "light" ? "themeToggleAriaToDark" : "themeToggleAriaToLight";
+  themeToggleBtn.setAttribute("aria-label", t(ariaKey));
+  themeToggleBtn.setAttribute("title", t(ariaKey));
+}
+
+themeToggleBtn.addEventListener("click", () => setTheme(theme === "light" ? "dark" : "light"));
 
 /* ------------------------- language ------------------------- */
 
@@ -191,6 +222,10 @@ function setLanguage(lang) {
   langToggleBtn.textContent = t("langToggleLabel");
   langToggleBtn.setAttribute("aria-label", t("langToggleAria"));
   langToggleBtn.setAttribute("title", t("langToggleAria"));
+
+  const themeAriaKey = theme === "light" ? "themeToggleAriaToDark" : "themeToggleAriaToLight";
+  themeToggleBtn.setAttribute("aria-label", t(themeAriaKey));
+  themeToggleBtn.setAttribute("title", t(themeAriaKey));
 
   // The opening screen and the empty sources rail are placeholders, not content --
   // re-render them fresh so their seed questions and heading pick up the new language.
@@ -676,9 +711,10 @@ input.addEventListener("input", () => {
 
 window.addEventListener("resize", syncDockClearance);
 
-// Applies the saved (or default) language to the static markup before anything is
-// rendered into the thread/rail, so the very first paint is already in the right
-// language rather than flashing Arabic and then switching.
+// Applies the saved (or system-default) theme and the saved (or default) language to
+// the static markup before anything is rendered into the thread/rail, so the very
+// first paint is already correct rather than flashing dark/Arabic and then switching.
+setTheme(theme);
 setLanguage(uiLang);
 renderOpening();
 renderRailEmpty(t("railEmpty"));
