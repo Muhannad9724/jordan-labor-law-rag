@@ -21,8 +21,27 @@ const sendBtn = document.getElementById("send-btn");
 const resetBtn = document.getElementById("reset-btn");
 const railBody = document.getElementById("rail-body");
 const railCount = document.getElementById("rail-count");
+const suggestionsDock = document.getElementById("suggestions-dock");
+const composerDock = document.querySelector(".composer-dock");
 
 const RAIL_EMPTY_MESSAGE = "ستظهر هنا نصوص المواد القانونية التي استندت إليها الإجابة";
+
+// Conversation history, oldest first. Held here rather than on the server: the backend
+// stays stateless (no session store, nothing to expire or leak between users), which is
+// what lets this run on one container with no database.
+//
+// Trimmed to the last MAX_HISTORY_TURNS entries because every turn is re-sent with each
+// request -- an untrimmed thread would grow the payload, and the cost per question,
+// without bound. The server caps it again independently; this is not a trust boundary.
+let history = [];
+const MAX_HISTORY_TURNS = 12;
+
+function recordTurn(role, content) {
+  history.push({ role, content });
+  if (history.length > MAX_HISTORY_TURNS) {
+    history = history.slice(-MAX_HISTORY_TURNS);
+  }
+}
 
 const AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
 const toArabicDigits = (v) => String(v).replace(/\d/g, (d) => AR_DIGITS[+d]);
@@ -45,10 +64,13 @@ function scrollIntoReading(el, offset = 88) {
   window.scrollTo({ top, behavior: reducedMotion ? "auto" : "smooth" });
 }
 
-// Height of the sticky composer plus its breathing room -- the part of the viewport
-// that is not actually available for reading. Keep in step with .composer and the
-// .thread padding-bottom in style.css.
-const COMPOSER_CLEARANCE = 92;
+// The part of the viewport the sticky dock covers, and so is not available for reading.
+// Measured rather than hardcoded: the dock's height changes when suggestion chips appear
+// and when the textarea grows, and a stale constant would either waste space or let text
+// hide underneath.
+function dockClearance() {
+  return (composerDock ? composerDock.offsetHeight : 78) + 24;
+}
 const READING_GUTTER = 20;
 
 // Scrolling the *question* to the top was only ever half the job: the answer then
@@ -63,7 +85,7 @@ const READING_GUTTER = 20;
 //     line, not its last, so this is not the usual chat "pin to bottom" behaviour.
 function revealAnswer(el) {
   const rect = el.getBoundingClientRect();
-  const room = window.innerHeight - COMPOSER_CLEARANCE;
+  const room = window.innerHeight - dockClearance();
   if (rect.top >= 0 && rect.bottom <= room) return;   // already fully readable
   scrollIntoReading(el, READING_GUTTER);
 }
@@ -237,29 +259,22 @@ function addAnswer(text, sources) {
   return block;
 }
 
-// Inserted at the TOP of the answer -- right after the "الإجابة" label, before the
-// body text -- not appended at the end. Two reasons:
-//   - It reads first, so someone who already knows what they want to ask next never
-//     has to read (or scroll past) the whole answer to find it.
-//   - It lands exactly where revealAnswer() already scrolled the viewport to, since
-//     that targets the top of this same block. Chips at the bottom needed their own
-//     scroll-into-view logic to ever be seen; chips at the top mostly don't.
+// Rendered into the sticky dock above the question bar, not into the answer. They
+// belong to what you'd type next, so they live with the input.
 //
-// Cost: suggestions still arrive ~1-2s after the answer body (a separate /followups
-// call, so the answer itself is never delayed), so inserting them above the text the
-// reader may already be reading pushes that text down when they land. The fade-in
-// softens the pop but does not remove the shift -- accepted as the trade for having
-// the chips actually be seen without hunting for them.
-function addSuggestions(answerBlock, questions) {
+// This is what removed the chip scroll-into-view logic entirely: the dock is sticky, so
+// the chips are on screen at any scroll position and there is nothing to reveal. Every
+// previous placement (end of the answer, then top of the answer) needed its own scrolling
+// rules to be seen at all, and each had a case where they still weren't.
+function addSuggestions(questions) {
   if (!questions || !questions.length) return;
 
-  const strip = document.createElement("div");
-  strip.className = "suggestions";
+  suggestionsDock.innerHTML = "";
 
   const label = document.createElement("div");
   label.className = "suggestions-label";
   label.textContent = "أسئلة ذات صلة";
-  strip.appendChild(label);
+  suggestionsDock.appendChild(label);
 
   const row = document.createElement("div");
   row.className = "suggestion-row";
@@ -272,28 +287,28 @@ function addSuggestions(answerBlock, questions) {
     if (!isArabic(q)) chip.dir = "ltr";
     chip.addEventListener("click", () => {
       if (sendBtn.disabled) return;      // a question is already in flight
-      strip.remove();                    // a chip that has been taken is no longer a suggestion
-      submitQuestion(q);
+      submitQuestion(q);                 // clearSuggestions() runs inside
     });
     row.appendChild(chip);
   }
 
-  strip.appendChild(row);
-  // Before the body, not appended at the end -- see the comment above this function.
-  answerBlock.insertBefore(strip, answerBlock.querySelector(".body"));
+  suggestionsDock.appendChild(row);
+  suggestionsDock.hidden = false;
+  syncDockClearance();
+}
 
-  // Usually a no-op now: the strip lands where revealAnswer() already scrolled to.
-  // Still needed for the case where the reader scrolled away in the ~1-2s gap before
-  // suggestions arrived (back up to reread an earlier answer, say) -- scrollBy, not
-  // scrollIntoView, so a chip that's already visible is never jumped to the top of
-  // the screen. Skipped only if the reader is scrolling right now, not if they
-  // scrolled at any point while reading -- see the note above SCROLL_RECENCY_MS.
-  if (Date.now() - lastUserScrollAt < SCROLL_RECENCY_MS) return;
-  const overshoot = strip.getBoundingClientRect().bottom
-                    - (window.innerHeight - COMPOSER_CLEARANCE);
-  if (overshoot > 0) {
-    window.scrollBy({ top: overshoot + 12, behavior: reducedMotion ? "auto" : "smooth" });
-  }
+// The dock floats over the thread, so the thread needs bottom padding equal to its
+// height or the last lines of an answer sit underneath it -- the same failure the
+// composer alone caused before, except the dock's height changes as chips come and go.
+function syncDockClearance() {
+  const h = composerDock.offsetHeight;
+  document.documentElement.style.setProperty("--dock-clearance", `${h + 24}px`);
+}
+
+function clearSuggestions() {
+  suggestionsDock.innerHTML = "";
+  suggestionsDock.hidden = true;
+  syncDockClearance();
 }
 
 function addFailure(message) {
@@ -340,11 +355,14 @@ function renderOpening() {
 
 async function askQuestion(question) {
   const pending = addThinking();
+  // Snapshot before this turn is recorded -- the server wants the conversation *prior*
+  // to the current question, which it receives separately.
+  const priorHistory = history.slice();
   try {
     const resp = await fetch(`${API_BASE_URL}/ask`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, history: priorHistory }),
     });
 
     pending.remove();
@@ -356,19 +374,24 @@ async function askQuestion(question) {
     }
 
     const data = await resp.json();
-    const block = addAnswer(data.answer, data.sources);
+    // Recorded only on success, and as a pair. A failed turn leaves no trace, so the
+    // next question is not rewritten against an exchange the user never actually saw.
+    recordTurn("user", question);
+    recordTurn("assistant", data.answer);
+
+    addAnswer(data.answer, data.sources);
     if (data.sources && data.sources.length) renderSources(data.sources);
 
     // Not awaited: the answer is complete without it, and a slow or failed
     // suggestion call must not hold the composer disabled.
-    fetchSuggestions(question, data, block);
+    fetchSuggestions(question, data);
   } catch (err) {
     pending.remove();
     addFailure("تعذّر الوصول إلى الخادم — تأكد من أن الخدمة قيد التشغيل.");
   }
 }
 
-async function fetchSuggestions(question, data, block) {
+async function fetchSuggestions(question, data) {
   if (!data.sources || !data.sources.length) return;
   try {
     const resp = await fetch(`${API_BASE_URL}/followups`, {
@@ -385,7 +408,7 @@ async function fetchSuggestions(question, data, block) {
       return;
     }
     const payload = await resp.json();
-    addSuggestions(block, payload.suggestions);
+    addSuggestions(payload.suggestions);
   } catch (err) {
     // Silent for the user, never for whoever has to debug it -- an empty catch here
     // swallowed rendering errors as indistinguishably as network ones.
@@ -394,6 +417,7 @@ async function fetchSuggestions(question, data, block) {
 }
 
 function submitQuestion(question) {
+  clearSuggestions();   // they belonged to the previous answer
   addQuestion(question);
   input.value = "";
   input.style.height = "auto";
@@ -416,14 +440,19 @@ composer.addEventListener("submit", (e) => {
   submitQuestion(question);
 });
 
-// Purely client-side: the backend is stateless (every /ask call is independent, nothing
-// to tell it to forget), so "reset" just means rebuilding the page's own DOM state.
+// Still purely client-side: the server holds no session, so forgetting the conversation
+// means clearing the history array this page sends with each request -- there is nothing
+// to tell the backend. Since turns now carry over, this is the only way to start a
+// genuinely fresh topic; without it a new question keeps getting rewritten against an
+// unrelated earlier exchange.
 // Guarded by resetBtn.disabled (see submitQuestion) rather than only hiding the button,
 // because the button is reachable the whole time a request is in flight -- without the
 // guard, resetting mid-answer would clear #thread out from under askQuestion(), and its
 // pending .then() would go on to append the answer into a thread that looks freshly
 // reset, which reads as a stale answer appearing from nowhere.
 function resetConversation() {
+  history = [];                  // the actual point of reset now that turns carry over
+  clearSuggestions();
   renderOpening();               // also clears #thread
   renderRailEmpty(RAIL_EMPTY_MESSAGE);
   document.body.classList.remove("reading");
@@ -446,7 +475,11 @@ input.addEventListener("keydown", (e) => {
 input.addEventListener("input", () => {
   input.style.height = "auto";
   input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
+  syncDockClearance();   // a grown textarea makes the dock taller
 });
+
+window.addEventListener("resize", syncDockClearance);
 
 renderOpening();
 renderRailEmpty(RAIL_EMPTY_MESSAGE);
+syncDockClearance();

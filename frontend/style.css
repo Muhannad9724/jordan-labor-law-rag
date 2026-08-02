@@ -323,10 +323,19 @@ body {
 /* ---------------- Composer ---------------- */
 
 /* Pinned to the viewport bottom so it stays reachable however far you scroll. */
-.composer {
+/* Suggestions + composer travel together. The dock owns the sticky positioning so the
+   chips ride directly on top of the question bar and stay on screen at any scroll
+   position -- which is what removed the need for any chip scroll-into-view logic. */
+.composer-dock {
   position: sticky;
   bottom: 14px;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.composer {
   display: flex;
   align-items: flex-end;
   gap: 11px;
@@ -647,30 +656,37 @@ body.reading .thread {
   min-height: 0;
 }
 
-/* The composer is sticky at the viewport bottom, so it floats over the last
-   ~76px of the thread. Without clearance the final lines of an answer sit
-   underneath it and read as missing rather than as scrolled-off. */
+/* The dock (suggestions + composer) is sticky at the viewport bottom and floats over
+   the thread. Without clearance the final lines of an answer sit underneath it and read
+   as missing rather than as scrolled-off. The height changes as chips come and go, so
+   syncDockClearance() in app.js keeps --dock-clearance in step; the fallback covers the
+   composer alone, before any measurement has run. */
 .thread {
-  padding-bottom: 92px;
+  padding-bottom: var(--dock-clearance, 92px);
 }
 
 
 /* ---------------- Follow-up suggestions ----------------
-   Rendered inside the answer block, above the body text (right after the "الإجابة"
-   label) so they're seen before anyone has to read or scroll past the answer to find
-   them. They read as an offer, not as part of the legal answer, so they sit on the
-   quieter end of the palette -- no brass fill, no weight. Nothing here may look like
-   a citation. */
+   Docked directly above the question bar rather than inside the answer. They belong to
+   what you'd type next, so they sit with the input, not with the legal text -- and
+   because the dock is sticky they are always on screen, which is what let the chip
+   scroll-into-view logic go away entirely.
 
-.suggestions {
-  margin-bottom: 18px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--rule-soft);
-  /* Suggestions arrive ~1-2s after the answer, via a separate call, so they land on
-     top of text that may already be on screen. Fading in and pushing the body down
-     smoothly reads as content arriving, not as a layout glitch mid-sentence. */
+   They read as an offer, not as part of the answer, so they stay on the quieter end of
+   the palette -- no brass fill, no weight. Nothing here may look like a citation. */
+
+.suggestions-dock {
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 11px 14px;
+  box-shadow: 0 8px 26px rgba(13, 11, 9, 0.55);
+  /* Suggestions arrive ~1-2s after the answer. Fading in rather than popping keeps
+     that from reading as a layout glitch. */
   animation: suggestions-in 260ms ease both;
 }
+
+.suggestions-dock[hidden] { display: none; }
 
 @keyframes suggestions-in {
   from { opacity: 0; transform: translateY(4px); }

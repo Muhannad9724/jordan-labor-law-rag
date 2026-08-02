@@ -249,6 +249,29 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 23 — Multi-turn conversation ✅ done, verified live with a control
+`src/generation.py` (`rewrite_for_retrieval`, history in `generate`), `src/api.py` (`history` on `/ask`, `retrieval_query` on the response), `frontend/` (history tracking, suggestion dock). Closes the limitation Phase 22's rule 11 shipped with.
+
+**The core insight: this is a retrieval problem, not a generation one.** Rule 11 made the model ask for a missing personal fact, but the reply ("yes, I'm covered", "12 years") went to a *stateless semantic retriever* that embeds the query text and nothing else. A bare fragment embeds to nothing useful, so retrieval returned unrelated articles and the answer was grounded in the wrong documents. **Passing history to the generator alone would not have fixed this** -- by the time the generator runs, the wrong context has already been fetched.
+
+**So the follow-up is rewritten into a standalone question *before* retrieval.** `rewrite_for_retrieval()` folds the last few turns in: "yes, I'm covered" becomes "What end-of-service compensation am I owed if I am subject to the Social Security Law?", which embeds to the right neighbourhood. Falls back to the raw query on any failure, i.e. degrades to the old single-turn behaviour rather than erroring. The rewrite prompt explicitly forbids adding legal terms nobody said -- inventing vocabulary would pull in articles the user never asked about.
+
+**Measured, with a control:**
+| | retrieval_query | articles retrieved |
+|---|---|---|
+| Turn 2 **with** history | "ما هو تعويض نهاية الخدمة الذي أستحقه إذا كنت خاضعًا لقانون الضمان الاجتماعي؟" | `labor96:32, ssl:70, ssl:102, ssl:103` |
+| Same fragment, **no** history (old behaviour) | "نعم، أنا خاضع لقانون الضمان الاجتماعي" | `ssl:1, ssl:2, ssl:4, ssl:7` |
+
+The control retrieves definitions and scope boilerplate -- exactly the failure this closes.
+
+**Design decisions:** the user's *own words* go to the generator, not the rewrite (the rewrite exists to find documents; answering a machine-reworded question drifts from what was asked). History is **client-held and re-sent per request**, so the server stays stateless -- no session store, no cookie, nothing to expire or leak between users, still one container with no database. Cost is that history is untrusted input: it reaches the model only as conversational text, never the retriever's index or a citation check, and is capped per-turn and in total on both sides. Prior turns enter generation as real chat messages but **carry text only, never their old documents** -- each turn is grounded in its own freshly retrieved context, and replaying stale articles would invite citing something absent from *this* turn's context, the exact fabrication mode the citation check exists to catch. `retrieval_query` is returned on every response because when a follow-up retrieves badly, the rewrite is the first thing to inspect and would otherwise be invisible.
+
+**Suggestion chips moved to a sticky dock above the question bar** (user request). They belong to what you'd type next, so they now live with the input rather than inside the answer. This **deleted the chip scroll-into-view logic entirely** -- every previous placement (end of answer, then top of answer) needed its own scrolling rules to be seen, and each still had a case where they weren't; a sticky dock is visible at any scroll position by construction. Dock height is measured into `--dock-clearance` since it changes as chips appear and the textarea grows, replacing the hardcoded 92px.
+
+**Cost:** one extra `gpt-4o-mini` call per follow-up turn (~200 tokens in, ~30 out). First turns skip it entirely -- no history, nothing to rewrite.
+
+**Not done:** no harness eval of multi-turn quality (the eval set is single-turn by construction); rate limits unchanged, still per-IP.
+
 ## Phase 22 — Ask instead of assume, neutral judgment answers, reset button ✅ done, not harness-evaluated
 `src/generation.py` (rules 11 & 13) + `frontend/` (reset button). Live-launched and spot-checked with single real questions, not a full eval run — the harness pass is a follow-up, not done here.
 

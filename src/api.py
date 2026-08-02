@@ -14,6 +14,7 @@ Run locally: uvicorn src.api:app --reload --port 8000
 """
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -54,11 +55,23 @@ def rate_limit_handler(request: Request, exc: RateLimitExceeded):
     )
 
 
+class Turn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=8000)
+
+
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=1000)
     # Keep in step with Retriever.retrieve()'s default -- this value shadows it on every
     # request, so leaving it at 10 would have silently cancelled the Phase 16 change.
     top_k: int = Field(default=5, ge=1, le=20)
+    # Prior turns, oldest first, sent by the client. The server stays stateless -- no
+    # session store, no cookie, nothing to expire or leak between users -- which keeps
+    # this deployable on a single Railway container with no database. The cost is that
+    # history is client-supplied and therefore untrusted; it only ever reaches the model
+    # as conversational text, never the retriever's index or a citation check, and it is
+    # length-capped both per turn (above) and in total (below).
+    history: list[Turn] = Field(default_factory=list, max_length=20)
 
 
 class Citation(BaseModel):
@@ -79,6 +92,10 @@ class AskResponse(BaseModel):
     answer: str
     citations: list[Citation]
     sources: list[Source]
+    # What was actually sent to the retriever. Equals `question` on a first turn or when
+    # the rewrite was skipped/failed. Returned because when a follow-up retrieves badly,
+    # the rewrite is the first thing to inspect, and without this it is invisible.
+    retrieval_query: str
 
 
 @app.get("/health")
@@ -92,11 +109,22 @@ def ask(request: Request, req: AskRequest):
     retriever: Retriever = _state["retriever"]
     generator = _state["generator"]
 
-    chunks = retriever.retrieve(req.question, top_k=req.top_k)
+    history = [m.model_dump() for m in req.history]
+
+    # Rewrite BEFORE retrieving. A follow-up like "yes, I'm covered" carries no semantic
+    # signal about pensions, so retrieving on it directly returns unrelated articles and
+    # the answer is grounded in the wrong documents. Falls back to the raw question on
+    # any failure, i.e. to the previous single-turn behaviour.
+    retrieval_query = generator.rewrite_for_retrieval(req.question, history) if history else req.question
+
+    chunks = retriever.retrieve(retrieval_query, top_k=req.top_k)
     if not chunks:
         raise HTTPException(status_code=404, detail="لم يتم العثور على مواد قانونية ذات صلة بهذا السؤال.")
 
-    result = generator.generate(req.question, chunks)
+    # The user's own words go to the generator, not the rewrite -- the rewrite exists to
+    # find documents, and answering a machine-reworded version of the question tends to
+    # drift from what was actually asked. History gives it whatever context it needs.
+    result = generator.generate(req.question, chunks, history=history)
 
     return AskResponse(
         answer=result["answer"],
@@ -106,6 +134,7 @@ def ask(request: Request, req: AskRequest):
                    article_number=c["article_number"], clause=c["clause"], text=c["text"])
             for c in chunks
         ],
+        retrieval_query=retrieval_query,
     )
 
 

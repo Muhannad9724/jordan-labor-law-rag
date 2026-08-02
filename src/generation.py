@@ -83,15 +83,14 @@ CHAT_MODEL = "command-a-03-2025"
 # about facts that only the person asking could supply -- their age, years of service, a
 # date -- and the model would either guess one case or dump every branch. Now it asks.
 #
-# IMPORTANT LIMITATION, not solved by this prompt change: the API is single-turn. /ask takes
-# only `question`, no prior conversation, and retrieval runs fresh on whatever text comes in.
-# If the model asks "how many years have you contributed?" and the person replies with just
-# "12", that reply becomes an entirely new, context-free query -- retrieval has no idea it's
-# the answer to the model's own question, and the reply likely returns poor or unrelated
-# results. This rule makes the model ask a better question; it does not give this app a way
-# to hear the answer. Closing that gap needs actual conversation memory (thread history
-# passed into /ask and folded into retrieval), which is a real feature, not a prompt tweak,
-# and is not implemented here.
+# That rule originally shipped with a real gap: the API was single-turn, so if the model
+# asked "how many years have you contributed?" and the person replied "12", that reply
+# became a context-free query and retrieval had no idea what it referred to. The model
+# asked a better question but the app could not hear the answer.
+#
+# CLOSED in Phase 23. /ask now accepts `history`, and -- the part that actually matters --
+# the follow-up is rewritten into a standalone question *before* retrieval runs, since
+# retrieval is semantic and "12" embeds to nothing useful. See rewrite_for_retrieval().
 #
 # Rule 13 (new "Judgment questions" section) is a different failure entirely: a question like
 # "should I join the optional social security?" is not a fact lookup, it is a request for a
@@ -301,12 +300,73 @@ class OpenAICompatibleGenerator:
         self.temperature = temperature  # None = provider default (unset, untested -- see scripts/generation_config_tuning.ipynb)
         self.system_prompt = system_prompt or CONTEXT_SYSTEM_PROMPT
 
-    def generate(self, query, chunks, max_retries=5):
+    def rewrite_for_retrieval(self, query, history):
+        """Rewrite a follow-up into a standalone question. Returns `query` on any failure.
+
+        This is what makes multi-turn actually work, and it is a *retrieval* fix, not a
+        generation one. Retrieval is stateless and semantic: it embeds the query text and
+        nothing else. A reply like "yes, I'm covered" or "12 years" embeds to almost
+        nothing useful -- there is no signal in it about pensions or end-of-service
+        compensation -- so the retriever returns unrelated articles and the answer is
+        built on the wrong documents. Passing history to the *generator* alone would not
+        fix that; by then the wrong context has already been fetched.
+
+        So the history is folded into the query before it reaches the retriever:
+        "yes, I'm covered" + the preceding exchange becomes "How much end-of-service
+        compensation am I owed if I am subject to the Social Security Law?", which embeds
+        to the right neighbourhood.
+
+        Falls back to the raw query on any failure -- a bad rewrite should degrade to
+        today's single-turn behaviour, never to an error.
+        """
+        if not history:
+            return query
+        lang = detect_language(query)
+        transcript = "\n".join(
+            f"{'User' if m['role'] == 'user' else 'Assistant'}: {str(m['content'])[:600]}"
+            for m in history[-REWRITE_HISTORY_TURNS:]
+        )
+        try:
+            resp = self.client.chat.completions.create(
+                model=self.model_id,
+                max_tokens=REWRITE_MAX_TOKENS,
+                extra_body=self.extra_body,
+                messages=[
+                    {"role": "system", "content": REWRITE_PROMPT},
+                    {"role": "user",
+                     "content": f"Conversation so far:\n{transcript}\n\n"
+                                f"Latest user message: {query}\n\n"
+                                f"Standalone question (in {'Arabic' if lang == 'ar' else 'English'}):"},
+                ],
+            )
+            out = (resp.choices[0].message.content or "").strip() if resp.choices else ""
+        except Exception:
+            return query
+
+        out = " ".join(out.split())
+        # Guard against the model returning commentary, an empty string, or a runaway
+        # paraphrase instead of a question. Anything suspect falls back to the raw query.
+        if not out or len(out) > 400:
+            return query
+        return out
+
+    def generate(self, query, chunks, history=None, max_retries=5):
         lang = detect_language(query)
         context = _format_context(chunks, lang)
         user_msg = (f"الوثائق:\n{context}\n\nالسؤال: {query}" if lang == "ar"
                     else f"Documents:\n{context}\n\nQuestion: {query}")
         available_articles = {c["article_number"] for c in chunks}
+
+        # Prior turns go in as real chat messages, before the documents+question turn.
+        # Only the text is carried, never the old documents: each turn is grounded in its
+        # own freshly retrieved context, so replaying stale articles would invite citing
+        # something that is not in *this* turn's context -- the fabrication failure mode
+        # the citation check exists to catch.
+        messages = [{"role": "system", "content": self.system_prompt}]
+        for m in (history or [])[-GENERATION_HISTORY_TURNS:]:
+            role = "user" if m.get("role") == "user" else "assistant"
+            messages.append({"role": role, "content": str(m.get("content", ""))[:2000]})
+        messages.append({"role": "user", "content": user_msg})
 
         resp = None
         last_error = None
@@ -314,10 +374,7 @@ class OpenAICompatibleGenerator:
             try:
                 resp = self.client.chat.completions.create(
                     model=self.model_id,
-                    messages=[
-                        {"role": "system", "content": self.system_prompt},
-                        {"role": "user", "content": user_msg},
-                    ],
+                    messages=messages,
                     extra_body=self.extra_body,
                     **({"temperature": self.temperature} if self.temperature is not None else {}),
                 )
@@ -413,6 +470,36 @@ Rules:
 Respond with ONLY a JSON array of 3 strings, no other text."""
 
 FOLLOWUP_MAX_TOKENS = 300
+
+# Query rewriting for multi-turn. See OpenAICompatibleGenerator.rewrite_for_retrieval.
+#
+# "Resolve references" is the whole job: pronouns ("it", "that"), ellipsis ("what about
+# after 5 years?"), and bare answers to the assistant's own question ("yes", "12 years").
+# The last of those is the case rule 11 creates and is the reason this exists at all --
+# the model now asks for a missing personal fact, so the very next message is frequently
+# a fragment that means nothing on its own.
+#
+# Explicitly NOT a place to add information: the rewrite feeds a semantic retriever, and
+# inventing legal terms the user never said would pull in articles they never asked about.
+REWRITE_PROMPT = """You rewrite a follow-up message into a standalone search query for a Jordanian labour and social security law database.
+
+The user's latest message may be a fragment that only makes sense in context -- a pronoun ("what about it?"), an ellipsis ("and after five years?"), or a bare answer to a question the assistant just asked ("yes", "12 years", "I'm covered").
+
+Rewrite it into ONE self-contained question that carries over the necessary context from the conversation.
+
+Rules:
+- Output only the rewritten question. No preamble, no explanation, no quotes.
+- Keep it in the same language as the user's latest message.
+- Use only information present in the conversation. Do not add legal terms, article numbers, or facts nobody mentioned.
+- If the latest message is already self-contained, return it unchanged."""
+
+REWRITE_MAX_TOKENS = 200
+# How much history each step sees. Rewriting only needs the immediately preceding
+# exchange to resolve a reference, so it stays tight and cheap; generation gets a longer
+# window so the thread reads coherently. Both are capped -- unbounded history would grow
+# cost per turn without bound on a public endpoint.
+REWRITE_HISTORY_TURNS = 4
+GENERATION_HISTORY_TURNS = 6
 
 
 PRODUCTION_MODEL_ID = "openai/gpt-4o-mini"
