@@ -344,22 +344,101 @@ _EOS_NOT_SSL = {
 _YEARS_RE = re.compile(r"([٠-٩\d]+(?:[.,،][٠-٩\d]+)?)\s*(?:سنوات|سنة|سنين|أعوام|اعوام|عام|years?)")
 _MONTHS_RE = re.compile(r"([٠-٩\d]+)\s*(?:شهور|أشهر|اشهر|شهرا|شهراً|شهر|months?)")
 
+# Word-form years/months of service. Phase 25's eval found a natural "عملت عشر سنوات"
+# ("I worked ten years") returned None from _YEARS_RE above -- digits only -- so the
+# calculator declined and the model fell back to stating a wage-times-years figure as
+# owed unconditionally, exactly the failure Phase 24a's precondition guard exists to
+# prevent. Unlike AR_NUMBER_WORDS in generation.py (built for rate percentages, an
+# effectively ungendered count), سنة (year) is FEMININE and شهر (month) is MASCULINE,
+# and Arabic 3-10 REVERSES gender agreement with the counted noun -- "عشر سنوات" (ten
+# years) and "عشرة أشهر" (ten months) use different words for the same number 10. Two
+# separate unit dicts, not one, is not an oversight.
+_AR_UNITS_FEM = {"ثلاث": 3, "أربع": 4, "اربع": 4, "خمس": 5, "ست": 6, "سبع": 7,
+                 "ثمان": 8, "ثماني": 8, "تسع": 9, "عشر": 10}
+_AR_UNITS_MASC = {"ثلاثة": 3, "أربعة": 4, "اربعة": 4, "خمسة": 5, "ستة": 6, "سبعة": 7,
+                  "ثمانية": 8, "تسعة": 9, "عشرة": 10}
+_AR_TENS = {"عشرين": 20, "ثلاثين": 30, "أربعين": 40, "اربعين": 40, "خمسين": 50}
+
+
+def _ar_special_re(one_word, two_word):
+    """"سنة واحدة" (one year) / "سنتين"|"سنتان" (two years, a distinct dual WORD, not a
+    count of "سنة") -- these already stand alone, unlike "خمس سنوات" where the noun
+    follows the number. A first version required a trailing noun after these too and
+    silently matched nothing, since there is no second noun word to find.
+    """
+    return re.compile(r"(?P<one>" + one_word + r")|(?P<two>" + two_word + r")")
+
+
+def _ar_numeric_re(units, nouns):
+    """Bare unit ("خمس"), bare tens ("عشرين") or a compound ("خمس وعشرين"), each
+    followed by `nouns`. Compound checked first (longest match) so it isn't swallowed
+    by the bare-unit alternative matching just the first word.
+    """
+    units_alt = "|".join(sorted(units, key=len, reverse=True))
+    tens_alt = "|".join(sorted(_AR_TENS, key=len, reverse=True))
+    return re.compile(
+        r"(?:(?P<unit>" + units_alt + r")\s*و(?P<tens_c>" + tens_alt + r")"
+        r"|(?P<tens>" + tens_alt + r")"
+        r"|(?P<bare>" + units_alt + r"))"
+        r"\s*(?:" + nouns + r")"
+    )
+
+
+# Requiring "واحدة"/"واحد" for 1 rather than matching bare "سنة"/"شهر" avoids a false
+# hit on "نهاية السنة" and similar -- decline rather than guess, same rule as
+# everywhere else in this module.
+_AR_YEARS_SPECIAL_RE = _ar_special_re(one_word=r"سنة\s*واحدة", two_word=r"سنتين|سنتان")
+_AR_YEARS_NUMERIC_RE = _ar_numeric_re(_AR_UNITS_FEM, r"سنوات|سنة|سنين|أعوام|اعوام|عام")
+_AR_MONTHS_SPECIAL_RE = _ar_special_re(one_word=r"شهر\s*واحد", two_word=r"شهرين|شهران")
+_AR_MONTHS_NUMERIC_RE = _ar_numeric_re(_AR_UNITS_MASC, r"شهور|أشهر|اشهر|شهرا|شهراً|شهر")
+
+
+def _ar_word_value(text, special_re, numeric_re):
+    m = special_re.search(text)
+    if m:
+        return 1 if m.group("one") else 2
+    m = numeric_re.search(text)
+    if not m:
+        return None
+    if m.group("unit"):
+        unit_val = _AR_UNITS_FEM.get(m.group("unit")) or _AR_UNITS_MASC.get(m.group("unit")) or 0
+        return unit_val + _AR_TENS[m.group("tens_c")]
+    if m.group("tens"):
+        return _AR_TENS[m.group("tens")]
+    if m.group("bare"):
+        return _AR_UNITS_FEM.get(m.group("bare")) or _AR_UNITS_MASC.get(m.group("bare"))
+    return None
+
 
 def extract_service(question):
     """Years of service the person stated, months folded in, or None.
 
     "3 years and 6 months" -> 3.5. Months alone -> a fraction of a year, since
-    Article 32 gives "a proportional remuneration" for parts of a year.
+    Article 32 gives "a proportional remuneration" for parts of a year. Tries
+    digits first, then word-form Arabic numbers (see _ar_word_value above).
     """
     q = str(question)
     y = _YEARS_RE.search(q)
     m = _MONTHS_RE.search(q)
     total = 0.0
+    y_val = m_val = None
     if y:
-        total += float(y.group(1).translate(AR_DIGITS).replace(",", ".").replace("،", "."))
+        y_val = float(y.group(1).translate(AR_DIGITS).replace(",", ".").replace("،", "."))
+    else:
+        wy = _ar_word_value(q, _AR_YEARS_SPECIAL_RE, _AR_YEARS_NUMERIC_RE)
+        if wy is not None:
+            y_val = float(wy)
     if m:
-        total += float(m.group(1).translate(AR_DIGITS)) / 12.0
-    return round(total, 4) if (y or m) and total > 0 else None
+        m_val = float(m.group(1).translate(AR_DIGITS))
+    else:
+        wm = _ar_word_value(q, _AR_MONTHS_SPECIAL_RE, _AR_MONTHS_NUMERIC_RE)
+        if wm is not None:
+            m_val = float(wm)
+    if y_val:
+        total += y_val
+    if m_val:
+        total += m_val / 12.0
+    return round(total, 4) if (y_val or m_val) and total > 0 else None
 
 
 def compute_end_of_service(chunks, salary=None, years=None):
@@ -619,6 +698,20 @@ def compute_gender_conditions(chunks, sex=None):
     """[{article, kind, label, male, female}] for every sex-differentiated SSL
     condition among the retrieved articles. [] if none apply -- never invents a
     split that isn't actually in front of the model.
+
+    COMPLETENESS GUARD -- Phase 25's eval found this had none, unlike contributions
+    and end-of-service: it fired whenever Article 62 OR 64 merely showed up in
+    context, whether or not the question was actually about retirement-age or
+    early-retirement eligibility. Checked what was actually retrieved on the 4
+    eval_v3 questions that triggered it: the two genuinely about retirement
+    eligibility (a normal-retirement-age question, an early-retirement-continuation
+    question) had BOTH articles clustered together; the two that look like ordinary
+    crowding (one about buying a missing subscription period, unrelated to the sex
+    split) had only ONE. One article present is incidental; both together is a real
+    signal the question is about eligibility broadly -- so this now requires every
+    pattern in _GENDER_PATTERNS to have matched, not just one. Confirmed this does
+    not affect the actual reported bug: every real gender-eligibility question in
+    Phase 24e/25's own tests retrieved both articles together, never one alone.
     """
     out = []
     for c in chunks:
@@ -643,6 +736,8 @@ def compute_gender_conditions(chunks, sex=None):
         out.append({"article": art, "kind": kind, "language": lang,
                      "label": _GENDER_LABEL.get((art, lang)),
                      "male": male, "female": female})
+    if len({o["article"] for o in out}) < len(_GENDER_PATTERNS):
+        return []
     return out
 
 

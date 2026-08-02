@@ -249,6 +249,41 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 25a — Both Phase 25 follow-ups fixed, verified live ✅ done
+
+`src/calc.py`, `src/test_calc.py`. Closes both items Phase 25 flagged as "need a decision, not a judgment call."
+
+### 1. `extract_service` now parses word-form Arabic numbers
+
+The exact Phase 25 finding: "عملت عشر سنوات" ("I worked ten years") returned `None` because `_YEARS_RE` only matched digit forms — the calculator declined, and all 4 trials fell back to stating 8,000 JD as owed unconditionally, exactly the pre-Phase-24a failure mode.
+
+**The gender trap, again, in a new place.** سنة (year) is feminine and شهر (month) is masculine, and Arabic 3-10 reverses agreement with the counted noun — "عشر سنوات" and "عشرة أشهر" use *different words* for the same number 10. `AR_NUMBER_WORDS` in `generation.py` (built for rate percentages) doesn't face this, since a percentage is effectively ungendered — so this needed its own two unit dicts (`_AR_UNITS_FEM`, `_AR_UNITS_MASC`), not a reuse.
+
+**Design, kept bounded rather than building a general parser** (matching this module's existing "closed lookup, not a general Arabic number parser" convention): bare units 3-10, the dual form ("سنتين"/"سنتان" → 2, a distinct word rather than a count), "سنة واحدة"/"شهر واحد" → 1 (requiring the explicit "واحدة"/"واحد" rather than matching bare "سنة" alone, so "نهاية السنة الدراسية" doesn't false-trigger — decline rather than guess, the same rule as everywhere else in this file), bare tens (عشرين/ثلاثين/...), and simple compounds ("خمس وعشرين" → 25).
+
+**A real bug caught before it shipped:** the first version's compound-value resolver read `A or B or 0 + C` — Python's `+` binds tighter than `or`, so a truthy unit value short-circuited the whole expression *before* the tens value was ever added, silently discarding it. Caught by the offline test suite (26 new cases), not assumed away.
+
+**Also a structural bug, same session:** the dual/singular special forms ("سنتين", "سنة واحدة") were first built to require a *trailing noun* after them, copying the pattern used for numeric forms — but these forms already stand alone; there's no second noun word to find, so they silently matched nothing. Fixed by splitting into two separate regexes (`_ar_special_re` / `_ar_numeric_re`) instead of forcing both shapes through one alternation.
+
+**Verified, real generation calls, the exact reported question, before vs after:**
+
+| | before | after |
+|---|---|---|
+| calculator engaged | 0/4 | **4/4** |
+| answer conditions the figure on SSL coverage and asks | 0/4 | **4/4** |
+
+Every post-fix trial now opens with "إذا كنت غير خاضع لأحكام قانون الضمان الاجتماعي..." (if you are not subject to Social Security...) and closes by asking directly — one trial went further and cited SSL Article 103 to explain what happens in the *other* case too.
+
+### 2. `compute_gender_conditions` requires both Article 62 and 64, not either alone
+
+**The Phase 25 writeup overstated this problem, corrected here rather than left standing.** It characterised all 4 eval_v3 questions that triggered the gender block as unrelated to sex-differentiated pensions. Re-examining what was actually retrieved: q14 ("At what age can I stop working and draw a pension, and how many contributions do I need?") and q27 (Arabic: "I turned sixty without enough subscriptions — can I continue?") retrieved **both** Article 62 and 64 clustered together — these are genuinely about retirement-age/subscription eligibility, exactly what those articles differentiate by sex, so surfacing the split there is arguably correct, not noise. Only q15 and q28 (the latter about buying a missing subscription period, unrelated to any sex split) retrieved **just one** of the two articles — real crowding.
+
+**So the fix is not a blanket completeness gate** (which would also suppress the legitimate q14/q27 cases) **but a cluster requirement**: both patterns in `_GENDER_PATTERNS` must match before anything is returned, derived from `len(_GENDER_PATTERNS)` rather than a hardcoded 2 so a future amendment adding a third sex-differentiated article extends the guard automatically. One article present is incidental; both together is a real signal the question is about eligibility broadly.
+
+**Verified against real data, both directions:** replaying Phase 25's actual saved retrieval, q14/q27 (both articles present) still fire and q15/q28 (one article present) now correctly return `[]`. Replaying Phase 25's own Track 2 retrieval for c05/c06/c07 (the real gender-eligibility questions) confirms all three retrieve both articles together and are unaffected by the guard.
+
+**Existing tests updated, not weakened:** the "sex known" test previously checked a single article's own male/female split in isolation; now checks both rows simultaneously under the new two-article requirement, which is a strictly more thorough assertion than before.
+
 ## Phase 25 — Revaluation: the pending judge run, plus a calculator-focused eval set ✅ done
 
 `scripts/25. revaluation_v4.ipynb`, `eval/eval_calc_v4.jsonl` (8 new questions). Closes the item CLAUDE.md had carried open since Phase 21: no full judge-scored run has covered Phase 22's rules, Phase 23/23a's multi-turn work (not testable here — `eval_v3` is single-turn by construction), or any of Phase 24's calculator work. `eval_v3` itself contains no question that states a salary, so it has never been able to measure the calculator at all — every Phase 24c/24d/24e number was 3-6 manual trial reps, never run through a harness.

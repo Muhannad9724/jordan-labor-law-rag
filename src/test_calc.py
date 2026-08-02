@@ -218,6 +218,31 @@ for q, want in cases:
     assert got == want, f"extract_service({q!r}) = {got}, expected {want}"
 print("service parsing: years, years+months, Arabic and English; None when absent\n")
 
+# Phase 25's eval found the digit-only regex above missed a natural "عملت عشر سنوات"
+# ("I worked ten years"): extract_service returned None, the calculator declined, and
+# all 4 trials fell back to the exact pre-Phase-24a bug (a confident wage x years
+# figure stated as owed, the not-subject-to-SSL precondition never actually raised).
+# سنة (year) is feminine and شهر (month) is masculine, and Arabic 3-10 reverses gender
+# agreement with the counted noun, so these need separate word forms for the same
+# number -- "عشر سنوات" (ten years) vs "عشرة أشهر" (ten months).
+word_cases = [
+    ("عملت عشر سنوات براتب 800 دينار", 10.0),      # the exact reported phrasing
+    ("عملت ثلاث سنوات", 3.0), ("عملت أربع سنوات", 4.0), ("عملت اربع سنوات", 4.0),
+    ("عملت خمس سنوات", 5.0), ("عملت ست سنوات", 6.0), ("عملت سبع سنوات", 7.0),
+    ("عملت ثمان سنوات", 8.0), ("عملت ثماني سنوات", 8.0), ("عملت تسع سنوات", 9.0),
+    ("عملت سنتين", 2.0), ("عملت سنتان", 2.0), ("عملت سنة واحدة", 1.0),
+    ("عملت عشرين سنة", 20.0), ("عملت ثلاثين عاماً", 30.0),
+    ("عملت خمس وعشرين سنة", 25.0), ("عملت ثلاث وثلاثين سنة", 33.0),
+    ("عملت سنتين وثلاثة أشهر", 2.25), ("عملت سنة واحدة وشهرين", 1 + 2 / 12),
+    ("انتهت السنة الدراسية", None),  # bare سنة without واحدة must NOT match -- decline
+]
+for q, want in word_cases:
+    got = extract_service(q)
+    ok = got == want or (want is not None and got is not None and abs(got - want) < 1e-3)
+    assert ok, f"extract_service({q!r}) = {got}, expected {want}"
+print("service parsing: word-form Arabic numbers (feminine years, masculine months, "
+      "dual, compounds); bare سنة alone still declines\n")
+
 # --------------------------------------- sex-differentiated pension conditions
 # Live report: a pension-eligibility answer used the MALE-only thresholds for
 # Article 62 (retirement age) and Article 64 (early-retirement subscriptions)
@@ -236,18 +261,33 @@ print("gender conditions: Art 62 age 60/55, Art 64 subscriptions 252/228, both l
 assert compute_gender_conditions([chunk("ssl", "ar", "59")]) == []
 print("no gender-differentiated article in context -> [] (nothing invented)")
 
+# COMPLETENESS GUARD (Phase 25): eval_v3 showed this firing on ordinary questions
+# whenever Article 62 OR 64 merely appeared in context, e.g. a question about buying
+# a missing subscription period pulling in Article 64 as an incidental sibling. One
+# article present alone is not a strong enough signal the question is actually about
+# retirement-age/eligibility -- both clustering together is. A single article, even
+# a perfectly matched one, now declines rather than surfacing half the picture.
+assert compute_gender_conditions([chunk("ssl", "ar", "62")]) == []
+assert compute_gender_conditions([chunk("ssl", "en", "64")]) == []
+print("gender block requires BOTH Article 62 and 64 together -- one alone declines")
+
+BOTH_AR = [chunk("ssl", "ar", "62"), chunk("ssl", "ar", "64")]
+BOTH_EN = [chunk("ssl", "en", "62"), chunk("ssl", "en", "64")]
+
 # sex unknown -> both figures, clearly labelled, in the block
-both = format_gender_block(compute_gender_conditions([chunk("ssl", "ar", "62")]), "ar", sex=None)
+both = format_gender_block(compute_gender_conditions(BOTH_AR), "ar", sex=None)
 assert "60" in both and "55" in both and ("للذكر" in both and "للأنثى" in both)
-both_en = format_gender_block(compute_gender_conditions([chunk("ssl", "en", "62")]), "en", sex=None)
+both_en = format_gender_block(compute_gender_conditions(BOTH_EN), "en", sex=None)
 assert "60" in both_en and "55" in both_en and "male" in both_en and "female" in both_en
 print("sex unknown: block states both figures, labelled, in both languages")
 
-# sex known -> ONLY that figure appears; the other must not leak in
-male_only = format_gender_block(compute_gender_conditions([chunk("ssl", "en", "62")]), "en", sex="male")
-assert "60" in male_only and "55" not in male_only, male_only
-female_only = format_gender_block(compute_gender_conditions([chunk("ssl", "ar", "64")]), "ar", sex="female")
-assert "228" in female_only and "252" not in female_only, female_only
+# sex known -> ONLY that figure appears for EVERY row; the other never leaks in
+male_only = format_gender_block(compute_gender_conditions(BOTH_EN), "en", sex="male")
+assert "60" in male_only and "252" in male_only, male_only
+assert "55" not in male_only and "228" not in male_only, male_only
+female_only = format_gender_block(compute_gender_conditions(BOTH_AR), "ar", sex="female")
+assert "55" in female_only and "228" in female_only, female_only
+assert "60" not in female_only and "252" not in female_only, female_only
 print("sex known: block states only that figure, the other never leaks in")
 
 # extract_sex reads the PERSON's own words, never the assistant's prior recitation --
