@@ -237,7 +237,7 @@ function addAnswer(text, sources) {
 
   const body = document.createElement("div");
   body.className = "body";
-  body.textContent = text;
+  renderMarkdown(text, body);
   block.appendChild(body);
 
   if (sources && sources.length) {

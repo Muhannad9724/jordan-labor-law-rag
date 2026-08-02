@@ -445,10 +445,18 @@ class OpenAICompatibleGenerator:
         # confidently wrong total.
         calc = None
         try:
-            from .calc import compute_contributions, extract_salary, format_calculation_block
-            calc = compute_contributions(chunks, salary=extract_salary(query))
+            from .calc import (compute_contributions, compute_end_of_service, extract_salary,
+                               extract_service, format_calculation_block,
+                               format_end_of_service_block)
+            salary = extract_salary(query)
+            calc = compute_contributions(chunks, salary=salary)
             if calc:
                 context += "\n\n" + format_calculation_block(calc, lang)
+            eos = compute_end_of_service(chunks, salary=salary, years=extract_service(query))
+            if eos:
+                context += "\n\n" + format_end_of_service_block(eos, lang)
+                calc = {"contributions": calc, "end_of_service": eos} if calc else \
+                       {"end_of_service": eos}
         except Exception:
             calc = None  # never let the aid break an answer the model could still give
 

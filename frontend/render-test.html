@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>markdown renderer — self test</title>
+<style>
+  body { font: 15px/1.6 system-ui, sans-serif; margin: 0; padding: 24px; background: #14110d; color: #e8e0d0; }
+  h1 { font-size: 1.15rem; margin: 0 0 4px; }
+  .note { opacity: .68; font-size: .88rem; margin: 0 0 20px; max-width: 70ch; }
+  #summary { font-size: 1.05rem; font-weight: 600; padding: 10px 14px; border-radius: 6px; margin-bottom: 18px; }
+  .ok { background: #1d3324; color: #86e0a6; }
+  .bad { background: #3a1d1d; color: #f2a0a0; }
+  li { margin-bottom: 3px; font-family: ui-monospace, monospace; font-size: .84rem; }
+  li.p::before { content: "PASS  "; color: #86e0a6; }
+  li.f::before { content: "FAIL  "; color: #f2a0a0; }
+  li.f { color: #f2a0a0; }
+  ul { padding-inline-start: 1.2em; }
+  h2 { font-size: .9rem; text-transform: uppercase; letter-spacing: .05em; opacity: .6; margin: 22px 0 6px; }
+  #preview { border: 1px solid #3a3227; border-radius: 6px; padding: 16px; }
+  #preview table { border-collapse: collapse; }
+  #preview th, #preview td { border: 1px solid #4a4034; padding: .35em .8em; }
+</style>
+</head>
+<body>
+<h1>markdown renderer — self test</h1>
+<p class="note">
+  Runs <code>renderMarkdown()</code> from <code>markdown.js</code> — the same code the app
+  uses. Built because this environment has no browser and no JS engine, so these assertions
+  could not be run when the renderer was written. Open this file to check it.
+</p>
+<div id="summary">running…</div>
+<ul id="results"></ul>
+<h2>Live preview</h2>
+<div id="preview"></div>
+
+<script src="markdown.js"></script>
+<script>
+const results = document.getElementById("results");
+let pass = 0, fail = 0;
+
+function render(md) {
+  const d = document.createElement("div");
+  renderMarkdown(md, d);
+  return d;
+}
+function check(name, cond) {
+  const li = document.createElement("li");
+  li.className = cond ? "p" : "f";
+  li.textContent = name;
+  results.appendChild(li);
+  cond ? pass++ : fail++;
+}
+
+/* --- the reason this exists: model output must never become markup ------- */
+const hostile = 'Article 32 <img src=x onerror="window.__XSS=1"> and <script>window.__XSS=1<\/script>';
+const h = render(hostile);
+check("no <img> element created from model text", h.querySelectorAll("img").length === 0);
+check("no <script> element created from model text", h.querySelectorAll("script").length === 0);
+check("angle brackets survive as literal text", h.textContent.includes("<img src=x"));
+check("no script executed", typeof window.__XSS === "undefined");
+
+/* --- inline ------------------------------------------------------------- */
+const b = render("**Employee total:** 7.5%");
+check("** ** becomes <strong>", b.querySelector("strong") !== null);
+check("strong holds the right text", b.querySelector("strong").textContent === "Employee total:");
+check("no stray asterisks remain", !b.textContent.includes("*"));
+
+const c = render("use `top_k` here");
+check("backticks become <code>", c.querySelector("code") &&
+      c.querySelector("code").textContent === "top_k");
+
+const it = render("this is *emphasised* text");
+check("single asterisks become <em>", it.querySelector("em") !== null);
+
+/* --- Arabic ------------------------------------------------------------- */
+const ar = render("**مجموع ما تؤديه المنشأة:** ١٤.٢٥٪");
+check("Arabic bold renders", ar.querySelector("strong") &&
+      ar.querySelector("strong").textContent === "مجموع ما تؤديه المنشأة:");
+check("Arabic digits preserved", ar.textContent.includes("١٤.٢٥"));
+
+/* --- lists -------------------------------------------------------------- */
+const ul = render("- Article (48): 1%\n- Article (59): 6.5%");
+check("bullet list becomes <ul>", ul.querySelector("ul") !== null);
+check("list has 2 items", ul.querySelectorAll("li").length === 2);
+check("bullet markers are gone", !ul.textContent.includes("- Article"));
+
+const ol = render("1. First step\n2. Second step");
+check("numbered list becomes <ol>", ol.querySelector("ol") !== null);
+check("ordered list has 2 items", ol.querySelectorAll("li").length === 2);
+
+/* --- tables ------------------------------------------------------------- */
+const tbl = render("| Article | Rate |\n|---|---|\n| 59 | 11% |\n| 24 | 2% |");
+check("pipe table becomes <table>", tbl.querySelector("table") !== null);
+check("table has 2 header cells", tbl.querySelectorAll("th").length === 2);
+check("table has 2 body rows", tbl.querySelectorAll("tbody tr").length === 2);
+check("no raw pipes left", !tbl.textContent.includes("|"));
+check("table can scroll on its own", tbl.querySelector(".table-wrap") !== null);
+
+const notTable = render("a | b | c");
+check("pipes without a divider row stay literal", notTable.querySelector("table") === null);
+
+/* --- blocks ------------------------------------------------------------- */
+const hd = render("### Amount deducted");
+check("### becomes a heading", hd.querySelector("h5, h4, h3") !== null);
+const hr = render("above\n\n---\n\nbelow");
+check("--- becomes <hr>", hr.querySelector("hr") !== null);
+
+const para = render("Line one\nLine two\n\nSecond paragraph");
+check("blank line splits paragraphs", para.querySelectorAll("p").length === 2);
+check("single newline becomes <br>", para.querySelector("br") !== null);
+
+/* --- plain text must survive untouched ---------------------------------- */
+const plain = "ستحصل على ٧٥ دينار شهرياً.";
+check("plain text round-trips exactly", render(plain).textContent === plain);
+check("empty input does not throw", render("").textContent === "");
+
+/* --- a realistic answer ------------------------------------------------- */
+const real = [
+  "You will pay **63.75 JD** and your employer **121.13 JD**.",
+  "",
+  "**Deducted from you:**",
+  "- Article (48): 1% = 8.50 JD",
+  "- Article (59): 6.5% = 55.25 JD",
+  "",
+  "| Side | Rate | Amount |",
+  "|---|---|---|",
+  "| You | 7.5% | 63.75 JD |",
+  "| Employer | 14.25% | 121.13 JD |",
+  "",
+  "This is general information, not legal advice."
+].join("\n");
+const r = render(real);
+check("realistic answer: no literal ** left", !r.textContent.includes("**"));
+check("realistic answer: no literal | left", !r.textContent.includes("|"));
+check("realistic answer: keeps every figure",
+      ["63.75", "121.13", "8.50", "55.25", "7.5%", "14.25%"].every((n) => r.textContent.includes(n)));
+
+document.getElementById("preview").appendChild(r);
+const s = document.getElementById("summary");
+s.textContent = fail === 0 ? `ALL ${pass} CHECKS PASSED` : `${fail} FAILED, ${pass} passed`;
+s.className = fail === 0 ? "ok" : "bad";
+</script>
+</body>
+</html>

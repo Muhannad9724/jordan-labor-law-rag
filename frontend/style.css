@@ -200,7 +200,9 @@ body {
   font-size: 1.19rem;
   line-height: 2.05;
   color: var(--parchment);
-  white-space: pre-wrap;
+  /* Was pre-wrap, when the answer was one text node. renderMarkdown() now emits real
+     block elements, and pre-wrap would add the source newlines on top of their margins. */
+  white-space: normal;
   word-wrap: break-word;
   /* Caps the line, not the column -- the wider .shell above would otherwise stretch
      prose to 150+ characters a line on a large monitor. */
@@ -211,6 +213,75 @@ body {
   font-size: 1.06rem;
   line-height: 1.85;
   max-width: 76ch;
+}
+
+/* Rendered markdown inside an answer. Spacing is set with margins on the block
+   elements themselves rather than on .body, so the first and last child sit flush
+   against the label and the actions row. */
+.answer .body > * { margin: 0; }
+.answer .body > * + * { margin-top: 0.85em; }
+
+.answer .body strong { font-weight: 600; color: var(--gold, var(--parchment)); }
+.answer .body em { font-style: italic; }
+
+.answer .body code {
+  font-family: var(--font-ui), monospace;
+  font-size: 0.86em;
+  padding: 0.1em 0.36em;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.answer .body h3,
+.answer .body h4,
+.answer .body h5,
+.answer .body h6 {
+  font-family: var(--font-ui);
+  font-size: 0.94rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.answer .body ul,
+.answer .body ol {
+  padding-inline-start: 1.5em;
+}
+
+.answer .body li + li { margin-top: 0.3em; }
+
+.answer .body hr {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* Tables scroll inside their own box so a wide one never scrolls the page sideways. */
+.answer .body .table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.answer .body table {
+  border-collapse: collapse;
+  font-size: 0.94em;
+  line-height: 1.65;
+}
+
+.answer .body th,
+.answer .body td {
+  padding: 0.42em 0.85em;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: start;
+  /* Figures in a column line up regardless of glyph widths. */
+  font-variant-numeric: tabular-nums;
+}
+
+.answer .body th {
+  font-family: var(--font-ui);
+  font-size: 0.85em;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .answer-actions {

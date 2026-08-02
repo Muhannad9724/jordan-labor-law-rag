@@ -83,6 +83,16 @@ _AR_THOUSANDS = {"ثلاثة آلاف": 3000, "ثلاثة الاف": 3000,
 _CEILING_AR = re.compile(r"الحد الأعلى للأجر[^.]{0,80}?(" + "|".join(_AR_THOUSANDS) + r")\s*دينار")
 _CEILING_EN = re.compile(r"maximum wage[^.]{0,120}?JOD\s*\((\d[\d,]*)\)", re.I)
 
+# Article 20(c)(1) exempts anyone insured before the 2009 amendment took effect, for whom
+# the ceiling is 5,000 rather than 3,000. Whether it applies turns on a fact about the
+# person that the question never states, so the calculator must NOT pick a side -- it
+# reports the ordinary figures and tells the model to ask (SYSTEM_PROMPT rule 11).
+# Stating 3,000 flatly, as the first version did, is wrong for everyone it exempts.
+_EXEMPT_AR = re.compile(r"يستثنى[^:]{0,120}?:?-?\s*(?:١|1)?\.?\s*المؤمن عليه[^.]{0,200}?"
+                        r"(" + "|".join(_AR_THOUSANDS) + r")\s*دينار")
+_EXEMPT_EN = re.compile(r"exempted[^§]{0,400}?JOD\s*\((\d[\d,]*)\)", re.I)
+_DATE_RE = re.compile(r"\d{1,2}\s*/\s*\d{1,2}\s*/\s*\d{4}|October\s+\d{1,2},\s*\d{4}", re.I)
+
 # A salary the person stated in their own question.
 _SALARY_RE = re.compile(
     r"([٠-٩\d][٠-٩\d,\.]*)\s*(?:دينار|دنانير|jods?|jd|dinars?)"
@@ -103,8 +113,17 @@ def _amount(base, rate):
     reproduced 121.12 faithfully in 3 of 3 trials, which is the calculator working --
     it was the calculator that was wrong.
     """
-    cents = (Decimal(str(base)) * Decimal(str(rate)) / Decimal(100))
-    return float(cents.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+    return _money(Decimal(str(base)) * Decimal(str(rate)) / Decimal(100))
+
+
+def _money(value):
+    """Round a Decimal to the fils, half up."""
+    return float(Decimal(value).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+
+def _times(base, factor):
+    """base * factor, rounded half-up to the fils. Used for months-of-wage."""
+    return _money(Decimal(str(base)) * Decimal(str(factor)))
 
 
 def _spelled_out(text):
@@ -179,22 +198,38 @@ def extract_salary(question):
 
 
 def _ceiling(chunks):
-    """(amount, article) from Article 20(a) if it was retrieved, else (None, None).
+    """(standard, exception, cutoff_date, article) from Article 20 if retrieved.
 
-    Not retrieved means not stated -- inventing 3000 would be exactly the kind of
-    ungrounded number the whole system is built to avoid.
+    All-None when Article 20 is not in context: not retrieved means not stated, and
+    inventing 3000 would be exactly the kind of ungrounded number this system exists
+    to avoid. `exception` is the higher Article 20(c)(1) ceiling, reported alongside
+    the standard one rather than chosen between -- see _EXEMPT_AR.
     """
     for c in chunks:
         if c.get("law") != "ssl" or str(c.get("article_number")) != "20":
             continue
         text = str(c["text"])
+        std = exc = None
         m = _CEILING_EN.search(text)
         if m:
-            return float(m.group(1).replace(",", "")), "20"
-        m = _CEILING_AR.search(text)
-        if m:
-            return float(_AR_THOUSANDS[m.group(1)]), "20"
-    return None, None
+            std = float(m.group(1).replace(",", ""))
+            m2 = _EXEMPT_EN.search(text)
+            if m2:
+                exc = float(m2.group(1).replace(",", ""))
+        else:
+            m = _CEILING_AR.search(text)
+            if m:
+                std = float(_AR_THOUSANDS[m.group(1)])
+                m2 = _EXEMPT_AR.search(text)
+                if m2:
+                    exc = float(_AR_THOUSANDS[m2.group(1)])
+        if std is None:
+            continue
+        if exc is not None and exc <= std:
+            exc = None                       # only a *higher* ceiling is an exemption
+        d = _DATE_RE.search(text.translate(AR_DIGITS))
+        return std, exc, (d.group(0) if d else None), "20"
+    return None, None, None, None
 
 
 def compute_contributions(chunks, salary=None):
@@ -226,11 +261,14 @@ def compute_contributions(chunks, salary=None):
         emp = round(sum(c["rate"] for c in comps if c["bearer"] == "employee"), 4)
         er = round(sum(c["rate"] for c in comps if c["bearer"] == "employer"), 4)
 
-        cap, cap_art = _ceiling(chunks)
+        cap, cap_exc, cap_date, cap_art = _ceiling(chunks)
         base = salary
         capped = bool(salary and cap and salary > cap)
         if capped:
             base = cap
+        # Only raise the exemption where it could change the answer: below the standard
+        # ceiling neither figure bites, and asking would be noise.
+        exc_applies = bool(capped and cap_exc)
 
         # Per-line amounts too, not just the totals. The model was multiplying each
         # rate by the wage itself to show its working -- correct in the trial run, but
@@ -248,12 +286,133 @@ def compute_contributions(chunks, salary=None):
             "base": base,
             "ceiling": cap,
             "ceiling_article": cap_art,
+            "ceiling_exception": cap_exc,
+            "ceiling_exception_date": cap_date,
+            "ceiling_exception_applies": exc_applies,
             "capped": capped,
             "employee_amount": _amount(base, emp) if base else None,
             "employer_amount": _amount(base, er) if base else None,
             "total_amount": _amount(base, emp + er) if base else None,
         }
     return None
+
+
+# ---------------------------------------------------------------------------
+# End-of-service remuneration, Labour Law 1996 Article 32.
+#
+# Structurally different from contributions, and the difference is the whole point:
+# Article 32 opens "a worker WHO IS NOT SUBJECT TO the provisions of the Social
+# Security Law". Most Jordanian workers are subject to it, so the formula does not
+# apply to them -- an answer that just multiplies wage by years is wrong for the
+# majority of the people who would ask. The precondition is surfaced as a question
+# the model must put to the person (SYSTEM_PROMPT rule 11), never assumed either way.
+#
+# The multiplier is matched as a PHRASE rather than hardcoded. If the law is amended
+# to half a month per year, the phrase stops matching and the calculator declines
+# instead of quietly computing the old rate.
+_EOS_RATE = {
+    "en": (re.compile(r"one\s+month.{0,3}s?\s+wage\s+for\s+each\s+year", re.I), 1.0),
+    "ar": (re.compile(r"أجر\s+شهر\s+عن\s+كل\s+سنة"), 1.0),
+}
+_EOS_NOT_SSL = {
+    "en": re.compile(r"not\s+subject\s+to\s+the\s+provisions\s+of\s+the\s+Social\s+Security", re.I),
+    "ar": re.compile(r"غير\s+الخاضع\s+لأحكام\s+قانون\s+الضمان"),
+}
+_YEARS_RE = re.compile(r"([٠-٩\d]+(?:[.,،][٠-٩\d]+)?)\s*(?:سنوات|سنة|سنين|أعوام|اعوام|عام|years?)")
+_MONTHS_RE = re.compile(r"([٠-٩\d]+)\s*(?:شهور|أشهر|اشهر|شهرا|شهراً|شهر|months?)")
+
+
+def extract_service(question):
+    """Years of service the person stated, months folded in, or None.
+
+    "3 years and 6 months" -> 3.5. Months alone -> a fraction of a year, since
+    Article 32 gives "a proportional remuneration" for parts of a year.
+    """
+    q = str(question)
+    y = _YEARS_RE.search(q)
+    m = _MONTHS_RE.search(q)
+    total = 0.0
+    if y:
+        total += float(y.group(1).translate(AR_DIGITS).replace(",", ".").replace("،", "."))
+    if m:
+        total += float(m.group(1).translate(AR_DIGITS)) / 12.0
+    return round(total, 4) if (y or m) and total > 0 else None
+
+
+def compute_end_of_service(chunks, salary=None, years=None):
+    """End-of-service remuneration under Labour Law Art 32, or None if not computable.
+
+    None when Article 32 was not retrieved, when its rate phrase does not match, or
+    when the person has not said how long they worked -- the last is a fact only they
+    have, so the model is left to ask for it rather than handed a fabricated figure.
+    """
+    if years is None or years <= 0:
+        return None
+    for c in chunks:
+        if c.get("law") != "labor96" or str(c.get("article_number")) != "32":
+            continue
+        lang = c.get("language", "en")
+        pat = _EOS_RATE.get(lang)
+        if not pat:
+            continue
+        text = str(c["text"])
+        if not pat[0].search(text):
+            continue                       # rate reworded or amended -- decline, don't guess
+        months = round(years * pat[1], 4)
+        return {
+            "law": "labor96", "article": "32", "language": lang,
+            "years": years, "months_per_year": pat[1], "months_owed": months,
+            "salary": salary,
+            "amount": _times(salary, months) if salary else None,
+            "requires_not_ssl": bool(_EOS_NOT_SSL.get(lang, re.compile(r"$^")).search(text)),
+        }
+    return None
+
+
+_EOS_LABELS = {
+    "en": {
+        "head": "COMPUTED FIGURES -- end of service (arithmetic already done, do not recalculate)",
+        "rate": "Rate ({art}): {r:g} month's wage per year of actual service",
+        "service": "Service stated: {y:g} years",
+        "months": "Remuneration: {m:g} months' wage",
+        "amount": "On the wage of {s:g} JD given: {a:g} JD",
+        "nowage": "The person did not give their wage, so state the result in months' wage.",
+        "cond": ("CONDITION -- Article {art} applies ONLY to a worker who is NOT subject to the "
+                 "Social Security Law. Most workers are subject to it, and for them this "
+                 "remuneration does not arise. The person has not said which they are, so give "
+                 "the figure above as conditional on that and ASK whether they are covered by "
+                 "social security. Do not present it as what they are owed."),
+    },
+    "ar": {
+        "head": "أرقام محسوبة مسبقاً — مكافأة نهاية الخدمة (الحساب تم، لا تعِد حسابه)",
+        "rate": "المعدل (المادة {art}): أجر {r:g} شهر عن كل سنة من الخدمة الفعلية",
+        "service": "مدة الخدمة المذكورة: {y:g} سنة",
+        "months": "المكافأة: أجر {m:g} شهر",
+        "amount": "على الأجر المذكور {s:g} دينار: {a:g} دينار",
+        "nowage": "لم يذكر الشخص أجره، فاذكر النتيجة بعدد أشهر الأجر.",
+        "cond": ("شرط — المادة ({art}) تنطبق فقط على العامل غير الخاضع لأحكام قانون الضمان "
+                 "الاجتماعي. ومعظم العمال خاضعون له ولا تستحق لهم هذه المكافأة. لم يذكر الشخص "
+                 "أي الحالتين ينطبق عليه، فاذكر الرقم أعلاه مشروطاً بذلك واسأله هل هو مشمول "
+                 "بالضمان الاجتماعي. لا تقدّمه على أنه ما يستحقه."),
+    },
+}
+
+
+def format_end_of_service_block(result, lang="en"):
+    lb = _EOS_LABELS.get(lang, _EOS_LABELS["en"])
+    cur = "دينار" if lang == "ar" else "JD"
+    art = result["article"]
+    lines = [f"[{lb['head']}]",
+             lb["rate"].format(art=art, r=result["months_per_year"]),
+             lb["service"].format(y=result["years"]),
+             lb["months"].format(m=result["months_owed"])]
+    if result["amount"] is not None:
+        lines.append(lb["amount"].format(s=result["salary"], a=result["amount"]))
+    else:
+        lines.append(lb["nowage"])
+    if result["requires_not_ssl"]:
+        lines.append(lb["cond"].format(art=art))
+    return "\n".join(lines)
 
 
 _BLOCK_LABELS = {
@@ -272,6 +431,11 @@ _BLOCK_LABELS = {
                     "amounts above are calculated on {c:g} JD, not on the stated wage."),
         "cap_ok": ("The maximum contributory wage in Article {a} is {c:g} JD, which does not "
                    "affect this calculation."),
+        "cap_exc": ("The figures above assume the ordinary {c:g} JD ceiling. Article {a}(c) sets "
+                    "a higher ceiling of {e:g} JD for anyone insured before {d}, and the amounts "
+                    "would be larger for them. You have not been told which applies, so give the "
+                    "figures above and then ASK whether they were insured before {d} -- do not "
+                    "assume either case, and do not calculate the {e:g} JD version unasked."),
     },
     "ar": {
         "head": "أرقام محسوبة مسبقاً (الحساب تم، لا تعِد حسابه)",
@@ -287,6 +451,11 @@ _BLOCK_LABELS = {
                     "حُسبت المبالغ أعلاه على {c:g} دينار وليس على الأجر المذكور."),
         "cap_ok": ("الحد الأعلى للأجر الخاضع للاقتطاع في المادة ({a}) هو {c:g} دينار، وهو لا "
                    "يؤثر على هذا الحساب."),
+        "cap_exc": ("الأرقام أعلاه محسوبة على الحد الأعلى العادي وهو {c:g} دينار. والفقرة (ج) من "
+                    "المادة ({a}) تضع حداً أعلى أكبر مقداره {e:g} دينار لمن شُمل بالتأمين قبل "
+                    "{d}، وتكون المبالغ أكبر في حالته. لم يُذكر أي الحالتين تنطبق، فاذكر الأرقام "
+                    "أعلاه ثم اسأل هل شُمل بالتأمين قبل {d} — لا تفترض إحدى الحالتين، ولا تحسب "
+                    "حالة الـ {e:g} دينار دون أن يُطلب منك."),
     },
 }
 
@@ -327,4 +496,10 @@ def format_calculation_block(result, lang="en"):
     if result["ceiling"]:
         key = "cap_hit" if result["capped"] else "cap_ok"
         lines.append(lb[key].format(a=result["ceiling_article"], c=result["ceiling"]))
+    if result.get("ceiling_exception_applies"):
+        lines.append(lb["cap_exc"].format(
+            a=result["ceiling_article"], c=result["ceiling"],
+            e=result["ceiling_exception"],
+            d=result["ceiling_exception_date"] or ("the 2009 amendment" if lang == "en"
+                                                   else "تعديل عام 2009")))
     return "\n".join(lines)
