@@ -249,6 +249,35 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 24e — Pension eligibility made deterministic ✅ done — LIVE
+`src/calc.py` (`compute_gender_conditions`, `extract_sex`, `format_gender_block`), `src/generation.py` (rules 11/20, `MULTITURN_REMINDER`).
+
+The user's direct follow-up to Phase 24d: sex should either be determined before answering, **or the answer should always cover both cases**. 4/6 from a prompt-only fix doesn't meet that bar. Built the same pattern as contributions and end-of-service — **extract both figures from the article text in code**, hand them to the model, stop relying on it to remember there are two.
+
+**What's extracted.** Article 62's old-age retirement age (60 male / 55 female) and Article 64's early-retirement subscription count (252 male / 228 female), read directly from the same sentence each states both in, via regex, in both languages. `compute_gender_conditions` returns `[]` — never invents a split — when neither article is retrieved or the wording doesn't match a known pattern.
+
+**Where the person's sex comes from.** `extract_sex` reads only the *person's own words*: the current question plus prior turns marked `role: "user"`. Deliberately never the assistant's own turns — once rule 11 fires, the assistant's own explanation routinely says "if male... if female...", and scanning that would make every follow-up look like the person had already answered.
+
+**Two real bugs, both caught by testing against the actual corpus rather than trusting the design on paper:**
+
+1. **A decoder silently deleted Article 62 from every English answer.** The age values are spelled out in Arabic ("سن الستين") but given as plain digits in English ("age of (60)"). The decoder was built for the Arabic word lookup and applied uniformly to both languages — so on the English branch it ran `_AGE_WORDS_AR.get("60")`, which is `None`, and Article 62 vanished with no error. First caught in the offline test suite (`compute_gender_conditions` returned only Article 64 for English, both for Arabic), fixed by making the decoder language-aware.
+
+2. **The same whitespace trap as Phase 24c's contamination bug, in miniature.** The English subscription-pair regex used a single literal space where the PDF-extracted text has a `\n` ("...for the male and \n(228)..."), so it silently matched the *wrong* sub-clause of Article 64 entirely — a historical transition provision (216/180 contributions, for people who reached a certain age before an earlier amendment) instead of the general case (252/228). Same root cause as the retrieval-trigger bug two phases ago: a hardcoded literal space assuming single-line text. Fixed with a `_norm()` whitespace-collapse pass, now the standard first step for any new regex in this module.
+
+**An instruction conflict, found by logging rather than assuming.** With the block confirmed present in the context on every one of 6 trials (logged directly, not inferred), the model still asked a separate clarifying question in 4 of them instead of presenting both figures. Traced to `MULTITURN_REMINDER`: it generically says "ask for the missing fact," with no exception for a fact the block had already resolved — and per Phase 23a it is deliberately positioned to win over an earlier system-prompt rule once a conversation has history, so it was winning against rule 20's explicit "don't ask, present both." Added the same exception to both rule 11 and `MULTITURN_REMINDER`. This is the shape of lesson `LESSONS.md` 5.5 already named: a duplicated instruction has to be updated everywhere it lives, including when the update is a new exception rather than a wording change.
+
+**Measured, real generation calls, before and after the conflict fix:**
+
+| | before | after |
+|---|---|---|
+| stated both figures outright | 2/6 | **5/6** |
+| asked a clarifying question | 4/6 | 1/6 |
+| **silently picked one gender (the actual bug)** | **0/6** | **0/6** |
+
+**0 of 12 trials across both rounds ever silently defaulted to one gender** — the reported failure is closed regardless of which round is counted, and the conflict fix moved the *style* of the fix (mostly-both vs sometimes-ask) rather than its safety. Sex-known cases — stated up front in the first message, or in an earlier turn — **12/12**: only the correct figure appeared, the other never leaked in.
+
+**Carried forward, not fixed.** The retrieval query-rewrite step (`rewrite_for_retrieval`, a separate LLM call) occasionally hallucinated a gender assumption into the *search* query itself ("...إذا كنت ذكراً...") despite the user never stating one. Harmless here — `extract_sex` reads the original question and history, never the rewritten query — but noted as a live behavior, since a rewritten query asserting a false fact could in principle bias retrieval on a different question shape.
+
 ## Phase 24d — Two more live reports: insurance names, sex as an askable fact ✅ done
 `src/calc.py`, `src/generation.py` (rules 11/16, `MULTITURN_REMINDER`). Two more reports from the same session, both against the freshly-deployed calculator.
 

@@ -128,7 +128,7 @@ Precision
 
 Usefulness
 10. The question usually describes someone's real situation. Answer that first, in a sentence or two, then give the supporting rules and citations. Do not open by restating the article.
-11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for it in one short question instead of guessing or covering every possible case. Never silently default to one case (e.g. the male figures) when a provision states both. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it.
+11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for it in one short question instead of guessing or covering every possible case. Never silently default to one case (e.g. the male figures) when a provision states both. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it. Exception: where a computed block below has already resolved a fact by giving you both cases (see rule 20), presenting both IS the answer for that fact -- do not also ask a separate question about it.
 12. Reply in the language of the question -- an Arabic question gets an Arabic answer, an English question gets an English answer. Write plainly and without padding, but do not leave a relevant provision out in order to keep the answer short.
 
 Judgment questions
@@ -141,6 +141,7 @@ Totals and calculations
 17. Apply any ceiling or floor on the amount that the documents state, and say plainly when it does not affect the figure given.
 18. Rule 6 does not forbid this. Adding up rates that the documents each state outright is arithmetic, not interpretation. Rule 6 still governs everything else: do not reason about how provisions qualify or override one another, and if the total depends on which category the person falls into, say which case you have calculated and name the others.
 19. Where a block of computed figures follows the documents, the arithmetic in it has already been done and checked. Use those rates, amounts and totals exactly as given -- do not re-add the components, do not re-derive a total, do not round differently, and never state a figure that contradicts the block. Rules 14 to 17 are already satisfied by it. You still write the answer: cite the article beside each rate as the block shows it, and add anything the documents say that the block does not cover.
+20. Where a block marks a condition that differs for men and women, follow it exactly: if it gives one figure, the person's sex is already known and that is the only figure to state; if it gives both figures, their sex is not known -- present both, clearly labelled, rather than picking one or asking a separate question about it. This is not something to notice and decide on your own; the block has already made the determination.
 
 Close with one short line noting this is general information, not legal advice, and that they should consult a licensed lawyer about their own case."""
 
@@ -445,9 +446,10 @@ class OpenAICompatibleGenerator:
         # confidently wrong total.
         calc = None
         try:
-            from .calc import (compute_contributions, compute_end_of_service, extract_salary,
-                               extract_service, format_calculation_block,
-                               format_end_of_service_block)
+            from .calc import (compute_contributions, compute_end_of_service,
+                               compute_gender_conditions, extract_salary, extract_service,
+                               extract_sex, format_calculation_block,
+                               format_end_of_service_block, format_gender_block)
             salary = extract_salary(query)
             calc = compute_contributions(chunks, salary=salary)
             if calc:
@@ -457,6 +459,17 @@ class OpenAICompatibleGenerator:
                 context += "\n\n" + format_end_of_service_block(eos, lang)
                 calc = {"contributions": calc, "end_of_service": eos} if calc else \
                        {"end_of_service": eos}
+            # Sex-differentiated pension conditions (SSL Art 62/64) -- see src/calc.py for
+            # why a prompt rule alone left this wrong 2 times in 6. `extract_sex` reads only
+            # the PERSON's own words (this question + prior user turns), never the
+            # assistant's, since the assistant's own explanation routinely says "if
+            # male... if female..." once it's retrieved and would falsely look like the
+            # person had already told us.
+            sex = extract_sex(query, history)
+            gender = compute_gender_conditions(chunks, sex=sex)
+            if gender:
+                context += "\n\n" + format_gender_block(gender, lang, sex=sex)
+                calc = {**(calc or {}), "gender_conditions": gender}
         except Exception:
             calc = None  # never let the aid break an answer the model could still give
 
@@ -626,7 +639,7 @@ REWRITE_MAX_TOKENS = 200
 # rule 11 without it.
 MULTITURN_REMINDER = """Before answering the question below, judge it on its own terms.
 
-If answering it correctly depends on a fact about this person that they have not stated -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for that one fact in a short question instead of answering as though it were settled. Never silently pick one case (e.g. the male figures) when the documents give both.
+If answering it correctly depends on a fact about this person that they have not stated -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for that one fact in a short question instead of answering as though it were settled. Never silently pick one case (e.g. the male figures) when the documents give both. Exception: if a computed block below already gives you both cases for that fact, state both instead of asking -- that block is the answer, not a reason to ask a further question.
 
 How earlier turns in this conversation were answered does not decide this. If the fact is still missing now, ask for it now."""
 # How much history each step sees. Rewriting only needs the immediately preceding

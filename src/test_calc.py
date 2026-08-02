@@ -15,8 +15,9 @@ PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT))
 
 from src.calc import (  # noqa: E402
-    article_components, compute_contributions, compute_end_of_service, extract_salary,
-    extract_service, format_calculation_block, format_end_of_service_block,
+    article_components, compute_contributions, compute_end_of_service,
+    compute_gender_conditions, extract_salary, extract_service, extract_sex,
+    format_calculation_block, format_end_of_service_block, format_gender_block,
     _private_funding_articles,
 )
 
@@ -217,9 +218,59 @@ for q, want in cases:
     assert got == want, f"extract_service({q!r}) = {got}, expected {want}"
 print("service parsing: years, years+months, Arabic and English; None when absent\n")
 
+# --------------------------------------- sex-differentiated pension conditions
+# Live report: a pension-eligibility answer used the MALE-only thresholds for
+# Article 62 (retirement age) and Article 64 (early-retirement subscriptions)
+# without ever surfacing that the same sentence gives lower figures for women.
+# Ground truth from the article text itself, both languages, both known
+# provisions: 62 -> age 60 male / 55 female. 64 -> 252 male / 228 female.
+for lang in ("ar", "en"):
+    ch = [chunk("ssl", lang, "62"), chunk("ssl", lang, "64")]
+    cond = compute_gender_conditions(ch)
+    by_art = {c["article"]: c for c in cond}
+    assert by_art["62"]["male"] == 60 and by_art["62"]["female"] == 55, by_art["62"]
+    assert by_art["64"]["male"] == 252 and by_art["64"]["female"] == 228, by_art["64"]
+print("gender conditions: Art 62 age 60/55, Art 64 subscriptions 252/228, both languages")
+
+# no gender-differentiated article retrieved -> nothing invented
+assert compute_gender_conditions([chunk("ssl", "ar", "59")]) == []
+print("no gender-differentiated article in context -> [] (nothing invented)")
+
+# sex unknown -> both figures, clearly labelled, in the block
+both = format_gender_block(compute_gender_conditions([chunk("ssl", "ar", "62")]), "ar", sex=None)
+assert "60" in both and "55" in both and ("للذكر" in both and "للأنثى" in both)
+both_en = format_gender_block(compute_gender_conditions([chunk("ssl", "en", "62")]), "en", sex=None)
+assert "60" in both_en and "55" in both_en and "male" in both_en and "female" in both_en
+print("sex unknown: block states both figures, labelled, in both languages")
+
+# sex known -> ONLY that figure appears; the other must not leak in
+male_only = format_gender_block(compute_gender_conditions([chunk("ssl", "en", "62")]), "en", sex="male")
+assert "60" in male_only and "55" not in male_only, male_only
+female_only = format_gender_block(compute_gender_conditions([chunk("ssl", "ar", "64")]), "ar", sex="female")
+assert "228" in female_only and "252" not in female_only, female_only
+print("sex known: block states only that figure, the other never leaks in")
+
+# extract_sex reads the PERSON's own words, never the assistant's prior recitation --
+# the whole point, since the assistant routinely says "if male... if female..." once
+# rule 11 fires, which would otherwise look like the person had already told us
+sex_cases = [
+    ("أنا ذكر وعمري 30", None, "male"), ("I am a woman, 40 years old", None, "female"),
+    ("عمري 50", None, None),   # no sex stated anywhere
+    ("عمري 50", [{"role": "user", "content": "أنا رجل"}], "male"),
+    # assistant's own recitation must NOT be read as the person's answer
+    ("عمري 50", [{"role": "assistant",
+                  "content": "إذا كنت ذكراً..سن الستين. إذا كنت أنثى..سن الخامسة والخمسين."}], None),
+]
+for q, hist, want in sex_cases:
+    got = extract_sex(q, hist)
+    assert got == want, f"extract_sex({q!r}, {hist!r}) = {got}, expected {want}"
+print("extract_sex: reads the person's own words only, ignores the assistant's recitation\n")
+
 print(format_calculation_block(
     compute_contributions(family("ar") + [chunk("ssl", "ar", "20")], salary=1000), "ar"))
 print()
 print(format_calculation_block(
     compute_contributions(family("en") + [chunk("ssl", "en", "20")], salary=5000), "en"))
+print()
+print(format_gender_block(compute_gender_conditions([chunk("ssl", "ar", "62"), chunk("ssl", "ar", "64")]), "ar"))
 print("\nALL CALC TESTS PASSED")

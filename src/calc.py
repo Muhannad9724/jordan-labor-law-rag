@@ -527,3 +527,157 @@ def format_calculation_block(result, lang="en"):
             d=result["ceiling_exception_date"] or ("the 2009 amendment" if lang == "en"
                                                    else "تعديل عام 2009")))
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Sex-differentiated pension conditions, SSL Articles 62 and 64.
+#
+# WHY THIS EXISTS
+# A live conversation asked about pension eligibility (200 subscriptions, then
+# "my age is 50") and got an answer built entirely on the MALE thresholds --
+# Article 62's retirement age (60) and Article 64's early-retirement subscription
+# count (252) -- without ever surfacing that both articles set separate, lower
+# figures for women (55 / 228) in the very same sentence. A prompt rule fix
+# (SYSTEM_PROMPT rule 11, MULTITURN_REMINDER) narrowed this from "always wrong"
+# to "wrong 2 times in 6" -- real progress, but exactly the ceiling LESSONS.md
+# 5.4 already named: a prompt cannot make an unreliable capability reliable.
+#
+# So, same as contributions and end-of-service: extract both figures from the
+# text in code, and stop leaving it to the model to remember there are two.
+#
+# WHITESPACE BUG, FOUND BUILDING THIS
+# The first version of the English regexes used a literal space between words
+# and silently matched the WRONG clause -- Article 64 has several sex-split
+# sub-clauses (historical transition provisions for people who were 42-48
+# years old before an earlier amendment), and a fixed single space doesn't
+# cross the "\n" the PDF extraction left between "and" and the next "(number)".
+# `_norm()` collapses all whitespace before any of these patterns run.
+def _norm(text):
+    return re.sub(r"\s+", " ", str(text))
+
+
+# Ages are spelled out in Arabic ("سن الستين", "سن الخامسة والخمسين"); the
+# vocabulary is closed to what Article 62 actually uses, same approach as
+# AR_NUMBER_WORDS above -- a lookup, not a general ordinal-number parser.
+_AGE_WORDS_AR = {"الستين": 60, "الخامسة والخمسين": 55, "الخمسين": 50}
+_AGE_ALT_AR = "|".join(sorted(_AGE_WORDS_AR, key=len, reverse=True))
+
+# decode(group, language) -- Arabic Art 62 needs the word lookup; every other case
+# (Arabic Art 64's digits, and English throughout) is a plain number, via _to_num.
+# A first version shared one `decode` across both languages and silently dropped
+# English Article 62 entirely: _AGE_WORDS_AR.get("60") is None, since the English
+# capture group is the digit string "60", not the Arabic word "الستين".
+def _decode_age(g, language):
+    return _AGE_WORDS_AR.get(g) if language == "ar" else _to_num(g)
+
+
+_GENDER_PATTERNS = {
+    # article -> (kind, compiled AR pattern, compiled EN pattern, decoder(group, lang))
+    "62": ("age",
+           re.compile(r"الذكر\s+سن\s+(" + _AGE_ALT_AR + r")\s+والمؤمن عليها الأنثى\s+سن\s+(" + _AGE_ALT_AR + r")"),
+           re.compile(r"age of \((\d+)\) for the male and \((\d+)\) for the female", re.I),
+           _decode_age),
+    "64": ("subscriptions",
+           re.compile(r"\(([٠-٩]+)\)\s*اشتراكاً\s*فعلياً\s*بالنسبة\s*للذكر\s*و\s*\(([٠-٩]+)\)\s*اشتراكاً\s*فعلياً\s*بالنسبة\s*للأنثى"),
+           re.compile(r"is not less than \((\d+)\) contributions for the male and \((\d+)\) actual contributions for the female", re.I),
+           lambda g, language: _to_num(g)),
+}
+
+_GENDER_LABEL = {
+    ("62", "ar"): "سن التقاعد (تقاعد الشيخوخة)", ("62", "en"): "retirement age (old-age pension)",
+    ("64", "ar"): "عدد الاشتراكات المطلوب (التقاعد المبكر)",
+    ("64", "en"): "required subscriptions (early retirement)",
+}
+
+_SEX_MALE_RE = re.compile(r"\b(ذكر|رجل)\b|\b(male|man)\b", re.I)
+_SEX_FEMALE_RE = re.compile(r"\b(أنثى|امرأة)\b|\b(female|woman)\b", re.I)
+
+
+def extract_sex(query, history=None):
+    """'male' / 'female' / None, read from the PERSON's own words only.
+
+    Deliberately scans only the current question plus prior USER turns, never
+    the assistant's. Once rule 11 fires, the assistant's own explanation
+    routinely says "if male... if female..." -- scanning that text would make
+    every follow-up turn look like the person had already stated their sex,
+    defeating the whole point.
+    """
+    texts = [query]
+    for turn in (history or []):
+        if turn.get("role") == "user":
+            texts.append(str(turn.get("content", "")))
+    blob = " ".join(texts)
+    m, f = _SEX_MALE_RE.search(blob), _SEX_FEMALE_RE.search(blob)
+    if m and not f:
+        return "male"
+    if f and not m:
+        return "female"
+    return None  # absent, or both mentioned (e.g. quoting the law back) -- don't guess
+
+
+def compute_gender_conditions(chunks, sex=None):
+    """[{article, kind, label, male, female}] for every sex-differentiated SSL
+    condition among the retrieved articles. [] if none apply -- never invents a
+    split that isn't actually in front of the model.
+    """
+    out = []
+    for c in chunks:
+        if c.get("law") != "ssl":
+            continue
+        art = str(c.get("article_number"))
+        spec = _GENDER_PATTERNS.get(art)
+        if not spec:
+            continue
+        kind, pat_ar, pat_en, decode = spec
+        lang = c.get("language", "ar")
+        text = _norm(c["text"])
+        pat = pat_ar if lang == "ar" else pat_en
+        m = pat.search(text)
+        if not m:
+            continue
+        g1, g2 = m.group(1), m.group(2)
+        male = decode(g1, lang)
+        female = decode(g2, lang)
+        if male is None or female is None:
+            continue  # a word this closed lookup doesn't know -- decline, don't guess
+        out.append({"article": art, "kind": kind, "language": lang,
+                     "label": _GENDER_LABEL.get((art, lang)),
+                     "male": male, "female": female})
+    return out
+
+
+_GENDER_LABELS = {
+    "en": {
+        "head": "COMPUTED FIGURES -- this law sets different numbers for men and women here",
+        "both": ("The person's sex is not known. State BOTH figures below, clearly labelled "
+                 "\"if male\" / \"if female\", for every row -- do not pick one silently and "
+                 "do not answer as though only one case exists."),
+        "known": "The person has told you they are {sex}. Use only the {sex} figure below.",
+        "row": "{label} (Article {art}): male {m:g} -- female {f:g}",
+        "row_known": "{label} (Article {art}): {v:g}",
+    },
+    "ar": {
+        "head": "أرقام محسوبة مسبقاً -- هذا القانون يضع أرقاماً مختلفة للرجال والنساء هنا",
+        "both": ("جنس الشخص غير معروف. اذكر كلا الرقمين أدناه بوضوح، \"إذا كان ذكراً\" / "
+                 "\"إذا كانت أنثى\"، لكل بند -- لا تختر أحدهما بصمت ولا تجب وكأن حالة واحدة فقط موجودة."),
+        "known": "أخبرك الشخص أنه {sex}. استخدم رقم {sex} فقط أدناه.",
+        "row": "{label} (المادة {art}): للذكر {m:g} -- للأنثى {f:g}",
+        "row_known": "{label} (المادة {art}): {v:g}",
+    },
+}
+
+
+def format_gender_block(conditions, lang="en", sex=None):
+    """Render `compute_gender_conditions` output. `conditions` must be non-empty."""
+    lb = _GENDER_LABELS.get(lang, _GENDER_LABELS["en"])
+    sex_word = ({"male": "ذكر", "female": "أنثى"} if lang == "ar"
+                else {"male": "male", "female": "female"}).get(sex)
+    lines = [f"[{lb['head']}]", lb["known"].format(sex=sex_word) if sex else lb["both"], ""]
+    for c in conditions:
+        label = c["label"] or c["article"]
+        if sex:
+            v = c[sex]
+            lines.append(lb["row_known"].format(label=label, art=c["article"], v=v))
+        else:
+            lines.append(lb["row"].format(label=label, art=c["article"], m=c["male"], f=c["female"]))
+    return "\n".join(lines)
