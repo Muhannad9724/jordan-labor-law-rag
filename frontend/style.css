@@ -335,18 +335,28 @@ body {
   gap: 9px;
 }
 
+/* Raised deliberately. On --panel with a --rule border this sat only a few shades off
+   the --void page ground and read as part of the background rather than as the thing you
+   type into. It now uses the raised surface, a brighter border, and a brass hairline
+   along the top edge so the input has a visible leading edge at any scroll position. */
 .composer {
   display: flex;
   align-items: flex-end;
   gap: 11px;
   padding: 15px 16px;
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  background: var(--panel-raised);
+  border: 1px solid #4a4032;
+  border-top: 1px solid var(--brass-dim);
   border-radius: 3px;
-  box-shadow: 0 8px 26px rgba(13, 11, 9, 0.75);
+  box-shadow: 0 10px 32px rgba(13, 11, 9, 0.85), 0 0 0 1px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.composer:focus-within { border-color: var(--brass-dim); }
+.composer:focus-within {
+  border-color: var(--brass-dim);
+  border-top-color: var(--brass);
+  box-shadow: 0 10px 32px rgba(13, 11, 9, 0.85), 0 0 0 1px var(--brass-glow);
+}
 
 #question-input {
   flex: 1;
@@ -363,8 +373,12 @@ body {
   padding: 3px 0;
 }
 
-#question-input::placeholder { color: var(--parchment-faint); }
+/* --parchment-faint on the raised surface was near-invisible; the placeholder is the
+   only cue telling you this is where you type. */
+#question-input::placeholder { color: var(--parchment-dim); opacity: 0.85; }
 
+/* Filled rather than outlined: it is the primary action in the row, and against a raised
+   composer an outlined button no longer separated from the secondary one beside it. */
 #send-btn {
   flex-shrink: 0;
   width: 38px;
@@ -372,40 +386,68 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  color: var(--brass);
-  border: 1px solid var(--brass-dim);
+  background: var(--brass);
+  color: var(--void-deep);
+  border: 1px solid var(--brass);
   border-radius: 2px;
   cursor: pointer;
-  transition: background 0.18s ease, opacity 0.18s ease;
+  transition: background 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
 }
 
-#send-btn:not(:disabled):hover { background: var(--brass-glow); }
-#send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+#send-btn:not(:disabled):hover { filter: brightness(1.12); }
 
-/* Quiet on purpose -- a secondary action next to the primary send button, so it
-   borrows .suggestion's restrained treatment rather than send's brass accent.
-   Hidden until there is a conversation to reset (see body.reading below); resetting
-   an already-empty thread has nothing to do. */
+#send-btn:focus-visible {
+  outline: 1px solid var(--brass);
+  outline-offset: 2px;
+}
+
+#send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Still secondary to send, but it was icon-only in a dim outline and read as decoration
+   rather than a control. It now carries its label, so what it does is legible without
+   hovering for a tooltip. Hidden until there is a conversation to reset (body.reading);
+   resetting an empty thread has nothing to do. */
 #reset-btn {
   flex-shrink: 0;
-  width: 38px;
   height: 38px;
+  padding: 0 12px;
   display: none;
   align-items: center;
-  justify-content: center;
-  background: transparent;
+  gap: 7px;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 400;
+  white-space: nowrap;
+  background: var(--panel);
   color: var(--parchment-dim);
-  border: 1px solid var(--rule);
+  border: 1px solid #4a4032;
   border-radius: 2px;
   cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+  transition: border-color 0.18s ease, color 0.18s ease,
+              background 0.18s ease, opacity 0.18s ease;
 }
 
-body.reading #reset-btn { display: flex; }
+body.reading #reset-btn { display: inline-flex; }
 
-#reset-btn:not(:disabled):hover { border-color: var(--brass-dim); color: var(--parchment); }
+#reset-btn:not(:disabled):hover {
+  border-color: var(--clay);
+  color: var(--parchment);
+  background: var(--clay-tint);
+}
+
+#reset-btn:focus-visible {
+  outline: 1px solid var(--brass-dim);
+  outline-offset: 2px;
+}
+
 #reset-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* The label is the point of the change, but it is the first thing to go when the row
+   gets tight -- the icon plus the title attribute still carry the meaning. */
+@media (max-width: 560px) {
+  .reset-label { display: none; }
+  #reset-btn { padding: 0; width: 38px; justify-content: center; }
+}
 
 /* ---------------- Sources rail ---------------- */
 
@@ -676,11 +718,11 @@ body.reading .thread {
    the palette -- no brass fill, no weight. Nothing here may look like a citation. */
 
 .suggestions-dock {
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  background: var(--panel-raised);
+  border: 1px solid #443a2d;
   border-radius: 3px;
   padding: 11px 14px;
-  box-shadow: 0 8px 26px rgba(13, 11, 9, 0.55);
+  box-shadow: 0 8px 26px rgba(13, 11, 9, 0.7);
   /* Suggestions arrive ~1-2s after the answer. Fading in rather than popping keeps
      that from reading as a layout glitch. */
   animation: suggestions-in 260ms ease both;
