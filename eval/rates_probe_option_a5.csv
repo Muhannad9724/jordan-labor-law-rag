@@ -1,0 +1,11 @@
+﻿qid,n_gold,baseline k=5,baseline k=5_full,filter k=5,filter k=5_full,A5 filter+siblings k=5,A5 filter+siblings k=5_full,A5 filter+siblings k=6,A5 filter+siblings k=6_full,A5 filter+siblings k=8,A5 filter+siblings k=8_full,A5 filter+siblings k=10,A5 filter+siblings k=10_full
+r01,4,0.25,False,0.25,False,1.0,True,1.0,True,1.0,True,1.0,True
+r02,4,0.25,False,0.5,False,1.0,True,1.0,True,1.0,True,1.0,True
+r03,2,0.0,False,0.0,False,0.0,False,0.5,False,0.5,False,1.0,True
+r04,1,0.0,False,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True
+r05,2,1.0,True,1.0,True,0.5,False,0.5,False,1.0,True,1.0,True
+r06,1,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True
+r07,1,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True
+r08,1,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True
+r09,1,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True
+r10,1,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True,1.0,True

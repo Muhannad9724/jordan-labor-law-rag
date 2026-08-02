@@ -1,0 +1,11 @@
+﻿qid,n_gold,C filter k=5,C filter k=5_full,C+siblings k=5,C+siblings k=5_full,gold_ranks
+r01,4,0.25,False,1.0,True,"24@13, 42@8, 48@22, 59@2"
+r02,4,0.5,False,1.0,True,"24@4, 42@13, 48@17, 59@2"
+r03,2,0.0,False,0.0,False,"48@>30, 59@6"
+r04,1,1.0,True,1.0,True,24@5
+r05,2,1.0,True,0.5,False,"42@2, 43@3"
+r06,1,1.0,True,1.0,True,48@1
+r07,1,1.0,True,1.0,True,59@4
+r08,1,1.0,True,1.0,True,72@1
+r09,1,1.0,True,1.0,True,59@1
+r10,1,1.0,True,1.0,True,59@1
