@@ -501,6 +501,43 @@ worked example of not doing that.
 > has been *told to do*. If a system-prompt rule stops working once history is
 > present, move it — don't rewrite it.
 
+### 5.4 Instructing a language model to be a calculator
+
+**What happened.** Asked "my salary is 1000 JD, how much do I pay and how much does
+the company pay", the app got it right **3 times in 6**. Every article it needed was
+in the context. Five prompt rules told it exactly how to do the sum, including
+"show each component on its own line, then the total".
+
+The instinct was to write a sixth rule. That was wrong for a reason worth naming:
+answering meant finding six rates across four articles → deciding which side bears
+each one → summing each side → multiplying by the wage. **Four chained steps, no
+calculator, at non-zero temperature.** No wording fixes that. 3/6 is simply what
+instructing a language model to be a calculator buys.
+
+Moving the arithmetic into code took it to **6/6**, on every case tested.
+
+> **The rule:** prompts change what a model *tries* to do. They don't make an
+> unreliable capability reliable. When the failure is arithmetic, lookup or anything
+> else code does perfectly, the fix is to do it in code and let the model narrate the
+> result — not to describe the procedure more carefully.
+
+### 5.5 The model was right; my figure was wrong
+
+**What happened.** After moving the arithmetic into code, one case still failed:
+850 JD gave an employer share of **121.12** where the answer should be 121.13. It
+failed in **3 trials out of 3** — suspiciously consistent for a sampling model.
+
+That consistency was the clue. The model wasn't computing anything; it was copying
+what I handed it, exactly as instructed. `850 × 14.25% = 121.125`, and Python's
+`round()` rounds half to **even**, not up. Every payslip convention rounds half up.
+
+The calculator was wrong and the model was faithfully reproducing it. Had this been
+scored as a model failure, the fix would have gone into the prompt and never worked.
+
+> **The rule:** a wrong answer that repeats *identically* across trials is not a
+> sampling failure — it is deterministic, so it comes from your code, not the model.
+> Use the variance as the diagnostic: noisy means the model, stable means you.
+
 ---
 
 ## Part 6 — Deciding what to work on
@@ -569,8 +606,12 @@ If this document were one page:
 10. **In a conversation, an example beats an instruction — fix it by position.**
 11. **Size the prize before optimising; settle the upstream decision first.**
 12. **When a component changes, everything measured downstream is stale.**
+13. **A prompt cannot make an unreliable capability reliable — do it in code and let
+    the model narrate.**
+14. **An identical wrong answer across trials is deterministic, so it is yours, not
+    the model's.**
 
 ---
 
-*Compiled after Phase 23, from the failures recorded across all 23 phases in
+*Compiled after Phase 24, from the failures recorded across all 24 phases in
 `ROADMAP.md`.*

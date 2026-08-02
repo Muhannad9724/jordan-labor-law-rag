@@ -249,6 +249,59 @@ First step of a deliberate phase-by-phase re-review of the whole project. `scrip
 
 **Still needed before public launch:** set `GEMINI_API_KEY` in the Railway environment, and check Gemini's free-tier request limits against real traffic — the same failure mode that removed Voyage from the Phase 13 candidate list.
 
+## Phase 24 — Contribution arithmetic moved into code ✅ done — **adopted; 3/6 → 6/6**
+`src/calc.py`, `src/test_calc.py`, `scripts/24. deterministic_calculation.ipynb`, plus changes to `src/retrieval.py` and `src/generation.py`.
+
+**Trigger — a live bug, not an eval finding.** Asked in Arabic what percentage the company bears for an employee's social security, the app answered **11%**, cited Article 59, and stopped. The real employer share is **14.25%**, set by four separate articles (59: 11%, 24: 2%, 42: 0.75%, 48: 0.5%). Employee is 7.5% (59: 6.5%, 48: 1%). Total 21.75%, matching the published SSC rate.
+
+**Phase 23's retrieval work fixed the context and it still wasn't enough.** Sibling expansion brought all four articles in together, and the model *still* only reached the right total **3 of 6 times** at one salary and **2 of 6** at another. Baseline before any of this work: 0/6.
+
+**Why more prompting was the wrong move.** Answering means finding six rates across four articles → deciding which side bears each → summing each side → multiplying by the wage. Four chained steps, no calculator, at non-zero temperature. Prompt rules 14–18 *already instructed exactly that procedure*. Writing a nineteenth rule would not have changed what the model is unreliable at.
+
+**The rates are still read from the retrieved article text, never hardcoded** — a re-extraction or an amendment carries through automatically. Only *how to read* the text is fixed, and all three rules came from measured failures:
+
+1. **The bearer is named by the verb, not the actor.** Article 48(أ) is `الاشتراكات التي تؤديها المنشأة` (paid by the firm) and 48(ب) is `الاشتراكات التي تقتطعها المنشأة` (deducted by the firm). **The subject is identical** — "the firm" — and only `تؤدي` vs `تقتطع` says who actually bears the cost. English is the same ("paid by" vs "deducted by"). A first implementation keyed on the actor and tagged all six rates as employer, producing the correct grand total with a completely wrong split.
+2. **Both verbs sit in the same window,** since an article states its employer clause and then its employee clause. Taking the first verb matched collapses the split onto one side; the clause owning a rate is the **nearest verb to its left**.
+3. **The funding family is not homogeneous. Article 72 is the public-sector and military regime** — an *alternative* to the other four, not a fifth component of the same total — and it carries its own 11% and 6.5%, **numerically identical to the private-sector ones**, plus 17%, 21.5% and 26%. Article 59 adds 17.5% (voluntary) and 50% (a reduction cap). Sibling expansion was promoting all of it: **16 percentages in context where 6 answer the question.** `_build_families` now groups members **by scope** and promotes only the matching group.
+
+**Completeness guard.** `compute_contributions` returns `None` unless every private-scope funding article was retrieved, leaving the model to answer unaided. Article 59 alone yields 11%/6.5% — the original bug in a more confident voice. The expected set is derived from the corpus, not written down.
+
+**GENERATION — repeated trials, because temperature is non-zero:**
+
+| case | expected | before | after |
+|---|---|---|---|
+| original bug question | employer 14.25% | answered 11% | **6/6** |
+| salary 1000 JD (ar) | 75 · 142.5 | 3/6 · 3/6 | **6/6 · 6/6** |
+| salary 400 JD (ar) | 30 · 57 | 2/6 · 2/6 | **6/6 · 6/6** |
+| salary 850 JD (en) | 63.75 · 121.13 | — | **3/3 · 3/3** |
+| salary 5000 JD (ar) | 225 · 427.5 (capped) | — | **3/3 · 3/3** |
+
+**0 of 27 runs reverted to the Article 59-only answer.** At 5000 JD the uncapped figures (375 / 712.5) never appeared and the Article 20(أ) ceiling was stated in 3/3.
+
+**The rounding lesson.** The first 850 JD run returned **121.12 in 3 of 3** — faithfully, because the computed block said 121.12. `850 × 14.25% = 121.125` exactly, and Python's `round()` rounds half to *even*; every payslip convention rounds half *up*. **The model was right and my calculator was wrong.** The 3-of-3 consistency was the diagnostic: a sampling model does not reproduce an error identically. Money now uses `Decimal`/`ROUND_HALF_UP`, and every component carries its own precomputed amount so the model does not multiply either.
+
+**A defect shipped in Phase 23, found by this work.** `_expand_families` scanned the **entire** candidate list, so a family member at rank 40 — an article the question was never going to be shown — still widened the window to `FAMILY_TOP_K`. Now gated on `trigger_depth=top_k`:
+
+| | expansion fired | mean slots | retrieval metrics |
+|---|---|---|---|
+| before | 37 / 60 | 6.85 | — |
+| after | **2 / 60** | **5.10** | **identical** |
+
+Identical metrics means the extra context was pure waste.
+
+**RETRIEVAL — eval_v3, production path, vs the Phase 20 baseline** (reported separately from generation, as always):
+
+| config | recall@1 | recall@5 | MRR | full coverage |
+|---|---|---|---|---|
+| Phase 20 baseline | 0.867 | 1.000 | 0.922 | 0.950 |
+| **now** | **0.900** | **1.000** | **0.939** | **0.950** |
+
+**0 questions lost coverage**, 0 gained, worst rank 4, and **0 questions now receive Article 72**.
+
+**Scope limit, stated rather than glossed:** end-of-service gratuity, overtime, leave accrual and the pension formula are **still the model's own arithmetic**. The pattern generalises — extract in code, compute in code, let the model narrate — but this extractor is specific to contribution rates, and each further calculation type is separate work. New rule 19 tells the model to use the computed block verbatim; rules 14–18 remain for the cases the calculator declines.
+
+**Not measured:** rule 19's and the retrieval changes' effect on LLM-judge faithfulness/relevancy over the full 60 questions. That needs a separate paid judge run and is not claimed here.
+
 ## Phase 23 — Multi-turn conversation ✅ done, verified live with a control
 `src/generation.py` (`rewrite_for_retrieval`, history in `generate`), `src/api.py` (`history` on `/ask`, `retrieval_query` on the response), `frontend/` (history tracking, suggestion dock). Closes the limitation Phase 22's rule 11 shipped with.
 

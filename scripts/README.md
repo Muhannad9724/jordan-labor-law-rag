@@ -39,6 +39,7 @@ note at the bottom.
 | 21 | `vector_store_gemini` | 19 | Switched to `gemini-embedding-001`, new 3072-dim index, live |
 | 22 | `final_evaluation_v3` | 20 | New reference point: recall@5 1.000, faith 4.70, rel 4.55 |
 | 23 | `prompt_coverage_eval` | 21 | Coverage rules + bilingual context — relevancy 4.55 → 4.80 |
+| 24 | `deterministic_calculation` | 24 | Contribution arithmetic moved into code — 3/6 → 6/6 |
 
 Phases without a notebook: 3 (the v1 eval set was hand-built), 10–11 (frontend and
 deploy), 17 (measured inside 19), 22–23 (prompt rules and multi-turn, verified
