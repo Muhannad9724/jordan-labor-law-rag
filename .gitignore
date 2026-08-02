@@ -16,7 +16,7 @@ eval/emb_cache/
 # Word lock files created while a .docx is open
 ~$*
 
-# Timestamped knowledge-base backups written by scripts/kb_watermark_cleanup.ipynb.
+# Timestamped knowledge-base backups written by "scripts/16. kb_watermark_cleanup.ipynb".
 # Kept on disk as a safety net, but they are duplicates of tracked source files.
 *.backup_*.xlsx
 

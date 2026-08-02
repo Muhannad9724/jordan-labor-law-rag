@@ -56,7 +56,8 @@ is in [`ROADMAP.md`](ROADMAP.md) and the notebooks in [`scripts/`](scripts/).
 
 ```bash
 pip install -r requirements.txt
-# .env with COHERE_API_KEY, PINECONE_API_KEY, OPENROUTER_API_KEY
+# .env with GEMINI_API_KEY, PINECONE_API_KEY, OPENROUTER_API_KEY
+# (COHERE_API_KEY only if you roll retrieval back to the Cohere index)
 uvicorn src.api:app --reload --port 8000
 ```
 
@@ -68,8 +69,12 @@ Open `http://127.0.0.1:8000` — the backend serves the frontend directly.
 - `src/generation.py` — grounded answer generation with citation extraction
 - `src/api.py` — FastAPI backend + static frontend serving
 - `frontend/` — chat UI
-- `scripts/` — every decision notebook, in order, reproducible end-to-end
-- `eval/` — the 40-question eval set and every evaluation run's results
+- `scripts/` — every decision notebook, numbered in the order the work happened;
+  see [`scripts/README.md`](scripts/README.md) for what each one settled
+- `eval/` — the eval sets (v1 40 questions, v2/v3 60) and every run's results
+- `0. cleaned_data/` — extracted article tables and the chunked corpus
+- `1. data/` — the source PDFs
+- `notes/` — working notes, not part of the pipeline
 - `ROADMAP.md` — full phase-by-phase build log with reasoning for every choice
 
 ## Disclaimer
