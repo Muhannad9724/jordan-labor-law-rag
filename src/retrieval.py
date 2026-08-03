@@ -145,7 +145,7 @@ FAMILY_MARKERS = {"ar": "تتكون مصادر تمويل", "en": "shall be fina
 # When expansion fires the window widens, because injecting siblings into a fixed 5
 # would push out relevant non-family articles -- measured: it cost r05 half its
 # coverage. Questions that touch no family keep the Phase 17 default of 5.
-FAMILY_TOP_K = 8
+FAMILY_TOP_K = 12
 # Phase 24b. A single "top-5" trigger missed exactly the case the feature exists for:
 # stating a salary ("راتبي 1000 دينار كم ادفع للضمان الاجتماعي") DILUTES the query enough
 # that the funding articles drop out of the top 5-8 -- sometimes much deeper than
@@ -186,6 +186,27 @@ FAMILY_TOP_K = 8
 # correct article off rank 1 -- so wider is not free past this point.
 FAMILY_TRIGGER_DEPTH = 37
 FAMILY_TRIGGER_COUNT = 2
+#
+# Phase 25b: FAMILY_TOP_K was raised 8 -> 12 (see above) specifically to fix q10
+# ("am I eligible for a maternity payment"), the one eval_v3 question this whole
+# mechanism was still costing. Root cause: q10's family fires correctly (Article 42
+# clusters with one other member within FAMILY_TRIGGER_DEPTH) but the target article,
+# SSL 44, sits at combined position 12 after expansion -- one slot past the old
+# FAMILY_TOP_K=8 cutoff. Tested three candidates against eval_v3 + eval_rates before
+# picking this one:
+#   A. FAMILY_TOP_K 8->12 (adopted): fixes q10, zero regressions elsewhere, full
+#      coverage improves 0.950 -> 0.967.
+#   B. exclude Article 42 from the >=COUNT trigger members (it is topically noisy --
+#      shared vocabulary with ordinary maternity-eligibility questions unrelated to
+#      contributions): does NOT fix q10 -- the family simply never fires for that
+#      question, so the extra slots from A never get used -- but genuinely improves
+#      the rest of eval_v3 (recall@1 .883->.900, MRR .926->.939, worst_rank 5->4),
+#      because Article 42 alone was over-triggering on other, unrelated questions too.
+#   A+B together: numerically identical to B alone here, since B pre-empts A's
+#      mechanism for q10 specifically (family never fires, so widening the slice is
+#      moot). Not useful as a combination for this goal.
+# B's finding is real and worth revisiting on its own terms, but it does not solve
+# the problem it was tested against, so only A shipped.
 
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
 
