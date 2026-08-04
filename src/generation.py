@@ -395,6 +395,19 @@ _XREF_RE = re.compile(r"(?:[Aa]rticles?|[وف]?(?:ال|لل|[بك]ال)?ماد(?
                       r"((?:\s*\(?\d+\)?(?:\s*(?:and|و|,|،)\s*)?)+)")
 
 
+def compute_citations(answer, available_articles):
+    """[{"article_number", "in_retrieved_context"}] for every article `answer` names.
+
+    Factored out of OpenAICompatibleGenerator.generate() so the streaming path
+    (generate_stream(), which yields text and never sees the final string until
+    the caller has assembled it) can compute the exact same citation list from
+    the exact same regex once streaming ends, instead of duplicating this.
+    """
+    cited_articles = {g1 or g2 for g1, g2 in ARTICLE_NUM_RE.findall(answer)}
+    return [{"article_number": a, "in_retrieved_context": a in available_articles}
+            for a in cited_articles]
+
+
 def grounded_article_numbers(chunks):
     """Article numbers an answer may legitimately name: the retrieved articles, plus any
     article those articles cross-reference in their own text.
@@ -563,7 +576,16 @@ class OpenAICompatibleGenerator:
             return None
         return out
 
-    def generate(self, query, chunks, history=None, max_retries=5):
+    def _prepare_messages(self, query, chunks, history=None):
+        """Everything generate() and generate_stream() share: build the calc-block-
+        augmented context, run the completeness reparse, and assemble the final
+        `messages` list -- returns (messages, available_articles, calc).
+
+        Factored out so streaming doesn't duplicate the calc.py wiring or the
+        reparser call; the two methods differ only in how they call the model
+        (one response vs. one that arrives token by token) and how they turn the
+        result into citations.
+        """
         lang = detect_language(query)
         context = _format_context(chunks, lang)
 
@@ -656,6 +678,11 @@ class OpenAICompatibleGenerator:
             messages.append({"role": "system", "content": MULTITURN_REMINDER})
         messages.append({"role": "user", "content": user_msg})
 
+        return messages, available_articles, calc
+
+    def generate(self, query, chunks, history=None, max_retries=5):
+        messages, available_articles, calc = self._prepare_messages(query, chunks, history)
+
         resp = None
         last_error = None
         for attempt in range(max_retries):
@@ -680,14 +707,59 @@ class OpenAICompatibleGenerator:
 
         answer = resp.choices[0].message.content or ""
 
-        cited_articles = {g1 or g2 for g1, g2 in ARTICLE_NUM_RE.findall(answer)}
-        citations = [
-            {"article_number": a, "in_retrieved_context": a in available_articles}
-            for a in cited_articles
-        ]
+        return {"answer": answer, "citations": compute_citations(answer, available_articles),
+                "response": resp, "calculation": calc}
 
-        return {"answer": answer, "citations": citations, "response": resp,
-                "calculation": calc}
+    def generate_stream(self, query, chunks, history=None, max_retries=3):
+        """Same answer as generate(), yielded as text deltas instead of returned whole.
+
+        Built for the live API's typing UI (src/api.py's /ask/stream) so the person
+        sees words appear as the model produces them, the way ChatGPT/Gemini do,
+        instead of watching a static "thinking" indicator until the entire answer
+        is ready and then having it all appear at once.
+
+        Retries (same backoff as generate()) only cover ESTABLISHING the stream --
+        once a chunk has reached the caller, restarting the whole call would show
+        the same text twice, so a failure mid-stream just propagates as an
+        exception instead. The caller (src/api.py) turns that into an SSE `error`
+        event; whatever text already streamed stays on screen rather than being
+        retracted, since it was genuinely produced, just possibly incomplete.
+
+        Yields plain text chunks only, not citations -- unlike generate(), this
+        never sees the complete answer string itself (the caller assembles it by
+        concatenating what it yields), so citation computation is the caller's
+        job via compute_citations() once the stream ends.
+        """
+        messages, _available_articles, _calc = self._prepare_messages(query, chunks, history)
+
+        stream = None
+        last_error = None
+        for attempt in range(max_retries):
+            try:
+                stream = self.client.chat.completions.create(
+                    model=self.model_id,
+                    messages=messages,
+                    extra_body=self.extra_body,
+                    stream=True,
+                    **({"temperature": self.temperature} if self.temperature is not None else {}),
+                    **({"max_tokens": self.max_tokens} if self.max_tokens is not None else {}),
+                )
+                break
+            except Exception as e:
+                last_error = e
+            time.sleep(min(30, 2 ** attempt))
+        else:
+            raise RuntimeError(
+                f"Could not start a stream from {self.model_id} after {max_retries} attempts"
+                f"{f' (last error: {last_error})' if last_error else ''}"
+            )
+
+        for chunk in stream:
+            if not chunk.choices:
+                continue
+            delta = chunk.choices[0].delta.content
+            if delta:
+                yield delta
 
     def suggest_followups(self, query, chunks, answer, n=3):
         """Follow-up questions grounded in `chunks`. Returns [] on any failure.

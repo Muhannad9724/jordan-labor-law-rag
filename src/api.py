@@ -12,19 +12,20 @@ not just an abuse-prevention nicety.
 
 Run locally: uvicorn src.api:app --reload --port 8000
 """
+import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
-from src.generation import get_production_generator
+from src.generation import compute_citations, get_production_generator
 from src.retrieval import Retriever
 
 PROJECT = Path(__file__).resolve().parent.parent
@@ -135,6 +136,82 @@ def ask(request: Request, req: AskRequest):
             for c in chunks
         ],
         retrieval_query=retrieval_query,
+    )
+
+
+def _sse(event: str, data: dict) -> str:
+    """One Server-Sent Event frame. `\n\n` is the SSE record terminator the
+    client's parser splits on -- see the matching parser in frontend/app.js."""
+    return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
+@app.post("/ask/stream")
+@limiter.limit("10/minute;100/day")
+def ask_stream(request: Request, req: AskRequest):
+    """Same question-answering as /ask, but the answer arrives as it's generated
+    instead of all at once -- what frontend/app.js uses for the live typing UI.
+
+    /ask is kept, unchanged, alongside this: scripts/11...ipynb and anything else
+    that wants one JSON response back still gets exactly that. This endpoint only
+    changes HOW the answer is delivered, not what's computed -- retrieval, the
+    calc.py blocks, the completeness reparse and the citation check are all the
+    same code (OpenAICompatibleGenerator._prepare_messages / compute_citations),
+    just reached through generate_stream() instead of generate().
+
+    Retrieval happens before the stream starts, same order as /ask (rewrite ->
+    retrieve -> 404 if nothing came back), so a question with no relevant articles
+    still fails fast with a normal HTTP error instead of opening a stream with
+    nothing useful in it. Sources are sent as the first SSE event, before any
+    answer text -- they don't depend on the model's wording, only on retrieval,
+    so there is no reason to make the person wait for the first token to see what
+    was found.
+    """
+    retriever: Retriever = _state["retriever"]
+    generator = _state["generator"]
+
+    history = [m.model_dump() for m in req.history]
+
+    retrieval_query = generator.rewrite_for_retrieval(req.question, history) if history else req.question
+
+    chunks = retriever.retrieve(retrieval_query, top_k=req.top_k)
+    if not chunks:
+        raise HTTPException(status_code=404, detail="لم يتم العثور على مواد قانونية ذات صلة بهذا السؤال.")
+
+    sources = [
+        Source(chunk_id=c["chunk_id"], law=c["law"], language=c["language"],
+               article_number=c["article_number"], clause=c["clause"], text=c["text"]).model_dump()
+        for c in chunks
+    ]
+    available_articles = {c["article_number"] for c in chunks}
+
+    def event_stream():
+        yield _sse("sources", {"sources": sources, "retrieval_query": retrieval_query})
+        parts = []
+        try:
+            for delta in generator.generate_stream(req.question, chunks, history=history):
+                parts.append(delta)
+                yield _sse("token", {"text": delta})
+        except Exception:
+            # Whatever text already reached the client stays visible -- it was
+            # genuinely produced, just cut short. No retry: re-running the whole
+            # call here would re-send text the client already has.
+            yield _sse("error", {"detail": "انقطع توليد الإجابة قبل اكتمالها — يُرجى إعادة المحاولة."})
+            return
+        answer = "".join(parts)
+        yield _sse("done", {"answer": answer, "citations": compute_citations(answer, available_articles)})
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            # Railway's proxy (like most reverse proxies in front of a single
+            # upstream) buffers a response by default unless told not to --
+            # without this the whole answer can arrive in one burst right before
+            # the connection closes, which is indistinguishable from /ask with
+            # extra steps. Ignored (harmless) by anything that isn't nginx-based.
+            "X-Accel-Buffering": "no",
+        },
     )
 
 

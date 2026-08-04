@@ -150,7 +150,7 @@ const langToggleBtn = document.getElementById("lang-toggle");
 
 // Applies translated text to every element carrying a data-i18n* marker, whether it's
 // static markup from index.html or a node created later by this script (those set the
-// same attributes at creation time -- see addQuestion/addAnswer/renderSources below).
+// same attributes at creation time -- see addQuestion/beginAnswer/renderSources below).
 // Scoped to `root` so a single new element can be translated on creation without
 // re-walking the whole document.
 function applyI18n(root = document) {
@@ -419,10 +419,15 @@ function addThinking() {
   return el;
 }
 
-function addAnswer(text, sources) {
+// An empty shell appended to the thread immediately (so revealAnswer only ever runs
+// once, against a settled position), then filled in as text streams in via
+// updateAnswerBody() below. See askQuestion().
+function beginAnswer(sources) {
   const block = document.createElement("div");
   block.className = "answer";
-  block.dir = isArabic(text) ? "rtl" : "ltr";
+  // Best guess before there's any answer text to read -- corrected by
+  // updateAnswerBody() the moment real text exists.
+  block.dir = uiLang === "ar" ? "rtl" : "ltr";
 
   const label = document.createElement("div");
   label.className = "entry-label";
@@ -432,7 +437,6 @@ function addAnswer(text, sources) {
 
   const body = document.createElement("div");
   body.className = "body";
-  renderMarkdown(text, body);
   block.appendChild(body);
 
   if (sources && sources.length) {
@@ -453,7 +457,18 @@ function addAnswer(text, sources) {
 
   thread.appendChild(block);
   revealAnswer(block);
-  return block;
+  return { block, body };
+}
+
+// Re-renders the body from the full text seen so far. renderMarkdown() only ever
+// appends, so the container is cleared first -- cheap at these answer lengths
+// (hundreds to a few thousand characters), and simplest to reason about: every call
+// renders the same complete markdown parse a non-streaming answer always got, just
+// against a growing string instead of a fixed one.
+function updateAnswerBody(entry, text) {
+  entry.body.innerHTML = "";
+  renderMarkdown(text, entry.body);
+  entry.block.dir = isArabic(text) ? "rtl" : "ltr";
 }
 
 // Rendered into the sticky dock above the question bar, not into the answer. They
@@ -553,41 +568,140 @@ function renderOpening() {
 
 /* ------------------------- request ------------------------- */
 
+// One SSE record is "event: NAME\ndata: JSON\n\n" -- see the matching writer,
+// _sse() in src/api.py. Returns null for a record with no data line (SSE allows
+// bare comments/keepalives; none are sent here, but a lenient parser costs nothing
+// and a strict one would throw the entire stream away on one).
+function parseSseEvent(raw) {
+  let event = "message";
+  const dataLines = [];
+  for (const line of raw.split("\n")) {
+    if (line.startsWith("event:")) event = line.slice(6).trim();
+    else if (line.startsWith("data:")) dataLines.push(line.slice(5).trim());
+  }
+  if (!dataLines.length) return null;
+  try {
+    return { event, data: JSON.parse(dataLines.join("\n")) };
+  } catch {
+    return null;
+  }
+}
+
+// Reads /ask/stream's response body as it arrives and calls onEvent() for each
+// complete SSE record. Records are separated by a blank line ("\n\n"); a chunk from
+// the network has no guaranteed relationship to record boundaries, so this buffers
+// across reads rather than assuming one read = one event.
+async function consumeSse(resp, onEvent) {
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let idx;
+    while ((idx = buffer.indexOf("\n\n")) !== -1) {
+      const raw = buffer.slice(0, idx);
+      buffer = buffer.slice(idx + 2);
+      const evt = parseSseEvent(raw);
+      if (evt) onEvent(evt);
+    }
+  }
+}
+
+// Renders growing answer text at most once per animation frame. Markdown gets
+// re-parsed from scratch on every call (see updateAnswerBody) -- fine at these
+// answer lengths, but there is no reason to do it on every single token when
+// tokens can arrive faster than the screen repaints.
+function throttledRenderer(entry) {
+  let latestText = null;
+  let scheduled = false;
+  return (text) => {
+    latestText = text;
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      updateAnswerBody(entry, latestText);
+    });
+  };
+}
+
 async function askQuestion(question) {
   const pending = addThinking();
   // Snapshot before this turn is recorded -- the server wants the conversation *prior*
   // to the current question, which it receives separately.
   const priorHistory = history.slice();
+
+  let entry = null;          // set once the first token arrives
+  let sources = null;
+  let buffer = "";
+  let render = null;
+  let gotDoneEvent = false;
+
   try {
-    const resp = await fetch(`${API_BASE_URL}/ask`, {
+    const resp = await fetch(`${API_BASE_URL}/ask/stream`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question, history: priorHistory }),
     });
 
-    pending.remove();
-
     if (!resp.ok) {
+      pending.remove();
       const payload = await resp.json().catch(() => ({}));
       addFailure(typeof payload.detail === "string" ? payload.detail : t("genericError"));
       return;
     }
 
-    const data = await resp.json();
-    // Recorded only on success, and as a pair. A failed turn leaves no trace, so the
-    // next question is not rewritten against an exchange the user never actually saw.
-    recordTurn("user", question);
-    recordTurn("assistant", data.answer);
+    await consumeSse(resp, (evt) => {
+      if (evt.event === "sources") {
+        // Sources depend only on retrieval, not on the model's wording, so there is
+        // no reason to make them wait for the first answer token -- shown as soon
+        // as they're known, same as they always were once the full answer arrived.
+        sources = evt.data.sources || [];
+        if (sources.length) renderSources(sources);
+      } else if (evt.event === "token") {
+        if (!entry) {
+          pending.remove();               // replace "thinking..." with the real answer
+          entry = beginAnswer(sources);
+          render = throttledRenderer(entry);
+        }
+        buffer += evt.data.text;
+        render(buffer);
+      } else if (evt.event === "done") {
+        gotDoneEvent = true;
+        buffer = evt.data.answer ?? buffer;   // authoritative final text, incl. any
+                                               // trailing part a dropped last frame missed
+        if (!entry) {                    // model produced zero streamed tokens (rare)
+          pending.remove();
+          entry = beginAnswer(sources);
+        }
+        updateAnswerBody(entry, buffer);
+      } else if (evt.event === "error") {
+        throw new Error(evt.data.detail || "stream error");
+      }
+    });
 
-    addAnswer(data.answer, data.sources);
-    if (data.sources && data.sources.length) renderSources(data.sources);
+    if (!gotDoneEvent) throw new Error("stream ended without completing");
+
+    // Recorded only on success, and as a pair -- same rule the old JSON path used,
+    // now checked against the SSE "done" event instead of a resolved fetch promise.
+    recordTurn("user", question);
+    recordTurn("assistant", buffer);
 
     // Not awaited: the answer is complete without it, and a slow or failed
     // suggestion call must not hold the composer disabled.
-    fetchSuggestions(question, data);
+    fetchSuggestions(question, { answer: buffer, sources });
   } catch (err) {
     pending.remove();
-    addFailure(t("networkError"));
+    if (entry) {
+      // Real text already reached the screen -- it stays. Wiping it out because
+      // the connection died afterwards would be worse than leaving a genuine,
+      // possibly-incomplete answer visible.
+      console.warn("[ask/stream] ended early:", err);
+    } else {
+      addFailure(t("networkError"));
+    }
   }
 }
 
