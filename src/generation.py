@@ -170,13 +170,15 @@ CHAT_MODEL = "command-a-03-2025"
 # re-review (60 questions, paired context) found no regression versus the original wording.
 SYSTEM_PROMPT = """You are a legal information assistant for Jordanian labour and social security law (the Labour Law 1996, the Professional Work Law 2019, and the Social Security Law). Answer using only the provided excerpts.
 
+Default to the shortest correct answer. Most questions have one direct answer in a sentence or two -- treat that as the normal case, not an exception you have to earn. Only go longer when the QUESTION ITSELF has more than one part (it names two different situations, or the governing rule genuinely differs by category) -- and even then, cover only the parts the question actually has, nothing else.
+
 Grounding
 1. Every statement must come from the documents -- no outside knowledge.
 2. If the documents don't answer the question, say so plainly rather than filling the gap.
 3. Cite by law and article number (e.g. "Labour Law 1996, Article 61"), only articles you were given, under the law each document is actually labelled with.
 
 Coverage
-4. Read every document before answering. More than one article often bears on the question -- address each one that does, with its own citation, not just the first.
+4. Read every document before answering. More than one article often bears on the question -- address each one that changes the answer for this specific situation, with its own citation, not just the first. Do not raise a provision only because it is topically related to the subject matter (e.g. a different leave/deferral/penalty rule under the same article group) if it does not affect what THIS person specifically asked -- that is answering a question they did not ask, not completeness.
 5. Within a cited article, cover every lettered paragraph that adds a condition, exception, limit, minimum, or further step -- and every numbered point nested inside one of those paragraphs (e.g. different categories of beneficiary each with their own condition), not just the paragraph as a whole.
 6. State each provision on its own terms. Don't explain how two provisions combine or override each other unless a document says so -- give each separately, side by side.
 
@@ -186,9 +188,9 @@ Precision
 9. State any qualification together with the rule it qualifies. Never present a conditional rule as unconditional or widen it beyond the persons/cases named.
 
 Usefulness
-10. Answer the person's actual situation first, in a sentence or two, then give supporting rules and citations. Don't open by restating the article.
+10. Your first sentence is the answer itself, in plain prose -- never a heading, a title, or a restatement of the question or article, and never a definition-first opener even for a "what is X" question (write "X is a payment that...", never "# X: Definition"). Give supporting rules and citations after that direct answer, not before it.
 11. If the answer depends on a fact the person hasn't given (age, years of service, marital status, a date, an amount, which law covers them, or sex where a provision sets separate figures) -- ask for it in one short question rather than guessing or covering every case. Never silently default to one case (e.g. male figures) when a provision states both. If the documents give a short, complete set of conditions instead, state them directly. Judge the current question on its own terms even if an earlier turn answered without the fact. Exception: if a computed block already gives both cases (rule 20), presenting both IS the answer -- don't also ask.
-12. Reply in the question's language. Be plain and unpadded, but never drop a relevant provision to stay short.
+12. Reply in the question's language. Be plain and unpadded, but never drop a relevant provision to stay short. Prefer plain prose or a short list over sectioned headings.
 
 Judgment questions
 13. For a personal-decision question ("should I...", "is it worth it..."), lay out the documents' benefits and obligations/costs neutrally, side by side, so the person can weigh it. Don't recommend, and don't reason beyond what the documents state.
@@ -447,6 +449,12 @@ def _format_context(chunks, lang="en"):
     return "\n\n".join(parts)
 
 
+# Sentinel for _prepare_messages's `reparsed` parameter -- see its docstring.
+# `None` is itself a valid reparse result (declined/failed), so "not supplied"
+# needs its own distinct value.
+_NOT_GIVEN = object()
+
+
 class OpenAICompatibleGenerator:
     """Generator for any OpenAI-compatible chat endpoint (OpenAI direct, or OpenRouter for open models)."""
 
@@ -519,7 +527,7 @@ class OpenAICompatibleGenerator:
             return query
         return out
 
-    def _reparse_for_completeness(self, query):
+    def reparse_for_completeness(self, query):
         """A more explicit restatement of `query`, or None on any failure/no-op.
 
         Phase 35's deep dive (q29) found this works where a static prompt rule
@@ -576,7 +584,7 @@ class OpenAICompatibleGenerator:
             return None
         return out
 
-    def _prepare_messages(self, query, chunks, history=None):
+    def _prepare_messages(self, query, chunks, history=None, reparsed=_NOT_GIVEN):
         """Everything generate() and generate_stream() share: build the calc-block-
         augmented context, run the completeness reparse, and assemble the final
         `messages` list -- returns (messages, available_articles, calc).
@@ -585,6 +593,17 @@ class OpenAICompatibleGenerator:
         reparser call; the two methods differ only in how they call the model
         (one response vs. one that arrives token by token) and how they turn the
         result into citations.
+
+        `reparsed`, if given, skips calling reparse_for_completeness() here and
+        uses this value instead -- for src/api.py's /ask/stream, which starts the
+        reparse call on a separate thread at the same time as retrieval (they're
+        independent: the reparse only ever reads `query`, never the retrieved
+        chunks) and passes the finished result in once both are done, instead of
+        this method starting the reparse call itself only after retrieval has
+        already finished. `_NOT_GIVEN` rather than `None` as the default because
+        `None` is a legitimate reparse OUTCOME (declined/failed) and needs to stay
+        distinguishable from "not supplied, compute it yourself" -- generate()
+        never passes this, so it is unaffected and still computes inline.
         """
         lang = detect_language(query)
         context = _format_context(chunks, lang)
@@ -651,9 +670,10 @@ class OpenAICompatibleGenerator:
         # Completeness reparse (Phase 35) -- appended AFTER the original question,
         # never replacing it, so the person's own words still drive the answer's
         # tone (rule 10) and the calc extractors above still read the ORIGINAL
-        # query, not this rewrite. See _reparse_for_completeness for why this
+        # query, not this rewrite. See reparse_for_completeness for why this
         # exists and its measured cost (longer answers).
-        reparsed = self._reparse_for_completeness(query)
+        if reparsed is _NOT_GIVEN:
+            reparsed = self.reparse_for_completeness(query)
         if reparsed:
             user_msg += (f"\n\n[صياغة أكثر تفصيلاً لنفس السؤال -- تأكد من تغطية كل ما تشمله]: {reparsed}"
                          if lang == "ar" else
@@ -680,8 +700,12 @@ class OpenAICompatibleGenerator:
 
         return messages, available_articles, calc
 
-    def generate(self, query, chunks, history=None, max_retries=5):
-        messages, available_articles, calc = self._prepare_messages(query, chunks, history)
+    def generate(self, query, chunks, history=None, max_retries=5, reparsed=_NOT_GIVEN):
+        """`reparsed`: see _prepare_messages -- pass `None` explicitly to force the
+        completeness reparse OFF (for isolating its effect in a test), or leave the
+        default to compute it here as usual."""
+        messages, available_articles, calc = self._prepare_messages(
+            query, chunks, history, reparsed=reparsed)
 
         resp = None
         last_error = None
@@ -710,7 +734,7 @@ class OpenAICompatibleGenerator:
         return {"answer": answer, "citations": compute_citations(answer, available_articles),
                 "response": resp, "calculation": calc}
 
-    def generate_stream(self, query, chunks, history=None, max_retries=3):
+    def generate_stream(self, query, chunks, history=None, max_retries=3, reparsed=_NOT_GIVEN):
         """Same answer as generate(), yielded as text deltas instead of returned whole.
 
         Built for the live API's typing UI (src/api.py's /ask/stream) so the person
@@ -729,8 +753,12 @@ class OpenAICompatibleGenerator:
         never sees the complete answer string itself (the caller assembles it by
         concatenating what it yields), so citation computation is the caller's
         job via compute_citations() once the stream ends.
+
+        `reparsed`: see _prepare_messages -- pass a pre-computed result (or leave
+        the default to compute it here, same as generate()).
         """
-        messages, _available_articles, _calc = self._prepare_messages(query, chunks, history)
+        messages, _available_articles, _calc = self._prepare_messages(
+            query, chunks, history, reparsed=reparsed)
 
         stream = None
         last_error = None
@@ -948,7 +976,13 @@ REWRITE_MAX_TOKENS = 200
 # to making the ORIGINAL question's own scope explicit, nothing beyond it.
 COMPLETENESS_REPARSE_PROMPT = """You rewrite a legal question into a more explicit version of the SAME question, for a Jordanian labour and social security law assistant. Output must be a single question, not a numbered list of separate questions.
 
-Do NOT add any new topic, angle, or comparison the person did not ask about (e.g. do not ask whether the answer differs by sector, employer type, or pension type, unless the original question already asked that). Only make the ORIGINAL question's own scope explicit: if it asks who is entitled to something and there could be more than one category of eligible person, make the question explicitly ask for EVERY such category and that category's own specific condition -- nothing beyond that. If the question does not have this shape (no plausible multiple categories/cases), return it unchanged.
+Only make the ORIGINAL question's own scope explicit -- do not add anything else:
+- If it asks who is entitled to something and there could be more than one category of eligible person, make the question explicitly ask for EVERY such category and that category's own specific condition -- nothing beyond that.
+- Do NOT add a new comparison axis the person did not raise (sector, employer type, pension type, etc.).
+- Do NOT add a new TYPE of question the person did not ask. If they asked what the CONDITIONS are, do not also ask about the PROCEDURE, timeline, required documents, or which authority to contact. If they asked a yes/no or "how much" question, do not turn it into a request for a full explanation of the underlying rule.
+- If the question does not have this shape (no plausible multiple categories/cases), return it unchanged.
+
+Write the rewritten question the way an ordinary person would ask it -- same register, similar length to the original. Do not make it sound like a formal research prompt, and do not address the assistant or add any framing outside the question itself.
 
 Return only the rewritten question, in the same language as the original, as ONE sentence. Nothing else."""
 

@@ -13,6 +13,7 @@ not just an abuse-prevention nicety.
 Run locally: uvicorn src.api:app --reload --port 8000
 """
 import json
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
@@ -32,6 +33,11 @@ PROJECT = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = PROJECT / "frontend"
 
 _state = {}
+
+# Runs the completeness reparse (a separate LLM call) concurrently with retrieval
+# in /ask/stream -- see that route. Small pool: rate limiting already caps a
+# single client to 10/minute, and this app runs on one container.
+_reparse_pool = ThreadPoolExecutor(max_workers=8, thread_name_prefix="reparse")
 
 
 @asynccontextmanager
@@ -165,11 +171,23 @@ def ask_stream(request: Request, req: AskRequest):
     answer text -- they don't depend on the model's wording, only on retrieval,
     so there is no reason to make the person wait for the first token to see what
     was found.
+
+    The completeness reparse (generator.reparse_for_completeness -- a second LLM
+    call that makes the question's own scope explicit before the main answer is
+    generated, see src/generation.py) only ever reads `req.question`; it never
+    touches the retrieved chunks. So it doesn't need to wait for retrieval (which,
+    on a multi-turn question, is itself rewrite-then-retrieve, two sequential
+    calls) -- it's started on a background thread immediately, runs the whole
+    time retrieval is happening, and its result is picked up right before
+    generation needs it. Previously these ran fully sequentially, one full LLM
+    round-trip sitting in front of every question for no reason.
     """
     retriever: Retriever = _state["retriever"]
     generator = _state["generator"]
 
     history = [m.model_dump() for m in req.history]
+
+    reparse_future = _reparse_pool.submit(generator.reparse_for_completeness, req.question)
 
     retrieval_query = generator.rewrite_for_retrieval(req.question, history) if history else req.question
 
@@ -188,7 +206,11 @@ def ask_stream(request: Request, req: AskRequest):
         yield _sse("sources", {"sources": sources, "retrieval_query": retrieval_query})
         parts = []
         try:
-            for delta in generator.generate_stream(req.question, chunks, history=history):
+            # By this point retrieval has already taken at least as long as
+            # everything above, so the reparse call is usually already done --
+            # .result() only actually blocks if it somehow runs longer.
+            reparsed = reparse_future.result()
+            for delta in generator.generate_stream(req.question, chunks, history=history, reparsed=reparsed):
                 parts.append(delta)
                 yield _sse("token", {"text": delta})
         except Exception:

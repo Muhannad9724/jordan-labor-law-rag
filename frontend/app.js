@@ -86,6 +86,8 @@ const I18N = {
     langChipEn: "EN",
     showFullText: "عرض النص كاملاً",
     collapseText: "طيّ النص",
+    showMoreAnswer: "عرض الإجابة كاملة",
+    showLessAnswer: "طيّ الإجابة",
     langToggleLabel: "EN",
     langToggleAria: "التبديل إلى الإنجليزية",
     contactLabel: "تواصل معي عبر لينكدإن",
@@ -120,6 +122,8 @@ const I18N = {
     langChipEn: "EN",
     showFullText: "Show full text",
     collapseText: "Collapse text",
+    showMoreAnswer: "Show full answer",
+    showLessAnswer: "Collapse answer",
     langToggleLabel: "AR",
     langToggleAria: "Switch to Arabic",
     contactLabel: "Connect on LinkedIn",
@@ -439,10 +443,14 @@ function beginAnswer(sources) {
   body.className = "body";
   block.appendChild(body);
 
-  if (sources && sources.length) {
-    const actions = document.createElement("div");
-    actions.className = "answer-actions";
+  // Always created, even with nothing in it yet -- maybeCollapseAnswer() below
+  // needs somewhere to put a "show more" button once the final length is known,
+  // which is after streaming ends, well after this shell was built.
+  const actions = document.createElement("div");
+  actions.className = "answer-actions";
+  block.appendChild(actions);
 
+  if (sources && sources.length) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "cite-btn";
@@ -451,13 +459,11 @@ function beginAnswer(sources) {
     applyI18n(btn);
     btn.addEventListener("click", () => renderSources(sources));
     actions.appendChild(btn);
-
-    block.appendChild(actions);
   }
 
   thread.appendChild(block);
   revealAnswer(block);
-  return { block, body };
+  return { block, body, actions };
 }
 
 // Re-renders the body from the full text seen so far. renderMarkdown() only ever
@@ -469,6 +475,32 @@ function updateAnswerBody(entry, text) {
   entry.body.innerHTML = "";
   renderMarkdown(text, entry.body);
   entry.block.dir = isArabic(text) ? "rtl" : "ltr";
+}
+
+// Answers can run to several thousand characters (the coverage rules and the
+// completeness reparser both trade length for thoroughness, deliberately -- see
+// src/generation.py). Folding the tail behind a "show more" toggle, the same
+// pattern the sources rail already uses for article text (.card-text/.card-more),
+// gives the length back without touching what the model actually said. Only
+// checked once, after streaming ends (see askQuestion's "done" handler) --
+// collapsing mid-stream, while the text is still visibly growing, would be a
+// confusing thing to watch happen.
+const ANSWER_COLLAPSE_PX = 440;
+
+function maybeCollapseAnswer(entry) {
+  if (entry.body.scrollHeight <= ANSWER_COLLAPSE_PX) return;
+
+  entry.body.classList.add("collapsed");
+
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "cite-btn";
+  btn.textContent = t("showMoreAnswer");
+  btn.addEventListener("click", () => {
+    const stillCollapsed = entry.body.classList.toggle("collapsed");
+    btn.textContent = t(stillCollapsed ? "showMoreAnswer" : "showLessAnswer");
+  });
+  entry.actions.appendChild(btn);
 }
 
 // Rendered into the sticky dock above the question bar, not into the answer. They
@@ -627,11 +659,21 @@ function throttledRenderer(entry) {
   };
 }
 
+// The in-flight request's controller, if any -- resetConversation() aborts it so
+// starting a new conversation mid-answer doesn't leave a stale stream writing into
+// a thread it no longer belongs to. Module-level because only one askQuestion()
+// runs at a time (the composer and every suggestion chip are disabled while one is
+// in flight), so there is never more than one to track.
+let currentAbortController = null;
+
 async function askQuestion(question) {
   const pending = addThinking();
   // Snapshot before this turn is recorded -- the server wants the conversation *prior*
   // to the current question, which it receives separately.
   const priorHistory = history.slice();
+
+  const controller = new AbortController();
+  currentAbortController = controller;
 
   let entry = null;          // set once the first token arrives
   let sources = null;
@@ -644,6 +686,7 @@ async function askQuestion(question) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ question, history: priorHistory }),
+      signal: controller.signal,
     });
 
     if (!resp.ok) {
@@ -677,6 +720,7 @@ async function askQuestion(question) {
           entry = beginAnswer(sources);
         }
         updateAnswerBody(entry, buffer);
+        maybeCollapseAnswer(entry);   // only decided once the final length is known
       } else if (evt.event === "error") {
         throw new Error(evt.data.detail || "stream error");
       }
@@ -693,6 +737,13 @@ async function askQuestion(question) {
     // suggestion call must not hold the composer disabled.
     fetchSuggestions(question, { answer: buffer, sources });
   } catch (err) {
+    if (err.name === "AbortError") {
+      // resetConversation() cancelled this on purpose -- #thread has already
+      // been rebuilt fresh by the time this runs, so there is nothing here to
+      // clean up or report; touching it would mean writing into someone else's
+      // (the new conversation's) thread.
+      return;
+    }
     pending.remove();
     if (entry) {
       // Real text already reached the screen -- it stays. Wiping it out because
@@ -702,6 +753,8 @@ async function askQuestion(question) {
     } else {
       addFailure(t("networkError"));
     }
+  } finally {
+    if (currentAbortController === controller) currentAbortController = null;
   }
 }
 
@@ -736,13 +789,12 @@ function submitQuestion(question) {
   input.value = "";
   input.style.height = "auto";
   sendBtn.disabled = true;
-  // Resetting mid-answer would wipe #thread out from under a fetch that is still
-  // going to append its result into it -- see resetConversation()'s comment.
-  resetBtn.disabled = true;
+  // reset-btn stays enabled through the request -- see resetConversation(),
+  // which aborts an in-flight answer rather than needing to be blocked from
+  // running while one is in progress.
 
   askQuestion(question).finally(() => {
     sendBtn.disabled = false;
-    resetBtn.disabled = false;
     input.focus();
   });
 }
@@ -759,12 +811,18 @@ composer.addEventListener("submit", (e) => {
 // to tell the backend. Since turns now carry over, this is the only way to start a
 // genuinely fresh topic; without it a new question keeps getting rewritten against an
 // unrelated earlier exchange.
-// Guarded by resetBtn.disabled (see submitQuestion) rather than only hiding the button,
-// because the button is reachable the whole time a request is in flight -- without the
-// guard, resetting mid-answer would clear #thread out from under askQuestion(), and its
-// pending .then() would go on to append the answer into a thread that looks freshly
-// reset, which reads as a stale answer appearing from nowhere.
+//
+// Works mid-answer: an in-flight askQuestion() is aborted first (see
+// currentAbortController), which makes its fetch/stream reject and return without
+// touching the DOM -- see askQuestion()'s AbortError branch. Without the abort,
+// resetting mid-answer would clear #thread out from under that still-running
+// request, and its pending .then() would go on to append the old answer into a
+// thread that looks freshly reset, reading as a stale answer appearing from nowhere.
 function resetConversation() {
+  if (currentAbortController) {
+    currentAbortController.abort();
+    currentAbortController = null;
+  }
   history = [];                  // the actual point of reset now that turns carry over
   clearSuggestions();
   renderOpening();               // also clears #thread
@@ -773,6 +831,7 @@ function resetConversation() {
   lastUserScrollAt = 0;
   input.value = "";
   input.style.height = "auto";
+  sendBtn.disabled = false;      // in case a request was in flight and just got aborted
   window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
   input.focus();
 }
