@@ -29,23 +29,24 @@ question ──► hybrid retrieval (semantic + keyword) ◄──┘
 
 | Stage | Choice | Why |
 |---|---|---|
-| Embeddings | Cohere `embed-v4.0` | Best same-language accuracy of 5 candidates tested (self-hosted and hosted), negligible cost at this scale |
+| Embeddings | Google `gemini-embedding-001` | Beat Cohere `embed-v4.0` (the original pick) 11 of 13 contested questions, +0.093 MRR, after a full phase-by-phase re-review — see `ROADMAP.md` Phase 19 |
 | Vector store | Pinecone (serverless) | Hosted, free tier, no infra to manage |
-| Retrieval | Hybrid: Pinecone semantic + BM25 keyword, fused via Reciprocal Rank Fusion (k=5, w=0.85) | Beat pure semantic and pure keyword on recall/MRR across 40 hand-written eval questions; chosen over a marginally-higher-scoring weighted-sum blend because RRF only needs rank position from independent top-k API calls, matching how retrieval actually runs in production |
+| Retrieval | Hybrid: Pinecone semantic + BM25 keyword, fused via Reciprocal Rank Fusion (k=5, w=0.90), plus a small hand-checked list of "only if" articles that get pulled in alongside the ones they gate | Beat pure semantic and pure keyword on recall/MRR; RRF was kept over a marginally-higher-scoring weighted-sum blend because it only needs rank position from independent top-k API calls, matching how retrieval actually runs in production |
 | Generation | `gpt-4o-mini` via OpenRouter | Beat Cohere `command-a` and Qwen2.5-72B head-to-head on both citation accuracy and LLM-as-judge faithfulness/relevancy scoring, at ~17x lower cost |
+| Calculations | Plain Python (`src/calc.py`), not the LLM | Contribution totals, end-of-service pay, overtime and leave accrual are arithmetic, and asking the model to do arithmetic itself was measured to be wrong a meaningful fraction of the time; the rates are still read from the retrieved article text every time, never hardcoded |
 | Backend | FastAPI | `Retriever`/generator built once at startup, not per-request; rate-limited (`slowapi`) since every question costs real money in API calls |
 | Frontend | Static HTML/CSS/vanilla JS | Per-message RTL detection so English and Arabic messages render correctly in the same conversation; no framework |
 
 ## Results
 
-Measured against a 40-question hand-labeled eval set spanning both laws, both
-languages, and cross-lingual questions:
+Measured against a 60-question hand-labeled eval set (`eval_v3`) spanning both
+laws, both languages, and phrased the way a person would actually ask rather than
+echoing the statute's own wording:
 
-- **Retrieval**: recall@5 = 0.825, recall@10 = 0.900, MRR = 0.744
-- **Generation**: ~87.5% correct-article citation rate, mean LLM-judge
-  faithfulness 4.9/5, mean relevancy 4.8/5
+- **Retrieval**: recall@1 = 0.883, recall@5 = 1.000, MRR = 0.926
+- **Generation**: mean LLM-judge faithfulness 4.70/5, mean relevancy 4.72/5
 - A hosted reranker (Cohere `rerank-v3.5`) was tested and *not* adopted — it
-  fixed the known cross-lingual retrieval gap but measurably hurt same-language
+  fixed a known cross-lingual retrieval gap but measurably hurt same-language
   precision (the 80% majority case), traced to the reranker pattern-matching on
   boilerplate phrasing shared across unrelated law articles
 
@@ -67,6 +68,7 @@ Open `http://127.0.0.1:8000` — the backend serves the frontend directly.
 
 - `src/retrieval.py` — hybrid retriever (Pinecone + BM25 + RRF)
 - `src/generation.py` — grounded answer generation with citation extraction
+- `src/calc.py` — deterministic calculators (contributions, end-of-service, overtime, leave, pension eligibility) that read rates from the retrieved text rather than doing arithmetic in the prompt
 - `src/api.py` — FastAPI backend + static frontend serving
 - `frontend/` — chat UI
 - `scripts/` — every decision notebook, numbered in the order the work happened;

@@ -1,0 +1,214 @@
+[
+ {
+  "label": "q05_two_laws",
+  "trial": 0,
+  "question": "If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",
+  "cited": [
+   "30",
+   "90"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 1933,
+  "answer": "In the event of a worker's death or permanent total disability due to a work-related accident in Jordan, the financial benefits are as follows:\n\n1. **In case of death due to work injury**:\n   - Survivor beneficiaries are entitled to a Death Due to Work-Injury Pension equivalent to **75% of the wage** used to calculate contributions on the date of injury. This pension begins accruing from the beginning of the month in which the death occurs (Social Security Law, Article 30(a)).\n\n2. **In case of total permanent disability**:\n   - The worker is entitled to a monthly Disability Pension equivalent to **75% of the wage** used to calculate contributions on the date of the injury, starting from when the condition is deemed stable by the Medical Reference (Social Security Law, Article 30(b)). \n   - If the worker needs assistance for daily tasks (as determined by the Medical Reference), the pension may increase by **25%**, not to exceed the approved minimum wage (Social Security Law, Article 30(b)).\n\n3. **Compensation due to the injury**:\n   - If the work injury results in total disability, the employer must pay compensation equivalent to the wages of **1,200 working days**, which does not exceed **5,000 JDs** and is not less than **2,000 JDs** (Labour Law 1996, Article 90(a)).\n\n**Calculating the compensation**:\n- **Death**: The pension calculation is based on **75% of the wage** at the time of death.\n- **Total Permanent Disability**: The monthly pension is again **75% of the wage** if stable. Additionally, applicable increases are considered if daily assistance is required.\n\nThese provisions establish specific methodologies for calculating compensation and pensions related to work injuries and ensure the surviving family members or the injured worker receive necessary financial support. \n\nFor more detailed analysis tailored to individual circumstances, it is advisable to consult a licensed legal professional."
+ },
+ {
+  "label": "q05_two_laws",
+  "trial": 1,
+  "question": "If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",
+  "cited": [
+   "30",
+   "90"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 2315,
+  "answer": "If a worker is killed or left permanently unable to work due to a work-related accident, different compensation amounts and calculations apply depending on the circumstance of death or disability.\n\nFor death resulting from a work injury:\n1. **Survivor beneficiaries** are entitled to a pension equivalent to **75% of the deceased worker's wage** used for calculating contributions on the date of injury. This pension accrues from the beginning of the month of the death and is distributed among the entitled beneficiaries according to Article 30(a) of the Social Security Law.\n\nFor total permanent disability due to a work-related injury:\n1. The worker is entitled to a **monthly Disability Pension** equivalent to **75% of their wage** used for calculating contributions on the date of injury, starting from when the condition stabilizes, as determined by the Medical Reference (Social Security Law, Article 30(b)).\n2. If the worker is determined to need assistance for daily life tasks, this pension may increase by up to **25%**, not exceeding the approved minimum wage.\n\nIn case of death or total disability, compensation is also calculated under the Labor Law:\n1. If the work injury results in death or total disability, the employer must pay **compensation equivalent to the wages of 1,200 working days**, capped at **5,000 JDs** and not less than **2,000 JDs** (Labor Law 1996, Article 90(a)).\n\nAdditional details for injuries resulting in temporary disability:\n1. The worker is entitled to a daily allowance of **75% of their average daily wage** from the day the injury occurs during the specified treatment period. If the treatment is at an accredited treatment center, this allowance reduces to **65%** (Labor Law 1996, Article 90(b)).\n\nIn summary, the eligibility for payments and their amounts vary based on the circumstance (death vs. total permanent disability) and the worker's condition, while the compensation from employers and insurance pensions are calculated based on wages at the time of the injury. \n\nFor more detailed information regarding specific conditions for receiving these benefits or how the amounts are calculated for other disabilities, additional context about the case would be necessary.\n\nConsult a licensed lawyer to understand how these laws apply to your specific situation."
+ },
+ {
+  "label": "q05_two_laws",
+  "trial": 2,
+  "question": "If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",
+  "cited": [
+   "30",
+   "90"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 1850,
+  "answer": "In the event of a worker's death due to a work-related accident, the employer is liable to pay compensation equivalent to the wages of one thousand and two hundred working days, with a cap of five thousand JDs and a floor of two thousand JDs (Labour Law 1996, Article 90(a)). Additionally, survivor beneficiaries are entitled to a Death Due to Work-Injury Pension equivalent to 75% of the worker’s wage used for calculating contributions on the date of the injury (Social Security Law, Article 30(a)). \n\nIf the worker suffers a permanent total disability due to a work-related accident, the employer's compensation is also equivalent to the wages of one thousand and two hundred working days, again capped at five thousand JDs and not less than two thousand JDs (Labour Law 1996, Article 90(a)). The worker is entitled to a monthly Disability Pension equivalent to 75% of the wage used for contributions at the time of the injury (Social Security Law, Article 30(b)). This pension may be increased by 25% if the worker requires assistance due to their condition, but this increase is limited to the approved minimum wage as per the Labour Law (Social Security Law, Article 30(b)).\n\nIn summary:\n- **Death Compensation**: \n  - Employer: Compensation for 1,200 days of wage, capped at 5,000 JDs, and not less than 2,000 JDs. (Labour Law 1996, Article 90(a))\n  - Survivors: 75% of the deceased worker's wage on date of injury. (Social Security Law, Article 30(a))\n  \n- **Permanent Total Disability Compensation**:\n  - Employer: Same as for death - compensation for 1,200 days of wage, with the same caps. (Labour Law 1996, Article 90(a))\n  - Worker: 75% of the wage at the time of injury; may increase by 25% under certain conditions. (Social Security Law, Article 30(b))\n\nFor further details, legal advice specific to your situation should be consulted."
+ },
+ {
+  "label": "q09_disability_scope",
+  "trial": 0,
+  "question": "Can I take a paid job while I am receiving a disability pension for a work injury?",
+  "cited": [
+   "40"
+  ],
+  "fabricated": [],
+  "calc_fired": [
+   "disability_pension_scope_note"
+  ],
+  "answer_len": 647,
+  "answer": "Yes, you may take a paid job while receiving a disability pension for a work injury. The Social Security Law allows the insured to combine what he/she earns from a job or occupation with the Work Injury Disability Pension. \n\nSupporting rules:\n- Article 40: \"The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.\" \n\nThis provision supports your ability to engage in paid employment while receiving your pension for a work-related injury.\n\nFor personalized legal advice, consult a licensed lawyer about your own case."
+ },
+ {
+  "label": "q09_disability_scope",
+  "trial": 1,
+  "question": "Can I take a paid job while I am receiving a disability pension for a work injury?",
+  "cited": [
+   "40"
+  ],
+  "fabricated": [],
+  "calc_fired": [
+   "disability_pension_scope_note"
+  ],
+  "answer_len": 839,
+  "answer": "Yes, as a recipient of a disability pension due to a work injury in Jordan, you are legally permitted to undertake paid employment without any specific conditions affecting your pension. Your earnings from the job or occupation can be combined with your Work Injury Disability Pension without affecting your eligibility for the pension.\n\nSupporting rules:\n- Article (40) of the Social Security Law states: \"The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.\"\n\nTherefore, you can work and still receive your disability pension in full, with no additional conditions stated that might restrict this combination. \n\nFor further details regarding your situation, consult a licensed lawyer about your own case."
+ },
+ {
+  "label": "q09_disability_scope",
+  "trial": 2,
+  "question": "Can I take a paid job while I am receiving a disability pension for a work injury?",
+  "cited": [
+   "40"
+  ],
+  "fabricated": [],
+  "calc_fired": [
+   "disability_pension_scope_note"
+  ],
+  "answer_len": 668,
+  "answer": "Yes, as a Jordanian citizen receiving a disability pension for a work injury, you may concurrently be employed in a paid job without any specific conditions or limitations on that employment. \n\nArticle 40 of the Social Security Law states that \"The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.\" \n\nNo further conditions apply from this article regarding your concurrent employment while receiving such a pension. \n\nFor more specific inquiries about your personal situation, consulting a licensed lawyer about your case is advisable."
+ },
+ {
+  "label": "q29_heirs_ar",
+  "trial": 0,
+  "question": "توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟",
+  "cited": [
+   "66",
+   "80",
+   "81"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 1399,
+  "answer": "حتى يستحق ورثة زوجك راتباً تقاعدياً بعد وفاته وهو على رأس عمله، يجب أن تتوفر شروط محددة وفقاً لقانون الضمان الاجتماعي وقانون العمل:\n\n1. **شروط استحقاق راتب تقاعد الوفاة الطبيعية**:\n   - يجب أن يكون زوجك قد سدد ما لا يقل عن (24) اشتراكاً فعلياً منها (6) اشتراكات متصلة خلال خدمته المشمولة بأحكام قانون الضمان الاجتماعي، وذلك وفقاً لقانون الضمان الاجتماعي، المادة (66)(أ).\n   \n2. **فئات الورثة المستحقين**:\n   - **الذكور من الأولاد**: يستحقون نصيبهم حتى يبلغوا (23) سنة عند الوفاة، ويتم صرف النصيب حتى إكمالهم هذه السن، باستثناء الابن المصاب بالعجز الكلي، فيصرف له نصيبه حتى زوال العجز، وفقاً لقانون الضمان الاجتماعي، المادة (81)(أ)(1).\n   \n   - **الأرملة**: تستحق نصيبها طالما لم تتزوج، وإذا تزوجت يوقف نصيبها، ويعاد لها في حال طلاقها أو ترملها، وفقاً لقانون الضمان الاجتماعي، المادة (81)(أ)(2).\n   \n   - **الزوج**: يجب أن يكون مصاباً بالعجز الكلي، وأن لا يكون لديه دخل يعادل نصيبه. إذا كان لديه دخل أقل، يحق له استلام الفرق، وفقاً لقانون الضمان الاجتماعي، المادة (81)(أ)(3).\n   \n   - **الوالدان**: يستحقان نصيبهما وفقاً لقانون الضمان الاجتماعي، المادة (81)(أ)(4).\n\n3. **صرف الراتب**: يتم صرف راتب التقاعد المستحق لكل وراثة اعتباراً من أول الشهر الذي حدثت فيه الوفاة أو من أول الشهر التالي، بحسب الحالة، وفقاً لقانون الضمان الاجتماعي، المادة (80).\n\nإذا كانت جميع هذه الشروط مستوفاة، فإن ورثة زوجك سيستحقون راتب التقاعد بعد وفاته. \n\nللحصول على استشارة قانونية دقيقة حول حالتك، يُفضل مراجعة محامٍ مختص."
+ },
+ {
+  "label": "q29_heirs_ar",
+  "trial": 1,
+  "question": "توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟",
+  "cited": [
+   "66",
+   "81",
+   "84"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 1825,
+  "answer": "حتى يستحق ورثة زوجك راتباً من الضمان الاجتماعي أو من صاحب العمل عند وفاته أثناء العمل، هناك شروط محددة لكل فئة من المستحقين:\n\n1. **الأرملة**:\n   - تستحق الأرملة نصيبها من راتب التقاعد أو راتب الاعتلال من زوجها. ينص قانون الضمان الاجتماعي على أنه يحق للأرملة الجمع بين راتبها التقاعدي أو راتبها بسبب الاعتلال أو أجرها من العمل ونصيبها من راتب زوجها (قانون الضمان الاجتماعي، المادة 84، الفقرة أ-1).\n\n2. **الأبناء**:\n   - الذكور من أولاد المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال، لا تتجاوز أعمارهم الثلاث والعشرين سنة عند الوفاة. يستمر صرف النصيب لهم حتى إكمال هذه السن، باستثناء الابن المصاب بالعجز الكلي الذي يستمر صرف نصيبه حتى زوال العجز (قانون الضمان الاجتماعي، المادة 81، الفقرة أ-1).\n   - يحق للأبناء المستحقين الجمع بين أنصبتهم من راتب التقاعد أو راتب الاعتلال التي تؤول إليهم من والديهم (قانون الضمان الاجتماعي، المادة 84، الفقرة ب-1).\n\n3. **الوالدان**:\n   - يستحق والدا المؤمن عليه المتوفى نصيبه من الراتب (قانون الضمان الاجتماعي، المادة 81، الفقرة أ-4).\n\n4. **الورثة الآخرين (الأخوة والأخوات)**:\n   - يعتبر الإخوة والأخوات مستحقين في حال عدم وجود أرملة أو أرمل مستحق أو أبناء أو بنات أو والدين (قانون الضمان الاجتماعي، المادة 84، الفقرة د-1).\n   - يشترط لاستحقاقهم ما يشترط لاستحقاق الأبناء والبنات بعد ثبوت الإعالة بموجب حجة إعالة (قانون الضمان الاجتماعي، المادة 84، الفقرة د-2).\n\n5. **راتب تقاعد الوفاة الطبيعية**:\n   - يستحق راتب تقاعد الوفاة الطبيعية إذا وقعت الوفاة خلال الخدمة المشمولة بأحكام قانون الضمان الاجتماعي، بشرط أن يكون المؤمن عليه قد سدد ما لا يقل عن 24 اشتراكاً فعلياً منها 6 اشتراكات متصلة (قانون الضمان الاجتماعي، المادة 66، الفقرة أ).\n\nبناءً على ما سبق، يجب التأكد من توفر الشروط لكل من الفئات المذكورة أعلاه ضمن السياق القانوني حتى يتمكنوا من الحصول على الراتب المستحق.\n\nللحصول على استشارات موسعة ومفصلة حول حالتك، يُفضل استشارة محامٍ متخصص للحصول على نصيحة قانونية حول وضعك الخاص."
+ },
+ {
+  "label": "q29_heirs_ar",
+  "trial": 2,
+  "question": "توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟",
+  "cited": [
+   "66",
+   "80",
+   "81"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 1556,
+  "answer": "لتحقيق استحقاق ورثة زوجك للراتب التقاعدي أو التعويض المالي بعد وفاته أثناء عمله، يجب تلبية عدة شروط وفقاً لقانون الضمان الاجتماعي:\n\n**1. شروط استحقاق ورثة المؤمن عليه (زوجك):**\n\n- **الأرملة:**\n  - تستحق الأرملة نصيبها من راتب التقاعد أو راتب الاعتلال. \n  - يُوقف نصيبها عند زواجها، لكن يُعاد صرفه إذا طلقت أو ترملت (قانون الضمان الاجتماعي، المادة 81 (أ) 2).\n\n- **الأبناء:**\n  - يستحق الأبناء نصيبهم من الراتب. يعامل الأولاد كالأبناء الذكور الذين لا تتجاوز أعمارهم ثلاث وعشرين سنة عند الوفاة.\n  - تستمر صرف النصيب لهم حتى إكمالهم هذه السن، باستثناء الابن المعاق كلياً الذي يستمر صرف نصيبه إلى أن يزول العجز (قانون الضمان الاجتماعي، المادة 81 (أ) 1).\n\n- **البنات والأخوات العازبات:**\n  - تستحق البنات والأخوات العازبات نصيبهن من راتب التقاعد أو راتب الاعتلال. \n  - يُوقف نصيب أي منهن عند زواجها ثم يُعاد لها في حال طلاقها أو ترملها (قانون الضمان الاجتماعي، المادة 81 (أ) 2).\n\n- **الأصول (الوالدان):**\n  - والدا المؤمن عليه يستحقان نصيبهما كأولياء شرعيين في حالة وفاته (قانون الضمان الاجتماعي، المادة 81 (أ) 4).\n\n**2. شروط راتب تقاعد الوفاة الطبيعية:**\n- يجب أن يكون المؤمن عليه (زوجك) قد سدد ما لا يقل عن ٢٤ اشتراكاً فعلياً، منها ٦ اشتراكات متصلة، ليكون الورثة مستحقين لراتب تقاعد الوفاة الطبيعية (قانون الضمان الاجتماعي، المادة 66 (أ)).\n\n**3. الشروط العامة:**\n- يتم صرف راتب المستحقين اعتباراً من أول الشهر الذي حدثت فيه الوفاة (قانون الضمان الاجتماعي، المادة 80).\n\nإذا كان لديك أي تفاصيل إضافية بشأن عدد الاشتراكات المدفوعة أو حالة الأبناء (مثل أعمارهم) ، يمكنني تقديم معلومات أكثر دقة. \n\nللحصول على استشارة قانونية دقيقة في حالتك، يُفضل مراجعة محامٍ مختص."
+ },
+ {
+  "label": "contributions",
+  "trial": 0,
+  "question": "راتبي 1000 دينار كم أدفع للضمان الاجتماعي",
+  "cited": [
+   "48",
+   "59"
+  ],
+  "fabricated": [],
+  "calc_fired": [
+   "language",
+   "components",
+   "employee_rate",
+   "employer_rate",
+   "total_rate",
+   "salary",
+   "base",
+   "ceiling",
+   "ceiling_article",
+   "ceiling_exception",
+   "ceiling_exception_date",
+   "ceiling_exception_applies",
+   "capped",
+   "employee_amount",
+   "employer_amount",
+   "total_amount"
+  ],
+  "answer_len": 740,
+  "answer": "إذا كان راتبك الشهري 1000 دينار أردني، فإن ما تدفعه لاشتراكات الضمان الاجتماعي يحدد كما يلي:\n\n- **المبلغ الذي يُقتطع من المؤمن عليه:**\n  - تأمين التعطل عن العمل: 1% = 10 دينار\n  - تأمين الشيخوخة والعجز والوفاة: 6.5% = 65 دينار\n  - **المجموع = 75 دينار**.\n\n- **النسبة المئوية من إجمالي الراتب:**\n  - المجموع الكلي للاشتراكات التي تُقتطع منك هو 7.5% من راتبك، وهو 75 دينار من أصل 1000 دينار.\n\nإجمالًا، تُدفع 75 دينار شهريًا للضمان الاجتماعي، والتي تمثل 7.5% من راتبك. \n\nيمكنك الرجوع إلى المادة (48) و(59) من قانون الضمان الاجتماعي لتفاصيل الاشتراكات: \n- قانون الضمان الاجتماعي، المادة (48) (تأمين التعطل عن العمل) \n- قانون الضمان الاجتماعي، المادة (59) (تأمين الشيخوخة والعجز والوفاة).\n\nاستشارة محامٍ مرخص حول حالتك الخاصة ممكن أن تكون مفيدة."
+ },
+ {
+  "label": "contributions",
+  "trial": 1,
+  "question": "راتبي 1000 دينار كم أدفع للضمان الاجتماعي",
+  "cited": [
+   "24",
+   "42",
+   "48",
+   "59"
+  ],
+  "fabricated": [],
+  "calc_fired": [
+   "language",
+   "components",
+   "employee_rate",
+   "employer_rate",
+   "total_rate",
+   "salary",
+   "base",
+   "ceiling",
+   "ceiling_article",
+   "ceiling_exception",
+   "ceiling_exception_date",
+   "ceiling_exception_applies",
+   "capped",
+   "employee_amount",
+   "employer_amount",
+   "total_amount"
+  ],
+  "answer_len": 1013,
+  "answer": "ستدفع كعامل للضمان الاجتماعي مبلغ 75 دينار شهرياً، بينما سيدفع صاحب العمل مبلغ 142.5 دينار شهرياً. إجمالي المبلغ الذي يتم دفعه للضمان الاجتماعي هو 217.5 دينار.\n\n**الخصم من العامل:**\n- تأمين التعطل عن العمل: 1% = 10 دينار (قانون الضمان الاجتماعي، المادة 48)\n- تأمين الشيخوخة والعجز والوفاة: 6.5% = 65 دينار (قانون الضمان الاجتماعي، المادة 59)\n\n**مجموع ما يُقتطع من المؤمن عليه:**\n- 7.5% = 75 دينار\n\n---\n\n**المبلغ الذي تؤديه المنشأة:**\n- تأمين إصابات العمل: 2% = 20 دينار (قانون الضمان الاجتماعي، المادة 24)\n- تأمين الأمومة: 0.75% = 7.5 دينار (قانون الضمان الاجتماعي، المادة 42)\n- تأمين التعطل عن العمل: 0.5% = 5 دينار (قانون الضمان الاجتماعي، المادة 48)\n- تأمين الشيخوخة والعجز والوفاة: 11% = 110 دينار (قانون الضمان الاجتماعي، المادة 59)\n\n**مجموع ما تؤديه المنشأة:**\n- 14.25% = 142.5 دينار\n\n---\n\n**المجموع الكلي:**\n- 21.75% = 217.5 دينار (على أجر شهري مقداره 1000 دينار)\n\nالحد الأعلى للأجر الخاضع للاقتطاع هو 3000 دينار، وهو لا يؤثر على هذا الحساب.\n\nاستشر محامياً مرخصاً للحصول على نصيحة قانونية حول حالتك الخاصة."
+ },
+ {
+  "label": "gender_early_retirement",
+  "trial": 0,
+  "question": "How much longer until I can retire early? I have 200 subscriptions.",
+  "cited": [],
+  "fabricated": [],
+  "calc_fired": [
+   "gender_conditions"
+  ],
+  "answer_len": 859,
+  "answer": "To determine how many additional subscription months you need for early retirement, I need to know your sex. Based on your current subscriptions, here are the conditions based on your sex:\n\n**If Male:**\n- You need a total of 252 actual contributions.\n- You currently have 200 contributions.\n- Therefore, you need an additional 52 contributions. \n\n**If Female:**\n- You need a total of 228 actual contributions.\n- You currently have 200 contributions.\n- Therefore, you need an additional 28 contributions. \n\nHere are the derived requirements:\n\n- **For males**: Additional subscriptions needed = 52 (252 required - 200 current).\n- **For females**: Additional subscriptions needed = 28 (228 required - 200 current).\n\nPlease provide your sex to specify your exact requirement. \n\nGeneral information, not legal advice; consult a licensed lawyer about your own case."
+ },
+ {
+  "label": "gender_early_retirement_followup_male",
+  "trial": 0,
+  "question": "Male",
+  "cited": [
+   "44",
+   "45",
+   "63",
+   "70"
+  ],
+  "fabricated": [],
+  "calc_fired": [],
+  "answer_len": 2497,
+  "answer": "To provide a comprehensive answer, I will outline the specific conditions and requirements for male employees under Jordanian labour and social security law, as well as highlight differences compared to female employees.\n\n**For Male Employees:**\n1. **Maternity Leave Benefits**: \n   - There are no maternity leave benefits applicable to male workers under the Social Security Law.\n\n2. **Retirement Age**: \n   - Male employees are entitled to retirement benefits upon reaching the age of 60 as specified in Article 70(a) of the Social Security Law. This applies regardless of the number of contributions, unless they fulfill the required conditions for Retirement and Disability pensions.\n\n3. **Lump Sum Compensation**: \n   - If a male employee's service ends (due to death, disability, or age), he is entitled to a lump sum compensation at the rate of:\n     - 15% of the average monthly wage for the last 24 contributions if those contributions are 24 or more.\n     - If less than 24 contributions, the average monthly wage multiplied by the number of contributions (Social Security Law, Article 70(a)).\n\n4. **Old-Age Pension Eligibility**:\n   - Male workers may continue to be under the provisions of the Social Security Law even after reaching the retirement age, until they complete the eligibility duration for Old-Age Pension (Social Security Law, Article 63(a)).\n\n**Differences with Female Workers**:\n1. **Maternity Leave Benefits**:\n   - Female employees are entitled to maternity leave under Article 44, where they must have 6 months of insurance contributions in the last 12 months prior to maternity leave, and childbirth must be certified by an official certificate (Social Security Law, Article 44(a), (b)).\n   - Female employees receive a maternity allowance equivalent to their last wage during maternity leave (Social Security Law, Article 45(a)).\n\n2. **Retirement Age**:\n   - Female employees are entitled to retirement benefits upon reaching the age of 55, unlike their male counterparts who retire at 60 (Social Security Law, Article 70(a)).\n\nIn summary, male workers have eligibility for different benefits primarily concerning retirement, while female workers have specific maternity-related provisions not available to males. Male employees do not qualify for maternity leave, while they have a higher retirement age compared to females. \n\nFor a detailed understanding of their rights and obligations, and for specific situations, individuals should consult a licensed lawyer."
+ }
+]

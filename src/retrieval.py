@@ -208,6 +208,106 @@ FAMILY_TRIGGER_COUNT = 2
 # B's finding is real and worth revisiting on its own terms, but it does not solve
 # the problem it was tested against, so only A shipped.
 
+# Chapter-precondition articles. Some chapters open with an article that states the
+# WHOLE chapter after it is conditional, rather than universal -- e.g. labor96 Article
+# 86: "The provisions of this chapter related to work injuries and occupational
+# diseases [Articles 87-96] shall apply to workers who are not subject to the
+# provisions of the applicable Social Security Law." Articles 90/91 (compensation
+# amount/calculation) retrieve fine on their own merit for a work-injury question --
+# the gap is that nothing tells the model they are the MINORITY-case regime, not the
+# general one, so it either answers from them alone (as if they were universal) or
+# blends them with the SSL Article 30 pension scheme that actually covers most workers,
+# misattributing who pays what. Found by tracing eval_v3 q05 and q43: both retrieved
+# labor96 90/91 and ssl 30 together, neither retrieved 86.
+#
+# This is NOT modelled as another entry in _families above, on purpose. That mechanism
+# is symmetric -- trigger on any member, promote every member -- which is right for a
+# funding group of 4-5 siblings but wrong here: the chapter has 11 articles (86-96),
+# most procedural (claim deadlines, seizure exemptions, distribution tables) and
+# irrelevant to a "what gets paid" question. Force-including all 11 would repeat the
+# exact over-inclusion Phase 24 rejected for SSL Article 72. The fix below only ever
+# adds the ONE anchor article, and widens the result by exactly one slot to do it --
+# the governed articles stay exactly as ranking already placed them.
+#
+# Two things had to be fixed after the first version of this regressed eval_v3 from
+# recall@1 .883 to .35 (measured, not theoretical):
+#
+# 1. The governed set was originally all ten chapter articles (87-96), triggering on
+#    ANY 2 within depth 37. That over-fired on 38/60 questions -- e.g. q06 ("can
+#    someone lose their right to injury money because of their own behaviour") and
+#    q07 ("can I sue my employer for more than social security pays"), whose gold
+#    answers are actually SSL Articles 31/37, not this chapter at all. The labor96
+#    chapter has near-exact topical twins on the SSL side (SSL has its own
+#    forfeiture/exclusivity provisions), so almost any injury-entitlement question
+#    brushes past several of these ten articles regardless of which regime actually
+#    answers it. Narrowed to just {90, 91} -- compensation AMOUNT and CALCULATION,
+#    the two articles that actually carry labor96-specific figures/formulas and were
+#    the ones common to every one of the diagnosed failures (q05, q43, q04; q01 has
+#    90 alone and was not broken to begin with, so it does not need to re-trigger).
+# 2. The anchor was being PREPENDED to the front of the ranking, which shifted every
+#    other article's rank down by one on every fire -- turning a rank-1 hit into
+#    rank-2 and silently costing recall@1 on every question that fired, related or
+#    not. Since the goal is only that the anchor rides along in the final context,
+#    not that it out-ranks the question's actual answer, it is now appended after the
+#    existing top-`limit` slice instead, so nothing already ranked keeps its position.
+#
+# A systematic audit (an LLM pass over all 266 English articles, looking specifically
+# for this scope-gate pattern rather than waiting for the next eval failure to surface
+# one) was run rather than adding entries one at a time as they happen to surface.
+# Auditing English only, then looking up the same article_number in Arabic, is
+# sufficient -- both language copies are the same law in translation, and _families
+# above already established that a relationship found in the text independently
+# yields the same articles in both languages, not different ones.
+#
+# The audit surfaced a candidate that looked equally promising on paper and was
+# investigated, then DELIBERATELY NOT ADDED: ssl Article 102 ("Social Security's
+# Old-Age/Disability/Death insurance replaces the labor96 Article 32 end-of-service
+# indemnity"). Unlike Article 86, this did not survive checking: (1) Article 102
+# retrieved naturally alongside Article 32 in every phrasing tried -- salary-stated,
+# bare, English, Arabic -- so there was no actual retrieval gap to fix; (2) the real
+# risk it would guard against, silently assuming SSL coverage, is already caught by
+# `compute_end_of_service` in calc.py, which declines and asks rather than relying on
+# the model to read Article 102 correctly. Adding a rule with no measured gap behind
+# it is exactly the kind of change this module's own history (see points 1-2 above)
+# argues against -- kept here as a record so it is not re-proposed without new evidence.
+#
+# Also surfaced: THREE WHOLE-LAW scope articles -- labor96 Article 3 excludes public
+# servants, municipal workers, and (separately) domestic/agricultural workers from the
+# entire Labour Law; ssl Article 4 defines who the entire Social Security Law covers
+# at all; prof19 Article 3 says the entire Professional Work Law only applies to
+# professions the Council of Ministers has actually decided to include. These gate
+# nearly EVERY article in their law, not a narrow chapter, so `governed` is the
+# sentinel "ALL" rather than an explicit set, and `trigger_count` is 1 -- any
+# genuinely-retrieved article from that law is itself the signal.
+#
+# Only ssl Article 4 is kept here. labor96 Article 3 and prof19 Article 3 were tried
+# the same way and then deliberately moved OUT of retrieval, into a short static note
+# in generation.py's SYSTEM_PROMPT instead -- user's call, made with the tradeoff
+# stated plainly: a static sentence can go silently stale if either article is ever
+# amended, the way nothing else grounded-in-retrieved-text in this project can. Judged
+# acceptable for these two specifically because the fact is short, simple, and not the
+# kind of thing (a rate, a threshold) that this project's history shows gets amended
+# often. ssl Article 4's coverage conditions are longer and more detailed (age,
+# category, wage-minimum tests) and stayed as a retrieval rule rather than being
+# summarised into the prompt.
+#
+# The other candidates the audit found (ssl 43/49's insurance exclusions, ssl 6's
+# business-owner carve-out) turned out NOT to need this mechanism at all: their
+# exclusion clause is a lettered paragraph of the SAME article as the general rule,
+# and Phase 12a's whole-article chunking already returns them together as one unit.
+# Those are a Coverage-rule concern (rule 5: "cover every lettered paragraph"), not a
+# retrieval gap.
+PRECONDITION_TRIGGER_DEPTH = 37  # same depth as FAMILY_TRIGGER_DEPTH; no dilution case
+                                  # has been observed for this pattern yet, so this
+                                  # borrows that constant's margin rather than tuning
+                                  # a fresh one against a single known failure.
+PRECONDITION_ARTICLES = [
+    {"anchor_law": "labor96", "anchor": "86", "governed_law": "labor96",
+     "governed": {"90", "91"}, "trigger_count": 2},
+    {"anchor_law": "ssl", "anchor": "4", "governed_law": "ssl",
+     "governed": "ALL", "trigger_count": 1},
+]
+
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
 
 
@@ -414,6 +514,52 @@ class Retriever:
             return member_ids + rest, True
         return chunk_ids, False
 
+    def _ensure_preconditions(self, chunk_ids, limit, language):
+        """Add a chapter's governing-condition article when enough of the articles it
+        gates are about to be returned without it. See PRECONDITION_ARTICLES above.
+
+        Deliberately narrower than _expand_families: adds only the single anchor
+        article (never its siblings) and widens `limit` by exactly one slot per
+        anchor added, rather than jumping to FAMILY_TOP_K -- the governed articles
+        already earned their place by ranking, only the anchor is missing.
+
+        The anchor is APPENDED after the existing top-`limit` slice, not prepended.
+        An earlier version prepended it, which shifted every already-ranked article
+        down by one position on every fire -- turning rank-1 hits into rank-2 and
+        costing recall@1 on every question that fired, whether the fire was relevant
+        or not (measured: recall@1 .883 -> .35 across eval_v3). Appending leaves every
+        existing article's rank untouched; the anchor just becomes one extra item in
+        the returned set.
+
+        `governed == "ALL"` (the whole-law scope rules) means any article from
+        `governed_law` other than the anchor itself counts -- not a literal substring
+        check against the string "ALL", which is why that case is branched separately
+        rather than falling into the ordinary `in rule["governed"]` membership test.
+        """
+        window = chunk_ids[:PRECONDITION_TRIGGER_DEPTH]
+        for rule in PRECONDITION_ARTICLES:
+            anchor_id = self._article_chunk_id(rule["anchor_law"], language, rule["anchor"])
+            if not anchor_id or anchor_id in chunk_ids[:limit]:
+                continue
+            if rule["governed"] == "ALL":
+                present = sum(
+                    1 for cid in window
+                    if self.chunks.iloc[self.id_to_row[cid]]["law"] == rule["governed_law"]
+                    and str(self.chunks.iloc[self.id_to_row[cid]]["article_number"]) != rule["anchor"]
+                )
+            else:
+                present = sum(
+                    1 for cid in window
+                    if self.chunks.iloc[self.id_to_row[cid]]["law"] == rule["governed_law"]
+                    and str(self.chunks.iloc[self.id_to_row[cid]]["article_number"]) in rule["governed"]
+                )
+            if present < rule["trigger_count"]:
+                continue
+            rest = [c for c in chunk_ids[limit:] if c != anchor_id]
+            chunk_ids = chunk_ids[:limit] + [anchor_id] + rest
+            limit += 1
+        return chunk_ids, limit
+
     def _article_chunk_id(self, law, language, article_number):
         if not hasattr(self, "_by_article"):
             self._by_article = {
@@ -479,6 +625,7 @@ class Retriever:
                    sorted(rrf_scores.items(), key=lambda kv: kv[1], reverse=True)]
         ordered, fired = self._expand_families(ordered, lang or detect_language(query))
         limit = FAMILY_TOP_K if (fired and top_k <= FAMILY_TOP_K) else top_k
+        ordered, limit = self._ensure_preconditions(ordered, limit, lang or detect_language(query))
         ranked = [(cid, rrf_scores.get(cid, 0.0)) for cid in ordered[:limit]]
 
         results = []

@@ -1,0 +1,355 @@
+﻿model_label,model_id,question_id,question_text,question_language,answer,citations,calculation
+gpt-4o-mini (production),openai/gpt-4o-mini,q01,I was injured while at work. What does social security actually cover for me?,en,"If you were injured while at work, the Social Security Law provides several benefits, assuming you are covered by this law. Here are the relevant provisions:
+
+1. **Daily Allowance for Temporary Inability**: 
+   - Article 29(a) states that if the work injury prevents you from performing your work, the Corporation shall pay you a daily allowance equivalent to (75%) of your daily wage based on which the monthly contributions were calculated, for the duration of your treatment.
+   - Article 29(b) mentions that this allowance continues throughout the period you are unable to resume work until your permanent disability is confirmed or you pass away.
+
+2. **First Three Days**: 
+   - According to Article 29(c), your employer will pay the allowance for the first (3) days from the date of injury.
+
+3. **Medical Care**: 
+   - Article 25(a) states that you are entitled to the medical care required for your health condition due to the injury.
+
+4. **Pensions and Compensations for Death or Disability**:
+   - If the work injury results in death, Article 30(a) specifies that survivors are entitled to a pension equivalent to (75%) of your wage used for calculating contributions at the time of the injury.
+   - If the injury leads to total permanent disability, you are entitled to a pension equivalent to (75%) of your wage as per Article 30(b).
+   - For partial permanent disability not less than (30%), Article 30(c) entitles you to a monthly disability pension based on the percentage of disability.
+   - For partial permanent disability of less than (30%), Article 30(d) states that you shall receive a lump sum compensation equivalent to the proportion of disability to the total permanent disability compensation.
+
+These provisions ensure that you receive financial support and medical care during your recovery and if the injury leads to long-term consequences. 
+
+This is general information, not legal advice; please consult a licensed lawyer about your own case.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '25', 'in_retrieved_context': True}]",
+gpt-4o-mini (production),openai/gpt-4o-mini,q05,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",en,"If someone is killed or permanently disabled due to a work accident, the compensation is as follows:
+
+1. **In Case of Death**: The employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. (Labour Law 1996, Article 90(a))
+
+2. **In Case of Total Permanent Disability**: The insured (worker) shall be entitled to a monthly Disability Pension equivalent to (75%) of his/her wage which was used as the basis for calculating contributions on the date of the injury. This pension shall accrue from the date on which the injured person's condition becomes stable, as determined by the Medical Reference. (Social Security Law, Article 30(b))
+
+These provisions outline both the lump-sum compensation payable for death and the ongoing pension for total permanent disability. 
+
+This is general information, not legal advice, and individuals should consult a licensed lawyer about their specific case.","[{'article_number': '90', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}]",
+gpt-4o-mini (production),openai/gpt-4o-mini,q19,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,ar,"نعم، يمكنك أن تطلب إعادة الفحص الطبي بعد أن تقرر لك راتب بسبب العجز. حسب المادة (36) من قانون الضمان الاجتماعي، يُسمح لك وللمؤسسة بطلب إعادة الفحص الطبي مرة واحدة كل ستة أشهر على الأقل خلال السنتين التاليتين لتاريخ ثبوت العجز.
+
+إذا كنت بحاجة إلى مزيد من التفاصيل حول ما يتبعه من إجراءات بناءً على نتيجة إعادة الفحص، يمكنني تزويدك بها. 
+
+مراجع: 
+قانون الضمان الاجتماعي، المادة (36)","[{'article_number': '36', 'in_retrieved_context': True}]",
+gpt-4o-mini (production),openai/gpt-4o-mini,q29,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,ar,"ليستحق ورثة زوجك راتب تقاعد الوفاة الطبيعية، يجب أن يكون قد سدد ما لا يقل عن (٢٤) اشتراكاً فعلياً منها (٦) اشتراكات متصلة أثناء خدمته المشمولة بأحكام قانون الضمان الاجتماعي.
+
+- **قانون الضمان الاجتماعي، المادة 66 (أ)**: ""يستحق المؤمن عليه راتب تقاعد الوفاة الطبيعية إذا وقعت الوفاة خلال خدمته المشمولة بأحكام هذا القانون شريطة أن يكون قد سدد ما لا يقل عن (٢٤) اشتراكاً فعلياً منها (٦) اشتراكات متصلة.""
+
+إذا تم استيفاء هذه الشروط، سيتاح للورثة المطالبة بالنصيب من راتب التقاعد من بداية الشهر الذي حدثت فيه وفاة زوجك.
+
+- **قانون الضمان الاجتماعي، المادة 80**: ""إذا توفى المؤمن عليه أو صاحب راتب التقاعد أو صاحب راتب الاعتلال يدفع لكل مستحق نصيبه من الراتب وفقاً للجدول رقم (٤) الملحق بهذا القانون، وذلك ابتداء من أول الشهر الذي حدثت فيه وفاة المؤمن عليه.""
+
+ملاحظة: هذه المعلومات هي معلومات عامة وليست استشارة قانونية. ينصح بالتشاور مع محامٍ مرخص بشأن الحالة الخاصة بك.","[{'article_number': '66', 'in_retrieved_context': True}, {'article_number': '80', 'in_retrieved_context': True}]",
+gpt-4o-mini (production),openai/gpt-4o-mini,q35,Are there situations where an employer simply is not allowed to end someone's job?,en,"Yes, there are specific situations where an employer is not allowed to terminate an employee's job. According to the Labour Law 1996, Article 27(a):
+
+1. An employer cannot terminate the service of a pregnant worker starting from the sixth month of her pregnancy or during maternity leave.
+2. An employer cannot terminate workers who are charged with military service or reserve service while they are performing that service.
+3. An employer cannot terminate workers during their annual or sick leaves, or during leaves granted for worker learning, Hajj, or other agreed-upon leaves for union work or education.
+
+Additionally, the employer can be absolved from these prohibitions if the worker was employed by another employer during the stipulated periods according to Article 27(b).
+
+Therefore, termination is restricted under these circumstances. 
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.","[{'article_number': '27', 'in_retrieved_context': True}]",
+gpt-4o-mini (production),openai/gpt-4o-mini,q49,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,ar,"نعم، يمكنك ترك عملك فوراً دون إشعار واحتفاظ بحقوقك في الحالات المحددة في المادة (29) من قانون العمل لسنة 1996. هذه الحالات هي:
+
+1. استخدامك في عمل يختلف في نوعه اختلافاً بيناً عن العمل الذي اتفقت عليه بموجب عقد العمل.
+2. استخدامك بصورة تدعو إلى تغيير محل إقامتك الدائم، ما لم ينص في العقد على جواز ذلك.
+3. نقلك إلى عمل آخر في درجة أدنى من العمل الذي اتفقت عليه.
+4. تخفيض أجرك، شريطة مراعاة أحكام المادة (14).
+5. إذا ثبت بتقرير طبي أن استمرارتك في العمل يهدد صحتك.
+6. إذا اعتدى صاحب العمل أو من يمثله عليك أثناء العمل أو بسببه بأي شكل من أشكال الاعتداء.
+7. إذا تخلف صاحب العمل عن تنفيذ أي حكم من أحكام القانون، بشرط أن يكون قد تلقى إشعاراً بذلك من وزارة العمل.
+
+لذا، إذا كنت تواجه أي من هذه الظروف، يمكنك ترك العمل دون إشعار. 
+
+هذا معلومات عامة، وليس مشورة قانونية. يجب عليك استشارة محامٍ مرخص حول قضيتك الخاصة.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '14', 'in_retrieved_context': False}]",
+gpt-4o,openai/gpt-4o,q01,I was injured while at work. What does social security actually cover for me?,en,"Social security covers various benefits for workers who suffer a work-related injury, according to the Social Security Law:
+
+1. Medical care required due to the injury (Article 25(a)).
+2. Daily allowances for temporary inability to work: If you are unable to work due to the injury, you are entitled to a daily allowance equivalent to 75% of your daily wage used for calculating contributions on the date of injury. This applies during treatment periods at approved centers or at home as determined by a medical authority (Article 29(a), Article 25(b)).
+3. The employer pays the allowance for the first 3 days from the date of injury (Article 29(c)).
+4. If the injury results in death, a ""Death Due to Work-Injury Pension"" is available for beneficiaries, equivalent to 75% of your wage used for contributions and starting from the month of death (Article 30(a)).
+5. For Total Permanent Work-Related Disability, you are entitled to a monthly disability pension, also 75% of your wage basis, accruing from your condition's stability (Article 30(b)).
+6. If you have a Partial Permanent Work-Related Disability of 30% or more, a monthly disability pension is calculated based on the percentage of disability (Article 30(c)). If less than 30%, you receive a lump sum compensation (Article 30(d)).
+7. Funeral expenses may be covered if death results from the work injury (Article 25(d)).
+
+Please note that these provisions are general information and you should consult a licensed lawyer for advice specific to your case.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '25', 'in_retrieved_context': True}]",
+gpt-4o,openai/gpt-4o,q05,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",en,"For a fatal work accident or one resulting in total permanent disability, both the Labor Law 1996 and the Social Security Law provide for compensation or pensions, depending on whether the worker is covered under Social Security or not.
+
+1. **Labor Law 1996**: 
+   - If work injury results in death or total disability, the employer must pay compensation equivalent to the wages of 1,200 working days. This compensation may not exceed 5,000 JDs and cannot be less than 2,000 JDs (Labor Law 1996, Article 90(a)).
+   - Compensation is distributed among entitled beneficiaries in the event of a worker's death according to specified percentages (Labor Law 1996, Article 96).
+
+2. **Social Security Law**:
+   - In the event of death due to a work injury, the survivor beneficiaries are entitled to a Death Due to Work-Injury Pension, equivalent to 75% of the wage used to calculate contributions at the time of injury (Social Security Law, Article 30(a)).
+   - For total permanent work-related disability, the insured receives a monthly Disability Pension, equivalent to 75% of the wage used for contributions at the injury date. This pension can increase by 25% if the injured person requires assistance for daily tasks, though this increase is capped at the minimum wage (Social Security Law, Article 30(b)).
+
+Note that the **Labor Law 1996** provisions apply to workers who are not subject to the Social Security Law (Labor Law 1996, Article 86). Anyone under Social Security coverage follows its provisions instead (Social Security Law, Article 4).
+
+This is general information, not legal advice. Consider consulting a licensed lawyer for your specific case.","[{'article_number': '4', 'in_retrieved_context': True}, {'article_number': '90', 'in_retrieved_context': True}, {'article_number': '96', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '86', 'in_retrieved_context': True}]",
+gpt-4o,openai/gpt-4o,q19,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,ar,"نعم، هناك إمكانية لإعادة الفحص الطبي بعد تحديد راتب اعتلال العجز. حسب قانون الضمان الاجتماعي، المادة (36)(أ)، يسمح لكل من المؤسسة والمصاب الذي تقرر له راتب اعتلال العجز الجزئي أو الكلي الإصابي الدائم بطلب إعادة الفحص الطبي مرة واحدة كل ستة أشهر على الأقل خلال السنتين التاليتين لتاريخ ثبوت العجز. 
+
+وفي حالة العجز الطبيعي، وفقًا للمادة (67)(هـ)، يمكن لكل من المؤسسة وصاحب راتب اعتلال العجز الكلي الطبيعي الدائم أو صاحب راتب اعتلال العجز الجزئي الطبيعي الدائم طلب إعادة الفحص الطبي في أي وقت خلال السنتين التاليتين لتاريخ ثبوت العجز.
+
+يرجى استشارة محامٍ مؤهل للحصول على مشورة قانونية متخصصة لحالتك الخاصة.","[{'article_number': '36', 'in_retrieved_context': True}, {'article_number': '67', 'in_retrieved_context': True}]",
+gpt-4o,openai/gpt-4o,q29,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,ar,"كي يستحق ورثة المؤمن عليه راتب تقاعد الوفاة الطبيعية، يجب أن تكون الوفاة قد وقعت خلال خدمة المؤمن عليه المشمولة بأحكام قانون الضمان الاجتماعي، بالإضافة إلى أن يكون المؤمن عليه قد سدد ما لا يقل عن 24 اشتراكاً فعلياً، منها 6 اشتراكات متصلة وفقًا لقانون الضمان الاجتماعي، المادة 66 (أ).
+
+إذا تحققت هذه الشروط وكان المؤمن عليه مكملاً لشروط استحقاق راتب تقاعد الشيخوخة أو راتب التقاعد المبكر، يتم تخصيص راتب التقاعد الأعلى له وفقًا لقانون الضمان الاجتماعي، المادة 66 (ج).
+
+وفي حالة وجود 120 اشتراكاً فعلياً فأكثر ووقعت الوفاة خارج الخدمة، يُمكن للورثة التقدم بطلب تخصيص راتب تقاعد الوفاة الطبيعية، بشرط أن لا يكون قد مضى على انقطاعه عن الشمول بأحكام هذا القانون أكثر من ستين شهراً، وذلك حسب المادة 66 (د-1).
+
+يرجى استشارة محامٍ مرخص للحصول على نصيحة قانونية محددة لحالتك.","[{'article_number': '66', 'in_retrieved_context': True}]",
+gpt-4o,openai/gpt-4o,q35,Are there situations where an employer simply is not allowed to end someone's job?,en,"Yes, there are several situations under the Jordanian Labor Law 1996 where an employer is not allowed to terminate a worker's services:
+
+1. **Specific Cases Prohibiting Termination**: 
+   - Pregnant women from the sixth month of pregnancy or during maternity leave.
+   - Workers charged with military or reserve service during their service.
+   - Workers during their annual leave, sick leave, learning leave, Hajj leave, or any leave agreed upon for union work or education (Labor Law 1996, Article 27(a)).
+
+2. **During Dispute Resolutions**:
+   - While a labor dispute is being heard by a settlement representative, council, or labor court, no worker may be dismissed without written permission from the authority handling the dispute (Labor Law 1996, Article 132(b)).
+
+3. **Economic Circumstances**:
+   - If the employer's circumstances require reducing the size of work or completely stopping work, they must notify the Minister and follow specific procedures, including forming a committee to review the employer’s actions (Labor Law 1996, Article 31(a)-(c)).
+
+This is general information and not legal advice. For specific cases, please consult a licensed lawyer.","[{'article_number': '31', 'in_retrieved_context': True}, {'article_number': '132', 'in_retrieved_context': True}, {'article_number': '27', 'in_retrieved_context': True}]",
+gpt-4o,openai/gpt-4o,q49,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,ar,"نعم، يمكنك ترك العمل فوراً دون إشعار مع الاحتفاظ بحقوقك، وفي الحالات التالية وفقًا لقانون العمل لسنة 1996، المادة (29)(أ):
+
+1. إذا تم استخدامك في عمل يختلف اختلافًا بيّنًا عن العمل المتفق عليه في عقد العمل.
+2. إذا تم نقلك إلى مكان يغيّر محل إقامتك الدائم، ما لم ينص العقد على جواز ذلك.
+3. إذا تم نقلك إلى عمل بدرجة أدنى من العمل المتفق عليه.
+4. إذا تم تخفيض أجرك دون مراعاة أحكام المادة (14) من القانون.
+5. إذا ثبت بتقرير طبي أن استمرارك في العمل يهدد صحتك.
+6. إذا تعرضت لاعتداء أو تحقير أو تحرش جنسي من قبل صاحب العمل أو من يمثله.
+7. إذا لم يلتزم صاحب العمل بأي حكم من أحكام القانون أو أنظمة صادرة بمقتضاه، شريطة تلقي إشعار من جهة مختصة.
+
+يجب عليك التبليغ وزارة العمل خلال أسبوعين من تاريخ ترك العمل. يُفضل استشارة محامٍ مؤهل للحصول على المشورة القانونية المناسبة لحالتك الخاصة.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '14', 'in_retrieved_context': False}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q01,I was injured while at work. What does social security actually cover for me?,en,"# What Social Security Covers for Work Injuries
+
+Social Security covers you for work-related injuries if you are subject to the Social Security Law. The work-injury insurance includes:
+
+**Medical Care**
+Social Security Law, Article 25(a): The medical care required by your health condition.
+
+**Daily Allowances During Treatment**
+Social Security Law, Article 29(a): If the injury prevents you from working, you receive a daily allowance equivalent to 75% of your daily wage (based on the wage used to calculate your contributions on the date of injury). This covers days you spend:
+- At a treatment center approved by the Corporation, or
+- At home under a decision issued by the Medical Reference or competent authority.
+
+Social Security Law, Article 29(c): Your employer pays this allowance for the first 3 days from the date of injury; the Corporation pays it from day 4 onwards.
+
+Social Security Law, Article 29(b): The daily allowance continues throughout the period you cannot work, or until your permanent disability is confirmed or you die.
+
+**Permanent Disability Benefits**
+Social Security Law, Article 30(b): If you have total permanent disability, you receive a monthly Disability Pension equivalent to 75% of the wage used to calculate contributions on the injury date. This can include a 25% increase if you need help with daily life tasks (capped at the approved minimum wage).
+
+Social Security Law, Article 30(c) and (d): For partial permanent disability of 30% or more, you receive a monthly pension based on your disability percentage. For partial disability below 30%, you receive a lump sum compensation.
+
+**Death Benefits**
+Social Security Law, Article 30(a): If you die from a work injury, your entitled beneficiaries receive a Death Due to Work-Injury Pension equivalent to 75% of your wage.
+
+Social Security Law, Article 25(d): Funeral expenses are also covered.
+
+To confirm your coverage, check that you are subject to the Social Security Law—generally, this includes workers subject to the Labour Law 1996 who have completed 16 years of age and earn at least the minimum wage, with certain exceptions for civil/military retirees and others listed in Article 4.
+
+This is general information, not legal advice. Consult a licensed lawyer about your own case.","[{'article_number': '4', 'in_retrieved_context': True}, {'article_number': '29', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '25', 'in_retrieved_context': True}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q05,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",en,"# Death or Total Permanent Disability from Work Injury
+
+The money paid and how it is calculated depends on **whether the worker is covered by the Social Security Law or not**.
+
+## If covered by Social Security Law
+
+**Social Security Law, Article 30(a)** — In case of death due to work injury, survivor beneficiaries receive a **Death Due to Work-Injury Pension of 75% of the wage used as the basis for calculating contributions on the date of injury**. The pension starts from the beginning of the month in which death occurs and is divided among entitled beneficiaries according to the law.
+
+**Social Security Law, Article 30(b)** — In case of total permanent work-related disability, the insured receives a **monthly Disability Pension of 75% of the wage used as the basis for calculating contributions on the date of injury**. The pension starts from the date the medical authority determines the condition has become stable. An additional **25% increase** may be added if the Medical Reference decides the injured person needs help with daily life tasks, provided this increase does not exceed the approved minimum wage under labour law.
+
+## If not covered by Social Security Law
+
+**Labour Law 1996, Article 90(a)** — If work injury results in death or total disability, the employer must pay compensation **equivalent to the wages of one thousand and two hundred working days**, provided that:
+- the compensation **does not exceed 5,000 JDs**, and
+- is **not less than 2,000 JDs**.
+
+**Labour Law 1996, Article 91** — This compensation is calculated based on the worker's **last received wage**. If the worker is paid on a task work basis, it is calculated based on the **average wage over the last six months of work**.
+
+**Labour Law 1996, Article 92(a)** — The compensation shall be paid **in a lump sum within thirty days** from the date the authorized person informs the parties of their decision.
+
+---
+
+This is general information, not legal advice. Consult a licensed lawyer about your own case.","[{'article_number': '90', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '92', 'in_retrieved_context': True}, {'article_number': '91', 'in_retrieved_context': True}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q19,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,ar,"نعم، يمكن إعادة فحصك طبياً بعد تقرير راتب العجز، لكن التوقيت والشروط يختلفان حسب نوع العجز:
+
+## إذا كان عجزك من إصابة عمل (عجز إصابي):
+
+**قانون الضمان الاجتماعي، المادة 36(أ):**
+- يحق لك ولمؤسسة الضمان طلب إعادة الفحص الطبي **مرة واحدة كل ستة أشهر على الأقل خلال السنتين التاليتين لتاريخ ثبوت العجز**.
+- بناءً على نتيجة الفحص، قد يتم وقف الراتب، أو زيادته، أو تعديله حسب تطور حالتك.
+
+**ملاحظة مهمة:** إذا تخلفت عن إعادة الفحص المحدد لك، سيتم **وقف صرف الراتب** حتى تحضر للفحص. لكن إذا تأخرت بعذر مشروع، تحتفظ بحقوقك من التاريخ المقرر للفحص الأول؛ وإن لم يكن هناك عذر مشروع، تُسوّى حقوقك من تاريخ الفحص الفعلي.
+
+## إذا كان عجزك طبيعياً دائماً (من غير إصابة عمل):
+
+**قانون الضمان الاجتماعي، المادة 67(هـ):**
+- يحق لك ولمؤسسة الضمان طلب إعادة الفحص الطبي **في أي وقت خلال السنتين التاليتين لتاريخ ثبوت العجز**.
+- تُتخذ الإجراءات اللازمة بناءً على قرار المرجع الطبي.
+
+**إذا تخلفت عن إعادة الفحص:** سيتم وقف راتبك حتى تحضر للفحص، وتُسوّى حقوقك وفقاً لنتيجة إعادة الفحص من تاريخ وقف الراتب.
+
+**هذه معلومات قانونية عامة، لا تشكل استشارة قانونية. استشر محامياً مرخصاً حول وضعك الخاص.**","[{'article_number': '36', 'in_retrieved_context': True}, {'article_number': '67', 'in_retrieved_context': True}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q29,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,ar,"بناءً على قانون الضمان الاجتماعي، يستحق ورثة المؤمن عليه (زوجك) راتب تقاعد الوفاة بالشروط التالية:
+
+## الشروط الأساسية:
+
+**قانون الضمان الاجتماعي، المادة 66(أ):**
+- وقوع الوفاة خلال الخدمة المشمولة بأحكام القانون
+- أن يكون المؤمن عليه قد سدد ما لا يقل عن **(24) اشتراكاً فعلياً** منها **(6) اشتراكات متصلة** على الأقل
+
+## الفئات المستحقة للراتب:
+
+**قانون الضمان الاجتماعي، المادة 81(أ):**
+
+1. **الأرملة** - تستحق نصيباً من الراتب
+
+2. **الأبناء الذكور** - إذا لم يتجاوزوا **23 سنة** عند الوفاة (يستمر الصرف حتى إكمالهم هذه السن، مع استثناء الابن العاجز كلياً الذي يستمر الصرف له)
+
+3. **البنات** - تستحق النصيب
+
+4. **الإخوة الذكور من الموتى** - الذين كان يعولهم المتوفى، بنفس شروط الأبناء الذكور
+
+5. **الوالدان** - إذا كانا مستحقين
+
+**قانون الضمان الاجتماعي، المادة 80:**
+يبدأ صرف النصيب من أول الشهر الذي حدثت فيه الوفاة.
+
+---
+
+هذه معلومات عامة وليست استشارة قانونية. يرجى استشارة محامٍ مختص لتطبيق هذه الأحكام على وضعك الخاص.","[{'article_number': '66', 'in_retrieved_context': True}, {'article_number': '80', 'in_retrieved_context': True}, {'article_number': '81', 'in_retrieved_context': True}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q35,Are there situations where an employer simply is not allowed to end someone's job?,en,"Yes. There are several situations where an employer cannot terminate a worker's employment:
+
+**Labour Law 1996, Article 27(a)** prohibits the employer from terminating a worker's services in the following cases:
+- Pregnant working women starting from the sixth month of their pregnancy or during maternity leave
+- Workers charged with military service or reserve service during the performance of that service
+- Workers during their annual or sick leaves, or leave granted for worker learning, Hajj, or leave agreed upon between both parties for union work or for joining a recognized institute, college, or university
+
+However, **Labour Law 1996, Article 27(b)** provides an exception: the employer is absolved from these restrictions if the worker was employed by another employer during any of those protected periods.
+
+Additionally, **Labour Law 1996, Article 132(b)** states that while a labor dispute is being heard by a settlement representative, settlement council, or labor court, the employer may not dismiss any worker without obtaining written permission from the settlement representative, the council, or the labor court, as appropriate.
+
+This is general information and not legal advice. You should consult a licensed lawyer about your own case.","[{'article_number': '132', 'in_retrieved_context': True}, {'article_number': '27', 'in_retrieved_context': True}]",
+claude-haiku-4.5,anthropic/claude-haiku-4.5,q49,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,ar,"نعم، يمكنك ترك العمل فوراً دون إشعار والاحتفاظ بحقوقك في حالات محددة.
+
+طبقاً لقانون العمل لسنة 1996، المادة (29)(أ)، يحق للعامل أن يترك العمل دون إشعار صاحب العمل مع احتفاظه بحقوقه القانونية عن انتهاء الخدمة والتعويضات المستحقة، لكن يجب عليك تبليغ وزارة العمل خلال أسبوعين من تاريخ ترك العمل بالطرق التي تحددها الوزارة. وهذا الحق موجود في الحالات التالية:
+
+1. **استخدامك في عمل مختلف اختلافاً بيناً** عن العمل المتفق عليه في العقد (المادة 29(أ)(1)).
+
+2. **نقل مكان إقامتك** - استخدامك بصورة تدعو إلى تغيير محل إقامتك الدائم، إلا إذا كان العقد ينص على جواز ذلك (المادة 29(أ)(2)).
+
+3. **الترقية العكسية** - نقلك إلى عمل في درجة أدنى من العمل المتفق عليه (المادة 29(أ)(3)).
+
+4. **تخفيض الأجر** (المادة 29(أ)(4)).
+
+5. **تهديد صحتك** - إذا ثبت بتقرير طبي من مرجع طبي أن استمرارك في العمل من شأنه تهديد صحتك (المادة 29(أ)(5)).
+
+6. **الاعتداء أو التحرش** - إذا اعتدى صاحب العمل أو من يمثله عليك بالضرب أو التحقير أو بأي شكل من أشكال الاعتداء الجنسي أو التحرش الجنسي (المادة 29(أ)(6)).
+
+7. **عدم تنفيذ أحكام القانون** - إذا تخلف صاحب العمل عن تنفيذ أي حكم من أحكام قانون العمل أو أنظمة صادرة بمقتضاه، بشرط أن تكون قد تلقيت إشعاراً من جهة مختصة في وزارة العمل تطلب فيه التقيد بتلك الأحكام (المادة 29(أ)(7)).
+
+هذا معلومات عامة وليست استشارة قانونية. استشر محامياً مختصاً حول وضعك الخاص.","[{'article_number': '29', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q01,I was injured while at work. What does social security actually cover for me?,en,"If you are covered by the Social Security Law, the benefits for work-injury insurance include medical care, daily allowances for temporary inability to work, monthly pensions and lump sum compensations, and funeral expenses for death due to work injuries.
+
+Here's a breakdown of what Social Security covers for work injuries:
+*   **Medical Care:** The benefits include the medical care required by your health condition due to the injury (Social Security Law, Article 25(a)).
+*   **Daily Allowances for Temporary Inability to Work:**
+    *   If the work injury prevents you from performing your work, the Social Security Corporation will pay a daily allowance equal to 75% of your daily wage, based on which contributions were calculated on the date of injury. This is for the days you are under treatment at Corporation-approved centers or at home as per a medical decision (Social Security Law, Article 29(a)).
+    *   This daily allowance continues for the period you are unable to resume work, or until permanent disability is confirmed, or death (Social Security Law, Article 29(b)).
+    *   The firm (employer) is responsible for paying the allowance for the first 3 days from the date of injury (Social Security Law, Article 29(c)).
+    *   These daily allowances are subject to the provisions of Article 31 of the Social Security Law (Social Security Law, Article 25(b)).
+*   **Pensions and Compensations:**
+    *   **Death due to Work Injury:** Your survivor beneficiaries will be entitled to a Death Due to Work-Injury Pension equivalent to 75% of your wage used for contributions on the date of injury. This pension accrues from the beginning of the month of death and is apportioned according to the law (Social Security Law, Article 30(a)).
+    *   **Total Permanent Work-Related Disability:** You will be entitled to a monthly Disability Pension equivalent to 75% of your wage used for contributions on the date of injury. This pension accrues from the date your condition becomes stable, as determined by the Medical Reference. This pension will increase by 25% if the Medical Reference decides you need assistance for daily tasks, provided this increase does not exceed the approved minimum wage (Social Security Law, Article 30(b)).
+    *   **Partial Permanent Work-Related Disability (30% or more):** You will be entitled to a monthly Disability Pension, calculated based on the percentage of your disability relative to the Total Permanent Work-Related Disability Pension mentioned above. This pension starts from the date your health stabilizes, as determined by the Medical Reference (Social Security Law, Article 30(c)).
+    *   **Partial Permanent Work-Related Disability (less than 30%):** You will be entitled to a lump sum compensation equivalent to the proportion of your disability to the amount payable for Total Permanent Work-Related Disability, multiplied by 36 months (Social Security Law, Article 30(d)).
+    *   These monthly pensions and lump sum compensations are payable to the injured and entitled beneficiaries (Social Security Law, Article 25(c)).
+*   **Funeral Expenses:** Funeral expenses resulting from death due to work injuries are covered. The amount and payee will be determined by the Board (Social Security Law, Article 25(d)).
+
+Please note that these provisions apply if you are subject to the Social Security Law. The Social Security Law generally covers workers who have completed 16 years of age, including all workers subject to the Labour Law, and certain other categories, without discrimination based on nationality, duration or form of contract, or nature of wage, provided the wage is not less than the minimum wage. There are also categories of workers not subject to this law, such as those paying retirement contributions under civil or military retirement laws, non-Jordanians in certain missions, and workers with irregular employment relationships as defined by the law (Social Security Law, Article 4). If you are not subject to the Social Security Law, the provisions of the Labour Law regarding work injuries and occupational diseases would apply to you (Labour Law 1996, Article 86).
+
+This information is for general guidance and not legal advice. You should consult a licensed lawyer for advice specific to your situation.","[{'article_number': '4', 'in_retrieved_context': True}, {'article_number': '25', 'in_retrieved_context': True}, {'article_number': '31', 'in_retrieved_context': False}, {'article_number': '29', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '86', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q05,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",en,"If a work injury results in death or total disability, the employer is liable to pay compensation.
+
+The compensation amount is equivalent to the wages of 1,200 working days. This compensation cannot exceed 5,000 JDs and must not be less than 2,000 JDs (Labour Law 1996, Article 90(a)).
+
+The compensation is calculated based on the worker's last received wage. If the worker is paid on a task work basis, it is calculated based on the average wage over the last six months of their work (Labour Law 1996, Article 91).
+
+If the worker is subject to the Social Security Law and dies due to a work injury, their survivor beneficiaries are entitled to a Death Due to Work-Injury Pension. This pension is equivalent to 75% of the wage used as the basis for calculating their contributions on the date of injury. The pension accrues from the beginning of the month in which the death occurs and is apportioned to the entitled beneficiaries according to the provisions of the Social Security Law (Social Security Law, Article 30(a)).
+
+If the worker is subject to the Social Security Law and experiences a Total Permanent Work-Related Disability, they are entitled to a monthly Disability Pension. This pension is equivalent to 75% of the wage used as the basis for calculating their contributions on the date of the injury. The pension accrues from the date their condition becomes stable, as determined by the Medical Reference (Social Security Law, Article 30(b)). This pension is subject to a 25% increase if the injured individual needs assistance to perform daily life tasks, provided that the increase does not exceed the approved minimum wage in accordance with the Labour Law (Social Security Law, Article 30(b)).
+
+The provisions of the chapter related to work injuries and occupational diseases in the Labour Law 1996 apply to workers who are not subject to the provisions of the applicable Social Security Law (Labour Law 1996, Article 86).
+
+The Social Security Law covers categories of workers who have completed 16 years of age, without discrimination based on nationality, duration or form of contract, or nature of wage, provided the contribution-calculating wage is not less than the minimum wage under the Labour Law. This includes all workers subject to the Labour Law, workers not subject to the Retirement Pension under civil or military retirement laws, and Jordanian persons employed by certain regional, international, and foreign missions (Social Security Law, Article 4(a)).
+
+The compensation under the Labour Law is estimated upon the request of the employer, worker, or those entitled. If an agreement on compensation cannot be reached, the Secretary-General estimates it. The compensation is paid in a lump sum within 30 days from the date of informing the concerned parties of the authorized person's decision (Labour Law 1996, Article 92(a)). Payment of this compensation does not prevent the worker or those entitled from receiving end-of-service compensation if the conditions for entitlement are met (Labour Law 1996, Article 92(b)).
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.","[{'article_number': '92', 'in_retrieved_context': True}, {'article_number': '91', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}, {'article_number': '90', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '86', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q19,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,ar,"نعم، يمكن إعادة فحصك طبياً بعد تقرير راتب العجز، وتختلف الشروط والآليات باختلاف نوع العجز:
+
+**في حالة العجز الجزئي الإصابي الدائم أو العجز الكلي الإصابي الدائم:**
+*   يجوز لكل من المؤسسة والمصاب طلب إعادة الفحص الطبي مرة واحدة على الأقل كل ستة أشهر خلال السنتين التاليتين لتاريخ ثبوت العجز. (قانون الضمان الاجتماعي، المادة 36(أ))
+*   إذا تخلفت عن إعادة الفحص الطبي، يوقف صرف راتب الاعتلال المخصص لك. (قانون الضمان الاجتماعي، المادة 36(ب)(1))
+*   إذا قمت بإعادة الفحص الطبي بعد التاريخ المحدد لموعد إجرائه وكان تأخرك بعذر مشروع، ستُسوَّى حقوقك وفقاً لنتيجة الفحص اعتباراً من التاريخ المحدد لإجراء الفحص الطبي الأول. (قانون الضمان الاجتماعي، المادة 36(ب)(2))
+*   إذا قمت بإعادة الفحص الطبي بعد التاريخ المحدد لموعد إجرائه ولم يكن تأخرك بعذر مشروع، ستُسوَّى حقوقك وفقاً لنتيجة الفحص اعتباراً من تاريخ إجراء إعادة الفحص. (قانون الضمان الاجتماعي، المادة 36(ب)(3))
+
+**في حالة العجز الكلي الطبيعي الدائم أو العجز الجزئي الطبيعي الدائم:**
+*   لكل من المؤسسة وصاحب راتب اعتلال العجز الكلي الطبيعي الدائم أو صاحب راتب اعتلال العجز الجزئي الطبيعي الدائم طلب إعادة الفحص الطبي في أي وقت خلال السنتين التاليتين لتاريخ ثبوت هذا العجز. (قانون الضمان الاجتماعي، المادة 67(هـ))
+*   إذا تخلفت عن إعادة الفحص الطبي، يوقف صرف راتب الاعتلال المخصص لك إلى حين مثولك أمام المرجع الطبي لإعادة الفحص الطبي، وفي هذه الحالة، تقوم المؤسسة بتسوية حقوقك وفقاً لنتيجة إعادة الفحص اعتباراً من تاريخ وقف صرف راتب الاعتلال. (قانون الضمان الاجتماعي، المادة 67(و))
+
+هذه معلومات عامة وليست استشارة قانونية. يرجى استشارة محامٍ مرخص بخصوص حالتك الخاصة.","[{'article_number': '36', 'in_retrieved_context': True}, {'article_number': '67', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q29,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,ar,"يشترط لاستحقاق ورثة زوجك راتب تقاعد الوفاة الطبيعية ما يلي:
+
+*   أن يكون قد توفي خلال خدمته المشمولة بأحكام قانون الضمان الاجتماعي، وأن يكون قد سدد 24 اشتراكاً فعلياً على الأقل، منها 6 اشتراكات متصلة. (قانون الضمان الاجتماعي، المادة 66(أ))
+*   إذا كان لدى زوجك الأردني 120 اشتراكاً فعلياً فأكثر منها 12 اشتراكاً متصلاً ووقعت الوفاة خارج الخدمة ولم يمض على انقطاعه عن الشمول بأحكام القانون أكثر من 60 شهراً، فيجوز للورثة التقدم بطلب تخصيص راتب تقاعد الوفاة الطبيعية. في هذه الحالة يلتزم الورثة المستحقون بدفع اشتراكات تأمين الشيخوخة والعجز والوفاة فقط من الشهر التالي للشهر الذي أوقف فيه الاقتطاع وحتى نهاية الشهر الذي وقعت فيه الوفاة وذلك على أساس أجر المؤمن عليه المتوفى الأخير الخاضع للاقتطاع دفعة واحدة أو بالتقسيط. (قانون الضمان الاجتماعي، المادة 66(د)(1) و (2))
+
+في حال استيفاء الشروط، يُدفع لكل مستحق نصيبه من الراتب ابتداءً من أول الشهر الذي حدثت فيه وفاة المؤمن عليه. (قانون الضمان الاجتماعي، المادة 80)
+
+يستحق نصيب من الراتب الفئات التالية:
+
+*   الذكور من أولاده ومن كان يعيلهم من إخوته الذكور الذين لا تتجاوز أعمارهم 23 سنة عند الوفاة، ويستمر الصرف لهم حتى إكمالهم هذه السن، باستثناء الابن أو الأخ المصاب بالعجز الكلي فيصرف له نصيبه حتى يزول ذلك العجز. (قانون الضمان الاجتماعي، المادة 81(أ)(1))
+*   أرملته وبناته وأخواته العازبات والأرامل والمطلقات عند الوفاة، ويوقف نصيب أي منهن عند زواجها ويعاد لها في حال طلاقها أو ترملها. (قانون الضمان الاجتماعي، المادة 81(أ)(2))
+*   والده ووالدته. (قانون الضمان الاجتماعي، المادة 81(أ)(4))
+*   في حال وجود جنين، لا يُعتبر من ضمن المستحقين إلا بعد ولادته حياً. (قانون الضمان الاجتماعي، المادة 81(ب))
+*   إذا طلقت البنت أو الأخت أو ترملت بعد وفاة أحد والديها أو شقيقها، يُعاد توزيع الراتب اعتباراً من الشهر التالي للشهر الذي وقع فيه الطلاق أو الترمل. (قانون الضمان الاجتماعي، المادة 81(ج))
+
+يحق للأرملة الجمع بين راتبها التقاعدي أو راتبها بسبب الاعتلال أو أجرها من العمل ونصيبها من راتب التقاعد الذي يؤول إليها من زوجها. كما يحق لها الجمع بين نصيبها من راتب التقاعد الذي يؤول إليها من زوجها ونصيبها من راتب التقاعد التي تؤول إليها من والديها وأبنائها. (قانون الضمان الاجتماعي، المادة 84(أ)(1) و (2))
+
+هذه معلومات عامة، وليست استشارة قانونية. يجب استشارة محامٍ مرخص بخصوص حالتك الخاصة.","[{'article_number': '84', 'in_retrieved_context': True}, {'article_number': '66', 'in_retrieved_context': True}, {'article_number': '80', 'in_retrieved_context': True}, {'article_number': '81', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q35,Are there situations where an employer simply is not allowed to end someone's job?,en,"Yes, there are situations where an employer is not allowed to terminate a worker's employment or send a notice of termination.
+
+An employer cannot terminate the services of a worker or send a notice terminating the worker’s service in the following cases (Labor Law 1996, Article 27):
+*   Pregnant working women starting from the sixth month of their pregnancy or during maternity leave.
+*   Workers charged with military service or reserve service during the performance of that service.
+*   Workers during their annual or sick leaves, or leave granted for worker learning, Hajj, or during a leave agreed upon between both parties for union work or for joining a recognized institute, college, or university.
+
+However, the employer is absolved from these restrictions if the worker was employed by another employer during any of these periods (Labor Law 1996, Article 27(b)).
+
+Additionally, while a labor dispute is being heard by a settlement representative, settlement council, or labor court, an employer may not dismiss any worker without obtaining written permission from the settlement representative, the council, or the labor court, as appropriate (Labor Law 1996, Article 132(b)).
+
+This information is for general informational purposes only and does not constitute legal advice. You should consult with a licensed lawyer for advice regarding your specific situation.","[{'article_number': '132', 'in_retrieved_context': True}, {'article_number': '27', 'in_retrieved_context': True}]",
+gemini-2.5-flash,google/gemini-2.5-flash,q49,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,ar,"نعم، يمكنك ترك عملك فوراً دون إشعار والاحتفاظ بحقوقك القانونية ومستحقات نهاية الخدمة وتعويضات العطل والضرر في حالات محددة، شريطة إبلاغ وزارة العمل خلال أسبوعين من تاريخ ترك العمل بالطرق التي تحددها الوزارة.
+
+تتضمن هذه الحالات ما يلي:
+*   إذا تم استخدامك في عمل يختلف بشكل كبير في نوعه عن العمل المتفق عليه في عقد العمل، مع مراعاة أحكام المادة (17) من قانون العمل لسنة 1996 (قانون العمل لسنة 1996، المادة 29(أ)1).
+*   إذا كان استخدامك يستدعي تغيير محل إقامتك الدائم، إلا إذا نص العقد على جواز ذلك (قانون العمل لسنة 1996، المادة 29(أ)2).
+*   نقلك إلى عمل آخر بدرجة أدنى من العمل المتفق عليه (قانون العمل لسنة 1996، المادة 29(أ)3).
+*   تخفيض أجرك، مع مراعاة أحكام المادة (14) من قانون العمل لسنة 1996 (قانون العمل لسنة 1996، المادة 29(أ)4).
+*   إذا ثبت بتقرير طبي صادر عن مرجع طبي أن استمرارك في العمل يهدد صحتك (قانون العمل لسنة 1996، المادة 29(أ)5).
+*   إذا اعتدى صاحب العمل أو من يمثله عليك أثناء العمل أو بسببه بالضرب أو التحقير أو بأي شكل من أشكال الاعتداء الجنسي أو التحرش الجنسي المعاقب عليه بموجب أحكام التشريعات النافذة (قانون العمل لسنة 1996، المادة 29(أ)6). يُقصد بالتحرش الجنسي أي ممارسة أو سلوك جسدي أو شفوي ذي طبيعة جنسية أو التهديدات المرتبطة به يمس كرامة العامل ويكون مهينًا له ويؤدي إلى إلحاق الضرر الجسدي أو النفسي أو الجنسي به (قانون العمل لسنة 1996، المادة 29(ج)).
+*   إذا تخلف صاحب العمل عن تنفيذ أي حكم من أحكام قانون العمل لسنة 1996 أو أي نظام صادر بموجبه، شريطة أن يكون قد تلقى إشعارًا من جهة مختصة في الوزارة يطلب فيه التقيد بتلك الأحكام (قانون العمل لسنة 1996، المادة 29(أ)7).
+
+وإذا كان عقد عملك محدد المدة، فيحق لك استيفاء جميع الحقوق والمزايا المنصوص عليها في العقد، بالإضافة إلى الأجور المستحقة حتى انتهاء المدة المتبقية من العقد، ما لم يكن إنهاء العقد فصلاً بموجب المادة (28) من قانون العمل لسنة 1996 (قانون العمل لسنة 1996، المادة 26(أ)).
+
+هذه المعلومات عامة وليست مشورة قانونية، ويجب عليك استشارة محامٍ مرخص بخصوص حالتك الخاصة.","[{'article_number': '26', 'in_retrieved_context': True}, {'article_number': '28', 'in_retrieved_context': True}, {'article_number': '17', 'in_retrieved_context': False}, {'article_number': '14', 'in_retrieved_context': False}, {'article_number': '29', 'in_retrieved_context': True}]",

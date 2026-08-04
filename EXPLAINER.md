@@ -236,11 +236,32 @@ The top **5** articles go to the writer.
 > alone. It's kept because it costs 1 millisecond per query and can only help. But
 > the honest statement is "kept as cheap insurance," not "proven to help."
 
+#### A few laws have hidden "only if" articles
+
+Some articles don't answer a question themselves — they change whether a *different*
+article even applies. A plain example: the Labour Law promises a lump-sum payment
+for a workplace injury (Article 90) — but a separate article (Article 86) says that
+whole rule only applies to a worker who is **not** covered by Social Security. Most
+workers *are* covered, so for most people the real answer is a completely different
+article, in a different law (Social Security's own Article 30), not Article 90 at
+all.
+
+The problem: the meaning-search doesn't know Article 86 exists, because a question
+about "what do I get paid if I'm injured" is about pay amounts, not about the
+"who does this apply to" article — so the two rarely rank near each other.
+
+The fix is a small, hand-checked list of these "only if" articles. Whenever the
+articles it depends on are about to be picked, the "only if" article is added too —
+never anything more than that one extra article, and never at the cost of bumping
+anything else out. This list is short on purpose: it only has entries that were
+actually checked and shown to matter, not every article that theoretically could.
+
 ### Step 6 — Writing the answer (generation)
 
-The 5 articles get formatted into a prompt along with the question and a set of
-rules, and sent to a language model (`gpt-4o-mini`). The rules are the part that
-does the work — currently 13 of them, in five groups:
+The retrieved articles (5, sometimes 6-7 when one of the "only if" articles above
+gets added) get formatted into a prompt along with the question and a set of rules,
+and sent to a language model (`gpt-4o-mini`). The rules are the part that does the
+work — currently 22 of them, in seven groups:
 
 - **Grounding** — use only these documents; if they don't answer it, say so
 - **Coverage** — address *every* article that bears on the question, and every
@@ -250,6 +271,11 @@ does the work — currently 13 of them, in five groups:
   rather than guessing at it
 - **Judgment questions** — for "should I…?" lay out benefits and costs neutrally,
   and don't tell the person what to decide
+- **Totals and calculations** — for anything involving arithmetic (contributions,
+  end-of-service pay, overtime), don't do the maths yourself — see the box below
+- **Multiple laws, and who a law covers** — when two laws both talk about the same
+  event, don't blend them into one answer; and some laws only cover certain people
+  (see the box above), so say that plainly when it matters
 
 One rule matters more than it looks:
 
@@ -259,7 +285,21 @@ One rule matters more than it looks:
 That's a guardrail learned the hard way. When the model was told to be thorough, it
 started *reasoning* about how two articles interact — and legal reasoning that
 isn't in the text is exactly the kind of confident invention this whole system
-exists to prevent.
+exists to prevent. The one narrow exception: if a document *itself* states a
+condition (like Article 86 above), stating that condition back is reading the text,
+not the forbidden kind of reasoning — so a later rule spells that out as the one
+case where connecting two articles is allowed.
+
+> **Why the model doesn't do the maths.** Early on, asked "how much does my company
+> pay into social security," the model tried to add up several percentages itself
+> and got it wrong — sometimes right total, wrong split between employer and
+> employee; sometimes a rate quietly dropped. The fix: a small piece of plain Python
+> code reads the actual numbers out of the retrieved article text, does the
+> addition, and hands the model a ready-made answer block it's told to copy rather
+> than recompute. This exists for social security contributions, end-of-service pay,
+> overtime pay, paid-leave accrual, and pension age/eligibility — each one reads its
+> numbers from the text every time, rather than having them typed in once, so an
+> amendment to the law is picked up automatically instead of silently going stale.
 
 ### Step 7 — Follow-up questions (multi-turn)
 
@@ -313,9 +353,9 @@ a range of difficulty.
 
 | Metric | Plain meaning | Current |
 |---|---|---|
-| **recall@1** | right article was the #1 result | **0.867** |
+| **recall@1** | right article was the #1 result | **0.883** |
 | **recall@5** | right article was somewhere in the top 5 | **1.000** |
-| **MRR** | how high up it landed, averaged | **0.922** |
+| **MRR** | how high up it landed, averaged | **0.926** |
 
 **recall@5 = 1.000 means the correct article is in the top 5 for all 60 questions.**
 Not most. All of them.
@@ -339,17 +379,27 @@ documents and scores two things 1-5:
 | | Faithfulness | Relevancy |
 |---|---|---|
 | before the coverage rules | 4.70 | 4.55 |
-| **after** | **4.80** | **4.80** |
+| after the coverage rules | 4.80 | 4.80 |
+| latest full 60-question run | 4.70 | 4.72 |
 
-And the honest reading of that table: **the relevancy gain is real, the
-faithfulness gain is not.**
+And the honest reading of that table: **the relevancy gain from the coverage rules
+was real, the faithfulness gain was not**, and the drop in the latest full run
+(measured against a harder, changed retrieval setup) was checked and judged as
+"held," not "got worse" — the same 1-point-either-way noise every single-run
+comparison in this project has to account for, not a real regression.
 
-Relevancy improved on 14 questions and got worse on 3 (p = 0.013 — roughly a 1.3%
-chance of seeing a split that lopsided by luck). Faithfulness was 12 up, 8 down —
-that's a coin flip. So it's reported as "held," not "improved."
+Relevancy improved on 14 questions and got worse on 3 when the coverage rules were
+added (p = 0.013 — roughly a 1.3% chance of seeing a split that lopsided by luck).
+Faithfulness was 12 up, 8 down — that's a coin flip. So it's reported as "held," not
+"improved."
 
-That distinction is the whole point of measuring. Both numbers went up. Only one of
-them means anything.
+That distinction is the whole point of measuring. Numbers moving isn't the same as
+numbers meaning something.
+
+**Not yet in this table:** two new prompt rules and a code fix added after the
+numbers above were measured (see `CLAUDE.md`'s latest phase) — checked on a small,
+targeted set of questions, not the full 60, so their effect on these numbers isn't
+known yet.
 
 ### Also tracked
 

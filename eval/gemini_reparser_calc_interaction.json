@@ -1,0 +1,93 @@
+{
+  "contributions": {
+    "answer": "# اشتراكات الضمان الاجتماعي على راتب 1000 دينار\n\n## المبلغ المقتطع من راتبك:\n\n**75 دينار شهرياً** (نسبة 7.5% من أجرك)\n\nيتكون من:\n- **65 دينار** – تأمين الشيخوخة والعجز والوفاة (نسبة 6.5%)  \n  قانون الضمان الاجتماعي، المادة (59) البند 2\n- **10 دنانير** – تأمين التعطل عن العمل (نسبة 1%)  \n  قانون الضمان الاجتماعي، المادة (48) البند ب\n\n---\n\n## المبلغ الذي يدفعه صاحب العمل عنك:\n\n**142.5 دينار شهرياً** (نسبة 14.25% من أجرك)\n\nيتكون من:\n- **110 دنانير** – تأمين الشيخوخة والعجز والوفاة (نسبة 11%)  \n  قانون الضمان الاجتماعي، المادة (59) البند 1\n- **20 دينار** – تأمين إصابات العمل (نسبة 2%)  \n  قانون الضمان الاجتماعي، المادة (24) البند أ\n- **7.5 دنانير** – تأمين الأمومة (نسبة 0.75%)  \n  قانون الضمان الاجتماعي، المادة (42) البند 1\n- **5 دنانير** – تأمين التعطل عن العمل (نسبة 0.5%)  \n  قانون الضمان الاجتماعي، المادة (48) البند أ\n\n---\n\n## الإجمالي الكلي:\n\n**217.5 دينار شهرياً** (نسبة 21.75% من الأجر)\n\n---\n\n**معلومات عامة فقط؛ استشر محامياً مرخصاً بشأن وضعك الخاص.**",
+    "calc": {
+      "language": "ar",
+      "components": [
+        {
+          "article": "24",
+          "name": "تأمين إصابات العمل",
+          "rate": 2.0,
+          "bearer": "employer",
+          "scope": "private",
+          "amount": 20.0
+        },
+        {
+          "article": "42",
+          "name": "تأمين الأمومة",
+          "rate": 0.75,
+          "bearer": "employer",
+          "scope": "private",
+          "amount": 7.5
+        },
+        {
+          "article": "48",
+          "name": "تأمين التعطل عن العمل",
+          "rate": 0.5,
+          "bearer": "employer",
+          "scope": "private",
+          "amount": 5.0
+        },
+        {
+          "article": "48",
+          "name": "تأمين التعطل عن العمل",
+          "rate": 1.0,
+          "bearer": "employee",
+          "scope": "private",
+          "amount": 10.0
+        },
+        {
+          "article": "59",
+          "name": "تأمين الشيخوخة والعجز والوفاة",
+          "rate": 11.0,
+          "bearer": "employer",
+          "scope": "private",
+          "amount": 110.0
+        },
+        {
+          "article": "59",
+          "name": "تأمين الشيخوخة والعجز والوفاة",
+          "rate": 6.5,
+          "bearer": "employee",
+          "scope": "private",
+          "amount": 65.0
+        }
+      ],
+      "employee_rate": 7.5,
+      "employer_rate": 14.25,
+      "total_rate": 21.75,
+      "salary": 1000.0,
+      "base": 1000.0,
+      "ceiling": 3000.0,
+      "ceiling_article": "20",
+      "ceiling_exception": 5000.0,
+      "ceiling_exception_date": "15/10/2009",
+      "ceiling_exception_applies": false,
+      "capped": false,
+      "employee_amount": 75.0,
+      "employer_amount": 142.5,
+      "total_amount": 217.5
+    }
+  },
+  "gender": {
+    "answer": "I'll address your original question about years of work needed for early retirement, using the male figures you've confirmed.\n\n**For early retirement as a male, you need 252 actual contributions to Social Security.** This equals approximately 21 years (at 12 contributions per year), though the exact timeframe depends on your contribution pattern.\n\nHowever, several pathways exist under **Social Security Law, Article 64**, each with different contribution and age requirements:\n\n**Article 64(a):**\n- 252 actual contributions *and* age 50+, *or*\n- 300 actual contributions *and* age 45+\n\n**Article 64(b)** — transitional provisions if you were age 44+ before the law's effective date:\n- Age 46 + 228 contributions, *or*\n- Age 47 + 240 contributions, *or*\n- Age 48 + 252 contributions, *or*\n- Age 45 before the law took effect + fewer than 216 contributions then, but now have 228 contributions\n\n**Article 64(c)** — if you work in a hazardous profession:\n- 216 actual contributions *and* age 45+\n- *Plus* at least 60 of those contributions in the last 10 years before applying\n\n**Article 64(h)** — if you were first covered *after* the law was amended:\n- Age 55 *and* 252 actual contributions\n\nWhich of these scenarios applies to you—your current age, years of service so far, and whether you work in a hazardous occupation—would determine which pathway is available.\n\nThis is general information, not legal advice; consult a licensed lawyer about your own case.",
+    "calc": {
+      "gender_conditions": [
+        {
+          "article": "64",
+          "kind": "subscriptions",
+          "language": "en",
+          "label": "required subscriptions (early retirement)",
+          "male": 252.0,
+          "female": 228.0
+        }
+      ]
+    }
+  },
+  "q09": {
+    "answer": "Yes, you can take a paid job while receiving a Work Injury Disability Pension under Jordanian Social Security Law.\n\n**The core rule:**\nSocial Security Law, Article 40 states: \"The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.\"\n\nThis provision permits you to combine wages from a job or occupation with your Work Injury Disability Pension with **no further conditions stated in the documents provided**. The law does not specify limits, waiting periods, restrictions on employer, or reductions to your pension if you work.\n\n---\n\n**General information, not legal advice — consult a licensed lawyer about your own case.**",
+    "calc": {
+      "disability_pension_scope_note": true
+    }
+  }
+}

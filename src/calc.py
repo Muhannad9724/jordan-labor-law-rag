@@ -707,14 +707,25 @@ def compute_gender_conditions(chunks, sex=None):
     eligibility (a normal-retirement-age question, an early-retirement-continuation
     question) had BOTH articles clustered together; the two that look like ordinary
     crowding (one about buying a missing subscription period, unrelated to the sex
-    split) had only ONE. One article present is incidental; both together is a real
-    signal the question is about eligibility broadly -- so this now requires every
-    pattern in _GENDER_PATTERNS to have matched, not just one. Confirmed this does
-    not affect the actual reported bug: every real gender-eligibility question in
-    Phase 24e/25's own tests retrieved both articles together, never one alone.
+    split) had only ONE. So Phase 25a required every pattern in _GENDER_PATTERNS to
+    match, not just one.
+
+    RANK EXCEPTION -- Phase 32's multi-turn eval (mt02) found that guard too strict:
+    a question genuinely and *only* about early retirement ("Male" following "how
+    many years for early retirement" in history) retrieves Article 64 on its own
+    merits as the TOP-ranked chunk -- Article 62 (retirement AGE, a different topic)
+    has no reason to be pulled in just because 64 is. The "both required" rule
+    silently declined the block for a question the mechanism exists to answer.
+    Checked against the original crowding case (buying a missing subscription
+    period): there, Article 64 is present but only as the SECOND-ranked chunk,
+    behind Article 65 (the article the question is actually about) -- being ranked
+    #1 is exactly the signal that separates "this article is what the question is
+    about" from "this article incidentally showed up." So: an unpaired match still
+    counts if its article is the single highest-ranked chunk retrieved (chunks[0]),
+    not just present somewhere in the list.
     """
     out = []
-    for c in chunks:
+    for rank, c in enumerate(chunks):
         if c.get("law") != "ssl":
             continue
         art = str(c.get("article_number"))
@@ -735,9 +746,14 @@ def compute_gender_conditions(chunks, sex=None):
             continue  # a word this closed lookup doesn't know -- decline, don't guess
         out.append({"article": art, "kind": kind, "language": lang,
                      "label": _GENDER_LABEL.get((art, lang)),
-                     "male": male, "female": female})
-    if len({o["article"] for o in out}) < len(_GENDER_PATTERNS):
+                     "male": male, "female": female, "rank": rank})
+    matched_articles = {o["article"] for o in out}
+    if len(matched_articles) < len(_GENDER_PATTERNS) and not (
+        len(matched_articles) == 1 and out[0]["rank"] == 0
+    ):
         return []
+    for o in out:
+        del o["rank"]
     return out
 
 
@@ -791,6 +807,22 @@ def format_gender_block(conditions, lang="en", sex=None):
 # (safe -- pure text extraction, nothing about the person needed) and only
 # reports a JD figure if the person states an HOURLY wage directly. A bare
 # "my salary is 800 JD" is left as a percentage, never silently divided.
+#
+# A second precondition, found by a systematic audit of the corpus for scope-gate
+# articles (the same pass that found labor96 Article 86 for the injury chapter):
+# Article 58, "Individuals excluded from overtime", says the working-hours articles
+# -- Article 59 among them -- do NOT apply to anyone in general supervision or
+# management, or whose job requires travel. Unlike Article 86, no retrieval fix was
+# needed: Article 58 already retrieves alongside Article 59 naturally on every
+# phrasing tried (they sit in the same short mini-chapter, Articles 56-59). What was
+# still missing was the model ever being told to treat the rate as conditional on it
+# -- same gap Article 86 had before SYSTEM_PROMPT rule 21/22 -- so this calculator
+# checks whether Article 58 was retrieved and, if so, flags the result the same way
+# `compute_end_of_service` flags its own SSL-coverage precondition: state the rates
+# as conditional, and ask, rather than assume either way. There is no reliable way to
+# extract "is this person a supervisor" from free text the way salary or years-of-
+# service are extracted elsewhere in this module, so this is a flag for the model to
+# ask about, not something this function tries to determine itself.
 _OT_HOURLY_RE = re.compile(
     r"([٠-٩\d][٠-٩\d,\.]*)\s*(?:دينار|دنانير|jods?|jd|dinars?)\s*(?:في|بال|/|per)\s*(?:ال)?(?:ساعة|hour)"
     r"|(?:ساعة|hour)\s*(?:بـ|بمبلغ|:)?\s*([٠-٩\d][٠-٩\d,\.]*)\s*(?:دينار|دنانير|jods?|jd|dinars?)",
@@ -819,6 +851,10 @@ def compute_overtime(chunks, hourly_wage=None):
     """Overtime pay rates under Art 59, or None if the article was not
     retrieved or its two rates could not be found (reworded, amended --
     decline rather than guess which figure is which).
+
+    `requires_not_excluded_role` is True when Article 58 was also retrieved --
+    see the module comment above. It does not change the rates; it tells
+    `format_overtime_block` to present them as conditional rather than owed.
     """
     for c in chunks:
         if c.get("law") != "labor96" or str(c.get("article_number")) != "59":
@@ -829,12 +865,17 @@ def compute_overtime(chunks, hourly_wage=None):
         if len(pcts) != 2:
             continue
         ordinary_rate, holiday_rate = pcts
+        excluded_role = any(
+            c2.get("law") == "labor96" and str(c2.get("article_number")) == "58"
+            for c2 in chunks
+        )
         return {
             "law": "labor96", "article": "59", "language": lang,
             "ordinary_rate": ordinary_rate, "holiday_rate": holiday_rate,
             "hourly_wage": hourly_wage,
             "ordinary_amount": _amount(hourly_wage, ordinary_rate) if hourly_wage else None,
             "holiday_amount": _amount(hourly_wage, holiday_rate) if hourly_wage else None,
+            "requires_not_excluded_role": excluded_role,
         }
     return None
 
@@ -849,6 +890,11 @@ _OT_LABELS = {
         "nowage": ("The person did not state an HOURLY wage, so give the rates as percentages of "
                    "their regular hourly wage -- do not invent a JD figure from a monthly salary; "
                    "the documents do not state how to convert one into the other."),
+        "cond": ("CONDITION -- Article 58 excludes anyone in general supervision or management, "
+                 "and anyone whose job requires travel, from these overtime provisions entirely. "
+                 "The person has not said whether either applies to them, so give the rates above "
+                 "as conditional on that and ASK whether they hold a supervisory/management role "
+                 "or a role requiring travel. Do not present the rates as simply what they get."),
     },
     "ar": {
         "head": "أرقام محسوبة مسبقاً -- العمل الإضافي (المادة 59، النسب مقروءة من النص)",
@@ -858,6 +904,10 @@ _OT_LABELS = {
                     "{ha:g} دينار لكل ساعة في يوم العطلة أو العطلة الرسمية."),
         "nowage": ("لم يذكر الشخص أجر الساعة، فاذكر النسب كنسبة من أجر الساعة المعتاد -- لا تخترع "
                    "رقماً بالدينار من راتب شهري، فالوثائق لا تنص على طريقة التحويل بينهما."),
+        "cond": ("شرط -- المادة (58) تستثني من أحكام العمل الإضافي كل من يتولى مهام الإشراف العام أو "
+                 "الإدارة، وكل من تتطلب طبيعة عمله السفر والتنقل. لم يذكر الشخص إن كان ينطبق عليه "
+                 "أي من الحالتين، فاذكر النسب أعلاه مشروطة بذلك واسأله هل يشغل منصباً إشرافياً أو "
+                 "إدارياً أو عملاً يتطلب السفر. لا تقدّم النسب على أنها ما يستحقه ببساطة."),
     },
 }
 
@@ -872,6 +922,8 @@ def format_overtime_block(result, lang="en"):
                                            ha=result["holiday_amount"]))
     else:
         lines.append(lb["nowage"])
+    if result.get("requires_not_excluded_role"):
+        lines.append(lb["cond"])
     return "\n".join(lines)
 
 
@@ -985,3 +1037,61 @@ def format_leave_block(result, lang="en"):
         lines.append(lb["total"].format(y=result["years"], t=t, b=b, d=result["accrued_days"]))
     lines.append(lb["nocash"])
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Work Injury Disability Pension + wages, Article 40 vs Article 85 (Phase 34).
+#
+# Article 40 is a single sentence that directly answers "can I work while
+# receiving a Work Injury Disability Pension" -- yes, without restriction.
+# Article 85 gets retrieved right alongside it (both are about combining a
+# Social Security pension with something else) and is where every measured
+# failure on this question came from, repeatedly, across Phase 21/25/31/34:
+# the model cites one of Article 85's disability-pension paragraphs as if it
+# governs the WORK-INJURY pension, when none of them do. Reading Article 85
+# itself explains why this keeps happening rather than being a one-off
+# misread: its paragraph (b) mentions "work-related disability pensioner" by
+# name -- but that paragraph is about combining with ANOTHER pension, not
+# wages, so it is a keyword match on the wrong axis. Its paragraphs (e) and
+# (f) ARE about combining a disability pension with wages -- but they say
+# "Natural Disability Pension", the non-work-injury insurance branch, not
+# work injury. Both are genuine, adjacent, similarly-worded traps in the
+# source text itself, not a garbled retrieval. No arithmetic here, just a
+# scope note -- unlike the rest of this module there is nothing to compute
+# or ask the person, so this fires whenever both articles are retrieved
+# together, with no precondition.
+_DISABILITY_SCOPE_NOTE = {
+    "en": (
+        "[SCOPE NOTE -- Work Injury Disability Pension and other work]\n"
+        "Article (40) directly answers whether a Work Injury Disability Pension may be "
+        "combined with wages from a job or occupation: yes, without further condition "
+        "stated. Article (85)'s paragraphs about combining a pension with wages or another "
+        "pension concern DIFFERENT cases, not the Work Injury Disability Pension: paragraph "
+        "(b) is about combining with ANOTHER Social Security pension, not wages; paragraph "
+        "(d) is about Early Retirement Pensioners; paragraphs (e) and (f) are about the "
+        "Natural Disability Pension (a different, non-work-injury insurance branch); "
+        "paragraph (g) is about military pensioners. None of Article (85)'s conditions "
+        "apply to a Work Injury Disability Pension -- do not cite them as if they do."
+    ),
+    "ar": (
+        "[ملاحظة نطاق -- راتب اعتلال إصابة العمل والعمل الآخر]\n"
+        "المادة (40) تجيب مباشرة عن إمكانية الجمع بين راتب اعتلال إصابة العمل وأجر من عمل أو "
+        "مهنة: نعم، دون شرط آخر منصوص عليه. فقرات المادة (85) المتعلقة بالجمع بين راتب تقاعدي "
+        "وأجر أو راتب آخر تخص حالات مختلفة، وليس راتب اعتلال إصابة العمل: الفقرة (ب) تخص الجمع "
+        "مع راتب ضمان اجتماعي آخر، وليس أجراً؛ الفقرة (د) تخص أصحاب راتب التقاعد المبكر؛ "
+        "الفقرتان (هـ) و(و) تخصان راتب الاعتلال الطبيعي (فرع تأمين مختلف، غير إصابات العمل)؛ "
+        "الفقرة (ز) تخص المتقاعدين العسكريين. لا ينطبق أي من شروط المادة (85) على راتب اعتلال "
+        "إصابة العمل -- لا تستشهد بها كما لو كانت تنطبق."
+    ),
+}
+
+
+def disability_pension_scope_note(chunks, lang="en"):
+    """The note above if BOTH Article 40 and Article 85 (SSL) were retrieved,
+    else None. Only a disambiguation between two already-retrieved articles --
+    nothing computed, nothing to ask the person.
+    """
+    arts = {str(c.get("article_number")) for c in chunks if c.get("law") == "ssl"}
+    if "40" in arts and "85" in arts:
+        return _DISABILITY_SCOPE_NOTE.get(lang, _DISABILITY_SCOPE_NOTE["en"])
+    return None

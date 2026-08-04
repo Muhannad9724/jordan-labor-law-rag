@@ -11,11 +11,29 @@ Two mechanisms, depending on the model:
   regex and checked against what was actually retrieved, which doubles as a fabricated-
   citation check (did it cite an article that wasn't even in the context it was given).
 
-Production pick: `get_production_generator()` -- GPT-4o-mini via OpenRouter. Chosen in
-scripts/generation_llm_comparison.ipynb over Cohere command-a-03-2025 and Qwen2.5-72B on
-a 10-question correctness/fabrication check (10/10 correct, 0 fabricated citations, and
-the cheapest of the three at ~$0.0004/question). `Generator` (Cohere) is kept for that
-comparison, not used in production.
+Production pick: `get_production_generator()` -- Claude Haiku 4.5 via OpenRouter, switched
+from `gpt-4o-mini` in Phase 31 (scripts/29-30...ipynb). GPT-4o-mini was the Phase 7 pick
+(against Cohere command-a-03-2025 and Qwen2.5-72B, clause chunks, the old prompt, the v1
+eval set -- all since replaced). The Phase 31 re-review tested `gemini-2.5-flash`, `gpt-4o`
+and `claude-haiku-4.5` against gpt-4o-mini on all 60 eval_v3 questions, paired identical
+context: none beat production on both judge metrics by a pre-committed margin (gemini lost
+on relevancy from padding plus a real truncation bug; gpt-4o was directionally better on
+faithfulness but not significantly so). Haiku's LLM-judge comparison (necessarily graded by
+`gpt-4o`, not this project's usual Sonnet-5 judge, to avoid vendor-family bias -- Haiku is
+Anthropic, same as Sonnet 5) came back almost entirely tied, but that traces to `gpt-4o`
+being a substantially more lenient grader than Sonnet 5 (the same 60 production answers
+scored 0.17 higher under `gpt-4o` than under Sonnet 5 -- a ceiling effect, not evidence of
+no difference), not to Haiku actually matching production. The regex proxy, unaffected by
+judge choice, was unambiguous: 60/60 correct-article-cited, 58/60 fully complete, 0/60
+fabrications -- the best and only zero-fabrication result across every arm tested in this
+project's history. Adopted on that basis plus a manual read of a sample of its 60 answers
+(clean; the two real defects the judge did catch -- a wrong pension age in one answer, an
+ungrounded "gross fault" inference in another -- were isolated, not a pattern), not on a
+statistically significant judge win, which this particular judge setup could not reliably
+produce either way. `SYSTEM_PROMPT` was compacted in the same phase (22 rules, ~34% fewer
+tokens, no rule dropped) and shipped together with the model switch -- the two were tested
+as one bundled configuration, so this switch cannot be attributed to the model alone.
+`Generator` (Cohere) is kept for the original Phase 7 comparison, not used in production.
 """
 import json
 import os
@@ -109,41 +127,86 @@ CHAT_MODEL = "command-a-03-2025"
 # ("yes, join") would be actual advice, not legal information, and is exactly the boundary the
 # closing disclaimer line already exists to keep. The rule threads between the two: state the
 # benefits and the obligations/costs the documents describe, neutrally, and stop there.
-SYSTEM_PROMPT = """You are a legal information assistant for Jordanian labour and social security law (the Labour Law 1996, the Professional Work Law 2019, and the Social Security Law). You will be given excerpts from law articles. Answer using only those excerpts.
+#
+# Rules 21-22 are the generation-side half of a retrieval fix (src/retrieval.py's
+# PRECONDITION_ARTICLES). Tracing eval_v3 q05 and q43 found the model answering a
+# work-injury question from labor96 Articles 90/91 alone, or blending them with ssl
+# Article 30, without ever knowing that Article 86 makes the whole labor96 chapter
+# conditional on NOT being covered by Social Security -- because Article 86 was not
+# retrieved. Fixing retrieval alone was measured NOT to fix this: with Article 86
+# added to context but no instruction, none of four test answers stated the
+# condition, and q05 got WORSE (a new cross-contamination error, applying Article
+# 91's wage formula to an SSL pension) -- proof that more context without guidance
+# can actively hurt. Rule 21 is the fix: an explicit carve-out of rule 6, the same
+# pattern rule 18 already uses for arithmetic, because stating a condition a document
+# actually writes is reading the text, not the inference rule 6 forbids.
+#
+# Rule 22 covers a different, adjacent finding from the same investigation: labor96
+# Article 3 excludes public servants, municipal workers, and (separately) domestic/
+# agricultural workers from the entire Labour Law, and prof19 Article 3 gates the
+# whole Professional Work Law on a ministerial inclusion decision -- neither answer
+# the question asked, but both can silently change whether the rest of the answer
+# even applies to the person. Deliberately NOT modelled as retrieval facts the way
+# Article 86 is: user's call, after the tradeoff was stated -- a fact stated directly
+# in the prompt can go silently stale if the article is ever amended, unlike
+# everything else here which is re-read from retrieved text every time. Accepted for
+# these two specifically because they are short, simple, and not the kind of thing
+# (a rate, a threshold) this project's history shows gets amended often. ssl Article
+# 4's own coverage conditions stayed a retrieval rule rather than being summarised
+# here, since they are longer and more detailed (age, category, wage-minimum tests).
+# Compacted in Phase 31 (scripts/29...ipynb) as part of the model switch above: same 22
+# rules, no rule dropped, phrasing tightened -- 34% fewer tokens (7,913 -> 5,189 chars),
+# sent on every single call. The history in the comment block above this one documents WHY
+# each rule exists and stays accurate; it describes the reasoning, not the exact wording,
+# which changed here. Rules 14-20 (the calculator-block rules) were kept close to their
+# original wording deliberately -- they gate deterministic output from src/calc.py and are
+# tied to real measured bugs (Phase 24-26), not worth risking for a marginal token saving.
+# Rule 21 was tightened to say "lead with that condition" rather than "state that
+# condition", matching what a same-phase position experiment (scripts/28...ipynb, section 9)
+# showed actually moves behaviour on a model that needed it -- untested here on Haiku
+# specifically, since Haiku handled the underlying case correctly without needing the push.
+# Validated before shipping: a 9-answer smoke test (3 models x 3 known-tricky questions)
+# confirmed the calculator blocks still fire and narrate correctly, then the full Phase 31
+# re-review (60 questions, paired context) found no regression versus the original wording.
+SYSTEM_PROMPT = """You are a legal information assistant for Jordanian labour and social security law (the Labour Law 1996, the Professional Work Law 2019, and the Social Security Law). Answer using only the provided excerpts.
 
 Grounding
-1. Every statement must come from the provided documents. Do not add outside knowledge.
-2. If the documents do not answer the question, say so plainly rather than filling the gap.
-3. Cite by law and article number (e.g. "Labour Law 1996, Article 61"), and cite only articles you were actually given. Name the law the document itself is labelled with -- never attribute a provision to a different law.
+1. Every statement must come from the documents -- no outside knowledge.
+2. If the documents don't answer the question, say so plainly rather than filling the gap.
+3. Cite by law and article number (e.g. "Labour Law 1996, Article 61"), only articles you were given, under the law each document is actually labelled with.
 
 Coverage
-4. Read every document you were given before you answer. More than one article often bears on the same question. Address each article that does, with its own citation -- do not stop at the first one that answers it.
-5. Within an article you cite, cover every lettered paragraph that bears on the question. A paragraph bears on the question if it adds a condition, an exception, a limit, a minimum, or a further step the person would need to take.
-6. State what each provision says on its own terms. Do not explain how two provisions combine, qualify or override one another unless a document says so -- where two articles both apply, give each separately and let them stand side by side.
+4. Read every document before answering. More than one article often bears on the question -- address each one that does, with its own citation, not just the first.
+5. Within a cited article, cover every lettered paragraph that adds a condition, exception, limit, minimum, or further step -- and every numbered point nested inside one of those paragraphs (e.g. different categories of beneficiary each with their own condition), not just the paragraph as a whole.
+6. State each provision on its own terms. Don't explain how two provisions combine or override each other unless a document says so -- give each separately, side by side.
 
 Precision
-7. An article often contains several lettered paragraphs, each a separate rule. Name the paragraph that applies -- "Article 65(a)" -- and never merge two paragraphs into a single statement.
-8. Reproduce durations, percentages, amounts, ages and deadlines exactly as the document gives them, and attach each one to the specific obligation the text attaches it to.
-9. Where the text qualifies a rule, state the qualification together with the rule. Never present a conditional rule as unconditional, and never widen a rule beyond the persons or cases the text names.
+7. Name the specific paragraph that applies ("Article 65(a)"), never merging two paragraphs into one statement.
+8. Reproduce durations, percentages, amounts, ages and deadlines exactly as given, attached to the specific obligation they belong to.
+9. State any qualification together with the rule it qualifies. Never present a conditional rule as unconditional or widen it beyond the persons/cases named.
 
 Usefulness
-10. The question usually describes someone's real situation. Answer that first, in a sentence or two, then give the supporting rules and citations. Do not open by restating the article.
-11. If the answer depends on a fact about the person's own situation that they have not given -- their age, years of service, marital status, a date, an amount, which law covers them, or their sex where a provision sets separate figures for men and women -- ask them for it in one short question instead of guessing or covering every possible case. Never silently default to one case (e.g. the male figures) when a provision states both. If the documents instead give a short, complete set of conditions you can state directly, state them. Apply this to the current question on its own terms: if the fact is still missing, ask for it even if an earlier turn in the conversation answered without it. Exception: where a computed block below has already resolved a fact by giving you both cases (see rule 20), presenting both IS the answer for that fact -- do not also ask a separate question about it.
-12. Reply in the language of the question -- an Arabic question gets an Arabic answer, an English question gets an English answer. Write plainly and without padding, but do not leave a relevant provision out in order to keep the answer short.
+10. Answer the person's actual situation first, in a sentence or two, then give supporting rules and citations. Don't open by restating the article.
+11. If the answer depends on a fact the person hasn't given (age, years of service, marital status, a date, an amount, which law covers them, or sex where a provision sets separate figures) -- ask for it in one short question rather than guessing or covering every case. Never silently default to one case (e.g. male figures) when a provision states both. If the documents give a short, complete set of conditions instead, state them directly. Judge the current question on its own terms even if an earlier turn answered without the fact. Exception: if a computed block already gives both cases (rule 20), presenting both IS the answer -- don't also ask.
+12. Reply in the question's language. Be plain and unpadded, but never drop a relevant provision to stay short.
 
 Judgment questions
-13. Some questions ask for a personal decision or opinion ("should I...", "is it worth it...", "is it better to...") rather than a fact the documents state directly. If the documents describe the relevant provisions, lay out the concrete benefits and the obligations or costs they describe, neutrally and side by side, so the person can weigh it themselves. Do not tell them what to decide, and do not reason beyond what the documents state.
+13. For a personal-decision question ("should I...", "is it worth it..."), lay out the documents' benefits and obligations/costs neutrally, side by side, so the person can weigh it. Don't recommend, and don't reason beyond what the documents state.
 
 Totals and calculations
-14. When the question asks for a total, a combined rate, or an amount worked out from a figure the person gave, account for EVERY provision in the documents that contributes to it -- not only the most prominent one. Contributions in particular are set by several separate articles, one per type of insurance, and answering from one of them understates the answer.
-15. Before calculating, restate any rate that the documents write in words as a numeral (the conversion aid under each document gives it). A rate written in words counts exactly as much as one written in digits -- do not skip it because it is harder to read.
-16. Show each component on its own line with the article it comes from and, when a computed block names one, which type of insurance the rate is for -- do not drop the name even when it is obvious to you, since the answer is for someone who may not know the branches exist. Then the total. Separate what the employer pays from what is deducted from the employee, and never add the two together into a single figure unless the person asked for the combined total.
-17. Apply any ceiling or floor on the amount that the documents state, and say plainly when it does not affect the figure given.
-18. Rule 6 does not forbid this. Adding up rates that the documents each state outright is arithmetic, not interpretation. Rule 6 still governs everything else: do not reason about how provisions qualify or override one another, and if the total depends on which category the person falls into, say which case you have calculated and name the others.
-19. Where a block of computed figures follows the documents, the arithmetic in it has already been done and checked. Use those rates, amounts and totals exactly as given -- do not re-add the components, do not re-derive a total, do not round differently, and never state a figure that contradicts the block. Rules 14 to 17 are already satisfied by it. You still write the answer: cite the article beside each rate as the block shows it, and add anything the documents say that the block does not cover.
-20. Where a block marks a condition that differs for men and women, follow it exactly: if it gives one figure, the person's sex is already known and that is the only figure to state; if it gives both figures, their sex is not known -- present both, clearly labelled, rather than picking one or asking a separate question about it. This is not something to notice and decide on your own; the block has already made the determination.
+14. For a total, combined rate, or amount worked out from a stated figure, account for EVERY contributing provision, not just the most prominent one -- contributions especially span several articles, one per insurance type.
+15. Convert any rate the documents write in words to a numeral before calculating (using the conversion aid) -- it counts the same as a digit rate.
+16. Show each component on its own line with its article and insurance type (never drop the name). Then the total. Keep employer and employee amounts separate; don't combine them unless asked for the combined total.
+17. Apply any stated ceiling or floor, and say plainly when it doesn't affect the figure.
+18. Adding up rates the documents state outright is arithmetic, not the inference rule 6 forbids -- rule 6 still governs everything else. If the total depends on which category the person falls into, say which case you calculated and name the others.
+19. A computed block's arithmetic is already done and checked -- use its rates, amounts and totals exactly, without re-deriving, re-rounding, or contradicting them. It already satisfies rules 14-17; you still cite each rate's article and add anything the documents say that the block doesn't cover.
+20. Follow a block's sex-differentiated condition exactly: one figure means sex is known (state only that one); both figures mean it isn't (present both, labelled) -- this has already been determined, not something to re-decide.
 
-Close with one short line noting this is general information, not legal advice, and that they should consult a licensed lawyer about their own case."""
+Multiple laws, and who a law covers
+21. If a document states a condition that decides which of two provisions applies (most often, coverage by a different law), lead with that condition -- this is reading the text, not the inference rule 6 forbids. When two laws address the same event, never merge them into one undifferentiated answer: attribute each obligation to the party the text names, and never describe one law's institution's payment (e.g. Social Security) as required from the other's party (e.g. the employer).
+22. Labour Law 1996 excludes government/municipal employees and domestic/agricultural workers (separate rules apply). Professional Work Law 2019 only covers professions the Council of Ministers has included. Treat a retrieved document's own coverage conditions the same way. Mention whichever is relevant briefly, once -- not every turn, and not as a second full answer; if these documents don't cover the person's situation, say so per rule 2.
+
+Close with one short line: general information, not legal advice, consult a licensed lawyer about their own case."""
 
 LAW_DISPLAY_NAMES = {
     "ssl": "Social Security Law",
@@ -375,7 +438,7 @@ class OpenAICompatibleGenerator:
     """Generator for any OpenAI-compatible chat endpoint (OpenAI direct, or OpenRouter for open models)."""
 
     def __init__(self, model_id, api_key_env, base_url=None, extra_body=None, temperature=None,
-                 system_prompt=None):
+                 system_prompt=None, max_tokens=None):
         load_dotenv(PROJECT / ".env")
         from openai import OpenAI
         self.client = OpenAI(api_key=os.environ[api_key_env], base_url=base_url)
@@ -383,6 +446,15 @@ class OpenAICompatibleGenerator:
         self.extra_body = extra_body
         self.temperature = temperature  # None = provider default (unset, untested -- see scripts/generation_config_tuning.ipynb)
         self.system_prompt = system_prompt or CONTEXT_SYSTEM_PROMPT
+        # None = provider default, same as `temperature` -- but per the Phase 20 judge lesson
+        # (LESSONS.md 3.3), OpenRouter reserves credit against a request's max_tokens *ceiling*,
+        # not actual usage. Left unset here for `gpt-4o`/`gpt-4o-mini` (production, and every
+        # generation number this project has published, is measured with it unset and has never
+        # hit this). Repeated the failure on `claude-haiku-4.5` during the Phase 31 re-review
+        # (scripts/30...ipynb): its unset ceiling defaults to 64,000 tokens/call, and after
+        # enough calls the account's available balance couldn't cover the reservation --
+        # a 402 with a healthy balance still showing, same shape as the original judge bug.
+        self.max_tokens = max_tokens
 
     def rewrite_for_retrieval(self, query, history):
         """Rewrite a follow-up into a standalone question. Returns `query` on any failure.
@@ -434,6 +506,63 @@ class OpenAICompatibleGenerator:
             return query
         return out
 
+    def _reparse_for_completeness(self, query):
+        """A more explicit restatement of `query`, or None on any failure/no-op.
+
+        Phase 35's deep dive (q29) found this works where a static prompt rule
+        (SYSTEM_PROMPT rule 5) only partially did: q29 measured 0/9 with no
+        intervention, ~30% with the broadened rule, 12/12 across two independent
+        6-trial runs with this reparse step. Best-guess mechanism: noticing that a
+        dense article covers several distinct cases and choosing to enumerate all
+        of them is a harder task than answering an ALREADY-explicit "list every
+        category and its own condition" question -- splitting a hard task into an
+        easier decomposition step plus an easier execution step raised reliability
+        here in a way another generic prompt rule did not.
+
+        Deliberately narrow: only makes the ORIGINAL question's own scope
+        explicit (asks for every relevant category if the question could have
+        more than one), never introduces a new comparison axis (sector, pension
+        type, etc.) the person did not ask about -- an earlier, looser version of
+        this prompt invented such comparisons and roughly tripled answer length
+        pulling in tangential articles. Still measured ~2-3x longer answers than
+        without it even after tightening, because a genuinely more complete
+        question legitimately triggers more of SYSTEM_PROMPT's coverage rules
+        (rule 4) -- disclosed, not hidden; this is not free.
+
+        Runs on `COMPLETENESS_REPARSE_MODEL_ID`, not `self.model_id` -- this call
+        never reads legal text, just rewrites one question into a more explicit
+        version of itself, a narrower task than the main generation call it feeds.
+        Deliberately the same choice of model this project already trusted for
+        full legal-answer generation for most of its history (`gpt-4o-mini` was
+        production through Phase 30), so it is not an unproven cost-cutting
+        gamble -- it is being asked to do less than what it used to do reliably.
+        Falls back to `self.model_id` if the cheap call errors, so a bad key/quota
+        on the cheaper model degrades to the old cost rather than silently losing
+        the completeness gain.
+        """
+        for model_id in (COMPLETENESS_REPARSE_MODEL_ID, self.model_id):
+            try:
+                resp = self.client.chat.completions.create(
+                    model=model_id,
+                    max_tokens=COMPLETENESS_REPARSE_MAX_TOKENS,
+                    extra_body=self.extra_body,
+                    messages=[
+                        {"role": "system", "content": COMPLETENESS_REPARSE_PROMPT},
+                        {"role": "user", "content": f"Original question: {query}\n\nRewritten question:"},
+                    ],
+                )
+                out = (resp.choices[0].message.content or "").strip() if resp.choices else ""
+                break
+            except Exception:
+                out = ""
+        else:
+            return None
+
+        out = " ".join(out.split())
+        if not out or len(out) > 600 or out == query:
+            return None
+        return out
+
     def generate(self, query, chunks, history=None, max_retries=5):
         lang = detect_language(query)
         context = _format_context(chunks, lang)
@@ -450,7 +579,8 @@ class OpenAICompatibleGenerator:
                                compute_gender_conditions, compute_overtime, compute_leave_accrual,
                                extract_salary, extract_service, extract_sex, extract_hourly_wage,
                                format_calculation_block, format_end_of_service_block,
-                               format_gender_block, format_overtime_block, format_leave_block)
+                               format_gender_block, format_overtime_block, format_leave_block,
+                               disability_pension_scope_note)
             salary = extract_salary(query)
             calc = compute_contributions(chunks, salary=salary)
             if calc:
@@ -483,11 +613,30 @@ class OpenAICompatibleGenerator:
             if leave:
                 context += "\n\n" + format_leave_block(leave, lang)
                 calc = {**(calc or {}), "leave_accrual": leave}
+            # Article 40 vs Article 85 (Phase 34) -- pure disambiguation, no
+            # computed figures, see src/calc.py for why the model keeps
+            # misapplying Article 85's disability-pension paragraphs here.
+            scope_note = disability_pension_scope_note(chunks, lang)
+            if scope_note:
+                context += "\n\n" + scope_note
+                calc = {**(calc or {}), "disability_pension_scope_note": True}
         except Exception:
             calc = None  # never let the aid break an answer the model could still give
 
         user_msg = (f"الوثائق:\n{context}\n\nالسؤال: {query}" if lang == "ar"
                     else f"Documents:\n{context}\n\nQuestion: {query}")
+
+        # Completeness reparse (Phase 35) -- appended AFTER the original question,
+        # never replacing it, so the person's own words still drive the answer's
+        # tone (rule 10) and the calc extractors above still read the ORIGINAL
+        # query, not this rewrite. See _reparse_for_completeness for why this
+        # exists and its measured cost (longer answers).
+        reparsed = self._reparse_for_completeness(query)
+        if reparsed:
+            user_msg += (f"\n\n[صياغة أكثر تفصيلاً لنفس السؤال -- تأكد من تغطية كل ما تشمله]: {reparsed}"
+                         if lang == "ar" else
+                         f"\n\n[A more explicit restatement of the same question -- make sure your answer covers everything it asks]: {reparsed}")
+
         available_articles = {c["article_number"] for c in chunks}
 
         # Prior turns go in as real chat messages, before the documents+question turn.
@@ -516,6 +665,7 @@ class OpenAICompatibleGenerator:
                     messages=messages,
                     extra_body=self.extra_body,
                     **({"temperature": self.temperature} if self.temperature is not None else {}),
+                    **({"max_tokens": self.max_tokens} if self.max_tokens is not None else {}),
                 )
                 if resp.choices:
                     break
@@ -713,6 +863,44 @@ Rules:
 
 REWRITE_MAX_TOKENS = 200
 
+# Query reparser for completeness (Phase 35) -- a second, separate LLM call from
+# REWRITE_PROMPT above. That one rewrites a follow-up into a standalone RETRIEVAL
+# query; this one takes the question that will actually be shown to the GENERATOR
+# and makes its own scope explicit, so a dense article's several distinct cases
+# get asked for by name instead of the model having to notice them unprompted.
+#
+# Tightened once already after a first version invented new comparison axes the
+# person never asked about (e.g. adding "does this differ by employer sector?" to
+# a question that never raised sector at all) -- roughly tripled answer length
+# pulling in tangential articles that axis triggered. This version is restricted
+# to making the ORIGINAL question's own scope explicit, nothing beyond it.
+COMPLETENESS_REPARSE_PROMPT = """You rewrite a legal question into a more explicit version of the SAME question, for a Jordanian labour and social security law assistant. Output must be a single question, not a numbered list of separate questions.
+
+Do NOT add any new topic, angle, or comparison the person did not ask about (e.g. do not ask whether the answer differs by sector, employer type, or pension type, unless the original question already asked that). Only make the ORIGINAL question's own scope explicit: if it asks who is entitled to something and there could be more than one category of eligible person, make the question explicitly ask for EVERY such category and that category's own specific condition -- nothing beyond that. If the question does not have this shape (no plausible multiple categories/cases), return it unchanged.
+
+Return only the rewritten question, in the same language as the original, as ONE sentence. Nothing else."""
+
+COMPLETENESS_REPARSE_MAX_TOKENS = 150
+
+# Deliberately NOT PRODUCTION_MODEL_ID (Phase 36 follow-up). Rewriting one question
+# into a more explicit version of itself never reads legal text and needs no legal
+# reasoning -- a narrower task than the generation call it feeds, so it does not
+# need the same model. Same OpenRouter account/base_url as the main generator, so
+# no separate client or API key is needed -- just a different `model=` string.
+#
+# `gpt-4o-mini` was tried first (it was this project's own production model for
+# full legal-answer generation through Phase 30) and measured too weak for even
+# this narrower task: on the q29 test case its rewrites collapsed into plain
+# paraphrases that dropped the explicit "every category, its own condition"
+# framing, and completeness fell from 18/18 (reparsing on the production model) to
+# roughly 1/4. `google/gemini-2.5-flash` measured 6/6 on the same test -- its
+# rewrites kept the explicit per-category framing -- at $0.30/$2.50 per 1M
+# tokens vs Haiku 4.5's $1/$5, roughly a third of the cost. Chosen over the
+# production model specifically because this task doesn't need it, not because
+# it's assumed to be "good enough" generically -- see the model comparison in
+# scripts/33 and its Phase 36 follow-up in CLAUDE.md.
+COMPLETENESS_REPARSE_MODEL_ID = "google/gemini-2.5-flash"
+
 # Injected as a system message AFTER the history and immediately BEFORE the current
 # question -- position is the entire point.
 #
@@ -741,12 +929,20 @@ REWRITE_HISTORY_TURNS = 4
 GENERATION_HISTORY_TURNS = 6
 
 
-PRODUCTION_MODEL_ID = "openai/gpt-4o-mini"
+PRODUCTION_MODEL_ID = "anthropic/claude-haiku-4.5"
 PRODUCTION_API_KEY_ENV = "OPENROUTER_API_KEY"
 PRODUCTION_BASE_URL = "https://openrouter.ai/api/v1"
 
+# Required as of the Phase 31 switch to Haiku -- see OpenAICompatibleGenerator.__init__'s
+# max_tokens note. gpt-4o-mini never needed this (unset ceiling never caused a problem in
+# this project's whole history with it); Haiku's unset ceiling is 64,000 tokens/call, and
+# that reservation 402'd a live OpenRouter key mid-testing despite real usage per answer
+# staying under 600 tokens. 4000 is generous headroom above every answer length measured so
+# far (worst case ~1,100 tokens) while nowhere near large enough to trigger the same failure.
+PRODUCTION_MAX_TOKENS = 4000
 
-def get_production_generator(temperature=None, system_prompt=None):
+
+def get_production_generator(temperature=None, system_prompt=None, max_tokens=PRODUCTION_MAX_TOKENS):
     """The chosen generation backend for this project -- see module docstring."""
     return OpenAICompatibleGenerator(
         model_id=PRODUCTION_MODEL_ID,
@@ -754,4 +950,5 @@ def get_production_generator(temperature=None, system_prompt=None):
         base_url=PRODUCTION_BASE_URL,
         temperature=temperature,
         system_prompt=system_prompt,
+        max_tokens=max_tokens,
     )

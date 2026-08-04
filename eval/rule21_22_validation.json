@@ -1,0 +1,291 @@
+{
+  "q05": {
+    "question": "If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",
+    "retrieved": [
+      "labor96_en_91",
+      "labor96_en_90",
+      "ssl_en_30",
+      "labor96_en_96",
+      "labor96_en_92",
+      "labor96_en_86",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "If someone is killed or left permanently unable to work due to an accident at work, the following compensation provisions apply:\n\n1. In case of death or total permanent disability, the employer must pay compensation equivalent to the wages of one thousand and two hundred working days. However, the compensation is capped at five thousand JDs and must not be less than two thousand JDs. This is detailed in Labour Law 1996, Article 90(a).\n\n2. For total permanent work-related disability, the insured is entitled to a monthly Disability Pension equivalent to (75%) of the wage that was used for calculating contributions at the time of the injury. This is explained in Social Security Law, Article 30(b).\n\n3. The monthly Disability Pension begins as of the date when the worker’s condition becomes stable, as determined by a Medical Reference, and it can be subject to a (25%) increase if assistance is needed for daily tasks, not exceeding the approved minimum wage as per Labour Law provisions (Social Security Law, Article 30(b)).\n\nIn summary, the compensation for death is primarily a lump sum from the employer based on working days, whereas disability leads to ongoing monthly payments from social security based on the wage. \n\nThis is general information and not legal advice; consult a licensed lawyer for your specific situation.",
+        "citations": [
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "30",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 4,
+        "faith_reason": "The cited figures and pension rules are accurate per the documents, but the summary's implication that death only results in a lump sum (ignoring the survivor pension in SSL Article 30a) is an unsupported oversimplification.",
+        "rel": 3,
+        "rel_reason": "It addresses the core death/total disability compensation and disability pension but omits key relevant details like the death survivor pension, partial disability rules, and the wage calculation basis (Article 91), making the answer incomplete."
+      },
+      {
+        "answer": "If someone is killed or left permanently unable to work due to a work accident, the compensation is calculated as follows:\n\n1. **Death or Total Disability:**\n   - The employer must pay compensation equivalent to the wages of one thousand and two hundred working days.\n   - This compensation does not exceed five thousand JDs and is not less than two thousand JDs. \n   (Labour Law 1996, Article 90(a))\n\n2. **Calculation of Compensation:**\n   - The compensation is calculated based on the worker’s last received wage. \n   - If the worker was paid on a task work basis, it is based on the average wage over the last six months of their work. \n   (Labour Law 1996, Article 91)\n\nIn summary, in the case of death or total disability, the amount of compensation is determined within the range of two thousand JDs to five thousand JDs, based on a formula defined in the law, and is derived from the worker’s wage history. \n\nThis information is general and not legal advice; it is advisable to consult a licensed lawyer regarding specific cases.",
+        "citations": [
+          {
+            "article_number": "91",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims about compensation amounts and calculation basis are directly supported by labor96 Articles 90 and 91.",
+        "rel": 3,
+        "rel_reason": "The answer correctly explains the Labor Law compensation but omits the Social Security Law pension provisions (ssl Article 30) which also directly answer the question for insured workers, making it incomplete."
+      }
+    ]
+  },
+  "q43": {
+    "question": "If a worker is killed or left permanently unable to work by an accident at work, what is the employer required to pay?",
+    "retrieved": [
+      "labor96_en_90",
+      "labor96_en_91",
+      "ssl_en_30",
+      "labor96_en_89",
+      "ssl_en_29",
+      "labor96_en_86",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "If a worker is killed or left permanently unable to work due to a work accident, the employer is required to pay compensation. \n\nFor a death or total disability, the compensation amount is equivalent to the wages of one thousand and two hundred working days, with a maximum cap of five thousand JDs and a minimum of two thousand JDs (Labour Law 1996, Article 90(a)).\n\nFor total permanent work-related disability, the insured is entitled to a monthly disability pension equivalent to 75% of the wage that was used for calculating contributions on the date of the injury (Social Security Law, Article 30(b)). \n\nFor partial permanent work-related disability not less than 30%, the injured is entitled to a monthly disability pension calculated based on the percentage of that disability concerning the total permanent work-related disability pension (Social Security Law, Article 30(c)). \n\nIn summary: \n1. Compensation for death or total disability: 1,200 working days' wages (maximum 5,000 JDs, minimum 2,000 JDs) (Labour Law 1996, Article 90(a)).\n2. Disability pension for total permanent disability: 75% of the relevant wage (Social Security Law, Article 30(b)).\n3. Monthly disability pension for partial permanent disability (30% or more): calculated based on the disability percentage (Social Security Law, Article 30(c)). \n\nThis is general information, not legal advice. You should consult a licensed lawyer about your specific case.",
+        "citations": [
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "30",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 4,
+        "faith_reason": "All specific figures and provisions cited are accurately drawn from Articles 90 and 30, though the answer omits the death pension (Article 30a) and doesn't note that Labor Law and SSL provisions apply to different worker categories per Article 86, slightly conflating the two schemes.",
+        "rel": 4,
+        "rel_reason": "The answer directly addresses the employer's/system's payment obligations for death and disability but includes tangential partial-disability details not strictly asked about while omitting the death pension under SSL Article 30(a)."
+      },
+      {
+        "answer": "If a worker is killed or left permanently unable to work due to a work accident, the employer is required to pay compensation as follows:\n\n1. For death or total disability, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, with the amount being not less than two thousand JDs and not exceeding five thousand JDs (Labour Law 1996, Article 90(a)).\n\n2. In case of total permanent work-related disability, the insured shall be entitled to a monthly disability pension equivalent to (75%) of their wage that was used as the basis for calculating contributions on the date of the injury (Social Security Law, Article 30(b)). \n\n3. The pension will accrue from the date on which the condition becomes stable, as determined by the Medical Reference (Social Security Law, Article 30(b)). \n\nThus, the employer must adhere to both the compensation limits set by the Labour Law and any ongoing pension requirements under the Social Security Law. \n\nThis information is general and not legal advice; please consult a licensed lawyer for your specific case.",
+        "citations": [
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "30",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 3,
+        "faith_reason": "The answer accurately cites Labor Law Article 90(a) and SSL Article 30(b), but incorrectly attributes the SSL disability pension as an 'employer' payment obligation when the source specifies the Corporation (Social Security) pays it, not the employer.",
+        "rel": 4,
+        "rel_reason": "It directly addresses death/permanent disability compensation with correct figures, but conflates employer vs. Corporation obligations and omits the death pension provision (Article 30a) that is directly relevant to 'killed' workers."
+      }
+    ]
+  },
+  "q01": {
+    "question": "I was injured while at work. What does social security actually cover for me?",
+    "retrieved": [
+      "labor96_en_86",
+      "labor96_en_90",
+      "ssl_en_29",
+      "ssl_en_25",
+      "ssl_en_30",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "If you were injured while at work, the Social Security Law provides the following coverage:\n\n1. **Daily Allowance for Temporary Disability**:\n   - You will receive a daily allowance equivalent to **75%** of your daily wage (the wage used for calculating your contributions on the date of the injury) for the days you are under treatment at an approved treatment center or at home, as decided by the Medical Reference or competent authority. This is stated in Article 29(a).\n\n2. **Continuation of Allowance**:\n   - The daily allowance will continue throughout the period you are unable to resume work, until your permanent disability is confirmed, or until your death, per Article 29(b).\n\n3. **Initial Payment by Firm**:\n   - The firm is responsible for paying the allowance for the first **3 days** from the date of injury, as outlined in Article 29(c).\n\n4. **Medical Care**:\n   - You are entitled to receive the necessary medical care required for your health condition due to the injury, as stated in Article 25(a).\n\n5. **Pensions and Compensations**:\n   - In case of death due to the work injury, survivors are entitled to a pension of **75%** of the deceased’s wage, starting from the month of death (Article 30(a)).\n   - If you suffer total permanent disability, you will receive a monthly disability pension of **75%** of your wage (Article 30(b)). \n   - For partial permanent disability of **30% or more**, you may be eligible for a monthly disability pension proportional to your level of disability (Article 30(c)). If it's less than **30%**, a lump sum compensation equivalent to the percentage of the disability will be provided (Article 30(d)).\n\nThese provisions give you a clear understanding of what social security covers in the case of a work-related injury.\n\nThis is general information, not legal advice, and you should consult a licensed lawyer about your own case.",
+        "citations": [
+          {
+            "article_number": "30",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "29",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "25",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims accurately reflect the specific provisions in SSL Articles 25, 29, and 30 without adding unsupported details.",
+        "rel": 5,
+        "rel_reason": "The answer comprehensively covers all work injury benefits under social security including medical care, temporary disability allowance, and permanent disability/death pensions, directly addressing the question."
+      },
+      {
+        "answer": "If you were injured while at work, the Social Security Law provides several benefits. These include:\n\n1. **Medical Care**: You are entitled to the medical care required by your health condition as mandated by Article 25(a).\n   \n2. **Daily Allowances**: \n   - If your work injury prevents you from performing your work, you will receive a daily allowance equivalent to 75% of your daily wage (calculated based on your contributions) for the days of treatment while at an approved treatment center or at home as confirmed by medical authorities (Social Security Law, Article 29(a)).\n   - The daily allowance continues throughout your inability to work until your permanent disability is confirmed or until your death (Social Security Law, Article 29(b)).\n\n3. **Compensation for Permanent Disabilities**: \n   - In the event of a total permanent work-related disability, you will be entitled to a monthly disability pension equal to 75% of your wage used for calculating contributions, effective from when your condition stabilizes (Social Security Law, Article 30(b)).\n   - For partial permanent work-related disabilities, the pension will be based on the percentage of your disability relative to total permanent disability (Social Security Law, Article 30(c) and (d)).\n\n4. **Death Benefits**: If the injury results in death, eligible survivors receive a pension of 75% of the deceased's wages based on contributions (Social Security Law, Article 30(a)).\n\nThis information outlines the key benefits covered under the Social Security Law for work-related injuries. Consult a licensed lawyer for advice specific to your case.",
+        "citations": [
+          {
+            "article_number": "30",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "29",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "25",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims about medical care, daily allowances, disability pensions, and death benefits directly match Articles 25, 29, and 30 of the Social Security Law.",
+        "rel": 5,
+        "rel_reason": "The answer comprehensively covers all major social security benefits for work injuries (medical care, temporary and permanent disability, death) directly addressing the question."
+      }
+    ]
+  },
+  "q04": {
+    "question": "I cannot work while I recover from an injury I got at work. Will I still be paid, and how much?",
+    "retrieved": [
+      "ssl_en_29",
+      "labor96_en_90",
+      "ssl_en_30",
+      "labor96_en_91",
+      "ssl_en_40",
+      "labor96_en_86",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "Yes, you will still be paid during your recovery from a work injury. According to Social Security Law, Article 29(a), the Corporation shall pay you a daily allowance equivalent to 75% of your daily wage, which is based on the wage calculated for your monthly contributions on the date of your injury. This payment continues throughout the period you are unable to work or until your permanent disability is confirmed or your death, as stated in Article 29(b). Also, the firm will pay the allowance for the first 3 days starting from the date of injury as stated in Article 29(c).\n\nFurthermore, under Labor Law 1996, Article 90(b), if your injury results in a temporary disability, you would also be entitled to a daily allowance of 75% of your average daily wage. However, if you are receiving treatment at an accredited treatment center, this allowance would reduce to 65% of that wage.\n\nTherefore, your payment could be either 75% or 65% of your daily wage, depending on where you receive treatment. \n\nThis information is general and not legal advice; consulting a licensed lawyer for your specific situation is recommended.",
+        "citations": [
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "29",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 3,
+        "faith_reason": "The answer accurately quotes SSL Article 29 and Labor Law Article 90, but incorrectly conflates both schemes as simultaneously applicable to the same worker, when Article 86 indicates the Labor Law provision applies only to workers not covered by the Social Security Law.",
+        "rel": 5,
+        "rel_reason": "The answer directly and thoroughly addresses whether the person will be paid during recovery and specifies the applicable percentages and duration."
+      },
+      {
+        "answer": "Yes, you will be paid a daily allowance while you recover from your work injury. \n\nAccording to the Social Security Law, if the work injury prevents you from performing your work, the Corporation shall pay you during the period of unemployment caused by the injury a daily allowance equivalent to 75% of your daily wage based on which the monthly contributions were calculated on the date of your injury (Social Security Law, Article 29(a)). This allowance continues throughout the period during which you are unable to resume work (Social Security Law, Article 29(b)). \n\nAdditionally, according to the Labour Law 1996, if the work injury results in temporary disability, you will also be entitled to a daily allowance equivalent to 75% of your average daily wage during the treatment period determined by the medical authority. If you receive treatment at an accredited center, the allowance will be reduced to 65% of the average daily wage (Labour Law 1996, Article 90(b)).\n\nMake sure you check with the Corporation and your employer to determine the specific daily allowance based on your average wage. \n\nThis is general information, not legal advice, and you should consult a licensed lawyer about your own case.",
+        "citations": [
+          {
+            "article_number": "90",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "29",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 3,
+        "faith_reason": "The quoted figures are accurate, but the answer wrongly implies both the SSL 75% allowance and the Labor Law 90(b) allowance apply simultaneously to the same worker, when Article 86 clarifies the Labor Law provision only applies to workers not covered by the Social Security Law, and it omits that the employer pays the first 3 days under SSL Art.29(c).",
+        "rel": 4,
+        "rel_reason": "It directly answers whether and how much the worker will be paid, but the added Labor Law scenario without clarifying its separate applicability makes the answer slightly confusing/incomplete."
+      }
+    ]
+  },
+  "q35": {
+    "question": "Are there situations where an employer simply is not allowed to end someone's job?",
+    "retrieved": [
+      "labor96_en_27",
+      "labor96_en_132",
+      "labor96_en_23",
+      "labor96_en_31",
+      "labor96_en_21",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "Yes, there are specific situations in which an employer is not allowed to terminate a worker's employment. These situations include:\n\n1. For pregnant working women starting from the sixth month of their pregnancy or during maternity leave. (Labour Law 1996, Article 27(a)(1))\n2. For workers charged with military service or reserve service while performing that service. (Labour Law 1996, Article 27(a)(2))\n3. For workers during their annual or sick leaves, any leave granted for worker learning, Hajj, or during a leave agreed upon for union work or for attending a recognized educational institute. (Labour Law 1996, Article 27(a)(3))\n\nAdditionally, an employer cannot dismiss a worker without getting written permission from the appropriate settlement authority while a labor dispute is being heard. (Labour Law 1996, Article 132(b))\n\nThis is general information, not legal advice. Please consult a licensed lawyer about your own case.",
+        "citations": [
+          {
+            "article_number": "27",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "132",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims accurately reflect Article 27's protected categories and Article 132's restriction on dismissal during dispute proceedings.",
+        "rel": 5,
+        "rel_reason": "The answer directly identifies and explains the specific situations where termination is prohibited, fully addressing the question."
+      },
+      {
+        "answer": "Yes, there are specific situations where an employer is not allowed to terminate someone's job. According to the Labour Law 1996:\n\n1. An employer shall not terminate the services of a worker in the following cases:\n   - Pregnant working women starting from the sixth month of their pregnancy or during maternity leave (Labour Law 1996, Article 27(a)(1)).\n   - Workers charged with military service or reserve service during the performance of that service (Labour Law 1996, Article 27(a)(2)).\n   - Workers during their annual or sick leaves, or during specific leaves granted for worker learning, Hajj, or union work (Labour Law 1996, Article 27(a)(3)).\n\n2. While hearing a labor dispute, an employer cannot dismiss any worker without obtaining written permission from the relevant authority (Labour Law 1996, Article 132(b)).\n\nThese provisions outline the circumstances under which an employer is restricted from terminating employment. \n\nThis is general information, not legal advice, and you should consult a licensed lawyer about your particular case.",
+        "citations": [
+          {
+            "article_number": "27",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "132",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims directly match Article 27(a) and Article 132(b) of the labor law without added or contradicted information.",
+        "rel": 5,
+        "rel_reason": "The answer directly identifies and explains the specific situations where termination is prohibited, fully addressing the question."
+      }
+    ]
+  },
+  "q02": {
+    "question": "I need an artificial limb and I have to travel for treatment. Will those costs be paid for me?",
+    "retrieved": [
+      "ssl_en_26",
+      "ssl_en_28",
+      "ssl_en_29",
+      "ssl_en_25",
+      "labor96_en_90",
+      "ssl_en_4"
+    ],
+    "trials": [
+      {
+        "answer": "Yes, the costs for your treatment, including the provision of rehabilitation services and equipment such as artificial limbs, as well as transport expenses incurred to and from your workplace or residence to the place where you receive your treatment, will be covered. \n\nArticle 26(a)(3) states that the medical care includes \"the provision of rehabilitation services and equipment, including prosthetic devices.\" Additionally, Article 26(a)(2) mentions that the transport expenses incurred by the injured for this treatment are included as well.\n\nThus, you should be entitled to these payments under the Social Security Law.\n\nThis is general information, not legal advice, and it's recommended to consult a licensed lawyer about your own case.",
+        "citations": [
+          {
+            "article_number": "26",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 5,
+        "faith_reason": "All claims directly cite and accurately reflect Article 26(a)(2) and (3) regarding prosthetic devices and transport expenses.",
+        "rel": 5,
+        "rel_reason": "The answer directly confirms coverage for both the artificial limb and travel costs, addressing the exact question asked."
+      },
+      {
+        "answer": "Yes, the costs for the artificial limb and travel expenses for your treatment will be covered.\n\nAccording to Social Security Law, Article 26:\n- The medical care includes \"Medical treatment and hospitalization costs\" and \"Transport expenses incurred by the injured as a result of transportation to and from his/her workplace or residence to the place where he/she receives his/her treatment\" (Article 26(a)1 and 2).\n\nAdditionally, Article 28 states:\n- The Corporation shall bear the expenses for \"life-long medications and medical supplies necessary for the injured,\" which includes prosthetic devices as determined by the Medical Reference (Article 28(b)). \n\nThis means both your travel costs and the costs for the artificial limb are covered. \n\nThis is general information, not legal advice, and I recommend consulting a licensed lawyer about your individual case.",
+        "citations": [
+          {
+            "article_number": "28",
+            "in_retrieved_context": true
+          },
+          {
+            "article_number": "26",
+            "in_retrieved_context": true
+          }
+        ],
+        "faith": 3,
+        "faith_reason": "The Article 26 citations are accurate, but the claim that Article 28(b) covers prosthetic devices is a misattribution since prosthetic devices are explicitly covered under Article 26(a)3, not 28(b) which only mentions 'life-long medications and medical supplies'.",
+        "rel": 5,
+        "rel_reason": "The answer directly confirms coverage for both the artificial limb and travel costs, addressing both parts of the question completely."
+      }
+    ]
+  }
+}

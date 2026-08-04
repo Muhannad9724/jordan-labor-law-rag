@@ -1,0 +1,124 @@
+﻿model,question_id,answer,calculation
+gpt-4o-mini,q05,"If someone is killed or left permanently unable to work due to a work accident, the compensation is as follows:
+
+1. **For Death or Total Permanent Disability:**
+   - The employer must pay compensation equivalent to the wages of one thousand and two hundred working days, but this compensation cannot exceed five thousand JDs and is not less than two thousand JDs. 
+   (Labour Law 1996, Article 90(a))
+
+2. **For Total Permanent Disability:**
+   - The insured worker is entitled to a monthly disability pension, which equals 75% of their wage at the time of the injury, starting when the condition is deemed stable by the Medical Reference. 
+   An additional 25% increase is applicable if the worker requires assistance with daily tasks, not exceeding the minimum wage. 
+   (Social Security Law, Article 30(b))
+
+The specific amounts will depend on the worker's wage and the circumstances of their case. 
+
+For additional details on these provisions, you may want to consider your specific situation and associated facts. General information, not legal advice, consult a licensed lawyer about your own case.",
+gpt-4o-mini,c01,"يدفع صاحب العمل عنك للضمان الاجتماعي بمجموع قدره 142.5 دينار، وهذا يشمل الاشتراكات التالية:
+
+- تأمين إصابات العمل: 20 دينار (قانون الضمان الاجتماعي، المادة 24).
+- تأمين الأمومة: 7.5 دينار (قانون الضمان الاجتماعي، المادة 42).
+- تأمين التعطل عن العمل: 5 دينار (قانون الضمان الاجتماعي، المادة 48).
+- تأمين الشيخوخة والعجز والوفاة: 110 دينار (قانون الضمان الاجتماعي، المادة 59).
+
+إجمالي المبلغ الذي يدفعه صاحب العمل هو 142.5 دينار. 
+
+لذلك، الإجابة هي:
+صاحب العمل يدفع 142.5 دينار. 
+
+للمزيد من المعلومات، يُفضل استشارة محامي مختص.","{'language': 'ar', 'components': [{'article': '24', 'name': 'تأمين إصابات العمل', 'rate': 2.0, 'bearer': 'employer', 'scope': 'private', 'amount': 20.0}, {'article': '42', 'name': 'تأمين الأمومة', 'rate': 0.75, 'bearer': 'employer', 'scope': 'private', 'amount': 7.5}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 0.5, 'bearer': 'employer', 'scope': 'private', 'amount': 5.0}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 1.0, 'bearer': 'employee', 'scope': 'private', 'amount': 10.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 11.0, 'bearer': 'employer', 'scope': 'private', 'amount': 110.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 6.5, 'bearer': 'employee', 'scope': 'private', 'amount': 65.0}], 'employee_rate': 7.5, 'employer_rate': 14.25, 'total_rate': 21.75, 'salary': 1000.0, 'base': 1000.0, 'ceiling': 3000.0, 'ceiling_article': '20', 'ceiling_exception': 5000.0, 'ceiling_exception_date': '15/10/2009', 'ceiling_exception_applies': False, 'capped': False, 'employee_amount': 75.0, 'employer_amount': 142.5, 'total_amount': 217.5}"
+gpt-4o-mini,c05,"لديك 200 اشتراك في الضمان الاجتماعي، وبالتالي تحتاج إلى الاشتراك في 52 اشتراك إضافي إذا كنت ذكراً (المجموع المطلوب 252 اشتراك). إذا كنت أنثى، تحتاج إلى 28 اشتراك إضافي (المجموع المطلوب 228 اشتراك).
+
+- **إذا كان ذكراً:** تحتاج إلى 52 اشتراك إضافي حتى تصل إلى 252. 
+- **إذا كانت أنثى:** تحتاج إلى 28 اشتراك إضافي حتى تصل إلى 228.
+
+**الدعم القانوني:**
+- للمؤمن عليه الذكر، يجب أن تكون اشتراكاته في هذا التأمين قد بلغت على الأقل (252) اشتراكاً فعلياً. (قانون الضمان الاجتماعي، المادة 64(أ)(1)).
+- للمؤمن عليها الأنثى، يجب أن تكون اشتراكاته في هذا التأمين قد بلغت على الأقل (228) اشتراكاً فعلياً. (قانون الضمان الاجتماعي، المادة 64(أ)(1)). 
+
+لذا، إذا كنت ترغب في معرفة المدة اللازمة لك للوصول إلى هذا العدد من الاشتراكات، عليك تحديد كم اشتراك تستطيع إضافته كل شهر.  
+استشارة محامي مرخص بشأن حالتك الخاصة ستكون مفيدة.","{'gender_conditions': [{'article': '64', 'kind': 'subscriptions', 'language': 'ar', 'label': 'عدد الاشتراكات المطلوب (التقاعد المبكر)', 'male': 252.0, 'female': 228.0}, {'article': '62', 'kind': 'age', 'language': 'ar', 'label': 'سن التقاعد (تقاعد الشيخوخة)', 'male': 60, 'female': 55}]}"
+gemini-2.5-flash,q05,"If a worker dies or suffers total permanent disability due to a work injury, there are provisions for compensation under both the Labor Law 1996 and the Social Security Law, depending on whether the worker is subject to the Social Security Law.
+
+**Under the Labor Law 1996:**
+
+*   If the work injury results in the death or total disability of the worker, the employer is liable to pay compensation equivalent to the wages of one thousand and two hundred working days. This compensation must not exceed five thousand JDs and not be less than two thousand JDs (Labor Law 1996, Article 90(a)).
+*   Compensation is calculated based on the worker’s last received wage. If the worker is paid on a task work basis, it is calculated based on the average wage over the last six months of their work (Labor Law 1996, Article 91).
+*   Compensation for death is distributed among those entitled according to the percentages specified in Table No. (3) annexed to the law (Labor Law 1996, Article 96).
+*   The due compensation is estimated upon the request of the employer, the worker, or those entitled. If an agreement is not reached, the Secretary-General (or authorized persons appointed by the Minister) estimates it. The compensation is paid in a lump sum within thirty days from the date of informing the concerned parties of the decision (Labor Law 1996, Article 92(a)).
+*   Payment of this compensation does not prevent the worker or those entitled from receiving end-of-service compensation if the conditions for entitlement are met (Labor Law 1996, Article 92(b)).
+*   These provisions apply to workers who are not subject to the Social Security Law (Labor Law 1996, Article 86).
+
+**Under the Social Security Law:**
+
+*   The Social Security Law generally applies to workers who have completed 16 years of age, without discrimination as to nationality, and regardless of the duration or form of contract and nature of wage, provided the wage for contributions is not less than the minimum wage (Social Security Law, Article 4(a)). This includes all workers subject to the Labor Law (Social Security Law, Article 4(a)(1)).
+*   In case of death due to a work injury, survivor beneficiaries are entitled to a Death Due to Work-Injury Pension equivalent to 75% of the worker's wage used as the basis for calculating contributions on the date of injury. This pension accrues from the beginning of the month on which death occurs and is apportioned to entitled beneficiaries according to the law's provisions (Social Security Law, Article 30(a)).
+*   In case of Total Permanent Work-Related Disability, the insured is entitled to a monthly Disability Pension equivalent to 75% of their wage used as the basis for calculating contributions on the date of the injury. This pension accrues from the date their condition becomes stable, as determined by the Medical Reference (Social Security Law, Article 30(b)).
+*   This disability pension shall be subject to a 25% increase if the injured person is determined by the Medical Reference to need assistance for daily life tasks, provided that this increase does not exceed the approved minimum wage (Social Security Law, Article 30(b)).
+
+Please note that the application of these laws depends on whether the worker is subject to the Social Security Law.
+
+This is general information, not legal advice. Please consult a licensed lawyer about your own case.",
+gemini-2.5-flash,c01,"يدفع صاحب العمل 142.5 دينار عنك للضمان الاجتماعي، وذلك باحتساب 14.25% من راتبك الشهري البالغ 1000 دينار.
+
+تتوزع هذه الاشتراكات كالتالي:
+*   تأمين إصابات العمل: 20 دينار (2% من الأجر) (قانون الضمان الاجتماعي، المادة 24(أ))
+*   تأمين الأمومة: 7.5 دينار (0.75% من الأجر) (قانون الضمان الاجتماعي، المادة 42(أ)1)
+*   تأمين التعطل عن العمل: 5 دينار (0.5% من الأجر) (قانون الضمان الاجتماعي، المادة 48(أ))
+*   تأمين الشيخوخة والعجز والوفاة: 110 دينار (11% من الأجر) (قانون الضمان الاجتماعي، المادة 59(أ)1)
+
+الحد الأعلى للأجر الذي تُحتسب على أساسه الاشتراكات هو ثلاثة آلاف دينار (3000 دينار)، إلا إذا كان المؤمن عليه مشمولًا بالتأمين قبل تاريخ سريان مفعول القانون المعدل رقم (26) لسنة 2009 (15/10/2009)، ففي هذه الحالة يكون الحد الأعلى للأجر خمسة آلاف دينار (5000 دينار). كما يستثنى المؤمن عليه الذي تجاوز أجره خمسة آلاف دينار قبل 15/10/2009، ولا يؤخذ بأي زيادة تطرأ على أجره بعد ذلك التاريخ. في حال وصول أجر المؤمن عليه في الحالتين المستثنتين إلى الحد الأعلى للأجر، يخضع للزيادة وفق آلية ربط الحد الأعلى للأجور بالتضخم (قانون الضمان الاجتماعي، المادة 20(أ) و(ج)).
+
+هذه المعلومات هي معلومات عامة وليست استشارة قانونية. يرجى استشارة محامٍ مرخص بخصوص حالتك الخاصة.","{'language': 'ar', 'components': [{'article': '24', 'name': 'تأمين إصابات العمل', 'rate': 2.0, 'bearer': 'employer', 'scope': 'private', 'amount': 20.0}, {'article': '42', 'name': 'تأمين الأمومة', 'rate': 0.75, 'bearer': 'employer', 'scope': 'private', 'amount': 7.5}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 0.5, 'bearer': 'employer', 'scope': 'private', 'amount': 5.0}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 1.0, 'bearer': 'employee', 'scope': 'private', 'amount': 10.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 11.0, 'bearer': 'employer', 'scope': 'private', 'amount': 110.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 6.5, 'bearer': 'employee', 'scope': 'private', 'amount': 65.0}], 'employee_rate': 7.5, 'employer_rate': 14.25, 'total_rate': 21.75, 'salary': 1000.0, 'base': 1000.0, 'ceiling': 3000.0, 'ceiling_article': '20', 'ceiling_exception': 5000.0, 'ceiling_exception_date': '15/10/2009', 'ceiling_exception_applies': False, 'capped': False, 'employee_amount': 75.0, 'employer_amount': 142.5, 'total_amount': 217.5}"
+gemini-2.5-flash,c05,"للتقاعد المبكر، يتطلب قانون الضمان الاجتماعي الأعداد التالية من الاشتراكات:
+
+*   إذا كنت ذكراً، يلزمك 252 اشتراكاً فعلياً على الأقل. لديك 200 اشتراك حاليًا، مما يعني أنك بحاجة إلى 52 اشتراكاً إضافياً. (قانون الضمان الاجتماعي، المادة 64(أ)(1))
+*   إذا كنت أنثى، يلزمك 228 اشتراكاً فعلياً على الأقل. لديك 200 اشتراك حاليًا، مما يعني أنك بحاجة إلى 28 اشتراكاً إضافياً. (قانون الضمان الاجتماعي، المادة 64(أ)(1))
+
+هذه الشروط تنطبق في حال كان عمرك 50 عامًا على الأقل. (قانون الضمان الاجتماعي، المادة 64(أ)(1))
+
+كما يمكن تخصيص راتب تقاعد مبكر إذا بلغت اشتراكاتك في هذا التأمين 300 اشتراك فعلي، شريطة ألا يقل عمرك عن 45 سنة. (قانون الضمان الاجتماعي، المادة 64(أ)(2))
+
+إذا كنت مشمولاً لأول مرة بعد نفاذ أحكام قانون الضمان الاجتماعي المعدل، فيلزمك الآتي:
+
+*   إذا كنت ذكراً، يجب أن تكمل سن 55 عامًا وأن تبلغ اشتراكاتك 252 اشتراكاً فعلياً على الأقل. (قانون الضمان الاجتماعي، المادة 64(ح)(1))
+*   إذا كنت أنثى، يجب أن تكمل سن 52 عامًا وأن تبلغ اشتراكاتك 228 اشتراكاً فعلياً على الأقل. (قانون الضمان الاجتماعي، المادة 64(ح)(1))
+
+في حال كنت تعمل في إحدى المهن الخطرة، يمكن تخصيص راتب تقاعد مبكر إذا بلغت اشتراكاتك 216 اشتراكاً فعلياً على الأقل للذكور و 180 اشتراكاً فعلياً على الأقل للإناث، وأن تكون قد أكملت سن 45 عامًا على الأقل. ويجب أن تكون قد عملت في هذه المهن لمدة لا تقل عن ستين اشتراكاً خلال العشر سنوات السابقة لطلب التقاعد المبكر. (قانون الضمان الاجتماعي، المادة 64(ج)(1أ) و 64(ج)(1ب) و 64(ج)(2))
+
+هذه معلومات عامة وليست استشارة قانونية. يرجى استشارة محامٍ مرخص بشأن حالتك الخاصة.","{'gender_conditions': [{'article': '64', 'kind': 'subscriptions', 'language': 'ar', 'label': 'عدد الاشتراكات المطلوب (التقاعد المبكر)', 'male': 252.0, 'female': 228.0}, {'article': '62', 'kind': 'age', 'language': 'ar', 'label': 'سن التقاعد (تقاعد الشيخوخة)', 'male': 60, 'female': 55}]}"
+gpt-4o,q05,"If a worker is killed or left permanently unable to work due to a work injury, payments and amounts are determined by two different laws depending on their coverage situation. Here's a breakdown:
+
+Workers not covered by the Social Security Law (those covered by Labor Law 1996 only):
+
+1. **Death or Total Disability:** 
+   - Compensation equal to 1,200 working days' wages, subject to a ceiling of 5,000 JDs and a floor of 2,000 JDs (Labor Law 1996, Article 90(a)).
+
+2. **Distribution of Compensation in Case of Death:** 
+   - The compensation is distributed among entitled beneficiaries according to Table No. (3) annexed to the Labor Law 1996 (Labor Law 1996, Article 96).
+
+Workers covered by the Social Security Law:
+
+1. **Death Due to Work Injury:**
+   - Survivor beneficiaries receive a Death Due to Work-Injury Pension equal to 75% of the wage used for contribution calculation, beginning in the month of death (Social Security Law, Article 30(a)).
+
+2. **Total Permanent Disability:**
+   - The insured receives a Disability Pension equal to 75% of the wage used for contribution calculation when the condition stabilizes. An additional 25% may be added if the injured requires assistance for daily tasks, not exceeding the minimum wage (Social Security Law, Article 30(b)).
+
+The applicable law depends on whether the worker is covered by the Social Security Law. If covered, Social Security Law's provisions apply. If not, then Labor Law 1996 applies. 
+
+For personalized advice, consult a licensed lawyer.",
+gpt-4o,c01,"يدفع صاحب العمل عنك للضمان الاجتماعي مبلغ إجمالي قدره 142.5 دينار شهرياً على راتب مقداره 1000 دينار. التفاصيل كالتالي:
+
+- ""تأمين إصابات العمل"" يؤدى بنسبة 2% = 20 دينار. (قانون الضمان الاجتماعي، المادة 24)
+- ""تأمين الأمومة"" يؤدى بنسبة 0.75% = 7.5 دينار. (قانون الضمان الاجتماعي، المادة 42)
+- ""تأمين التعطل عن العمل"" يؤدى بنسبة 0.5% = 5 دينار. (قانون الضمان الاجتماعي، المادة 48)
+- ""تأمين الشيخوخة والعجز والوفاة"" يؤدى بنسبة 11% = 110 دينار. (قانون الضمان الاجتماعي، المادة 59)
+
+هذا الرد لأغراض المعلومات العامة، وينبغي استشارة محامٍ مرخص للحصول على استشارة قانونية محددة.","{'language': 'ar', 'components': [{'article': '24', 'name': 'تأمين إصابات العمل', 'rate': 2.0, 'bearer': 'employer', 'scope': 'private', 'amount': 20.0}, {'article': '42', 'name': 'تأمين الأمومة', 'rate': 0.75, 'bearer': 'employer', 'scope': 'private', 'amount': 7.5}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 0.5, 'bearer': 'employer', 'scope': 'private', 'amount': 5.0}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 1.0, 'bearer': 'employee', 'scope': 'private', 'amount': 10.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 11.0, 'bearer': 'employer', 'scope': 'private', 'amount': 110.0}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 6.5, 'bearer': 'employee', 'scope': 'private', 'amount': 65.0}], 'employee_rate': 7.5, 'employer_rate': 14.25, 'total_rate': 21.75, 'salary': 1000.0, 'base': 1000.0, 'ceiling': 3000.0, 'ceiling_article': '20', 'ceiling_exception': 5000.0, 'ceiling_exception_date': '15/10/2009', 'ceiling_exception_applies': False, 'capped': False, 'employee_amount': 75.0, 'employer_amount': 142.5, 'total_amount': 217.5}"
+gpt-4o,c05,"للتقاعد المبكر حسب ""قانون الضمان الاجتماعي، المادة (64)""، تحتاج إلى تحقيق شروط معينة تختلف بناءً على الجنس:
+
+إذا كنت ذكراً، يجب أن تكون قد أكملت 252 اشتراكاً فعلياً. لديك حالياً 200 اشتراك، لذا تحتاج إلى 52 اشتراكاً إضافياً.
+
+إذا كنت أنثى، يجب أن تكون قد أكملت 228 اشتراكاً فعلياً. لديك حالياً 200 اشتراك، لذا تحتاج إلى 28 اشتراكات إضافياً.
+
+يرجى استشارة محامٍ مرخص للحصول على معلومات قانونية خاصة بحالتك.","{'gender_conditions': [{'article': '64', 'kind': 'subscriptions', 'language': 'ar', 'label': 'عدد الاشتراكات المطلوب (التقاعد المبكر)', 'male': 252.0, 'female': 228.0}, {'article': '62', 'kind': 'age', 'language': 'ar', 'label': 'سن التقاعد (تقاعد الشيخوخة)', 'male': 60, 'female': 55}]}"

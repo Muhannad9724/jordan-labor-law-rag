@@ -198,6 +198,29 @@ difference. Both pairs looked equally like "ordered rows."
 > **The rule:** a sorted table shows order, not significance. For close pairs, run
 > the paired test before believing the rows.
 
+### 1.9 A fix that only ever adds one thing still needs to be measured
+
+**What happened.** A new retrieval rule was written to fix a real, confirmed bug:
+one article that changes whether two others even apply was often missing from what
+the model saw. The plan sounded harmless on paper — the rule only ever adds one
+extra article to the list, never removes or reorders anything.
+
+It was not harmless. The new article was being placed at the *front* of the
+result list rather than the end, which pushed every already-correct article down
+by one position. Across the full 60-question test, the share of questions with the
+right answer in first place dropped from 88% to 35% — not because the new article
+was wrong, but because something that used to be ranked #1 was now ranked #2, on
+every single question the rule touched.
+
+Nothing about the plan looked risky. "Only adds one thing" turned out to still mean
+"changes every position after it," and that only became visible by actually running
+the 60-question test, not by reasoning about the change.
+
+> **The rule:** "this change only adds, never removes" is a claim about *what* is
+> added, not about *where*. Where something is inserted can matter as much as
+> whether it's inserted at all — measure it, don't reason your way to "this is
+> obviously safe."
+
 ---
 
 ## Part 2 — The scoring code is code, and it has bugs
@@ -636,6 +659,30 @@ forced the positions to be recomputed from the layer underneath the trigger.
 > validated — check what a measurement function calls internally, not just what
 > it returns.
 
+### 6.5 A fix that reads the context still isn't a fix the model will follow
+
+**What happened.** A real bug was found: a missing article meant the model
+sometimes couldn't tell that two laws describing the same event were actually
+alternatives, not both true at once. The article was added to what the model gets
+shown. That felt like the whole fix.
+
+It wasn't even most of the fix. With the article now sitting in the context, the
+model's answers didn't change at all — across several real test answers, not one of
+them mentioned the condition the newly-added article stated. On one question the
+answer got *worse* than before the fix, because the model now had two competing
+numbers in front of it and blended them incorrectly instead of picking neither.
+
+Fixing what the model can see and fixing what the model does with what it sees are
+two different problems, and solving the first one doesn't solve the second for
+free. The fix needed a second, separate piece: an actual instruction telling the
+model what to do when it sees this shape of situation — and even then, testing
+showed the instruction only partly worked, not reliably.
+
+> **The rule:** giving a model the right information is not the same as giving it
+> the right behaviour. If a bug is "the model didn't know X," check *after* fixing
+> retrieval whether the model actually uses X — don't assume visibility equals
+> compliance.
+
 ---
 
 ## The short version
@@ -662,8 +709,12 @@ If this document were one page:
     doesn't call the component itself.**
 16. **A widened example list can have a duplicate elsewhere in the prompt —
     find every copy before calling the fix done.**
+17. **"This change only adds, never removes" is not the same claim as "this change
+    is safe" — where something gets added can matter as much as whether it does.**
+18. **Giving a model the right information is not the same as giving it the right
+    behaviour — check what it does with new context, don't assume it uses it.**
 
 ---
 
 *Compiled after Phase 24d, from the failures recorded across all 24 phases in
-`ROADMAP.md`.*
+`ROADMAP.md`. Items 17-18 added after Phase 28.*

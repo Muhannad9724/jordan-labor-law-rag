@@ -1,0 +1,383 @@
+﻿question_id,trial,question,gold_articles,retrieved,answer
+q01,0,I was injured while at work. What does social security actually cover for me?,['25'],"['labor96:86', 'labor96:90', 'ssl:29', 'ssl:25', 'ssl:30', 'ssl:4']","Social Security covers work injuries for you if you are subject to the Social Security Law (generally, workers subject to the Labour Law who have completed 16 years of age and earn at least the minimum wage). If you don't fall under Social Security coverage, the Labour Law's injury provisions apply instead.
+
+**If you are covered by Social Security, Work-Injury Insurance includes:**
+
+**Medical care:**  
+Social Security Law, Article 25(a) — the medical care required by your health condition.
+
+**Temporary inability to work (while injured and unable to work):**  
+Social Security Law, Article 29(a) — a daily allowance of 75% of your daily wage (based on the wage used to calculate your contributions on the date of injury), for days you are under treatment at an approved centre or at home per Medical Reference decision.  
+Social Security Law, Article 29(c) — your employer pays this allowance for the first 3 days from the date of injury.  
+Social Security Law, Article 29(b) — the allowance continues throughout the period you cannot resume work, or until permanent disability is confirmed or you die.
+
+**Death due to work injury:**  
+Social Security Law, Article 25(d) — funeral expenses (amount and payee determined by the Board).  
+Social Security Law, Article 30(a) — survivor beneficiaries receive a monthly Death Pension of 75% of your wage (used for contributions on injury date), starting from the beginning of the month death occurs.
+
+**Total permanent disability:**  
+Social Security Law, Article 30(b) — a monthly Disability Pension of 75% of your wage (used for contributions on injury date), starting from the date your condition stabilizes (determined by Medical Reference). This increases by 25% if you need assistance with daily life tasks (but not exceeding the minimum wage).
+
+**Partial permanent disability (30% or more):**  
+Social Security Law, Article 30(c) — a monthly Disability Pension, calculated as the percentage of your total permanent disability pension, from the date your condition stabilizes.
+
+**Partial permanent disability (less than 30%):**  
+Social Security Law, Article 30(d) — a lump sum compensation equal to the proportion of disability to the total disability amount, multiplied by 36 months.
+
+To give you exact amounts, I would need to know your current daily or monthly wage and the percentage of disability (if applicable). Ask a licensed labour lawyer about your specific entitlements."
+q05,0,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",['30'],"['labor96:91', 'labor96:90', 'ssl:30', 'labor96:96', 'labor96:92', 'labor96:86', 'ssl:4']","# Death or Total Permanent Disability from Work Injury
+
+The payment depends on whether the injured person is covered by Social Security or by the Labour Law alone.
+
+## If covered by Social Security (Social Security Law):
+
+**Death Due to Work Injury:**
+- Monthly pension of **75% of the wage used to calculate contributions** on the date of injury (Social Security Law, Article 30(a))
+- Pension begins from the first day of the month in which death occurs
+- Divided among entitled beneficiaries per the Social Security Law
+
+**Total Permanent Work-Related Disability:**
+- Monthly pension of **75% of the wage used to calculate contributions** on the date of injury (Social Security Law, Article 30(b))
+- Pension begins from the date health becomes stable, as determined by the Medical Reference
+- **Additional 25% increase** if the injured person needs assistance with daily life tasks (certified by Medical Reference), provided this increase does not exceed the approved minimum wage (Social Security Law, Article 30(b))
+
+## If NOT covered by Social Security (Labour Law 1996):
+
+**Death or Total Disability:**
+- Lump-sum compensation of **wages for 1,200 working days** (Labour Law 1996, Article 90(a))
+- **Minimum: 2,000 JDs**
+- **Maximum: 5,000 JDs** (Labour Law 1996, Article 90(a))
+
+**Calculation basis:**
+- Compensation is based on the **worker's last received wage** (Labour Law 1996, Article 91)
+- If paid on task-work basis, based on **average wage over the last six months** (Labour Law 1996, Article 91)
+
+**Payment:** Within **30 days** of the authorized person's decision (Labour Law 1996, Article 92(a))
+
+---
+General information, not legal advice; consult a licensed lawyer about your own case."
+q09,0,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","Your ability to work while receiving a work injury disability pension depends on which type of disability pension you have.
+
+**If you have a Total Permanent Work-Related Disability Pension:**
+You are permanently excluded from the scope of Social Security Law and cannot combine work with your pension. Social Security Law, Article 85(e) states: ""If the insured becomes entitled to a Total Permanent Natural Disability Pension, he/she shall be permanently excluded from the scope of application of this Law, and this state shall not be affected by his/her return to any paid work even if said work is covered by the provisions of this Law.""
+
+**If you have a Partial Permanent Work-Related Disability Pension:**
+You may combine 50% of your disability pension with wages from an employment covered by Social Security Law, but only if you meet all of these conditions:
+- You have not been employed for at least 24 months as of the date of entitlement to your pension (Social Security Law, Article 85(d)(1)(a));
+- You have not resumed employment with any firm where you worked during the last 36 contributions before your pension started (Article 85(d)(1)(b));
+- The pension was not granted because you work in a hazardous occupation (Article 85(d)(1)(c)); and
+- You become subject to Social Security Law provisions again (Article 85(d)(1)(d)).
+
+Additionally, Social Security Law, Article 40 confirms: ""The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension.""
+
+**Which type of disability pension do you have** — total or partial?
+
+This is general information, not legal advice; consult a licensed lawyer about your own case."
+q09,1,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","Whether you can combine a paid job with a work injury disability pension depends on **which type of disability pension you have** and **your nationality**.
+
+## If you have a Work Injury Disability Pension:
+
+**You can combine work with your pension**, provided you meet certain conditions:
+
+**Social Security Law, Article 40** states: ""The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.""
+
+## If you have a Partial Permanent Natural Disability Pension (non-work-related):
+
+**You may combine 50% of your disability pension with wages** from covered employment, subject to conditions:
+
+**Social Security Law, Article 85(f)** allows a partial permanent natural disability pensioner to ""combine (50%) of his/her Disability Pension payable thereto with his/her wages from an employment that is covered by the provisions of this Law,"" provided that:
+- You meet conditions in **Article 85(d)(1)(a–d)** (non-employment for 24+ months, not re-employed with previous firms for 36 contribution months, and other conditions depending on your pension type), and
+- After you stop working, your pension is recalculated based on your updated contribution record.
+
+## If you have a Total Permanent Natural Disability Pension:
+
+**You cannot work.** **Social Security Law, Article 85(e)** states: ""If the insured becomes entitled to a Total Permanent Natural Disability Pension, he/she shall be permanently excluded from the scope of application of this Law, and this state shall not be affected by his/her return to any paid work.""
+
+**To give you a precise answer about your situation, please clarify: What type of disability pension do you have—work-related or non-work-related? And are you Jordanian or non-Jordanian?**
+
+General information, not legal advice; consult a licensed lawyer about your own case."
+q09,2,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","Your situation depends on which type of disability pension you have:
+
+**Partial Permanent Work-Related Disability:**
+Yes, but with restrictions. Under Social Security Law, Article 85(f), a partial permanent natural disability pensioner may combine **50% of their Disability Pension** with wages from employment covered by the Law, provided that:
+- You have not been employed for at least 24 months before receiving the pension;
+- You have not resumed employment with any firm you worked for during the 36 contributions before the pension;
+- If allocated under a hazardous occupation clause, you have not resumed work in a hazardous occupation; and
+- Your Disability Pension is recalculated after you leave employment, based on your new average wage including the new contribution period.
+
+**Total Permanent Work-Related Disability:**
+No. Under Social Security Law, Article 85(e), if you become entitled to a Total Permanent Natural Disability Pension, you are permanently excluded from the scope of the Law, and this exclusion is not affected by returning to any paid work, even if covered by the Law. This means you cannot combine employment with a total permanent disability pension.
+
+**General Work Injury Disability (non-work-related permanent disability):**
+Under Social Security Law, Article 40, you may combine earnings from a job or occupation with your Work Injury Disability Pension.
+
+To give you a precise answer, I need to know: **Is your disability pension classified as partial or total permanent disability?**
+
+General information only; consult a licensed lawyer about your own case."
+q09,3,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","# Work and Disability Pension: General Rule
+
+**Yes, you can generally combine paid work with a Work Injury Disability Pension**, but the rules depend on which type of disability pension you have and several other conditions. Here are the provisions:
+
+## 1. **Partial Permanent Work-Related Disability**
+
+If you have a **partial permanent work-related disability pension**, you may combine **50% of your Disability Pension** with wages from employment covered by the Social Security Law, **provided that**:
+
+- You have not been employed for at least 24 months as of the date you became entitled to the pension  
+- You have not resumed employment with any of the firms where you worked during the last 36 contribution periods before receiving the pension  
+- When you resume employment, your Disability Pension is recalculated after you stop work, based on a new average wage that includes your subsequent contribution period  
+
+*(Social Security Law, Article 85(f))*
+
+## 2. **Total Permanent Work-Related Disability**
+
+If you have a **total permanent work-related disability pension**, you are **permanently excluded from the scope of the Social Security Law** and cannot work in covered employment. This exclusion is not affected even if you return to paid work.
+
+*(Social Security Law, Article 85(e))*
+
+## 3. **Work Injury Disability Pension (General)**
+
+More broadly, an insured person may combine earnings from a job or occupation with a Work Injury Disability Pension as specified by the Social Security Law.
+
+*(Social Security Law, Article 40)*
+
+---
+
+**To give you a precise answer for your situation, please clarify: Is your disability pension for a partial or total permanent work-related disability?**
+
+General information only; consult a licensed lawyer about your own case."
+q09,4,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","Your ability to combine work with a disability pension for work injury depends on which type of disability pension you have.
+
+**If you have a Total Permanent Work-Related Disability Pension:**
+You are **permanently excluded** from the Social Security Law's scope. Per Social Security Law, Article 85(e), ""If the insured becomes entitled to a Total Permanent Natural Disability Pension, he/she shall be permanently excluded from the scope of application of this Law, and this state shall not be affected by his/her return to any paid work even if said work is covered by the provisions of this Law."" This means you cannot combine wages from covered employment with that pension.
+
+**If you have a Partial Permanent Work-Related Disability Pension:**
+You **may combine** 50% of your Disability Pension with wages from covered employment, subject to conditions. Social Security Law, Article 85(f) states: ""a partial permanent natural disability pensioner may combine (50%) of his/her Disability Pension payable thereto with his/her wages from an employment that is covered by the provisions of this Law; provided that the Disability Pension apportioned thereto is recalculated after termination of employment based on the new average deductible wage after including the subsequent contribution period to his/her previous contribution period.""
+
+Additionally, Social Security Law, Article 40 confirms that ""The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.""
+
+You would need to inform your employer and be subject to Social Security Law contributions on your new wages.
+
+General information, not legal advice; consult a licensed lawyer about your own case."
+q09,5,Can I take a paid job while I am receiving a disability pension for a work injury?,['40'],"['ssl:40', 'ssl:85', 'ssl:35', 'ssl:36', 'labor96:14', 'labor96:86', 'ssl:4']","Whether you can work while receiving a work injury disability pension depends on which type of disability pension you have and your nationality.
+
+**If you have a Total Permanent Work-Related Disability Pension:**
+
+No. Social Security Law, Article 85(e) states: ""If the insured becomes entitled to a Total Permanent Natural Disability Pension, he/she shall be permanently excluded from the scope of application of this Law, and this state shall not be affected by his/her return to any paid work even if said work is covered by the provisions of this Law."" You cannot combine this pension with any employment.
+
+**If you have a Partial Permanent Work-Related Disability Pension and are Jordanian:**
+
+You may combine 50% of your disability pension with wages from employment covered by the Social Security Law, subject to conditions in Social Security Law, Article 85(f):
+- You have not been employed for at least 24 months as of the date you became entitled to the disability pension
+- You have not resumed employment with any firms where you worked during the last 36 contribution periods before the disability pension
+- Your disability pension will be recalculated after you stop working, based on your new average wage including the subsequent contribution period
+
+**If you have a Partial Permanent Work-Related Disability Pension and are a non-Jordanian Early Retirement Pensioner:**
+
+Different rules apply under Social Security Law, Article 85(d)(2), which suspends your pension if you resume covered employment.
+
+**If you are a military disability pensioner:**
+
+You may combine up to JOD 500 of your disability pension with wages from covered work, per Social Security Law, Article 85(g).
+
+To give you a precise answer for your situation, I need to know: (1) Are you Jordanian? (2) What type of disability pension do you have—total or partial permanent work-related disability?
+
+This is general information, not legal advice; consult a licensed lawyer about your own case."
+q15,0,"Can I stop working before the normal retirement age, and how would my pension be worked out?",['64'],"['ssl:64', 'ssl:68', 'ssl:85', 'ssl:63', 'ssl:65', 'ssl:4']","# Early Retirement Before Normal Retirement Age
+
+Yes, you can request an early retirement pension from the Social Security Corporation if you meet the eligibility conditions. How your pension is calculated depends on which set of conditions you qualify under and your age and contributions at the time you apply.
+
+## Who can get early retirement
+
+**Social Security Law, Article 64(a)** sets the main path: if your service ends for any reason, you can request an early retirement pension if:
+- You are at least 50 years old and have at least **252 actual contributions (if male)** or **228 actual contributions (if female)**, OR
+- You have 300 actual contributions and are at least 45 years old.
+
+**Article 64(b)** offers alternative paths if you were already covered before this law took effect, with lower contribution requirements if you reach ages 46, 47, or 48 (combined with contribution and prior-age conditions).
+
+**Article 64(c)** provides a separate route if you work in a hazardous profession: you need at least **216 actual contributions (if male)** or **180 actual contributions (if female)**, you must be at least 45 years old, and you must have worked in that hazardous profession for at least 60 contributions in the 10 years before applying.
+
+## How your pension is calculated
+
+The calculation depends on which eligibility route applies to you:
+
+**If you qualify under Article 64(a) or (b)** (standard early retirement):
+- **Article 64(d)(1)**: Your pension is worked out at **2.5% for each year of contributions** on the first JOD 1500 of your average monthly wage (based on your last 60 contributions), and **2% on any amount above JOD 1500**.
+- **Article 64(d)(2)**: Your pension is then **reduced by a percentage depending on your age** (the reduction rates are in Table 5, which is not provided here, but the reduction is significant the earlier you retire).
+- **Article 64(d)(4)**: When calculating your average wage, it cannot increase by more than 60% from your wage at the start of your last 60 contributions, and it cannot be more than 20% lower than that starting wage.
+
+**If you qualified before this law took effect with 216–180 contributions** (Article 64(g)):
+- Your pension is calculated at **2.5% for each year of contributions** on your average monthly wage based on your **last 24 contributions** (not 60), with a ceiling of **75% of that average**.
+- Your pension is reduced by a fixed percentage based on your exact age (ranging from 18% if over 45 but not exceeding 46, down to 1% if over 58 but not exceeding 59 for males; for females, 10% if over 45 but not exceeding 50, then 5% if over 50 but not exceeding 54, with no reduction if over 54 but under 55).
+
+**If you work in a hazardous profession** (Article 64(c)):
+- Same calculation as Article 64(d)(1)–(4) above.
+
+## Increases for dependents
+
+**Article 64(d)(3)** allows your pension to be increased if you have dependents:
+- 12% for the first dependent (not less than JOD 10 and not more than JOD 100).
+- 6% for the second and each third dependent (not less than JOD 10 and not more than JOD 25 per dependent).
+
+## When the pension starts
+
+**Article 64(e)**: Your pension becomes due at the start of the month in which you apply, provided you apply after the end of the month in which your employment ends.
+
+## Other important rules
+
+**Article 85(d)(1)** allows you to combine your early retirement pension with wages from new covered work, but only if:
+- You have not been employed for at least 24 months since becoming entitled to early retirement.
+- You have not resumed work with any firm where you worked during the last 36 contributions before early retirement.
+- (If from a hazardous profession) you do not resume work in any hazardous occupation.
+
+If you do resume covered employment, your pension is reduced according to Table 7 (not provided here).
+
+**Article 85(d)(1)(g)**: If you later stop that new employment, your early retirement pension resumes in full. Any subsequent contributions can only be added to your previous period when you reach age 60 (if male) or 55 (if female), or upon your death—at which point your pension is recalculated, but cannot be less than what you were receiving before.
+
+---
+
+**To advise you precisely, I need to know:**
+- Your current age and sex
+- Your current number of actual contributions
+- Whether you work (or have worked) in a hazardous profession
+
+This is general information, not legal advice. Consult a licensed lawyer about your own case."
+q19,0,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,['36'],"['ssl:36', 'ssl:67', 'ssl:34', 'ssl:73', 'ssl:76', 'ssl:4']","نعم، يمكن إعادة فحصك طبياً بعد تقرير الراتب، لكن الآلية والتوقيت يختلفان حسب نوع العجز لديك:
+
+## إذا كان عجزك **إصابياً دائماً** (ناشئ عن إصابة عمل):
+
+**قانون الضمان الاجتماعي، المادة 36(أ):** يجوز لك أو للمؤسسة طلب إعادة الفحص الطبي **مرة واحدة كل ستة أشهر على الأقل خلال السنتين التاليتين** لتاريخ ثبوت العجز.
+
+النتائج المحتملة لإعادة الفحص:
+- إذا انخفضت نسبة العجز عن 30% يتوقف الراتب نهائياً وتحصل على تعويض بدلاً منه
+- إذا زادت النسبة يزاد الراتب اعتباراً من أول الشهر التالي لإعادة الفحص
+- إذا أصبحت بحاجة لمن يعينك على أعباء حياتك اليومية يزاد الراتب
+- إذا أصبحت غير محتاج لمساعدة توقف هذه الزيادة
+
+## إذا كان عجزك **طبيعياً دائماً**:
+
+**قانون الضمان الاجتماعي، المادة 67(هـ):** يجوز لك أو للمؤسسة طلب إعادة الفحص **في أي وقت خلال السنتين التاليتين** لتاريخ ثبوت العجز.
+
+النتائج المحتملة:
+- توقف الراتب إذا زالت صفة العجز
+- تسوية حقوقك كعجز جزئي إذا تحول من كلي إلى جزئي
+- منح أو وقف زيادة التعويل إذا تغيرت احتياجك للمساعدة اليومية
+
+**تنبيه:** إذا تخلفت عن إعادة الفحص المطلوبة يتوقف صرف الراتب حتى تمثل أمام المرجع الطبي.
+
+هذه معلومات عامة، استشر محامياً أو المؤسسة المختصة حول وضعك الخاص."
+q29,0,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,['66'],"['ssl:81', 'ssl:66', 'ssl:80', 'ssl:84', 'labor96:34', 'ssl:4']","لاستحقاق ورثة زوجك راتب تقاعد الوفاة، يجب أن تتوفّر الشروط التالية:
+
+**الشروط الأساسية:**
+
+قانون الضمان الاجتماعي، المادة 66(أ): يجب أن يكون زوجك قد سدّد **ما لا يقل عن 24 اشتراكاً فعلياً، منها 6 اشتراكات متصلة** (متتالية)، والوفاة تكون خلال خدمته المشمولة بأحكام القانون.
+
+**كيفية حساب الراتب:**
+
+قانون الضمان الاجتماعي، المادة 66(ب):
+- يُحسب الراتب بنسبة **50%** من متوسط أجره الشهري الذي اتُّخذ أساساً للاشتراك خلال الـ 12 اشتراكاً الأخيرة.
+- إذا بلغ عدد اشتراكاته **60 اشتراكاً فأكثر**، يُزاد الراتب بنسبة **0.5%** عن كل سنة من سنوات الاشتراك.
+- إذا بلغ **120 اشتراكاً فأكثر**، تُزاد النسبة إلى **1%** عن كل سنة.
+
+**توزيع الراتب على الورثة:**
+
+قانون الضمان الاجتماعي، المادة 80: يُدفع لكل مستحق نصيبه من الراتب وفقاً لجدول محدد، ابتداءً من أول الشهر الذي حدثت فيه الوفاة.
+
+المستحقون وشروطهم مبينون في المادة 81 (الأرملة، الأبناء، الآباء، وغيرهم).
+
+**معلومة عامة، وليست استشارة قانونية — استشيري محامياً بترخيص عن وضعك الخاص.**"
+q29,1,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,['66'],"['ssl:81', 'ssl:66', 'ssl:80', 'ssl:84', 'labor96:34', 'ssl:4']","## الشروط لاستحقاق الورثة راتب وفاة الزوج أثناء الخدمة
+
+توفي زوجك أثناء الخدمة، وهذا يفتح حق الورثة في راتب تقاعد الوفاة. الشروط هي:
+
+### الشروط الأساسية للاستحقاق:
+**قانون الضمان الاجتماعي، المادة 66(أ)** ينص على أن المؤمن عليه يستحق راتب تقاعد الوفاة الطبيعية إذا وقعت الوفاة خلال خدمته المشمولة بأحكام هذا القانون **شريطة أن يكون قد سدد ما لا يقل عن (24) اشتراكاً فعلياً منها (6) اشتراكات متصلة**.
+
+### كيفية حساب الراتب:
+**قانون الضمان الاجتماعي، المادة 66(ب):**
+1. يُحسب الراتب بنسبة **50%** من متوسط الأجر الشهري الذي اتُّخذ أساساً لتسديد اشتراك المؤمن عليه خلال الـ 12 اشتراكاً الأخيرة.
+2. يُزاد الراتب بنسبة **نصف بالمائة (0.5%)** عن كل سنة من سنوات الاشتراك إذا بلغت اشتراكاته 60 فأكثر، على أن تزاد النسبة إلى **واحد بالمائة (1%)** إذا بلغت اشتراكاته 120 فأكثر.
+
+### توزيع الراتب على الورثة:
+**قانون الضمان الاجتماعي، المادة 80** ينص على أن يُدفع لكل مستحق نصيبه من الراتب وفقاً للجدول رقم (4) الملحق بهذا القانون، **ابتداء من أول الشهر الذي حدثت فيه الوفاة**.
+
+**قانون الضمان الاجتماعي، المادة 81** تحدد المستحقين والشروط المتعلقة بكل فئة (الأرملة والأبناء والوالدان والإخوة).
+
+---
+
+**هذه معلومات عامة وليست استشارة قانونية — استشر محامياً مرخصاً بشأن حالتك الخاصة.**"
+q29,2,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,['66'],"['ssl:81', 'ssl:66', 'ssl:80', 'ssl:84', 'labor96:34', 'ssl:4']","# الشروط لاستحقاق الورثة راتب الوفاة
+
+عندما يتوفى عامل أثناء الخدمة، يحق لورثته الشرعيين الحصول على راتب تقاعد الوفاة، وفق الشروط التالية:
+
+## الشروط الأساسية:
+
+**قانون الضمان الاجتماعي، المادة 66(أ):**
+- أن يكون المتوفى قد سدّد **لا يقل عن 24 اشتراكاً فعلياً**، منها **6 اشتراكات متصلة (متتالية)** على الأقل.
+
+## كيفية حساب الراتب:
+
+**قانون الضمان الاجتماعي، المادة 66(ب):**
+- الراتب يُحسب بنسبة **50%** من متوسط الأجر الشهري الذي اتُخذ أساساً لتسديد الاشتراك خلال **آخر 12 اشتراكاً**.
+- إذا بلغ عدد اشتراكاته 60 فأكثر، يُزاد الراتب بنسبة **0.5%** (نصف بالمائة) عن كل سنة من سنوات الاشتراك.
+- إذا بلغ عدد اشتراكاته 120 فأكثر، تُزاد النسبة إلى **1%** (واحد بالمائة) عن كل سنة.
+
+## توزيع الراتب على المستحقين:
+
+**قانون الضمان الاجتماعي، المادة 80:**
+- يُدفع لكل مستحق نصيبه من الراتب وفقاً للجدول رقم (4) الملحق بالقانون، ابتداءً من **أول الشهر الذي حدثت فيه الوفاة**.
+
+---
+معلومات عامة وليست استشارة قانونية؛ استشري محامياً مرخصاً بخصوص حالتك الشخصية."
+q35,0,Are there situations where an employer simply is not allowed to end someone's job?,['27'],"['labor96:27', 'labor96:132', 'labor96:23', 'labor96:31', 'labor96:21', 'ssl:4']","Yes. Under the Labour Law 1996, there are several situations where an employer cannot terminate a worker's employment:
+
+**Article 27(a)** states the employer shall not terminate services or send notice of termination in these cases:
+
+1. **Pregnant working women** starting from the sixth month of their pregnancy or during maternity leave.
+
+2. **Workers on military or reserve service** while performing that service.
+
+3. **Workers on leave**, including annual leave, sick leave, educational leave, Hajj leave, or agreed leave for union work or attending a recognized institute, college, or university.
+
+**Exception:** Article 27(b) states the employer is absolved from these restrictions if the worker was employed by another employer during any of those protected periods.
+
+Additionally, **Article 132(b)** prohibits an employer from dismissing any worker without written permission from the settlement representative, settlement council, or labour court **while a labour dispute is being heard** by those bodies.
+
+These are absolute prohibitions — they do not depend on whether the employer has ""just cause."" The employer simply cannot act during these periods or circumstances, regardless of the reason they might want to terminate employment.
+
+General information, not legal advice; consult a licensed lawyer about their own case."
+q42,0,"How long can I stay off work after giving birth, and do I get time during the day for breastfeeding afterwards?","['70', '71']","['labor96:71', 'labor96:70', 'labor96:67', 'ssl:46', 'ssl:44', 'ssl:4']","# Maternity Leave and Breastfeeding Rights
+
+**After childbirth**, you have the right to **at least 6 weeks of fully paid maternity leave**. The total maternity leave (before and after birth combined) is **10 weeks**, so the period before birth can be up to 4 weeks (Labour Law 1996, Article 70).
+
+**After maternity leave ends**, you have the right to **one or more periods with full pay for breastfeeding, within one year from the date of birth, totalling no more than one hour per day** (Labour Law 1996, Article 71).
+
+---
+
+**Additional option:** If you work in an institution with 10 or more workers, you may also take **unpaid leave for up to one year to raise your children**. You can return to your job after this leave ends, but you lose this right if you work for pay elsewhere during that period (Labour Law 1996, Article 67).
+
+---
+
+General information, not legal advice; consult a licensed lawyer about your own situation."
+q49,0,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,['29'],"['labor96:29', 'labor96:23', 'labor96:28', 'labor96:27', 'labor96:26', 'ssl:4']","نعم، يمكنك ترك عملك فوراً دون إشعار صاحب العمل والاحتفاظ بحقوقك القانونية في حالات محددة فقط.
+
+**الشروط:**
+
+يحق لك ترك العمل دون إشعار بشرط أن **تبلّغ وزارة العمل خلال أسبوعين من تاريخ ترك العمل** بالطرق التي تحددها الوزارة. عندئذ تحتفظ بحقوقك عن انتهاء الخدمة وما يترتب لك من تعويضات عطل وضرر (قانون العمل 1996، المادة 29(أ)).
+
+**الحالات التي تبرّر الترك الفوري دون إشعار:**
+
+1. **تغيير نوع العمل:** استخدامك في عمل يختلف اختلافاً بيّناً عن العمل المتفق عليه في العقد (المادة 29(أ)(1)).
+
+2. **تغيير مقر الإقامة:** استخدامك بصورة تدعو إلى تغيير محل إقامتك الدائم، إلا إذا نصّ العقد على جواز ذلك (المادة 29(أ)(2)).
+
+3. **الخفض في الدرجة الوظيفية:** نقلك إلى عمل في درجة أدنى من العمل المتفق عليه (المادة 29(أ)(3)).
+
+4. **تخفيض الأجر:** تخفيض أجرك (المادة 29(أ)(4)).
+
+5. **التهديد الصحي:** إذا ثبت بتقرير طبي من مرجع طبي أن استمرارك في العمل من شأنه تهديد صحتك (المادة 29(أ)(5)).
+
+6. **الاعتداء:** إذا اعتدى صاحب العمل أو من يمثله عليك أثناء العمل أو بسببه بالضرب أو التحقير أو أي شكل من أشكال الاعتداء أو التحرش الجنسي المعاقب عليه (المادة 29(أ)(6)).
+
+7. **عدم تطبيق القانون:** إذا تخلف صاحب العمل عن تنفيذ أي حكم من أحكام قانون العمل أو نظام صادر بمقتضاه، **بشرط أن تكون قد تلقيت إشعاراً من جهة مختصة في وزارة العمل تطلب فيه التقيد بتلك الأحكام** (المادة 29(أ)(7)).
+
+هذه معلومات عامة؛ استشر محامياً مرخصاً بخصوص وضعك الشخصي."

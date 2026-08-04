@@ -19,7 +19,7 @@ from src.calc import (  # noqa: E402
     compute_gender_conditions, compute_overtime, compute_leave_accrual,
     extract_salary, extract_service, extract_sex, extract_hourly_wage,
     format_calculation_block, format_end_of_service_block, format_gender_block,
-    format_overtime_block, format_leave_block,
+    format_overtime_block, format_leave_block, disability_pension_scope_note,
     _private_funding_articles,
 )
 
@@ -263,15 +263,25 @@ print("gender conditions: Art 62 age 60/55, Art 64 subscriptions 252/228, both l
 assert compute_gender_conditions([chunk("ssl", "ar", "59")]) == []
 print("no gender-differentiated article in context -> [] (nothing invented)")
 
-# COMPLETENESS GUARD (Phase 25): eval_v3 showed this firing on ordinary questions
+# COMPLETENESS GUARD (Phase 25a): eval_v3 showed this firing on ordinary questions
 # whenever Article 62 OR 64 merely appeared in context, e.g. a question about buying
-# a missing subscription period pulling in Article 64 as an incidental sibling. One
-# article present alone is not a strong enough signal the question is actually about
-# retirement-age/eligibility -- both clustering together is. A single article, even
-# a perfectly matched one, now declines rather than surfacing half the picture.
-assert compute_gender_conditions([chunk("ssl", "ar", "62")]) == []
-assert compute_gender_conditions([chunk("ssl", "en", "64")]) == []
-print("gender block requires BOTH Article 62 and 64 together -- one alone declines")
+# a missing subscription period pulling in Article 64 as an incidental sibling, not
+# the article the question is actually about. A single article present but NOT the
+# top-ranked chunk (i.e. something else outranks it) is not a strong enough signal
+# -- declines.
+assert compute_gender_conditions([chunk("ssl", "ar", "59"), chunk("ssl", "ar", "62")]) == []
+assert compute_gender_conditions([chunk("ssl", "en", "59"), chunk("ssl", "en", "64")]) == []
+print("gender block: a lower-ranked lone match (something else outranks it) declines")
+
+# RANK EXCEPTION (Phase 32, mt02): a question genuinely and only about early
+# retirement retrieves just Article 64, as the TOP-ranked chunk -- Article 62
+# (retirement age, a different topic) has no reason to also be retrieved. That
+# should NOT decline just because its sibling article is absent.
+top64 = compute_gender_conditions([chunk("ssl", "en", "64"), chunk("ssl", "en", "59")])
+assert len(top64) == 1 and top64[0]["article"] == "64" and top64[0]["male"] == 252, top64
+top62 = compute_gender_conditions([chunk("ssl", "ar", "62"), chunk("ssl", "ar", "59")])
+assert len(top62) == 1 and top62[0]["article"] == "62" and top62[0]["male"] == 60, top62
+print("gender block: a lone match that IS the top-ranked chunk fires on its own")
 
 BOTH_AR = [chunk("ssl", "ar", "62"), chunk("ssl", "ar", "64")]
 BOTH_EN = [chunk("ssl", "en", "62"), chunk("ssl", "en", "64")]
@@ -335,6 +345,18 @@ print("overtime: JD amounts only from an explicit hourly wage, never a monthly o
 assert compute_overtime([chunk("labor96", "en", "58")]) is None
 print("overtime: declines when Article 59 was not retrieved\n")
 
+# Article 58 also retrieved -> flag the rates as conditional and ask, same pattern
+# as compute_end_of_service's SSL-coverage condition
+for lang in ("ar", "en"):
+    r = compute_overtime([chunk("labor96", lang, "59"), chunk("labor96", lang, "58")])
+    assert r["requires_not_excluded_role"] is True, r
+    block = format_overtime_block(r, lang)
+    ask_word = "اسأل" if lang == "ar" else "ASK"
+    assert ask_word in block, f"{lang}: condition line missing from block:\n{block}"
+    # the rates themselves are unaffected -- only the framing changes
+    assert "125" in block and "150" in block
+print("overtime: Article 58 present -> rates flagged conditional, model told to ask")
+
 # ---------------------------------------------------- annual leave, Art 61
 # Ground truth read directly from the article text: 14 days/year base, 21
 # after 5 consecutive years with the same employer, both languages.
@@ -368,6 +390,19 @@ print("leave accrual: no years stated -> rate only; Art 63 cash value never inve
 # wrong article in context -> decline
 assert compute_leave_accrual([chunk("labor96", "en", "63")], years=3.0) is None
 print("leave accrual: declines when Article 61 was not retrieved\n")
+
+# ------------------------------- Article 40 vs 85 disambiguation (Phase 34)
+# Phase 21/25/31/34 repeatedly found the model misapplying one of Article 85's
+# disability-pension paragraphs to a Work Injury Disability Pension question,
+# instead of the directly-applicable Article 40. Fires only when BOTH are
+# retrieved together -- nothing to compute, no precondition.
+note_en = disability_pension_scope_note([chunk("ssl", "en", "40"), chunk("ssl", "en", "85")], "en")
+assert note_en is not None and "Article (40)" in note_en and "Article (85)" in note_en
+note_ar = disability_pension_scope_note([chunk("ssl", "ar", "40"), chunk("ssl", "ar", "85")], "ar")
+assert note_ar is not None and "40" in note_ar and "85" in note_ar
+assert disability_pension_scope_note([chunk("ssl", "en", "40")], "en") is None  # 85 absent
+assert disability_pension_scope_note([chunk("ssl", "en", "85")], "en") is None  # 40 absent
+print("disability pension scope note: fires only when both Article 40 and 85 are retrieved\n")
 
 print(format_calculation_block(
     compute_contributions(family("ar") + [chunk("ssl", "ar", "20")], salary=1000), "ar"))

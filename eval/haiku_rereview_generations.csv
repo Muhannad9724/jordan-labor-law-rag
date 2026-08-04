@@ -1,0 +1,1143 @@
+﻿arm,question_id,question_text,question_language,answer,citations,calculation
+claude-haiku-4.5 (compact),q01,I was injured while at work. What does social security actually cover for me?,en,"# Work Injury Coverage Under Social Security
+
+If you are covered by the Social Security Law, work-injury insurance provides you with the following benefits:
+
+**Medical Care**
+Social Security Law, Article 25(a): You are entitled to the medical care required by your health condition.
+
+**Daily Allowances for Temporary Inability to Work**
+Social Security Law, Article 25(b): If the injury renders you unable to work, you receive daily allowances for temporary inability.
+
+Social Security Law, Article 29(a): The daily allowance is equivalent to **75% of your daily wage** (based on the wage used to calculate contributions on the date of injury), for days you spend under treatment at a Corporation-approved treatment center or at home per a Medical Reference decision.
+
+Social Security Law, Article 29(c): Your employer pays the allowance for the first **3 days** from the date of injury; Social Security covers the rest.
+
+Social Security Law, Article 29(b): The allowance continues throughout the period you are unable to resume work, or until your permanent disability is confirmed or your death.
+
+**Pensions and Lump Sum Compensation**
+Social Security Law, Article 25(c): You are entitled to monthly pensions and lump sum compensations depending on the outcome of your injury.
+
+**Death Benefits**
+Social Security Law, Article 25(d): If you die from the work injury, funeral expenses are covered. The amount and recipient are determined by the Board.
+
+**For permanent disability outcomes specifically** — total disability, partial disability of 30% or more, or partial disability below 30% — the law sets different pension and compensation amounts; to explain those, I would need to know which category applies to your situation.
+
+This is general information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '25', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q02,I need an artificial limb and I have to travel for treatment. Will those costs be paid for me?,en,"Under the Social Security Law, both the artificial limb (prosthetic device) and your travel costs for treatment should be covered.
+
+**Prosthetic device:**  
+Social Security Law, Article 26(a)(3) states that medical care includes ""the provision of rehabilitation services and equipment, including prosthetic devices, the type and degree of which shall be determined by the Medical Reference.""
+
+**Travel expenses:**  
+Social Security Law, Article 26(a)(2) states that medical care includes ""Transport expenses incurred by the injured as a result of transportation to and from his/her workplace or residence to the place where he/she receives his/her treatment.""
+
+**Who pays:**  
+Social Security Law, Article 28(a) establishes that ""The Corporation shall be responsible for the treatment of the injured until his/her recovery, disability or death due to work injury is confirmed by decision of the Medical Reference.""
+
+The specific type and degree of prosthetic device will be determined by the Medical Reference, and the exact mechanism for reimbursement will be set out in the Bylaws issued under the Law (Article 26(b)).
+
+This is general information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '26', 'in_retrieved_context': True}, {'article_number': '28', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q03,A worker at my company was hurt on site today. What am I required to do straight away?,en,"# Immediate obligations when a worker is injured on site
+
+You must do the following right away:
+
+1. **Transport the injured worker** to an approved treatment facility (or hospital/medical center).
+
+2. **Notify security authorities** of the accident within **48 hours** of its occurrence.
+
+3. **Report to the Ministry** within **48 hours** from the occurrence of the incident (if covered by Labour Law 1996).
+
+**Or**, if the worker is covered by Social Security Law, you must also **notify the Corporation in writing along with the initial medical report within 14 working days** as of the date of the injury.
+
+4. **Bear the transport expenses** to the hospital or medical center for treatment.
+
+---
+
+**Legal basis:**
+- Labour Law 1996, Article 87(a): employer must transport the injured person, notify security authorities, and send notice to the Ministry within 48 hours.
+- Social Security Law, Article 27(a) and (b): the firm must transport the injured to an approved facility, report to the nearest police station within 48 hours (for injuries the Board decides must be reported), and notify the Corporation in writing with initial medical report within 14 working days.
+
+Failure to report properly can result in penalties and financial liability — the firm may have to cover 15% of treatment expenses and daily allowance if it fails to report to the Corporation as required.
+
+General information only; consult a licensed lawyer about your specific situation.","[{'article_number': '27', 'in_retrieved_context': True}, {'article_number': '87', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q04,"I cannot work while I recover from an injury I got at work. Will I still be paid, and how much?",en,"Your situation depends on whether you're covered by the **Social Security Law** or only the **Labour Law 1996**.
+
+## If you are covered by Social Security Law:
+
+**Yes, you will be paid a daily allowance during recovery.**
+
+- **Social Security Law, Article 29(a):** The Corporation pays you a daily allowance of **75% of your daily wage** (based on the wage used to calculate your contributions on the injury date) for each day you are under treatment at an approved treatment centre or at home under a medical decision.
+
+- **Social Security Law, Article 29(c):** Your employer pays the allowance for the **first 3 days** from the injury date.
+
+- **Social Security Law, Article 29(b):** The daily allowance continues throughout the period you cannot resume work, until your permanent disability is confirmed or you die.
+
+- **Social Security Law, Article 40:** You may also combine this disability allowance with earnings from another job or occupation, if you undertake one.
+
+## If you are covered only by Labour Law 1996:
+
+**Yes, you will be paid an allowance during treatment.**
+
+- **Labour Law 1996, Article 90(b):** You are entitled to a daily allowance of **75% of your average daily wage** during the treatment period (determined by medical authority), or **65%** if you receive treatment at an accredited treatment centre.
+
+---
+
+**Which law covers you?** — Social Security applies to workers subject to the Labour Law and meeting wage/regularity conditions (Social Security Law, Article 4). Labour Law Article 86 applies work-injury rules only to workers *not* covered by Social Security.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '40', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}, {'article_number': '86', 'in_retrieved_context': True}, {'article_number': '90', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q05,"If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",en,"# Payment for Work-Related Death or Total Permanent Disability
+
+The amount depends on whether the worker is covered by **Social Security** or only by the **Labour Law**.
+
+## If covered by Social Security:
+
+**Social Security Law, Article 30(a)** – Death due to work injury:
+- Survivor beneficiaries receive a **Death Due to Work-Injury Pension of 75% of the worker's wage** (the wage used to calculate contributions on the date of injury)
+- The pension starts from the beginning of the month in which death occurs
+- It is divided among entitled beneficiaries per the Law's rules
+
+**Social Security Law, Article 30(b)** – Total permanent work-related disability:
+- The insured receives a **monthly Disability Pension of 75% of the wage** (the wage used to calculate contributions on the date of injury)
+- The pension begins when the medical authority confirms the condition is stable
+- **Additional increase:** If the injured person needs help with daily life tasks (confirmed by the Medical Reference), the pension increases by **25%**, but this increase cannot exceed the approved minimum wage under the Labour Law
+
+## If NOT covered by Social Security:
+
+**Labour Law 1996, Article 90(a)** – Death or total disability:
+- The employer pays compensation of **wages for 1,200 working days**
+- **Ceiling:** not more than 5,000 JDs
+- **Floor:** not less than 2,000 JDs
+
+**Labour Law 1996, Article 91** – How the amount is calculated:
+- Based on the worker's **last received wage**
+- If paid on task/piece work basis, based on the **average wage over the last six months**
+
+**Labour Law 1996, Article 92(a)** – Payment:
+- Paid as a **lump sum within 30 days** from notification of the authorized person's decision
+- If the worker and employer don't agree, the Secretary-General estimates the amount
+
+---
+
+To tell you which applies to a specific case: **Is the worker covered by Social Security?** (This depends on whether they are subject to the Labour Law and not excluded by Social Security Law, Article 4.)
+
+General information only; consult a licensed lawyer about your own case.","[{'article_number': '92', 'in_retrieved_context': True}, {'article_number': '91', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}, {'article_number': '90', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q06,Can someone lose their right to injury money because of the way they behaved?,en,"Yes, according to both laws, someone can lose their right to injury compensation in certain circumstances based on their conduct.
+
+**Under the Labour Law 1996, Article 94(a)**, the right to daily allowance and cash compensation can be forfeited if an investigation proves the injury resulted from:
+- Intentional acts, serious error, or gross negligence by the injured party;
+- Influence of alcohol, drugs, or psychotropic substances; or
+- Violation of prescribed treatment instructions or announced industrial prevention and safety instructions, where that violation had an effect on the occurrence of the injury.
+
+**Under the Social Security Law, Article 31(a)**, entitlement to daily allowance and lump sum compensation lapses if:
+- The work injury results from a deliberate act;
+- The injury results from being under the influence of alcohol, narcotics, psychotropic substances, or dangerous drugs;
+- The injured fails to comply with announced mandatory instructions relating to treatment or occupational health and safety, and that noncompliance was the main cause of the injury, a significant factor leading to it, or delaying recovery.
+
+**Important exception**: Under **Labour Law 1996, Article 94(b)** and **Social Security Law, Article 31(c)**, these forfeiture rules do **not** apply if the injury results in death or in permanent disability of not less than 30%. In those cases, the injured party or their beneficiaries receive compensation regardless of the circumstances.
+
+General information, not legal advice; consult a licensed lawyer about your specific situation.","[{'article_number': '94', 'in_retrieved_context': True}, {'article_number': '31', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q07,Can I also sue my employer for more than what social security pays me for my injury?,en,"To answer your question, I need to know: **Are you covered by the Social Security Law, or are you a worker not subject to Social Security?**
+
+The rules differ depending on which applies to you.
+
+**If you are covered by Social Security:**
+
+Social Security Law, Article 37 states: ""neither the injured nor his/her heirs or survivor beneficiaries may recourse to the firm for any compensations related to Work-Related Injuries other than what are stipulated in this Law, unless the injury was the result of a serious mistake on the part of the firm.""
+
+So you cannot sue your employer for additional compensation unless the injury resulted from a serious mistake by the firm.
+
+**If you are NOT covered by Social Security:**
+
+Labour Law 1996, Article 89 states: ""the injured party or their beneficiary shall not be entitled to claim any compensation from the employer other than those stipulated in this Law, except in cases where the injury is a result of the employer's fault.""
+
+So you cannot sue for more than the Labour Law amounts, except if the injury resulted from the employer's fault.
+
+---
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '89', 'in_retrieved_context': True}, {'article_number': '37', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q08,"I got ill from a job I left a while ago, and the symptoms only showed up now. Am I still covered?",en,"Whether you're still covered depends on **when the symptoms appeared** and **which law covers you**.
+
+---
+
+**If you are covered by the Social Security Law:**
+
+Social Security Law, Article 39 says the Corporation will cover occupational disease insurance rights if symptoms appear **within 2 years from the date you left that job**, provided you submit a decision from the Medical Reference confirming that your former occupation caused the disease.
+
+---
+
+**If you are covered by the Labour Law 1996** (you are not subject to the Social Security Law):
+
+Labour Law 1996, Article 88 makes your employer responsible for paying compensation for an occupational disease based on a medical authority report. However, Labour Law 1996, Article 93 requires that any compensation claim be submitted **within two years from the date of occurrence** (here, when symptoms appeared). The authorized person may accept a late claim if the delay is justified by a legitimate excuse, including ""the final instability of the injury results"" — meaning if you couldn't know the injury was final until later.
+
+---
+
+**To give you a precise answer, I need to know: How long ago did you leave the job, and when did symptoms appear?**
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '88', 'in_retrieved_context': True}, {'article_number': '39', 'in_retrieved_context': True}, {'article_number': '93', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q09,Can I take a paid job while I am receiving a disability pension for a work injury?,en,"**The answer depends on which type of disability pension you are receiving.**
+
+**For a Work Injury Disability Pension (temporary or permanent):**
+
+Yes, you may combine employment income with your Work Injury Disability Pension. Social Security Law, Article 40 states: ""The insured may combine between what he/she earns from a job or an occupation and his/her Work Injury Disability Pension that is specified in accordance with the provisions of this Law.""
+
+**For a Total Permanent Natural Disability Pension:**
+
+No, you cannot take paid work. Social Security Law, Article 85(e) provides: ""If the insured becomes entitled to a Total Permanent Natural Disability Pension, he/she shall be permanently excluded from the scope of application of this Law, and this state shall not be affected by his/her return to any paid work even if said work is covered by the provisions of this Law.""
+
+**For a Partial Permanent Natural Disability Pension:**
+
+Yes, but with a limit. Social Security Law, Article 85(f) states you may combine 50% of your Disability Pension payable to you with your wages from employment covered by the law, provided that:
+- You have not been employed for at least 24 months as of the date you became entitled to the pension;
+- You have not resumed employment with firms where you worked during the 36 contributions preceding entitlement;
+- (If applicable) you have not resumed a Hazardous Occupation.
+
+To give you a precise answer, please confirm: which type of disability pension are you receiving?
+
+General information only; consult a licensed lawyer about your specific case.","[{'article_number': '40', 'in_retrieved_context': True}, {'article_number': '85', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q10,"I am pregnant and working. Do I qualify for a maternity payment, and how much would it be?",en,"To answer whether you qualify for maternity payment and the amount, I need one piece of information: **Have you been covered by Social Security maternity insurance for at least 6 months in the 12 months before your maternity leave, or been subject to it continuously in the last 6 months before leave?**
+
+In the meantime, here is what the documents say:
+
+**Eligibility:**
+
+You may qualify for maternity leave allowance if you meet the condition above. Social Security Law Article 44(a) requires that you are either subject to maternity insurance during the last 6 months before your leave, or have at least 6 continuous or discontinuous contributions in the 12 months before leave. Article 44(b) also requires that childbirth be established by official certificate.
+
+**Amount:**
+
+If you qualify, Social Security Law Article 45(a) states: ""The female insured shall be paid an allowance, during her maternity leave, equivalent to her last wage subject to deduction at the beginning of her maternity leave.""
+
+During maternity leave, Social Security Law Article 45(b) requires that contributions for Old-age, Disability, Death and Unemployment insurances be deducted from the allowance you receive.
+
+**Duration of leave:**
+
+Labour Law 1996, Article 70 provides that you have the right to full paid maternity leave with a total duration of ten weeks, with at least six weeks after childbirth.
+
+**Job protection:**
+
+Labour Law 1996, Article 27(a)(1) protects you from dismissal from the sixth month of pregnancy through maternity leave.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '44', 'in_retrieved_context': True}, {'article_number': '27', 'in_retrieved_context': True}, {'article_number': '45', 'in_retrieved_context': True}, {'article_number': '70', 'in_retrieved_context': True}]","{'language': 'en', 'components': [{'article': '24', 'name': 'Work Injury Insurance', 'rate': 2.0, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '42', 'name': 'The Maternity Insurance', 'rate': 0.75, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '48', 'name': 'The Unemployment Insurance', 'rate': 0.5, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '48', 'name': 'The Unemployment Insurance', 'rate': 1.0, 'bearer': 'employee', 'scope': 'private', 'amount': None}, {'article': '59', 'name': 'The Old-age, Disability and Death Insurance', 'rate': 11.0, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '59', 'name': 'The Old-age, Disability and Death Insurance', 'rate': 6.5, 'bearer': 'employee', 'scope': 'private', 'amount': None}], 'employee_rate': 7.5, 'employer_rate': 14.25, 'total_rate': 21.75, 'salary': None, 'base': None, 'ceiling': None, 'ceiling_article': None, 'ceiling_exception': None, 'ceiling_exception_date': None, 'ceiling_exception_applies': False, 'capped': False, 'employee_amount': None, 'employer_amount': None, 'total_amount': None}"
+claude-haiku-4.5 (compact),q11,I just lost my job. Do I qualify for unemployment payments?,en,"I need one piece of information to answer this properly: **How many contributions have you already made under the Social Security Law?**
+
+The reason is that qualification for unemployment allowance depends on meeting a contribution threshold. According to **Social Security Law, Article 50(a)(1)**, you must have:
+- At least **36 contributions** in total prior to claiming, AND
+- At least **1 contribution** toward Unemployment Insurance specifically.
+
+Additionally, **Article 50(a)(2)** requires that you have not yet reached age **60 (if male) or 55 (if female)**.
+
+Once you tell me your contribution count and age, I can confirm whether you qualify. If you do, then **Article 54(a)** states the allowance begins in the month *after* you apply for it — **Article 54(b)** specifies it cannot be paid in the same month your job ended.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '50', 'in_retrieved_context': True}, {'article_number': '54', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q12,"How long do unemployment payments keep coming, and does the amount drop over time?",en,"# Duration and Payment Amounts for Unemployment Allowance
+
+**Duration:** Unemployment allowance is paid for either **3 months or 6 months**, depending on your contribution history:
+- **3 months** if you have fewer than 180 contributions under Social Security Law
+- **6 months** if you have 180 or more contributions
+
+*(Social Security Law, Article 52(a))*
+
+**Amount over time:** Yes, the allowance drops each month. It is calculated as a percentage of your last wage, as follows:
+
+- **Month 1:** 75% of last wage
+- **Month 2:** 65% of last wage
+- **Month 3:** 55% of last wage
+- **Months 4–6:** 45% of last wage
+
+*(Social Security Law, Article 53(a))*
+
+**Maximum cap:** The unemployment allowance cannot exceed JOD 500 per month (net, after deductions), and this cap is adjusted annually for inflation.
+
+*(Social Security Law, Article 53(b))*
+
+You are entitled to receive unemployment allowance **up to three times** during your entire period under Social Security Law coverage. For the second and third times, you must have at least 36 additional contributions after the previous allowance was paid out.
+
+*(Social Security Law, Article 55)*
+
+---
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '53', 'in_retrieved_context': True}, {'article_number': '55', 'in_retrieved_context': True}, {'article_number': '52', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q13,Can I draw unemployment payments at the same time as a maternity payment or a retirement pension?,en,"# Combining Unemployment with Other Benefits
+
+**Short answer:** No. You cannot draw unemployment allowance together with maternity leave allowance or any Retirement or Disability Pension — you must receive whichever is higher.
+
+**The rules:**
+
+**Unemployment + Maternity leave allowance:**  
+Social Security Law, Article 56(a) states: ""The female insured may not combine between unemployment allowance and maternity leave allowance, and the higher allowance shall be apportioned."" This means if you qualify for both, you receive only the larger amount.
+
+**Unemployment + Retirement or Disability Pension:**  
+Social Security Law, Article 56(c) states: ""The insured may not combine between unemployment allowance and any Retirement Pension or Disability Pension allocated in accordance with the provisions of this Law."" You must choose one.
+
+**Unemployment + Lump sum compensation:**  
+Social Security Law, Article 56(b) adds that you also cannot combine unemployment allowance with lump sum compensation; instead the higher payment is apportioned.
+
+---
+
+*General information, not legal advice; consult a licensed lawyer about your own case.*","[{'article_number': '56', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q14,"At what age can I stop working and draw a pension, and how many contributions do I need?",en,"# Age and contributions for retirement pension
+
+The answer depends on **which type of pension** you're seeking and **your sex**. Here are the main options:
+
+## **Old-Age Pension** (standard retirement)
+
+**Age requirement:**
+- If male: 60 years old
+- If female: 55 years old
+
+**Contribution requirement:** 180 total contributions, of which at least 84 must be for actual periods of service.
+
+*Social Security Law, Article 62(a)*
+
+---
+
+## **Early Retirement Pension** (if you stop work before standard retirement age)
+
+Early Retirement Pension has multiple pathways depending on your age, sex, and contribution history. The main routes are:
+
+**Route 1 – General early retirement:**
+- If male: age 50 + at least 252 actual contributions, **OR** age 45 + 300 actual contributions
+- If female: age 50 + at least 228 actual contributions, **OR** age 45 + 300 actual contributions
+
+*Social Security Law, Article 64(a)*
+
+**Route 2 – Transitional provisions** (if you had already started contributing before the law was amended):
+Several age/contribution combinations apply depending on your age before the amendment. For example:
+- If male: age 46 + at least 228 actual contributions (if you were 44 before the law change)
+- If female: age 46 + at least 192 actual contributions (if you were 44 before the law change)
+
+*Social Security Law, Article 64(b)*
+
+**Route 3 – Hazardous professions:**
+- Age 45 + at least 216 actual contributions (male) or 180 actual contributions (female), with at least 60 of those in the last 10 years
+
+*Social Security Law, Article 64(c)*
+
+**General information, not legal advice — consult a licensed lawyer about your own case.**","[{'article_number': '62', 'in_retrieved_context': True}, {'article_number': '64', 'in_retrieved_context': True}]","{'gender_conditions': [{'article': '62', 'kind': 'age', 'language': 'en', 'label': 'retirement age (old-age pension)', 'male': 60.0, 'female': 55.0}, {'article': '64', 'kind': 'subscriptions', 'language': 'en', 'label': 'required subscriptions (early retirement)', 'male': 252.0, 'female': 228.0}]}"
+claude-haiku-4.5 (compact),q15,"Can I stop working before the normal retirement age, and how would my pension be worked out?",en,"# Early Retirement and Pension Calculation
+
+Yes, you can stop working before the normal retirement age and claim an **Early Retirement Pension** under the Social Security Law. However, eligibility depends on your age, years of contributions, and sex, and your pension will be reduced based on how early you claim.
+
+## Eligibility for Early Retirement Pension
+
+You must meet one of these sets of conditions:
+
+**Standard route (Social Security Law, Article 64(a)):**
+- Reach age 50 with at least 252 contributions (male) or 228 contributions (female), *or*
+- Have 300 contributions and be at least age 45.
+
+**Transitional routes (Social Security Law, Article 64(b))** — if you were age 42–45 before the law took effect:
+- Age 46 with 228 contributions (male) or 192 (female), *or*
+- Age 47 with 240 contributions (male) or 204 (female), *or*
+- Age 48 with 252 contributions (male) or 216 (female), *or*
+- Age 45+ at the law's effective date, with fewer than 216 contributions (male) or 180 (female) then, but at least 228 (male) or 192 (female) when you apply.
+
+**Hazardous occupation route (Social Security Law, Article 64(c)):**
+- Age 45+ with at least 216 contributions (male) or 180 (female), *and* at least 60 contributions in the last 10 years.
+
+**Newer entrants (Social Security Law, Article 64(h))** — covered for the first time after the law was amended:
+- Male: age 55 with at least 252 contributions.
+- Female: age 52 with at least 228 contributions.
+
+**When does the pension start?**  
+Your Early Retirement Pension is due from the beginning of the month you apply, provided you apply after the month your service ends (Social Security Law, Article 64(e)).
+
+## How Your Pension Is Calculated
+
+The calculation method depends on whether you had at least 216 contributions (male) or 180 (female) before the law was amended. **Which applies to you — were you already insured before the law's effective date?**
+
+### If you have detailed information on your contributions, age and sex, I can calculate your specific pension. Please provide:
+- Your sex
+- Your current age
+- Your total contributions so far
+- Your average monthly wage over the last 60 contributions (or last 24 if you were insured before the amendment)
+
+### General calculation framework (Social Security Law, Article 64):
+
+**For standard cases:**
+- The pension is calculated at **2.5% per contribution year** on the first JOD 1,500 of your average monthly wage (based on your last 60 contributions), and **2% on the amount above JOD 1,500**.
+- Your pension is then **reduced by a percentage depending on your age** (the earlier you claim, the larger the reduction).
+- **Increases for dependents** apply: 12% for the first (minimum JOD 10, maximum JOD 100); 6% each for the second and third (minimum JOD 10, maximum JOD 25 per dependent).
+- Your average wage used in the calculation cannot increase by more than 60% of your wage at the start of your last 60 contributions, and cannot be more than 20% lower.
+
+**For those insured before amendment with 216+ (male) or 180+ (female) contributions:**
+- A simpler formula applies: 2.5% per contribution year of your average wage over your last **24 contributions**, capped at 75% of that average.
+- **Age reductions** are typically lower under this older formula (ranging from 18% at age 45–46 down to 1% at age 58–59 for men; 10% at age 45–50, 5% at age 50–54, none after 54 for women).
+- Dependent increases are 10% for the first and 5% for the second and third.
+
+## Can You Work and Receive the Pension?
+
+**If you are Jordanian (Social Security Law, Article 85(d)):**
+- Yes, you can combine your Early Retirement Pension with wages from new work, *provided* you:
+  - Have not been employed for at least 24 months before claiming the pension.
+  - Have not gone back to work with any firm you worked for during your last 36 contributions.
+  - (If your pension was for a hazardous occupation) have not returned to that hazardous occupation.
+- If you return to covered work, you receive only a percentage of your pension (shown in Table 7, which is not included in these excerpts).
+- When you stop work, your full pension resumes without change.
+
+**If you are non-Jordanian:**
+- Your pension is **suspended** if you take on covered work; it resumes without change when you leave work.
+
+---
+
+*This is general information only; consult a licensed lawyer about your own case.*","[{'article_number': '85', 'in_retrieved_context': True}, {'article_number': '64', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q16,هل يُخصم من راتبي شيء مقابل التأمين ضد إصابات العمل، أم يدفعه صاحب العمل وحده؟,ar,"يدفع صاحب العمل وحده اشتراك تأمين إصابات العمل — لا يُخصم من راتبك شيء.
+
+**التفصيل:**
+
+اشتراك تأمين إصابات العمل تؤديه المنشأة (صاحب العمل) **بنسبة 2% من أجور المؤمن عليهم**، وفقاً لـ قانون الضمان الاجتماعي، المادة (24)(أ).
+
+لا توجد أي نسبة اقتطاع من راتب الموظف مقابل هذا التأمين. ما يُقتطع من راتبك هو فقط:
+- **1%** لتأمين التعطل عن العمل (المادة 48)
+- **6.5%** لتأمين الشيخوخة والعجز والوفاة (المادة 59)
+
+أما تأمين إصابات العمل وتأمين الأمومة وجزء من تأمين التعطل، فتتحملها المنشأة بالكامل.
+
+---
+**تنبيه عام:** هذه معلومات قانونية عامة؛ استشر محامياً بخصوص وضعك الخاص.","[{'article_number': '59', 'in_retrieved_context': True}, {'article_number': '48', 'in_retrieved_context': True}, {'article_number': '24', 'in_retrieved_context': True}]","{'language': 'ar', 'components': [{'article': '24', 'name': 'تأمين إصابات العمل', 'rate': 2.0, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '42', 'name': 'تأمين الأمومة', 'rate': 0.75, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 0.5, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '48', 'name': 'تأمين التعطل عن العمل', 'rate': 1.0, 'bearer': 'employee', 'scope': 'private', 'amount': None}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 11.0, 'bearer': 'employer', 'scope': 'private', 'amount': None}, {'article': '59', 'name': 'تأمين الشيخوخة والعجز والوفاة', 'rate': 6.5, 'bearer': 'employee', 'scope': 'private', 'amount': None}], 'employee_rate': 7.5, 'employer_rate': 14.25, 'total_rate': 21.75, 'salary': None, 'base': None, 'ceiling': 3000.0, 'ceiling_article': '20', 'ceiling_exception': 5000.0, 'ceiling_exception_date': '15/10/2009', 'ceiling_exception_applies': False, 'capped': False, 'employee_amount': None, 'employer_amount': None, 'total_amount': None}"
+claude-haiku-4.5 (compact),q17,أُصبت في العمل وما زلت أتعالج. إلى متى تستمر المؤسسة في تغطية علاجي؟,ar,"# مدة تغطية المؤسسة للعلاج
+
+المؤسسة ملتزمة بتغطية علاجك طالما أنت تحت العلاج وحتى يُثبت أحد الحالات الثلاث التالية:
+
+**قانون الضمان الاجتماعي، المادة (28)(أ):** ""تتولى المؤسسة علاج المصاب إلى أن يثبت شفاؤه أو عجزه أو وفاته الناشئة عن إصابة العمل بقرار من المرجع الطبي أو الجهة المختصة.""
+
+هذا يعني أن التغطية تستمر إلى أن يصدر قرار طبي رسمي يثبت:
+1. **شفاؤك** الكامل، أو
+2. **ثبوت عجزك** (كلي أو جزئي دائم)، أو  
+3. **وفاتك** الناشئة عن الإصابة.
+
+**أثناء فترة العلاج والتعطل:**
+بالإضافة إلى تغطية العلاج، المؤسسة ملتزمة بدفع **بدل يومي بنسبة 75% من أجرك اليومي** عن الأيام التي تقضيها تحت العلاج، سواء في مراكز العلاج المعتمدة أم في المنزل بقرار من المرجع الطبي (قانون الضمان الاجتماعي، المادة (29)(أ)).
+
+---
+*هذه معلومات عامة، وليست استشارة قانونية؛ تشاور محامياً مرخصاً حول وضعك الخاص.*","[{'article_number': '29', 'in_retrieved_context': True}, {'article_number': '28', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q18,أُصبت مرة أخرى في العمل بعد إصابة قديمة. كيف يُحسب ما أستحقه هذه المرة؟,ar,"# إصابة عمل متكررة - كيفية الحساب
+
+حسابك يعتمد على **نسبة العجز الإجمالي** من الإصابة الحالية والإصابات السابقة معاً:
+
+## الحالة الأولى: نسبة العجز الإجمالي أقل من 30%
+
+يُدفع لك **تعويض عن نسبة العجز من الإصابة الأخيرة وحدها**، محسوباً على أساس أجرك المعتمد لتسديد الاشتراكات بتاريخ وقوع الإصابة الأخيرة (قانون الضمان الاجتماعي، المادة 35(أ)).
+
+## الحالة الثانية: نسبة العجز الإجمالي 30% فأكثر
+
+يُحسب لك **راتب اعتلال** (راتب شهري)، وفقاً لحالتك:
+
+**1. إذا كنت قد تقاضيت تعويضاً عن إصابة سابقة:**
+- يُحسب راتب الاعتلال على أساس نسبة العجز من **جميع إصاباتك**، بأجرك المعتمد بتاريخ الإصابة الأخيرة (المادة 35(ب)(1)).
+
+**2. إذا كنت تتقاضى راتب اعتلال عن إصابة سابقة:**
+- يُحسب راتب اعتلال جديد على أساس نسبة العجز من **جميع إصاباتك**، بأجرك المعتمد بتاريخ الإصابة الأخيرة
+- **بشرط ألا ينخفض الراتب الجديد عن الراتب القديم الذي كنت تتقاضاه** (المادة 35(ب)(2)).
+
+**معلومة:** يجوز لك الجمع بين أي أجر أو دخل من عمل آخر وراتب اعتلال إصابة العمل (المادة 40).
+
+---
+*معلومة عامة وليست استشارة قانونية؛ استشر محامياً مرخصاً في حالتك الخاصة.*","[{'article_number': '35', 'in_retrieved_context': True}, {'article_number': '40', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q19,بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟,ar,"نعم، يمكن إعادة فحصك طبياً. القاعدة تختلف حسب نوع العجز الذي تقاضى عليه:
+
+## إذا كان عجزك من إصابة عمل (عجز إصابي دائم):
+
+**قانون الضمان الاجتماعي، المادة 36(أ):**
+- يجوز لك أو للمؤسسة طلب إعادة الفحص الطبي **مرة واحدة كل ستة أشهر على الأقل خلال السنتين التاليتين** لتاريخ ثبوت العجز.
+
+## إذا كان عجزك طبيعياً دائماً (غير إصابي):
+
+**قانون الضمان الاجتماعي، المادة 67(هـ):**
+- يجوز لك أو للمؤسسة طلب إعادة الفحص الطبي **في أي وقت خلال السنتين التاليتين** لتاريخ ثبوت العجز.
+
+---
+
+**تحذير مهم:** إذا تخلفت عن إعادة الفحص الطبي المحددة لك، سيتم **وقف صرف راتب الاعتلال** الخاص بك حتى تمثل أمام المرجع الطبي لإعادة الفحص (المادة 36(ب)١ والمادة 67(و)).
+
+هذه معلومات قانونية عامة؛ استشر محامياً مرخصاً بشأن وضعك الشخصي.","[{'article_number': '36', 'in_retrieved_context': True}, {'article_number': '67', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q20,لم أقتنع بقرار اللجنة الطبية في إصابتي. هل أستطيع الاعتراض، وكم من الوقت أمامي؟,ar,"نعم، يحق لك الاعتراض على قرار اللجنة الطبية الأولية، وأمامك **ستون يوماً** من اليوم التالي لتاريخ تبليغك القرار.
+
+**الأساس القانوني:**
+
+**قانون الضمان الاجتماعي، المادة 38(أ):** ""لكل من المؤسسة والمؤمن عليه الحق في الاعتراض على القرارات التي تصدرها اللجنة الطبية الأولية فيما يخص إصابات العمل أمام اللجنة الطبية الاستئنافية.""
+
+**قانون الضمان الاجتماعي، المادة 38(ب):** ""يقدم الاعتراض خلال ستين يوماً من اليوم التالي لتاريخ تبليغ قرار اللجنة الطبية الأولية وللمعترض أن يرفق بالاعتراض الوثائق اللازمة، ولا تقبل أي وثائق تقدم بعد هذا التاريخ.""
+
+يمكنك إرفاق الوثائق الضرورية بالاعتراض، لكن لا تُقبل أي وثائق تُقدم بعد انقضاء الستين يوم.
+
+هذه معلومة قانونية عامة، يُنصح باستشارة محام متخصص بشأن حالتك الشخصية.","[{'article_number': '38', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q21,تسبب لي شخص آخر بإصابة أثناء عملي. هل تدفع لي المؤسسة أم أطالب ذلك الشخص؟,ar,"في حالتك، **المؤسسة (الضمان الاجتماعي) تبقى مسؤولة عن دفع التعويضات لك**، لكن الحق القانوني يختلف حسب ما إذا كان الشخص الآخر قد ارتكب خطأ جسيماً أم لا.
+
+## الأحكام الواردة:
+
+**1. مسؤولية المؤسسة الأساسية:**
+وفقاً لقانون الضمان الاجتماعي، المادة (41)، إذا وقعت إصابة العمل بفعل الغير، تبقى مسؤولية المؤسسة قائمة تجاه المصاب المؤمن عليه. المؤسسة تدفع لك كاملة تكاليف العناية الطبية والبدلات اليومية.
+
+**2. حقك في المطالبة من الشخص الآخر:**
+- إذا **لم يكن هناك خطأ جسيم** من الشخص: وفقاً لقانون الضمان الاجتماعي، المادة (37)، لا يحق لك الرجوع على المنشأة للمطالبة بأي تعويض خلاف التعويضات الواردة في القانون.
+
+- إذا **كان الشخص الآخر قد ارتكب خطأ جسيماً**: المادة (37) تسمح لك بالمطالبة بتعويضات إضافية في هذه الحالة.
+
+**3. حق المؤسسة في الرجوع:**
+وفقاً للمادة (41)، للمؤسسة الرجوع على الشخص الآخر (الغير) للمطالبة بكامل ما دفعته من تكاليف.
+
+باختصار: المؤسسة تدفع لك الآن، والمؤسسة قد ترجع على الشخص الآخر لاحقاً. إذا كان هناك خطأ جسيم من ذلك الشخص، قد يكون لديك حق إضافي في المطالبة به مباشرة.
+
+هذه معلومات عامة، استشر محامياً حول وضعك الخاص.","[{'article_number': '41', 'in_retrieved_context': True}, {'article_number': '37', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q22,أتقاضى بدل إجازة الأمومة وعُرض علي عمل خلال الإجازة. هل يتوقف البدل إن قبلت العمل؟,ar,"نعم، البدل يتوقف عن الصرف إن قبلتِ العمل خلال إجازة الأمومة.
+
+**القاعدة:**
+قانون الضمان الاجتماعي، المادة (46)(أ): ""يوقف صرف بدل إجازة الأمومة في حال التحاق المؤمن عليها بعمل خلال هذه الإجازة.""
+
+هذا يعني أن مجرد التحاقك بعمل — حتى لو كان العمل جزئياً أو مؤقتاً — يترتب عليه إيقاف البدل من تاريخ الالتحاق بذلك العمل.
+
+معلومة عامة فقط وليست استشارة قانونية؛ استشيري محامياً بشأن حالتك الخاصة.","[{'article_number': '46', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q23,وجدت عملاً جديداً وأنا ما زلت أتقاضى بدل التعطل. ماذا يحدث للبدل؟,ar,"إذا وجدت عملاً جديداً وتقاضيت عنه أجراً، فإن بدل التعطل **يتوقف صرفه فوراً**.
+
+**القاعدة:**
+
+وفقاً لقانون الضمان الاجتماعي، المادة (51)(أ)، يوقف صرف بدل التعطل عن العمل للمؤمن عليه إذا ثبت للمؤسسة (مؤسسة الضمان الاجتماعي) أنه عاد إلى عمل يتقاضى عنه أجراً أو زاول عملاً تجارياً أو مهنياً لحسابه الخاص.
+
+**تحذير مهم:**
+
+إذا استمررت في تقاضي بدل التعطل بعد الحصول على العمل الجديد دون إبلاغ المؤسسة، فإن قانون الضمان الاجتماعي، المادة (51)(ب) تنص على أنك قد تكون مديناً بـ استرجاع جميع المبالغ المصروفة لك دون وجه حق، بالإضافة إلى غرامة محددة بالأنظمة الصادرة بموجب القانون.
+
+**إجراء ضروري:**
+
+يجب عليك إبلاغ مؤسسة الضمان الاجتماعي فوراً بحصولك على عمل جديد لتجنب هذه المشاكل.
+
+هذه معلومات عامة فقط، وليست استشارة قانونية — استشر محامياً مرخصاً بشأن وضعك الخاص.","[{'article_number': '51', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q24,متى أستلم أول دفعة من بدل التعطل بعد أن تركت عملي؟,ar,"بناءً على النصوص المتوفرة، إليك الجواب:
+
+**توقيت استلام أول دفعة:**
+
+تبدأ الدفعة الأولى من بدل التعطل عن العمل اعتباراً من **أول الشهر التالي للشهر الذي تتقدم فيه بطلب صرف البدل** (قانون الضمان الاجتماعي، المادة 54(أ)).
+
+**نقطة مهمة:**
+لا يصرف بدل التعطل عن **الشهر الذي أنهيت فيه خدمتك** (قانون الضمان الاجتماعي، المادة 54(ب)).
+
+**مثال توضيحي:** إذا تركت العمل في نوفمبر، وقدمت الطلب في ديسمبر، فستبدأ الدفعات من 1 يناير.
+
+---
+معلومة عامة وليست استشارة قانونية؛ يرجى استشارة محام متخصص بشأن حالتك الخاصة.","[{'article_number': '54', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q25,هل أستطيع طلب بدل التعطل أكثر من مرة خلال حياتي العملية؟,ar,"نعم، يمكنك طلب بدل التعطل أكثر من مرة، لكن ضمن حدود معينة:
+
+**عدد المرات المسموحة:**
+قانون الضمان الاجتماعي، المادة (55أ)، ينص على أنك تستحق بدل التعطل عن العمل **لثلاث مرات** طيلة مدة شمولك بأحكام القانون.
+
+**شرط إضافي للمرتين الثانية والثالثة:**
+المادة (55ب) تشترط أنه لتصرف بدل التعطل لأي من المرتين اللاحقتين للمرة الأولى، يجب أن يكون عدد اشتراكاتك **لا يقل عن 36 اشتراكاً لاحقاً لصرف بدل التعطل عن العمل** (أي بعد انتهاء البدل من المرة السابقة).
+
+**شروط أساسية يجب توفرها في كل مرة:**
+بموجب المادة (50أ)، يشترط لاستحقاقك البدل في أي مرة:
+- ألا تقل اشتراكاتك عن 36 اشتراكاً قبل استحقاقك البدل
+- ألا تكون قد بلغت 60 سنة (للذكر) أو 55 سنة (للأنثى)
+
+معلومة عامة فقط، لا تشكل استشارة قانونية — استشر محامياً مرخصاً بخصوص وضعك الشخصي.","[{'article_number': '50', 'in_retrieved_context': True}, {'article_number': '55', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q26,خرجت نهائياً من الضمان. ماذا يحدث للمبالغ التي اقتُطعت مني لتأمين التعطل؟,ar,"عند خروجك نهائياً من الضمان الاجتماعي، تُرجع لك المبالغ المقتطوعة من أجرك لتأمين التعطل، لكن بشروط محددة:
+
+**إذا كان رصيدك الادخاري دائناً (موجباً):**
+
+يُعاد لك الرصيد المتراكم الذي يتكون من:
+- الاشتراكات المقتطوعة من أجرك
+- الاشتراكات التي دفعتها المنشأة
+- مضافاً إليه الربع الاستثماري المحقق على المبالغ المستثمرة
+
+مخصوماً منه:
+- جميع المبالغ المصروفة لك كبدل تعطل فعلاً
+- النفقات المترتبة على إدارة هذا الحساب (تحسب وفقاً لأسس يحددها المجلس)
+
+(قانون الضمان الاجتماعي، المادة 57(أ))
+
+**إذا كان رصيدك الادخاري مديناً (سالباً):**
+
+في هذه الحالة يُسترجع الرصيد المدين من راتب التقاعد أو راتب الاعتلال أو تعويض الدفعة الواحدة أو أي أموال أخرى عائدة لك، ويجوز تقسيط هذه المبالغ من الراتب وفقاً للأنظمة الصادرة. (قانون الضمان الاجتماعي، المادة 57(ب))
+
+**معلومة عامة، لا تشكل استشارة قانونية — استشر محامياً مرخصاً بشأن وضعك الخاص.**","[{'article_number': '57', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q27,بلغت الستين ولم تكتمل اشتراكاتي اللازمة للراتب التقاعدي. هل أستطيع الاستمرار في الضمان؟,ar,"# الاستمرار في الضمان الاجتماعي بعد بلوغ الستين
+
+بناءً على المعلومات المعطاة، أنتِ **إذا كنتِ أنثى** بلغتِ سن الخمسين (سن التقاعد للنساء)، و**إذا كنتِ ذكراً** بلغتِ سن الستين. نعم، يمكنك الاستمرار في الضمان الاجتماعي لإكمال الاشتراكات المطلوبة، لكن بشروط محددة:
+
+## خيارات الاستمرار
+
+### 1. **الاستمرار حتى إكمال المدة (بدون تحديد مدة نهائية)**
+
+طبقاً لـ **قانون الضمان الاجتماعي، المادة 63(أ)**:
+- إذا كنتِ **ذكراً**: يمكنك الاستمرار في الضمان بعد إكمال الستين حتى تستكملي **المدة الموجبة لاستحقاق راتب تقاعد الشيخوخة**
+- إذا كنتِ **أنثى**: يمكنك الاستمرار في الضمان بعد إكمال الخمسين حتى تستكملي **المدة الموجبة لاستحقاق راتب تقاعد الشيخوخة**
+
+تبقى **مشمولة بأحكام القانون** وتُحتسب الاشتراكات على أساس سن الستين (للذكر) أو الخمسين (للأنثى).
+
+### 2. **الالتحاق بعمل جديد**
+
+**المادة 63(أ)** تسمح لك بـ:
+- **الالتحاق بعمل جديد مشمول بالقانون** بعد إكمال سن التقاعد، و**تبقين مشمولة** حتى استكمال المدة المطلوبة.
+
+### 3. **إذا كان صاحب العمل متفقاً**
+
+طبقاً لـ **المادة 63(ب)**:
+- إذا **استمرتِ في العمل** لدى نفس المنشأة **وكان من شأن ذلك استكمال المدة المطلوبة**، فيجب على **المنشأة الاستمرار في شمولك** ودفع الاشتراكات المترتبة.
+
+---
+
+## بديل: تسديد المدة الناقصة
+
+إذا أردتِ الحصول على الراتب بسرعة دون الاستمرار في العمل، فـ **المادة 65(أ)** توفر خياراً:
+- يمكنك **طلب إضافة المدة الناقصة** مقابل مبلغ تحددينه القانون (محسوب وفقاً لجدول مرفق)
+- **المادة 65(ب)** تسمح باستخدام **رصيد حسابك الادخاري** لتسديد هذا المبلغ
+
+---
+
+**ملاحظة مهمة**: بعد حصولك على راتب التقاعد (أياً كان نوعه)، **المادة 63(د)** تنص على أنك **لن تستطيعي العودة للشمول** مجدداً.
+
+هذه معلومات قانونية عامة؛ استشري محامياً متخصصاً بشأن وضعك الشخصي.","[{'article_number': '63', 'in_retrieved_context': True}, {'article_number': '65', 'in_retrieved_context': True}]","{'gender_conditions': [{'article': '62', 'kind': 'age', 'language': 'ar', 'label': 'سن التقاعد (تقاعد الشيخوخة)', 'male': 60, 'female': 55}, {'article': '64', 'kind': 'subscriptions', 'language': 'ar', 'label': 'عدد الاشتراكات المطلوب (التقاعد المبكر)', 'male': 252.0, 'female': 228.0}]}"
+claude-haiku-4.5 (compact),q28,تنقصني مدة قصيرة حتى أستحق الراتب التقاعدي. هل أستطيع شراء هذه المدة بمبلغ أدفعه؟,ar,"**الإجابة المختصرة:**
+نعم، يمكنك إضافة المدة الناقصة بمبلغ تدفعه، لكن هذا الحق محدود بشروط معينة تتعلق بعمرك وعدد الاشتراكات لديك.
+
+---
+
+**الشروط والأحكام:**
+
+**المادة 65(أ) من قانون الضمان الاجتماعي** تنص على أن للمؤمن عليه الذي:
+- أكمل سن **60 سنة للذكر** أو **55 سنة للأنثى**
+- لم يكمل الحد الأدنى من الاشتراكات اللازمة لاستحقاق راتب تقاعد الشيخوخة
+- انتهت خدمته لأي سبب
+
+أن **يطلب إضافة المدة اللازمة** مقابل مبلغ يُحتسب وفقاً لجدول رقم (3) الملحق بالقانون، على أساس **أجره الشهري الأخير الخاضع للاقتطاع**.
+
+**المادة 65(ب)** تجيز لك أيضاً **استخدام رصيد حسابك الادخاري المتراكم** (وارد في المادة 57(أ)) لتسديد هذا المبلغ بدلاً من دفعه نقداً.
+
+---
+
+**معلومات عامة، وليست استشارة قانونية – استشر محامياً مرخصاً حول وضعك الخاص.**","[{'article_number': '57', 'in_retrieved_context': False}, {'article_number': '65', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q29,توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟,ar,"# استحقاق الورثة لراتب الوفاية
+
+إذا توفي زوجك أثناء العمل، يستحق ورثتك راتب تقاعد الوفاية الطبيعية **بشرط توافر شروط معينة في التأمين**:
+
+## الشروط الأساسية:
+
+وفقاً لـ **قانون الضمان الاجتماعي، المادة 66(أ)**، يجب أن يكون المتوفى قد:
+- سدّد **لا يقل عن (24) اشتراكاً فعلياً**
+- **منها (6) اشتراكات متصلة** (متتالية)
+
+إذا توافرت هذه الشروط، يستحق الورثة راتب تقاعد الوفاة الطبيعية.
+
+## كيفية حساب الراتب:
+
+وفقاً لـ **قانون الضمان الاجتماعي، المادة 66(ب)**:
+- **النسبة الأساسية: 50%** من متوسط الأجر الشهري (خلال آخر 12 اشتراكاً)
+- **إضافة**: تزاد النسبة بمقدار **0.5% عن كل سنة اشتراك** (إذا بلغت الاشتراكات 60 فأكثر)
+- **أو**: تزاد إلى **1% عن كل سنة** (إذا بلغت الاشتراكات 120 فأكثر)
+
+## توزيع الراتب على الورثة:
+
+وفقاً لـ **قانون الضمان الاجتماعي، المادة 80**، يُصرف النصيب لكل مستحق **ابتداء من أول الشهر الذي حدثت فيه الوفاة**، طبقاً لجدول الأنصبة المحدد.
+
+---
+هذه معلومات عامة وليست استشارة قانونية؛ استشر محامياً مرخصاً حول حالتك الخاصة.","[{'article_number': '66', 'in_retrieved_context': True}, {'article_number': '80', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q30,أصابني عجز بسبب مرض لا علاقة له بعملي. هل أستحق راتباً من الضمان؟,ar,"نعم، قد تستحق راتب اعتلال من الضمان الاجتماعي إذا تحققت شروط معينة.
+
+**الشروط الأساسية** (قانون الضمان الاجتماعي، المادة 67(أ)):
+
+1. انتهاء خدمتك.
+2. تقديم طلب تخصيص راتب الاعتلال خلال **ستة أشهر** من تاريخ انتهاء الخدمة.
+3. أن تبلغ اشتراكاتك الفعلية **60 اشتراكاً على الأقل، منها 24 اشتراكاً متصلاً**.
+4. ثبوت حالة العجز بقرار من المرجع الطبي (اللجنة الطبية).
+
+**ملاحظة مهمة**: هذه الرعاية لا تشمل العجز السابق لانضمامك إلى أحكام قانون الضمان الاجتماعي (المادة 67(ب)).
+
+لتحديد استحقاقك بدقة، أحتاج إلى:
+- هل انتهت خدمتك من العمل فعلاً، أم أنت لا تزال موظفاً؟
+- هل بلغت 60 اشتراكاً على الأقل (أي حوالي 5 سنوات من الاشتراك)؟
+
+معلومة عامة، وليست استشارة قانونية. استشر محامياً مرخصاً بشأن حالتك الشخصية.","[{'article_number': '67', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q31,"What time off can I take during the year, and which of it is paid?",en,"I'll cover the leave types available during the year and which are paid.
+
+**Annual leave:** You are entitled to 14 days per year with full pay for each year of service. If you have worked 5 consecutive years with the same employer, this rises to 21 days per year (Labour Law 1996, Article 61(a)). If your period of service does not complete a year, you are entitled to leave with pay proportionate to the duration you worked that year (Article 61(b)). 
+
+Annual leave must be taken in blocks of at least 2 days at a time if not taken all at once (Labour Law 1996, Article 62). Official holidays, religious holidays, and weekends are not counted as annual leave (Article 61(a)).
+
+Annual leave can be deferred by agreement to the following year, but your right to deferred leave expires if that year passes without you using it (Article 61(c)).
+
+**Sick leave:** You have the right to 14 days per year with full pay, based on a physician's report approved by your institution. If you are hospitalized, the duration may be renewed for another 14 days with full pay. For institutions with fewer than 20 workers, the physician's report is enough; for institutions with more than 20 workers, a medical committee's approval is required (Labour Law 1996, Article 65).
+
+**Additional paid leave:**
+- 14 days per year with full pay if you enrol in a labour training course approved by the Ministry or General Federation of Trade Unions (Labour Law 1996, Article 66(a)(1)).
+- 14 days per year with full pay to perform Hajj, if you have worked continuously for at least 5 years with the employer—this is granted only once during your service (Article 66(a)(2)).
+- 3 days with full pay for paternity leave (Article 66(c)).
+
+**Unpaid leave:** 4 months without pay if you enrol in an officially recognized university, institute, or college for studies (Article 66(b)).
+
+This is general information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '62', 'in_retrieved_context': True}, {'article_number': '65', 'in_retrieved_context': True}, {'article_number': '66', 'in_retrieved_context': True}, {'article_number': '61', 'in_retrieved_context': True}]","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'en', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': None, 'accrued_days': None, 'threshold_crossed': None}}"
+claude-haiku-4.5 (compact),q32,How much warning must be given before ending a job that has no fixed end date?,en,"Under the Labour Law 1996, Article 23(a), if either party intends to terminate an unlimited-term employment contract, the other party must be notified in writing of the intention to terminate **at least one month in advance**. The notice cannot be cancelled except by the approval of both parties.
+
+This is the only notice requirement stated in the documents for unlimited-term contracts.
+
+General information only; consult a licensed lawyer about your own case.","[{'article_number': '23', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q33,I think I was fired for no good reason. What can I get if that is proven?,en,"If your dismissal is proven to be arbitrary and in violation of the Labour Law 1996, the court may order one of two remedies:
+
+**Reinstatement or Compensation:**
+The court may order the employer to either reinstate you to your original position, *or* pay you compensation. The compensation is calculated as half a month's wages for each year of service, with a minimum of two monthly wages, based on your last wage received (Labour Law 1996, Article 25).
+
+**Additional entitlements:**
+In addition to that compensation, you are also entitled to a notice allowance and other entitlements specified in Articles 32 and 33 of the Labour Law 1996 (Labour Law 1996, Article 25).
+
+**Important conditions:**
+- You must file a lawsuit within **60 days** from the date of your termination (Labour Law 1996, Article 25).
+- However, you cannot claim wrongful dismissal if you were dismissed for one of the valid reasons listed in Article 28 (such as impersonation, failure to fulfill contract obligations, serious financial loss to the employer, violation of internal regulations after two written warnings, excessive absence, disclosure of work secrets, criminal conviction, drunkenness or drug use at work, or assault on the employer or others).
+
+To advise you on whether your specific dismissal was arbitrary, I would need to know the reason your employer gave for firing you.
+
+General information only — consult a licensed labour lawyer about your own case.","[{'article_number': '25', 'in_retrieved_context': True}, {'article_number': '32', 'in_retrieved_context': False}, {'article_number': '28', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q34,My contract had a fixed end date but my employer ended it early. What am I owed?,en,"# Early Termination of Fixed-Term Contract
+
+Under the Labour Law 1996, Article 26(a), if your employer terminated your fixed-term contract before its expiry date, you are entitled to:
+
+1. **All rights and benefits stipulated in your contract**
+2. **Wages due until the original expiry date** of the remaining contract period
+
+**Exception:** This entitlement does not apply if your termination qualifies as a dismissal under Labour Law 1996, Article 28 (which covers dismissals for cause such as serious misconduct).
+
+You may also have additional entitlements depending on your circumstances:
+
+- **If you're not covered by the Social Security Law:** Labour Law 1996, Article 32 provides end-of-service remuneration at the rate of one month's wage for each year of actual service, calculated on your last wage (or average wage if part of it was commission or task-based).
+
+- **If you haven't used accrued annual leave:** Labour Law 1996, Article 63 entitles you to payment for days of leave not taken.
+
+---
+
+**Note:** This is general information based on the Labour Law 1996. Whether you are covered by the Social Security Law affects some of your entitlements. For your specific situation, consult a licensed lawyer.","[{'article_number': '63', 'in_retrieved_context': True}, {'article_number': '26', 'in_retrieved_context': True}, {'article_number': '32', 'in_retrieved_context': True}, {'article_number': '28', 'in_retrieved_context': False}]",
+claude-haiku-4.5 (compact),q35,Are there situations where an employer simply is not allowed to end someone's job?,en,"Yes, there are several situations where an employer is prohibited from terminating a worker's employment:
+
+**Protected periods:**
+
+**Labour Law 1996, Article 27(a)** prohibits the employer from terminating a worker's services or sending a notice of termination in the following cases:
+
+1. Pregnant working women starting from the sixth month of their pregnancy or during maternity leave.
+2. Workers charged with military service or reserve service during performance of that service.
+3. Workers during their annual leave, sick leave, or leave granted for worker learning, Hajj, or a leave agreed upon between both parties for union work or for joining a recognized institute, college, or university.
+
+**Exception:** **Labour Law 1996, Article 27(b)** states that the employer is absolved from these protections if the worker was employed by another employer during any of these protected periods.
+
+**During a labour dispute:**
+
+**Labour Law 1996, Article 132(b)** provides that while a labour dispute is being heard by a settlement representative, settlement council, or labour court, no employer may dismiss any worker without obtaining written permission from the settlement representative, the council, or the labour court, as appropriate.
+
+These are absolute prohibitions during the specified circumstances — the employer cannot proceed with termination regardless of other grounds.
+
+General information, not legal advice; consult a licensed lawyer about your specific case.","[{'article_number': '132', 'in_retrieved_context': True}, {'article_number': '27', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q36,"When can an employer dismiss someone on the spot, with no warning at all?",en,"# When an Employer Can Dismiss Without Notice
+
+An employer may dismiss a worker without notice (immediately, on the spot) in nine specific situations under **Labour Law 1996, Article 28**:
+
+**a)** If the worker impersonates another person or identity, or provides forged certificates or documents to gain benefit or harm others.
+
+**b)** If the worker does not fulfill the obligations under the employment contract.
+
+**c)** If the worker commits a mistake resulting in serious financial loss to the employer — *provided the employer notifies the competent authority within five days of learning of it*.
+
+**d)** If the worker violates the internal regulations of the institution (including work conditions and worker safety) — *despite being warned in writing twice* — this condition must be met first.
+
+**e)** If the worker is absent without legitimate reason for more than twenty separate days in one year *or* more than ten consecutive days — *provided dismissal is preceded by a written warning sent by registered mail to their address and published once in a local daily newspaper*. (This is not truly ""on the spot"" — it requires prior notice.)
+
+**f)** If the worker discloses work secrets.
+
+**g)** If the worker is found guilty by a legally conclusive court verdict of a felony or misdemeanor that contravenes honor and public morals.
+
+**h)** If the worker is found during work in a state of drunkenness or under the influence of narcotics or psychotropic substances, or commits an act violating public morals in the workplace.
+
+**i)** If the worker assaults the employer, director, a superior, another worker, or any other person during or because of work by beating or degradation.
+
+---
+This is general information, not legal advice. Consult a licensed lawyer about a specific dismissal case.","[{'article_number': '28', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q37,I am not covered by social security. What is my employer supposed to pay me when my job ends?,en,"**Your situation:** You are not covered by Social Security, so the Labour Law 1996 applies to your end-of-service payments.
+
+**End-of-service remuneration:**
+
+When your job ends for any reason, your employer must pay you end-of-service remuneration at the rate of **one month's wage for each year of your actual service**. For parts of a year, you receive a proportional amount. The remuneration is calculated on the basis of the **last wage you received during employment**. However, if all or part of your wage is based on commission or task work, the remuneration is calculated as the **average of your monthly wage during the twelve months before the end of service**. If your service period is shorter than twelve months, your monthly average over your entire service period is used instead (Labour Law 1996, Article 32).
+
+**Gaps in employment:**  
+Breaks between jobs lasting **not more than 60 days** are counted as uninterrupted service for this calculation (Labour Law 1996, Article 32).
+
+**Unused annual leave:**  
+If you have not taken your annual leave when your service ends, you are entitled to **payment for the days of leave not taken** (Labour Law 1996, Article 63).
+
+This is general information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '32', 'in_retrieved_context': True}, {'article_number': '63', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q38,"How long can an employer keep me on trial at the start of a job, and what happens during that time?",en,"**Duration and key points:**
+
+Under Labour Law 1996, Article 35(a), an employer may keep you on probation for **no more than 3 months**. Your wage during probation must be **at least the minimum wage**.
+
+**What happens during probation:**
+
+- **Termination without cause:** Labour Law 1996, Article 35(b) gives the employer the right to terminate your employment without notice or remuneration during the probation period.
+
+- **After probation ends:** If you continue working after the probation period expires, Labour Law 1996, Article 35(c) states the contract becomes an unlimited employment contract, and your probation time counts toward your total service duration.
+
+General information, not legal advice — consult a licensed lawyer about your own case.","[{'article_number': '35', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q39,"When must my wages reach me, and what is my employer allowed to take out of them?",en,"# When Wages Must Reach You
+
+**Labour Law 1996, Article 46(a):** Your wage and overtime must be paid within a period not exceeding seven days from the date of maturity. Your employer shall not deduct any part thereof except in cases permitted by Law.
+
+# What Your Employer Is Allowed to Deduct
+
+Your employer may deduct from your wages only in the following cases:
+
+**Labour Law 1996, Article 47:**
+
+a) Recovering advance payments made by the employer to you — each instalment refunded shall not exceed 10% of your wage.
+
+b) Refunding any amount paid to you that exceeds your entitlement.
+
+c) Social Security subscriptions and its due instalments on you and deductions that shall be made under other laws.
+
+d) Your subscriptions in the provident fund.
+
+e) Deductions related to housing facilities provided by the employer and other benefits or services according to rates or percentages agreed upon between both parties.
+
+f) Every debt received in implementation of a judicial verdict.
+
+g) Amounts imposed on you because of violation of the institution's internal regulations or the work contract, or for materials or tools you destroyed due to your negligence or mistakes (subject to the limit in Article 49).
+
+**Labour Law 1996, Article 49:** For damage or loss of tools, machinery, or products caused by your fault or violation of the employer's instructions, the employer may deduct the value of the lost or damaged items or the cost of repair — provided that the amount deducted for this purpose does not exceed the wage of five days per month.
+
+If your signature on a wage receipt is obtained, **Article 46(b)** states this does not waive your right to any increment to the amount received by virtue of law, regulation, or contract.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '49', 'in_retrieved_context': True}, {'article_number': '46', 'in_retrieved_context': True}, {'article_number': '47', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q40,"How many hours can I be asked to work, and what extra pay do I get for long hours or for working on a holiday?",en,"## Working Hours Limits
+
+**Regular hours:** You cannot be employed for more than **8 hours per day or 48 hours per week**, except in cases specified by law. Break times do not count toward these limits. The maximum can be distributed across up to **11 hours per day** if that suits your employer's scheduling (Labour Law 1996, Article 56(a) and (b)).
+
+**Mandatory overtime:** Your employer may require you to work beyond regular hours for:
+- Annual inventory, balance sheets, account preparation, or sale preparation — up to **30 days per year**, not exceeding **10 hours per day** (Labour Law 1996, Article 57(a)).
+- Preventing loss or damage to goods, avoiding technical risks, or for receipt, delivery, or transport of materials — up to **30 days per year** (Labour Law 1996, Article 57(b)).
+
+## Extra Pay for Overtime and Holidays
+
+**Overtime (voluntary or mandatory):** You receive compensation of **not less than 125% of your regular wage** for each overtime hour (Labour Law 1996, Article 59(a)).
+
+**Weekly day off, religious holidays, or official holidays:** If you work on these days, you receive additional compensation of **not less than 150% of your regular wage** for the work performed (Labour Law 1996, Article 59(b)).
+
+**Weekly day off:** Normally, Friday is your weekly day off with full pay (unless the nature of work requires otherwise and you work six consecutive days before it, or you have worked three or more days that week — in which case you get a proportionate share) (Labour Law 1996, Article 60(a) and (c)).
+
+---
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '60', 'in_retrieved_context': True}, {'article_number': '59', 'in_retrieved_context': True}, {'article_number': '56', 'in_retrieved_context': True}, {'article_number': '57', 'in_retrieved_context': True}]","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'en', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}"
+claude-haiku-4.5 (compact),q41,I did not use all my annual leave before leaving the job. Do I get paid for the days I did not take?,en,"Yes. Under Labour Law 1996, Article 63, if your service ends for any reason before you utilize your annual leave, you are entitled to receive payment for the days of leave not taken.
+
+This is a right you cannot waive. Labour Law 1996, Article 64 states that any agreement stipulating the worker's waiver of their annual leave or any part thereof shall be considered null and void — so even if your employer asked you to give up payment for unused leave, that agreement would not be valid.
+
+The payment you receive is calculated based on your unused leave days and your daily wage, though the documents provided do not specify how to convert a monthly wage into a daily rate for this calculation.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '64', 'in_retrieved_context': True}, {'article_number': '63', 'in_retrieved_context': True}]","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'en', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': None, 'accrued_days': None, 'threshold_crossed': None}}"
+claude-haiku-4.5 (compact),q42,"How long can I stay off work after giving birth, and do I get time during the day for breastfeeding afterwards?",en,"**Your maternity entitlements:**
+
+After giving birth, you have two separate entitlements:
+
+1. **Maternity leave after childbirth:** You must have at least **6 weeks** of paid leave after birth (part of a total of 10 weeks maternity leave). It is prohibited for your employer to have you return before that period ends (Labour Law 1996, Article 70).
+
+2. **Breastfeeding time:** After your maternity leave ends, within **one year from the date of birth**, you have the right to take **one or more periods with full pay for breastfeeding, not exceeding a total of one hour per day** (Labour Law 1996, Article 71).
+
+These are paid entitlements. If you work for an institution with 10 or more workers, you also have a separate option to take **up to one year of unpaid leave** to raise your children after maternity leave, provided you do not work elsewhere during that period (Labour Law 1996, Article 67).
+
+---
+*General information, not legal advice. Consult a licensed lawyer about your own case.*","[{'article_number': '70', 'in_retrieved_context': True}, {'article_number': '67', 'in_retrieved_context': True}, {'article_number': '71', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q43,"If a worker is killed or left permanently unable to work by an accident at work, what is the employer required to pay?",en,"# Work Injury Compensation Upon Death or Total Disability
+
+The employer's obligation depends on whether the worker is covered by the Social Security Law or not.
+
+## If the worker is **not** covered by Social Security (Labour Law 1996 only):
+
+**Labour Law 1996, Article 90(a):** The employer shall pay compensation equivalent to the wages of 1,200 working days, **provided that the compensation does not exceed 5,000 JDs and is not less than 2,000 JDs.**
+
+**Labour Law 1996, Article 91:** This compensation is calculated based on the worker's last received wage. If the worker is paid on a task work basis, it is calculated based on the average wage over the last six months of their work.
+
+## If the worker **is** covered by Social Security:
+
+For **death**, **Social Security Law, Article 30(a):** Survivor beneficiaries receive a **Death Due to Work-Injury Pension equivalent to 75% of the worker's wage** (the wage used as the basis for calculating contributions on the date of injury). The pension accrues from the beginning of the month in which death occurs.
+
+For **total permanent disability**, **Social Security Law, Article 30(b):** The insured receives a **monthly Disability Pension equivalent to 75% of that same wage.** Additionally, the pension is subject to a **25% increase** if the injured person needs assistance with daily life tasks (as determined by the Medical Reference), provided this increase does not exceed the approved minimum wage.
+
+---
+*General information, not legal advice; consult a licensed lawyer about your specific case.*","[{'article_number': '90', 'in_retrieved_context': True}, {'article_number': '91', 'in_retrieved_context': True}, {'article_number': '30', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q44,كم يوم إجازة سنوية لي، وهل أستطيع تقسيمها، وماذا يحدث إن لم أستعملها؟,ar,"# الإجازة السنوية: الحق والمدة والاستخدام
+
+## مدة الإجازة السنوية
+
+لك الحق في **إجازة سنوية بأجر كامل مدتها 14 يوماً عن كل سنة خدمة** (قانون العمل 1996، المادة 61(أ)). 
+
+إذا أمضيت **5 سنوات متصلة لدى صاحب العمل نفسه، ترتفع مدة إجازتك إلى 21 يوماً** (قانون العمل 1996، المادة 61(أ)).
+
+**ملاحظة:** لا تُحسب أيام العطل الرسمية والأعياد الدينية وأيام العطلة الأسبوعية من الإجازة السنوية.
+
+## تقسيم الإجازة
+
+**نعم، يمكن تقسيم إجازتك**، لكن **لا يجوز أن يقل الجزء منها عن يومين في أي مرة** (قانون العمل 1996، المادة 62).
+
+## عدم استعمال الإجازة
+
+إذا **لم تستعملها كاملة قبل انتهاء السنة**، يجوز تأجيل الإجازة إلى السنة التالية **بالاتفاق بينك وبين صاحب العمل** (قانون العمل 1996، المادة 61(جـ)). 
+
+**لكن**: إذا انقضت السنة التي أُجلت إليها الإجازة ولم تطلب استعمالها خلالها، **تسقط** (قانون العمل 1996، المادة 61(جـ)).
+
+إذا **انتهت خدمتك** لأي سبب، **لك الحق في تقاضي أجر الأيام التي لم تستعملها من إجازتك** (قانون العمل 1996، المادة 63).
+
+**تحذير قانوني**: كل اتفاق على التنازل عن إجازتك أو جزء منها **يعتبر باطلاً** (قانون العمل 1996، المادة 64).
+
+---
+معلومات عامة فحسب، لا تشكل استشارة قانونية — استشر محامياً مرخصاً بشأن وضعك الخاص.","[{'article_number': '62', 'in_retrieved_context': True}, {'article_number': '64', 'in_retrieved_context': True}, {'article_number': '63', 'in_retrieved_context': True}, {'article_number': '61', 'in_retrieved_context': True}]","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': None, 'accrued_days': None, 'threshold_crossed': None}}"
+claude-haiku-4.5 (compact),q45,كم يوماً أستطيع أن أتغيب بسبب المرض في السنة الواحدة؟,ar,"وفقاً لقانون العمل لسنة 1996، **لك الحق في 14 يوماً إجازة مرضية مدفوعة الأجر في السنة الواحدة**.
+
+**التفاصيل:**
+
+**قانون العمل 1996، المادة 65:**
+- لكل عامل حق في إجازة مرضية مدتها **أربعة عشر يوماً خلال السنة الواحدة بأجر كامل**، بناء على تقرير من طبيب معتمد من قبل المؤسسة.
+
+- يمكن تمديد هذه الإجازة لـ **14 يوماً إضافية أخرى بأجر كامل** إذا كنت نزيلاً في أحد المستشفيات، بناء على تقرير من طبيب معتمد.
+
+**ملاحظة حول التقرير الطبي:**
+- المؤسسات التي يقل عدد عمالها عن 20 عاملاً: يكتفي بتقرير من طبيب معتمد من قبل المؤسسة.
+- المؤسسات التي يزيد عدد عمالها على 20 عاملاً: يتم اعتماد لجنة طبية خاصة لاعتماد التقارير الطبية.
+
+هذه معلومات عامة وليست استشارة قانونية؛ استشر محامياً مرخصاً بشأن حالتك الخاصة.","[{'article_number': '65', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q46,هل هناك إجازات أخرى أستطيع أخذها غير السنوية والمرضية؟,ar,"نعم، هناك عدة إجازات إضافية بموجب قانون العمل 1996:
+
+**الإجازات الإضافية المدفوعة الأجر:**
+
+1. **إجازة الثقافة العمالية أو التدريب المهني** – 14 يوماً مدفوعة الأجر في السنة (قانون العمل 1996، المادة 66(أ)):
+   - إذا التحقت بدورة ثقافة عمالية معتمدة من الوزارة أو الاتحاد العام لنقابات العمال بترشيح من صاحب العمل
+   - أو أكملت تدريباً مهنياً معترفاً به من جهة حكومية أو خاصة متصلاً لدى صاحب العمل (لمرة واحدة فقط خلال مدة خدمتك)
+
+2. **إجازة الأبوة** – 3 أيام مدفوعة الأجر (قانون العمل 1996، المادة 66(ج))
+
+**إجازات بدون أجر:**
+
+1. **إجازة الدراسة** – 4 أشهر بدون أجر إذا التحقت بالدراسة في جامعة أو معهد أو كلية معترف بها رسمياً (قانون العمل 1996، المادة 66(ب))
+
+2. **إجازة مرافقة الزوج/الزوجة** – لمرة واحدة فقط، مدة لا تزيد على سنتين بدون أجر، إذا انتقل زوجك/زوجتك لعمل خارج المحافظة أو خارج المملكة (قانون العمل 1996، المادة 68)
+
+هذا معلومات عامة، استشر محامياً بخصوص حالتك الشخصية.","[{'article_number': '66', 'in_retrieved_context': True}, {'article_number': '68', 'in_retrieved_context': True}]","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': None, 'accrued_days': None, 'threshold_crossed': None}}"
+claude-haiku-4.5 (compact),q47,أريد التفرغ لتربية أطفالي. هل أستطيع أخذ إجازة لذلك، وبأي شروط؟,ar,"نعم، يمكنك أخذ إجازة للتفرغ لتربية أطفالك، لكن الشروط تختلف حسب جنسك وحالتك الوظيفية:
+
+## إذا كنتِ امرأة:
+
+**قانون العمل 1996، المادة 67:**
+- لك الحق في إجازة **بدون أجر** لمدة **لا تزيد على سنة واحدة** للتفرغ لتربية أطفالك
+- **شرط أساسي:** أن تعملي في مؤسسة تستخدم **عشرة عمال أو أكثر**
+- لك الحق في العودة إلى عملك بعد انتهاء الإجازة
+- **تفقدين هذا الحق** إذا عملتِ بأجر لدى أي مؤسسة أخرى خلال فترة الإجازة
+
+## إذا كنت موظفاً متزوجاً:
+
+**قانون العمل 1996، المادة 68:**
+- يحق لكل من الزوجين العاملين الحصول على إجازة **بدون أجر** لمدة **لا تزيد على سنتين** **لمرة واحدة فقط** لمرافقة الزوج/الزوجة إذا انتقل إلى عمل آخر خارج المحافظة الحالية أو خارج الأردن
+
+---
+
+**هذه معلومات عامة وليست استشارة قانونية، يُنصح بمراجعة محامٍ متخصص بخصوص حالتك الشخصية.**","[{'article_number': '67', 'in_retrieved_context': True}, {'article_number': '68', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q48,نُقل زوجي للعمل في محافظة أخرى. هل أستطيع أخذ إجازة حتى أرافقه؟,ar,"نعم، يحق لك الحصول على إجازة لمرافقة زوجك. 
+
+وفقاً لقانون العمل لسنة 1996، المادة (68): لكل من الزوجين العاملين الحصول على إجازة لمرة واحدة دون أجر لمدة لا تزيد على سنتين لمرافقة زوجه إذا انتقل إلى عمل آخر يقع خارج المحافظة التي يعمل فيها داخل المملكة أو إلى عمل يقع خارجها.
+
+وهذا يعني أن الشروط الأساسية هي:
+- أن تكونا كلاكما عاملين
+- أن تأخذي الإجازة لمرة واحدة فقط
+- أن تكون الإجازة دون أجر
+- أن تقل المدة عن سنتين
+
+يُرجى الملاحظة أن هذه معلومات قانونية عامة، استشيري محامياً مرخصاً بشأن حالتك الخاصة.","[{'article_number': '68', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q49,هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟,ar,"نعم، يمكنك ترك العمل فوراً دون إشعار صاحب العمل والاحتفاظ بجميع حقوقك، لكن بشروط محددة وفي حالات معينة فقط.
+
+**الشروط الأساسية:**
+
+وفقاً لـ **قانون العمل 1996، المادة 29(أ)**، يحق لك ترك العمل دون إشعار على أن **تبلغ وزارة العمل خلال أسبوعين من تاريخ ترك العمل** بالطرق التي تحددها الوزارة، مع احتفاظك بحقوقك القانونية عن انتهاء الخدمة وما يترتب لك من تعويضات عطل وضرر.
+
+**الحالات التي يحق لك فيها ترك العمل فوراً دون إشعار:**
+
+1. **اختلاف العمل الفعلي عن المتفق عليه**: إذا استُخدمت في عمل يختلف في نوعه اختلافاً بيناً عن العمل المتفق عليه بموجب عقد العمل.
+
+2. **تغيير محل الإقامة**: إذا استُخدمت بصورة تدعو إلى تغيير محل إقامتك الدائم (إلا إذا نص العقد على جواز ذلك).
+
+3. **النقل إلى درجة أدنى**: إذا نُقلت إلى عمل في درجة أدنى من العمل المتفق عليه.
+
+4. **تخفيض الأجر**: إذا تم تخفيض أجرك.
+
+5. **تهديد الصحة**: إذا ثبت بتقرير طبي من مرجع طبي أن استمرارك في العمل من شأنه تهديد صحتك.
+
+6. **الاعتداء الجسدي أو الجنسي**: إذا اعتدى صاحب العمل أو من يمثله عليك بالضرب أو التحقير أو بأي شكل من أشكال الاعتداء الجنسي أو التحرش الجنسي.
+
+7. **تخلف صاحب العمل عن تنفيذ القانون**: إذا تخلف صاحب العمل عن تنفيذ أي حكم من أحكام قانون العمل أو أي نظام صادر بمقتضاه، **شريطة أن تكون قد تلقيت إشعاراً من جهة مختصة في وزارة العمل تطلب فيه التقيد بتلك الأحكام**.
+
+هذه معلومات قانونية عامة، استشر محامياً مختصاً في قضايا العمل لتطبيقها على وضعك الخاص.","[{'article_number': '29', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q50,انتهى عملي. هل يلزم صاحب العمل أن يعطيني ورقة تثبت أنني عملت لديه؟,ar,"نعم، يلزم صاحب العمل أن يعطيك شهادة خدمة عند انتهاء عملك.
+
+**الالتزام الأساسي:**
+بموجب **قانون العمل 1996، المادة 30(أ)**، على صاحب العمل أن يعطيك عند انتهاء خدمتك شهادة خدمة يذكر فيها:
+- اسمك
+- نوع عملك
+- تاريخ التحاقك بالخدمة
+- تاريخ انتهاء الخدمة
+
+**التزام إضافي:**
+كذلك يلزم صاحب العمل برد أي أوراق أو شهادات أو أدوات أودعتها لديه.
+
+**مصادقة الشهادة:**
+حسب **المادة 30(ب)**، يتم مصادقة شهادة الخدمة من الوزارة وفقاً للأسس التي يصدرها الوزير.
+
+**ملاحظة:** تطبيق هذا الحكم يتوقف على ما إذا كنت خاضعاً لقانون العمل 1996 أم لا — فالقانون لا يسري على الموظفين الحكوميين والعاملين في الزراعة والعمل المنزلي.
+
+هذه معلومات عامة، وننصحك بمراجعة محام مرخص لحالتك الخاصة.","[{'article_number': '30', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q51,شركتنا تمر بضائقة وتريد تقليص عدد الموظفين. ما الذي يلزمها قبل أن تفعل ذلك؟,ar,"# الإجراءات الواجبة قبل تقليص عدد الموظفين
+
+على شركتك اتباع إجراءات إدارية محددة وليس لها أن تقلص الموظفين بتصرف منفرد.
+
+## الخطوات المطلوبة:
+
+**1. إخطار الوزير كتابة (قبل أي إجراء):**
+يجب عليك تبليغ وزير العمل خطياً معززاً بالأسباب المبررة لتقليص حجم العمل، **قبل** اتخاذ أي إجراء بهذا الخصوص (قانون العمل 1996، المادة 31(أ)).
+
+**2. اللجنة الثلاثية:**
+يشكل الوزير لجنة من أطراف الإنتاج الثلاثة للتحقق من سلامة إجراءاتك وتقديم توصياتها خلال **مدة لا تتجاوز خمسة عشر يوماً** من تاريخ تبليغك (قانون العمل 1996، المادة 31(ب)).
+
+**3. قرار الوزير:**
+يصدر الوزير قراره بشأن التوصية **خلال سبعة أيام** من رفعها، إما بالموافقة على إجراءاتك أو إعادة النظر فيها (قانون العمل 1996، المادة 31(ج)).
+
+**4. حق الطعن:**
+لأي متضرر من قرار الوزير الحق في الطعن فيه لدى محكمة الاستئناف خلال **عشرة أيام** من تاريخ تبليغه القرار (قانون العمل 1996، المادة 31(د)).
+
+---
+
+**ملاحظة:** هذه معلومات قانونية عامة، استشر محامياً بخصوص وضعك المحدد.","[{'article_number': '31', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q52,إذا توفي العامل، لمن تُدفع المبالغ المستحقة له؟,ar,"إذا توفي العامل، تُدفع المبالغ المستحقة له إلى ورثته الشرعيين وفقاً لأحكام القانون الذي يغطي تأمينه. إليك الأحكام المنطبقة:
+
+**بموجب قانون العمل لسنة 1996:**
+
+- **قانون العمل 1996، المادة 34**: تؤول إلى الورثة الشرعيين جميع حقوق العامل المقررة بمقتضى أحكام القانون، بالإضافة إلى حقوقه في أي من الصناديق المنصوص عليها في المادة 33.
+
+- **قانون العمل 1996، المادة 96**: يوزع التعويض في حالة وفاة العامل على المستحقين عنه وفقاً للأنصبة المعينة في الجدول رقم (3) الملحق بالقانون.
+
+**بموجب قانون الضمان الاجتماعي:**
+
+- **قانون الضمان الاجتماعي، المادة 80**: إذا توفى المؤمن عليه أو صاحب راتب التقاعد أو راتب الاعتلال، يُدفع لكل مستحق نصيبه من الراتب وفقاً للجدول رقم (4) الملحق بالقانون، ابتداءً من أول الشهر الذي حدثت فيه الوفاة (أو أول الشهر التالي حسب نوع الراتب).
+
+- **قانون الضمان الاجتماعي، المادة 81**: تحدد المستحقين بالتفصيل (الأبناء، الأرملة، البنات، الأخوات، الزوج في حالات معينة، والوالدان).
+
+**ملاحظة عامة، وليست نصيحة قانونية: استشر محامياً مرخصاً لتطبيق هذه الأحكام على وضعك الخاص.**","[{'article_number': '33', 'in_retrieved_context': False}, {'article_number': '80', 'in_retrieved_context': True}, {'article_number': '81', 'in_retrieved_context': True}, {'article_number': '96', 'in_retrieved_context': True}, {'article_number': '34', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q53,أتلفت آلة في العمل من غير قصد. هل يُخصم ذلك من راتبي، وكم أقصى ما يمكن خصمه؟,ar,"إذا أتلفت آلة في العمل من غير قصد، فنعم يجوز لصاحب العمل أن يقتطع من راتبك، لكن بحدود محددة جداً حسب القانون.
+
+**الحد الأقصى للاقتطاع:**
+
+وفقاً لقانون العمل 1996، المادة (49)، إذا تسبب العامل في فقد أو إتلاف أدوات أو آلات تملكها صاحب العمل وكان ذلك ناشئاً عن خطأ العامل أو مخالفته التعليمات، فلصاحب العمل أن يقتطع من الأجر قيمة الأشياء المفقودة أو المتلفة أو كلفة إصلاحها **على ألا يزيد ما يقتطع على أجر خمسة أيام في الشهر**.
+
+وبالإضافة إلى ذلك، المادة (47)(ز) من قانون العمل توضح أن المبالغ التي تفرض على العامل مقابل ما أتلفه من المواد أو الأدوات بسبب إهماله أو أخطائه يتم الحسم بموجب الأحكام الخاصة المنصوص عليها في القانون (وهي المادة 49 المذكورة أعلاه).
+
+**الخلاصة:** أقصى ما يمكن خصمه هو **أجر خمسة أيام في الشهر**.
+
+هذا معلومات عامة وليس استشارة قانونية؛ استشر محامياً مرخصاً حول حالتك الخاصة.","[{'article_number': '49', 'in_retrieved_context': True}, {'article_number': '47', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q54,أوقف صاحب العمل العمل مؤقتاً لسبب خارج عن إرادته. هل أتقاضى أجري في تلك الفترة؟,ar,"نعم، تستحق أجراً في فترة التوقف المؤقت، لكن بشروط محددة:
+
+**حسب قانون العمل 1996:**
+
+وفقاً لـ **قانون العمل 1996، المادة 50**، إذا اضطر صاحب العمل إلى وقف العمل مؤقتاً بسبب لا يعزى إليه وليس في وسعه دفعه:
+
+- **تستحق الأجر الكامل** عن أول **10 أيام** من التوقف خلال السنة الواحدة.
+- **تستحق نصف الأجرة** عن أي مدة تزيد على تلك الـ 10 أيام الأولى.
+- **الحد الأقصى الكلي** للتعطيل المدفوع الأجر عنه لا يزيد على **60 يوماً في السنة**.
+
+**مثال:** إذا توقف العمل 20 يوماً، تتقاضى الأجر الكامل عن أول 10 أيام، ثم نصف الأجر عن الـ 10 أيام التالية.
+
+هذا حكم عام بموجب قانون العمل. إذا كنت مشمولاً بنظام الضمان الاجتماعي، قد تنطبق عليك أحكام إضافية تتعلق ببدل التعطل عن العمل.
+
+هذه معلومات قانونية عامة، لا استشارة قانونية — استشر محامياً مرخصاً بشأن حالتك الخاصة.","[{'article_number': '50', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q55,كم يوم راحة لي في الأسبوع، وهل يكون بأجر؟,ar,"# العطلة الأسبوعية
+
+لك يوم راحة واحد في الأسبوع، وهو يوم الجمعة عادة، وتحصل عليه **بأجر كامل**.
+
+## التفاصيل:
+
+**قانون العمل 1996، المادة 60(أ):** يوم الجمعة من كل أسبوع هو يوم العطلة الأسبوعية للعامل، إلا إذا اقتضت طبيعة العمل غير ذلك.
+
+**قانون العمل 1996، المادة 60(جـ):** يكون يوم العطلة الأسبوعية بأجر كامل.
+
+لكن **إذا كنت تعمل على أساس يومي أو أسبوعي:**
+- تستحق أجر يوم العطلة الأسبوعية **إذا عملت ستة أيام متصلة قبل اليوم المحدد للعطلة**.
+- أو تستحق **نسبة من أجر يوم العطلة** إذا عملت **ثلاثة أيام أو أكثر** خلال الأسبوع.
+
+كما يمكنك بموافقة صاحب العمل **جمع أيام عطلتك الأسبوعية والحصول عليها خلال مدة لا تزيد على شهر** (المادة 60(ب)).
+
+معلومة عامة فقط، وليست استشارة قانونية — استشر محامياً بخصوص وضعك الشخصي.","[{'article_number': '60', 'in_retrieved_context': True}]","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}, 'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': None, 'accrued_days': None, 'threshold_crossed': None}}"
+claude-haiku-4.5 (compact),q56,ما الذي يلزم صاحب العمل حتى يحميني من مخاطر العمل، وما الذي يلزمني أنا؟,ar,"# التزامات صاحب العمل والعامل تجاه السلامة والصحة المهنية
+
+## التزامات صاحب العمل:
+
+**توفير الحماية من الأخطار والأمراض:**
+صاحب العمل ملزم بـ:
+
+1. **توفير التدابير الوقائية** — قانون العمل 1996، المادة 78(أ/1): توفير الاحتياطات والتدابير اللازمة لحماية العمال من الأخطار والأمراض التي قد تنجم عن العمل والآلات المستعملة فيه.
+
+2. **توفير وسائل الحماية الشخصية** — قانون العمل 1996، المادة 78(أ/2): توفير وسائل الحماية والوقاية مثل الملابس والنظارات والقفازات والأحذية، وإرشاد العمال إلى طريقة استعمالها والمحافظة عليها.
+
+3. **إعلام العامل بالمخاطر** — قانون العمل 1996، المادة 78(أ/3): إحاطة العامل قبل اشتغاله بمخاطر مهنته وسبل الوقاية الواجب عليه اتخاذها، وتعليق تعليمات وارشادات في مكان ظاهر توضح المخاطر ووسائل الوقاية.
+
+4. **توفير الإسعافات الطبية** — قانون العمل 1996، المادة 78(أ/4): توفير وسائل وأجهزة الإسعاف الطبي للعمال في المؤسسة.
+
+5. **حماية من المواد الخطرة** — قانون العمل 1996، المادة 80: اتخاذ الاحتياطات اللازمة لحماية المؤسسة والعاملين من أخطار الحريق والانفجارات وتخزين المواد الخطرة القابلة للاشتعال أو نقلها أو تداولها، وتوفير الوسائل والأجهزة الفنية الكافية.
+
+6. **المسؤولية عن التكاليف** — قانون العمل 1996، المادة 78(ب): لا يجوز تحميل العمال أي نفقات تترتب على تنفيذ أو توفير هذه الالتزامات.
+
+**مسؤولية إضافية في حال المخالفة:**
+قانون الضمان الاجتماعي، المادة 32(ب): إذا ثبت أن إصابة عمل وقعت بسبب مخالفة المنشأة لشروط السلامة والصحة المهنية، تتحمل المنشأة جميع تكاليف العناية الطبية التي دفعتها المؤسسة.
+
+---
+
+## التزاماتك أنت كعامل:
+
+**الخضوع للفحوصات الطبية** — قانون العمل 1996، المادة 19(د): الخضوع للفحوصات الطبية اللازمة التي تقتضي طبيعة العمل ضرورة إجراؤها قبل الالتحاق بالعمل أو بعد ذلك للتحقق من خلوك من الأمراض المهنية والسارية.
+
+---
+
+**هذه معلومات قانونية عامة فقط، استشر محامياً مرخصاً بشأن حالتك الخاصة.**","[{'article_number': '78', 'in_retrieved_context': True}, {'article_number': '32', 'in_retrieved_context': True}, {'article_number': '80', 'in_retrieved_context': True}, {'article_number': '19', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q57,Can I work in a place that has not been given a classification yet?,en,"No. Under the Professional Work Law 2019, Article 5(a) states: ""It is prohibited to practice any profession in any place unless it is classified in accordance with the provisions of this Law.""
+
+Additionally, Article 6 requires that ""in order for a business to obtain or renew a professional license from any competent authority, it is mandatory to possess a classification certificate that complies with the regulations outlined in this Law.""
+
+A business must first obtain a classification certificate from the Secretary General (Article 4(d)) before it can legally operate and issue professional licenses to its workers.
+
+General information, not legal advice; consult a licensed lawyer about your own case.","[{'article_number': '5', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}, {'article_number': '6', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q58,"Am I put into a category as a professional worker, and what does that category affect?",en,"# Categorization and Effects
+
+**Categorization:**
+Yes, if you work in a profession that the Council of Ministers has decided to include under the Professional Work Law 2019, you are classified into a professional worker category. Professional Work Law 2019, Article 3 states that ""The provisions of this Law apply to professions and businesses that the Council of Ministers decides to include under this Law based on the recommendation of the Minister.""
+
+**What the category affects:**
+
+Professional Work Law 2019, Article 7 specifies that ""Each category shall be assigned a name, specifications, grades, and classification rules. Professional licenses shall be issued to workers in each category in accordance with the prevailing legislation.""
+
+In practice, your category determines:
+- The specific name and specifications for your profession
+- The grade(s) within your category
+- The rules that govern classification in that category
+- Your eligibility for and the requirements to obtain a professional license
+
+Additionally, Professional Work Law 2019, Article 5(a) prohibits practicing any profession in any place unless it is classified under the Law's provisions. Your category assignment is essential to lawful practice.
+
+**To give you a fuller picture, I would need to know: which profession or business do you work in?** This determines whether the Council of Ministers has included it under the Professional Work Law 2019.
+
+---
+*General information, not legal advice. Consult a licensed lawyer about your own case.*","[{'article_number': '5', 'in_retrieved_context': True}, {'article_number': '3', 'in_retrieved_context': True}, {'article_number': '7', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q59,هل أستطيع ممارسة مهنتي في محل لم يُصنَّف بعد؟,ar,"لا، لا تستطيع ممارسة مهنتك في محل لم يُصنَّف بعد.
+
+**قانون العمل المهني لسنة 2019، المادة (5)(أ)** تنص بوضوح: ""لا يجوز مزاولة المهنة في أي محل ما لم يكن مصنفاً وفقاً لأحكام هذا القانون وحاصلاً على التراخيص المنصوص عليها في التشريعات النافذة.""
+
+المحل يجب أن يحصل أولاً على شهادة تصنيف صادرة من الجهات المختصة، حسبما تحدده **المادة (4)(ب)** التي توضح أن شهادة التصنيف تصدر لمدة خمس سنوات قابلة للتجديد بقرار من الأمين العام.
+
+كما يلتزم صاحب المحل بـ **المادة (5)(ب)** بتعليق شهادة التصنيف في مكان بارز من المحل.
+
+---
+*هذه معلومات قانونية عامة، وليست استشارة قانونية. استشر محاميًا لحالتك الخاصة.*","[{'article_number': '5', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}]",
+claude-haiku-4.5 (compact),q60,هل يُوضع العاملون المهنيون في فئات، وما الذي يترتب على ذلك؟,ar,"نعم، يُوضع العاملون المهنيون في فئات. إليك ما يترتب على ذلك وفقاً للقانون:
+
+**التصنيف:**
+
+وفقاً لقانون العمل المهني لسنة 2019، المادة (6)، يصنف العاملون المهنيون إلى فئات وتحدد مواصفاتهم ودرجاتهم ومسمياتهم في كل فئة بموجب إجازات مزاولة المهنة وفقاً لأحكام التشريعات النافذة.
+
+**ما يترتب على ذلك:**
+
+1. **متطلبات السلامة والصحة:** وفقاً لقانون العمل المهني لسنة 2019، المادة (4)(أ)، تتضمن تعليمات الوزير لتصنيف المحلات متطلبات السلامة والصحة المهنية وفئة العاملين والمستوى المهني لكل منهم.
+
+2. **شرط مزاولة المهنة:** لا يجوز مزاولة المهنة في أي محل ما لم يكن مصنفاً وفقاً لأحكام القانون وحاصلاً على التراخيص المنصوص عليها في التشريعات النافذة (قانون العمل المهني لسنة 2019، المادة (5)(أ)).
+
+معلومات عامة فقط، يُرجى استشارة محامٍ مرخص بشأن حالتك الخاصة.","[{'article_number': '5', 'in_retrieved_context': True}, {'article_number': '4', 'in_retrieved_context': True}, {'article_number': '6', 'in_retrieved_context': True}]",

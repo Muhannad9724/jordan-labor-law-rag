@@ -1,0 +1,185 @@
+﻿question_id,trial,question_text,labeling_note,calculation,answer
+c09,0,اشتغلت ساعتين اضافيتين وأجري بالساعة 3 دينار، كم يفترض ان اقبض؟,"Phase 26, live-verified over real HTTP. Explicit HOURLY wage stated -> expect the 125% ordinary-overtime rate applied: 3.75 JD/hour, 7.50 JD for the two hours.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': 3.0, 'ordinary_amount': 3.75, 'holiday_amount': 4.5, 'requires_not_excluded_role': False}}","بناءً على قانون العمل لسنة 1996، المادة (59)، يجب أن تتقاضى عن العمل الإضافي أجراً لا يقل عن 125% من أجرك المعتاد.
+
+**حسابك:**
+- أجرك بالساعة: 3 دينار
+- نسبة العمل الإضافي: 125%
+- أجر الساعة الإضافية: 3 × 125% = **3.75 دينار**
+- عن ساعتين إضافيتين: 3.75 × 2 = **7.5 دينار**
+
+لكن هذا يتوقف على **متى عملت هاتان الساعتان الإضافيتان:**
+- إذا كانت في أيام عملك العادية: تستحق **7.5 دينار**
+- إذا كانت في يوم عطلتك الأسبوعية أو عطلة رسمية: تستحق 150% من الأجر المعتاد، أي 3 × 150% = 4.5 دينار للساعة، فتستحق **9 دينار** عن الساعتين
+
+هل العمل الإضافي كان في يوم عطلة أم في يوم عمل عادي؟
+
+---
+معلومة عامة فقط، وليست استشارة قانونية — استشر محامياً مرخصاً بخصوص وضعك الخاص."
+c09,1,اشتغلت ساعتين اضافيتين وأجري بالساعة 3 دينار، كم يفترض ان اقبض؟,"Phase 26, live-verified over real HTTP. Explicit HOURLY wage stated -> expect the 125% ordinary-overtime rate applied: 3.75 JD/hour, 7.50 JD for the two hours.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': 3.0, 'ordinary_amount': 3.75, 'holiday_amount': 4.5, 'requires_not_excluded_role': False}}","بناءً على وثائقك، عملت ساعتين إضافيتين بأجر ساعة 3 دنانير.
+
+**المبلغ الواجب:**
+- **ساعتا عمل إضافي عادي:** 2 ساعة × 3.75 دينار = **7.5 دينار**
+
+**الأساس القانوني:**
+قانون العمل لسنة 1996، المادة (59)(أ): العامل الذي يعمل ساعات إضافية يتقاضى ""عن ساعة العمل الاضافية أجراً لا يقل عن 125% من أجره المعتاد"" — أي 3 دنانير × 125% = 3.75 دينار للساعة الواحدة.
+
+قانون العمل لسنة 1996، المادة (46)(أ): يجب أن يُدفع لك هذا المبلغ ""خلال مدة لا تزيد على سبعة أيام من تاريخ استحقاقه"".
+
+**معلومة عامة، لا تمثل استشارة قانونية — استشر محامياً مرخصاً بخصوص حالتك.**"
+c09,2,اشتغلت ساعتين اضافيتين وأجري بالساعة 3 دينار، كم يفترض ان اقبض؟,"Phase 26, live-verified over real HTTP. Explicit HOURLY wage stated -> expect the 125% ordinary-overtime rate applied: 3.75 JD/hour, 7.50 JD for the two hours.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': 3.0, 'ordinary_amount': 3.75, 'holiday_amount': 4.5, 'requires_not_excluded_role': False}}","بناءً على قانون العمل لسنة 1996، المادة (59)(أ)، تستحق عن كل ساعة عمل إضافية أجراً لا يقل عن **125% من أجرك المعتاد**.
+
+على أساس أجرك 3 دنانير للساعة:
+- **الساعة الإضافية الواحدة: 3.75 دنانير** (3 × 125%)
+- **ساعتان إضافيتان: 7.5 دنانير**
+
+**شرط إضافي:** يجب أن يُدفع لك هذا الأجر خلال مدة لا تزيد على **7 أيام** من تاريخ استحقاقه، وفقاً للمادة (46)(أ).
+
+لاحظ: إذا كانت الساعات الإضافية في يوم عطلتك الأسبوعية أو عطلة رسمية، فتستحق 150% بدلاً من 125% (المادة 59(ب))، أي 4.5 دنانير للساعة الواحدة.
+
+معلومات عامة فقط، وليست استشارة قانونية – استشر محامياً مرخصاً بخصوص حالتك الخاصة."
+c10,0,ما هي نسبة الأجر الإضافي التي يستحقها العامل عن ساعات العمل الإضافي العادية؟,"No wage stated at all -- expect the 125% rate given as a percentage of the regular hourly wage. No JD figure should appear, since nothing was stated to compute one from.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","نسبة الأجر الإضافي عن ساعات العمل الإضافي العادية هي **125% من أجره المعتاد** (أي 25% إضافة على الأجر المعتاد).
+
+**المرجع:** قانون العمل لسنة 1996، المادة (59)، الفقرة (أ):  
+""يجوز تشغيل العامل بموافقته أكثر من ساعات العمل اليومية أو الأسبوعية على أن يتقاضى العامل عن ساعة العمل الاضافية أجرا لا يقل عن ١25% من أجره المعتاد.""
+
+هذه النسبة تنطبق على العمل الإضافي برضا العامل. أما العمل في أيام العطل الأسبوعية أو الأعياد الرسمية فيستحق 150% من الأجر المعتاد (قانون العمل لسنة 1996، المادة 59، الفقرة ب).
+
+---
+*هذه معلومات قانونية عامة، لا تشكل استشارة قانونية — استشر محامياً مرخصاً بشأن حالتك الشخصية.*"
+c10,1,ما هي نسبة الأجر الإضافي التي يستحقها العامل عن ساعات العمل الإضافي العادية؟,"No wage stated at all -- expect the 125% rate given as a percentage of the regular hourly wage. No JD figure should appear, since nothing was stated to compute one from.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","عن ساعات العمل الإضافي العادية، يستحق العامل أجراً لا يقل عن **125% من أجره المعتاد** عن كل ساعة إضافية.
+
+هذا بموجب **قانون العمل لسنة 1996، المادة (59)(أ)**، التي تنص على أنه ""يجوز تشغيل العامل بموافقته أكثر من ساعات العمل اليومية أو الأسبوعية على أن يتقاضى العامل عن ساعة العمل الاضافية أجرا لا يقل عن ١25% من أجره المعتاد.""
+
+كما يجب أن يتم دفع هذا الأجر الإضافي خلال مدة لا تزيد على سبعة أيام من تاريخ استحقاقه (قانون العمل لسنة 1996، المادة 46(أ)).
+
+معلومات عامة، وليست استشارة قانونية -- استشر محامياً مرخصاً بخصوص حالتك الخاصة."
+c10,2,ما هي نسبة الأجر الإضافي التي يستحقها العامل عن ساعات العمل الإضافي العادية؟,"No wage stated at all -- expect the 125% rate given as a percentage of the regular hourly wage. No JD figure should appear, since nothing was stated to compute one from.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","نسبة الأجر الإضافي عن ساعات العمل الإضافي العادية هي **125% من أجره المعتاد** عن كل ساعة إضافية.
+
+وفقاً لـ قانون العمل لسنة 1996، المادة (59)(أ): ""يجوز تشغيل العامل بموافقته أكثر من ساعات العمل اليومية أو الأسبوعية على أن يتقاضى العامل عن ساعة العمل الاضافية أجرا لا يقل عن 125% من أجره المعتاد.""
+
+ملاحظة: إذا عمل العامل في يوم عطلته الأسبوعية أو في أيام الأعياد الدينية أو العطل الرسمية، فإن النسبة تزيد إلى **150% من أجره المعتاد** (المادة 59(ب)).
+
+معلومة عامة، وليست استشارة قانونية — استشر محامياً مرخصاً بشأن حالتك الخاصة."
+c11,0,"If I work on my weekly day off, how much extra should I be paid compared to my normal wage?","Targets the SECOND rate in Article 59 specifically -- 150% for the weekly day off or a holiday, distinct from the 125% ordinary-overtime rate. A wrong-rate answer (125% instead of 150%) is the failure this question exists to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'en', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","If you work on your weekly day off, you should receive additional compensation of **at least 150% of your regular wage** for the work performed on that day.
+
+This is stated in **Labour Law 1996, Article 59(b)**: ""If the worker works on their weekly day off or on religious holidays or official holidays, they shall receive additional compensation for that day, not less than (150%) of their regular wage for the work performed.""
+
+So the extra amount compared to your normal wage would be **at least 50%** of what you normally earn for that day.
+
+General information only, not legal advice; consult a licensed lawyer about your own case."
+c11,1,"If I work on my weekly day off, how much extra should I be paid compared to my normal wage?","Targets the SECOND rate in Article 59 specifically -- 150% for the weekly day off or a holiday, distinct from the 125% ordinary-overtime rate. A wrong-rate answer (125% instead of 150%) is the failure this question exists to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'en', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","If you work on your weekly day off, you are entitled to additional compensation of at least **150% of your regular wage** for that day's work.
+
+This is stated in **Labour Law 1996, Article 59(b)**: ""If the worker works on their weekly day off or on religious holidays or official holidays, they shall receive additional compensation for that day, not less than (150%) of their regular wage for the work performed.""
+
+In other words, you should receive one and a half times your normal daily wage as compensation for working on that day.
+
+---
+General information, not legal advice; consult a licensed lawyer about your own case."
+c11,2,"If I work on my weekly day off, how much extra should I be paid compared to my normal wage?","Targets the SECOND rate in Article 59 specifically -- 150% for the weekly day off or a holiday, distinct from the 125% ordinary-overtime rate. A wrong-rate answer (125% instead of 150%) is the failure this question exists to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'en', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","If you work on your weekly day off, you should receive additional compensation of **at least 150% of your regular wage** for the work performed on that day.
+
+This is set out in **Labour Law 1996, Article 59(b)**, which states: ""If the worker works on their weekly day off or on religious holidays or official holidays, they shall receive additional compensation for that day, not less than (150%) of their regular wage for the work performed.""
+
+So if your regular daily wage is, say, 30 JD, you would receive at least 45 JD (150% of 30) for that day's work on your weekly day off.
+
+General information, not legal advice; consult a licensed lawyer about your own case."
+c12,0,راتبي الشهري 900 دينار واشتغلت يوم عطلتي الأسبوعية، كم يستحق لي؟,"The guard-rail this calculator exists for: a MONTHLY salary is stated, not an hourly one, and no article anywhere in the corpus converts one into the other. Expect the 150% rate stated as a percentage of the normal hourly wage -- a JD figure computed by dividing 900 by some invented number of hours/days would be an ungrounded number and is the specific failure this question is designed to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","استحقاقك مقابل العمل في يوم عطلتك الأسبوعية هو **أجر يومي إضافي بنسبة 150% من أجرك اليومي المعتاد**.
+
+وفقاً لـ **قانون العمل لسنة 1996، المادة 59(ب)**: إذا اشتغل العامل في يوم عطلته الأسبوعية أو أيام الأعياد الدينية أو العطل الرسمية يتقاضى لقاء عمله عن ذلك اليوم أجراً إضافياً لا يقل عن 150% من أجره المعتاد.
+
+لحساب المبلغ بالدينار بدقة، أحتاج معرفة: **كم يوم عمل في الشهر عادة؟** (هل 26 يوماً، 30 يوماً، أم عدد آخر؟)
+
+بمجرد معرفة عدد أيام العمل الشهرية، سأقسم 900 دينار عليها للحصول على أجرك اليومي، ثم أحسب لك 150% من ذلك المبلغ.
+
+---
+معلومة عامة، وليس نصيحة قانونية — استشر محامياً مرخصاً بشأن حالتك الخاصة."
+c12,1,راتبي الشهري 900 دينار واشتغلت يوم عطلتي الأسبوعية، كم يستحق لي؟,"The guard-rail this calculator exists for: a MONTHLY salary is stated, not an hourly one, and no article anywhere in the corpus converts one into the other. Expect the 150% rate stated as a percentage of the normal hourly wage -- a JD figure computed by dividing 900 by some invented number of hours/days would be an ungrounded number and is the specific failure this question is designed to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","بناءً على المادة 59(ب) من قانون العمل لسنة 1996، عندما تعمل في يوم عطلتك الأسبوعية، تستحق أجراً إضافياً **لا يقل عن 150% من أجرك المعتاد** عن ذلك اليوم.
+
+لكن الوثائق لا تنص على كيفية تحويل الراتب الشهري (900 دينار) إلى أجر اليوم الواحد، فهذا يتوقف على عدد أيام العمل الفعلية في شهرك. 
+
+**كم عدد أيام عمل لديك في الأسبوع أو الشهر؟** بعد معرفة ذلك، يمكن حساب أجر اليوم الواحد، ثم ضربه في 150%.
+
+---
+معلومات عامة، وليست استشارة قانونية — استشر محامياً مرخصاً بخصوص حالتك الخاصة."
+c12,2,راتبي الشهري 900 دينار واشتغلت يوم عطلتي الأسبوعية، كم يستحق لي؟,"The guard-rail this calculator exists for: a MONTHLY salary is stated, not an hourly one, and no article anywhere in the corpus converts one into the other. Expect the 150% rate stated as a percentage of the normal hourly wage -- a JD figure computed by dividing 900 by some invented number of hours/days would be an ungrounded number and is the specific failure this question is designed to catch.","{'overtime': {'law': 'labor96', 'article': '59', 'language': 'ar', 'ordinary_rate': 125.0, 'holiday_rate': 150.0, 'hourly_wage': None, 'ordinary_amount': None, 'holiday_amount': None, 'requires_not_excluded_role': False}}","بناءً على قانون العمل، عند العمل في يوم العطلة الأسبوعية، تستحق أجراً إضافياً لا يقل عن 150% من أجرك المعتاد عن ذلك اليوم.
+
+**المشكلة:** الوثائق تنص على النسبة المئوية (150%) لكن لا تشرح كيفية تحويل الراتب الشهري (900 دينار) إلى أجر يومي أو أجر ساعة، وبالتالي لا يمكنني حساب المبلغ بالدينار بدقة.
+
+**الأساس القانوني:**
+- قانون العمل 1996، المادة 59(ب): ""إذا اشتغل العامل في يوم عطلته الأسبوعية أو أيام الأعياد الدينية أو العطل الرسمية يتقاضى لقاء عمله عن ذلك اليوم أجراً إضافياً لا يقل عن (150%) من أجره المعتاد.""
+
+لحساب الاستحقاق بدقة، ستحتاج إلى تحديد عدد ساعات العمل في اليوم وكيفية تقسيم الراتب الشهري على الساعات أو الأيام.
+
+هذه معلومات قانونية عامة، استشر محامياً مرخصاً حول حالتك الخاصة."
+c13,0,اشتغلت 3 سنوات عند نفس صاحب العمل، كم رصيد إجازتي السنوية؟,"Phase 26, live-verified over real HTTP. Below the 5-year threshold, so the total is exact and unambiguous: 14 days/year x 3 years = 42 days.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 3.0, 'accrued_days': 42.0, 'threshold_crossed': False}}","رصيد إجازتك السنوية هو **42 يوماً** (3 سنوات × 14 يوماً لكل سنة خدمة).
+
+**التفاصيل:**
+
+وفقاً لقانون العمل لسنة 1996، المادة (61)(أ)، لكل عامل الحق بإجازة سنوية بأجر كامل لمدة **أربعة عشر يوماً عن كل سنة خدمة**. هذا المعدل يرتفع إلى **واحد وعشرين يوماً** إذا أمضيت في الخدمة لدى صاحب العمل نفسه **خمس سنوات متصلة**. 
+
+بما أنك أكملت 3 سنوات فقط (أقل من 5 سنوات)، ينطبق المعدل الأساسي، وبالتالي تستحق 14 يوماً لكل من السنة الأولى والثانية والثالثة.
+
+كما تجدر الإشارة إلى أن **أيام العطل الرسمية والأعياد الدينية وأيام العطلة الأسبوعية لا تُحسب من الإجازة السنوية** وفق المادة (61)(أ).
+
+هذه معلومات عامة، استشر محامياً مرخصاً بشأن وضعك الخاص."
+c13,1,اشتغلت 3 سنوات عند نفس صاحب العمل، كم رصيد إجازتي السنوية؟,"Phase 26, live-verified over real HTTP. Below the 5-year threshold, so the total is exact and unambiguous: 14 days/year x 3 years = 42 days.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 3.0, 'accrued_days': 42.0, 'threshold_crossed': False}}","رصيد إجازتك السنوية هو **42 يوماً**.
+
+**التفصيل:**
+
+حسب **قانون العمل 1996، المادة (61)(أ)**، لكل عامل الحق بإجازة سنوية بأجر كامل مدة **أربعة عشر يوماً عن كل سنة خدمة**. هذا المعدل يرتفع إلى **واحد وعشرين يوماً** إذا أمضى في الخدمة لدى صاحب العمل نفسه **خمس سنوات متصلة**.
+
+بما أنك أكملت **3 سنوات** (أقل من 5 سنوات)، ينطبق عليك المعدل الأساسي: 14 يوماً × 3 سنوات = **42 يوماً**.
+
+ملاحظة مهمة: **لا تحسب أيام العطل الرسمية والأعياد الدينية وأيام العطلة الأسبوعية من الإجازة السنوية** (المادة 61(أ))، و**لا يجوز تقسيم الإجازة بأقل من يومين في أي مرة** (المادة 62).
+
+معلومات عامة، وليست استشارة قانونية؛ استشر محامياً مرخصاً بشأن وضعك الخاص."
+c13,2,اشتغلت 3 سنوات عند نفس صاحب العمل، كم رصيد إجازتي السنوية؟,"Phase 26, live-verified over real HTTP. Below the 5-year threshold, so the total is exact and unambiguous: 14 days/year x 3 years = 42 days.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'ar', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 3.0, 'accrued_days': 42.0, 'threshold_crossed': False}}","رصيد إجازتك السنوية **42 يوماً**.
+
+**التفصيل:**
+
+بموجب قانون العمل 1996، المادة 61(أ)، لك الحق في إجازة سنوية بأجر كامل لمدة **14 يوماً عن كل سنة خدمة**. بعد 3 سنوات متصلة لدى صاحب العمل نفسه، يكون استحقاقك: 14 يوم × 3 سنوات = 42 يوماً.
+
+ترتفع مدة الإجازة السنوية إلى **21 يوماً** بعد إتمام **5 سنوات متصلة** لدى صاحب العمل ذاته (المادة 61(أ))، لكن هذا لم ينطبق عليك بعد.
+
+ملاحظة: أيام العطل الرسمية والأعياد الدينية وأيام العطلة الأسبوعية لا تُحسب من الإجازة السنوية (المادة 61(أ)).
+
+هذه معلومات عامة، وليست استشارة قانونية -- استشر محامياً بترخيص حول وضعك الخاص."
+c14,0,I have worked 8 years for the same employer. How many annual leave days have I accrued?,"Phase 26's live-caught bug, verbatim. Past the 5-year threshold, the model must NOT invent a blended total (the first live trial computed '5 years x 14 + 3 years x 21 = 133 days', silently assuming the threshold was crossed at exactly year 5, an assumption the documents do not support). Correct behaviour is to state both rates (14 and 21 days/year) and the 5-year threshold, and say plainly that a single total cannot be given without knowing when the threshold was reached.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'en', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 8.0, 'accrued_days': None, 'threshold_crossed': True}}","According to Labour Law 1996, Article 61, your annual leave entitlement depends on when you crossed the 5-year threshold with your employer:
+
+**Before 5 years of service:** 14 days per year.
+
+**From 5 years onwards:** 21 days per year.
+
+Since you have completed 8 years, you are now entitled to **21 days of annual leave per year** going forward. However, the documents do not specify exactly when during your 8 years you reached the 5-year mark. To calculate your total accrued leave over the full 8 years, you would need to know the precise date you completed 5 consecutive years of service, so that the 14-day and 21-day periods can be properly separated.
+
+If you can provide that date, the total can be calculated. Otherwise, the entitlement going forward is 21 days per year.
+
+General information, not legal advice; consult a licensed lawyer about your own case."
+c14,1,I have worked 8 years for the same employer. How many annual leave days have I accrued?,"Phase 26's live-caught bug, verbatim. Past the 5-year threshold, the model must NOT invent a blended total (the first live trial computed '5 years x 14 + 3 years x 21 = 133 days', silently assuming the threshold was crossed at exactly year 5, an assumption the documents do not support). Correct behaviour is to state both rates (14 and 21 days/year) and the 5-year threshold, and say plainly that a single total cannot be given without knowing when the threshold was reached.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'en', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 8.0, 'accrued_days': None, 'threshold_crossed': True}}","You have worked 8 years for the same employer, so your annual leave entitlement depends on which years fall before and after your 5-year mark with that employer.
+
+Under Labour Law 1996, Article 61(a):
+- For each year of service, you are entitled to **14 days** of annual leave with full pay.
+- Once you have completed **5 consecutive years** in service with the same employer, your annual leave duration becomes **21 days per year**.
+
+Since you have passed the 5-year threshold, your current annual entitlement is 21 days per year. However, the documents do not specify exactly when you reached the 5-year mark, so I cannot calculate a single total accrual across your 8 years without knowing how many years you spent at 14 days versus 21 days. 
+
+To give you a precise total, please confirm the date you completed 5 years of service with your current employer.
+
+---
+General information, not legal advice; consult a licensed lawyer about your own case."
+c14,2,I have worked 8 years for the same employer. How many annual leave days have I accrued?,"Phase 26's live-caught bug, verbatim. Past the 5-year threshold, the model must NOT invent a blended total (the first live trial computed '5 years x 14 + 3 years x 21 = 133 days', silently assuming the threshold was crossed at exactly year 5, an assumption the documents do not support). Correct behaviour is to state both rates (14 and 21 days/year) and the 5-year threshold, and say plainly that a single total cannot be given without knowing when the threshold was reached.","{'leave_accrual': {'law': 'labor96', 'article': '61', 'language': 'en', 'base_rate_days': 14, 'extended_rate_days': 21, 'extended_threshold_years': 5, 'years': 8.0, 'accrued_days': None, 'threshold_crossed': True}}","Based on your 8 years of service with the same employer, you have passed the threshold that triggers a higher leave entitlement.
+
+**Labour Law 1996, Article 61(a)** sets out two rates:
+- **14 days per year** for each year of service (the baseline), or
+- **21 days per year**, once you have completed **5 consecutive years** in service with the same employer.
+
+Since you have worked 8 years, you crossed the 5-year threshold at some point during your employment. However, the documents do not state the exact date you reached that milestone, so I cannot calculate a single total of days accrued across all 8 years.
+
+**What the documents do tell you:**
+- The first 5 years accrued at 14 days/year (but the exact dates determine how many of your 8 years fell within this period).
+- From the 5-year mark onward, you accrue at 21 days/year for each remaining year.
+
+**Your current annual entitlement** going forward is **21 days per year**, since you have already completed 5 consecutive years.
+
+If you need the total number of unused days you have accrued across all 8 years, you will need to determine the exact date you completed 5 years of service with this employer, or consult your employment records.
+
+This is general information, not legal advice. Consult a licensed lawyer about your own case."

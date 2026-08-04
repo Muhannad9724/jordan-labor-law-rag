@@ -1,0 +1,175 @@
+﻿variant,question_id,trial,answer,cites_article_86
+baseline,q05,0,"If someone is killed or permanently disabled due to a work accident, different compensations apply based on their situation:
+
+1. In the case of death:
+   - The employer must pay compensation equivalent to the wages of one thousand and two hundred working days, capped at five thousand JDs and not less than two thousand JDs (Labour Law 1996, Article 90(a)).
+   - Additionally, survivor beneficiaries are entitled to a Death Due to Work-Injury Pension equivalent to 75% of the deceased's wage used for calculating contributions at the time of the injury, starting from the month the death occurs (Social Security Law, Article 30(a)).
+
+2. In the case of total permanent disability:
+   - The employer is liable to pay the same compensation as for death, which is also capped and floors as specified (Labour Law 1996, Article 90(a)).
+   - The insured is entitled to a monthly Disability Pension equivalent to 75% of the wage used for calculating contributions at the time of the injury, starting from when their condition stabilizes (Social Security Law, Article 30(b)). There is a potential increase of 25% if the disabled person requires assistance in daily tasks, but this increase cannot exceed the minimum wage (Social Security Law, Article 30(b)).
+
+Thus, the total amount is calculated based on the respective wage and conditions outlined for each scenario, with both immediate lump sum payments and ongoing pensions potentially applying. 
+
+This is general information, not legal advice. Please consult a licensed lawyer about your own case.",False
+baseline,q05,1,"If a worker is killed or left permanently disabled due to a work-related accident, the compensation is calculated as follows:
+
+1. **In Case of Death or Total Disability**:
+   - The employer must pay compensation equivalent to the wages of one thousand and two hundred working days, with a ceiling of five thousand JDs and a floor of two thousand JDs. 
+   - This is stated in Labour Law 1996, Article 90(a).
+
+2. **In Case of Total Permanent Work-Related Disability**:
+   - According to the Social Security Law, the insured shall be entitled to a monthly Disability Pension equivalent to 75% of their wage used for calculating contributions, accruing from the date the condition becomes stable as determined by the Medical Reference.
+   - If assistance is needed for daily tasks as determined by the Medical Reference, the pension will increase by 25%, not exceeding the minimum wage.
+   - This is cited in Social Security Law, Article 30(b).
+
+3. **Calculation of Compensation**:
+   - The compensation based on the work injury is determined using the calculations and limits outlined above, and any additional provisions regarding the worker's wage are noted in Labour Law 1996, Article 91.
+
+In summary: For death, a one-time compensation based on a maximum of five thousand JDs; for total disability, a monthly pension of 75% of the worker's wage. 
+
+This information is general and not legal advice; for specific cases, consult a licensed lawyer.",False
+baseline,q05,2,"If someone is killed due to a work accident, the employer is liable to pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs (Labor Law 1996, Article 90(a)). 
+
+In the case of total permanent work-related disability, the injured party is entitled to a monthly Disability Pension equivalent to 75% of their wage, which was used as the basis for calculating contributions on the date of the injury (Social Security Law, Article 30(b)). This pension accrues from the date on which their condition becomes stable, as determined by the Medical Reference.
+
+Additionally, if the condition requires assistance for daily life tasks, the pension will be subject to a 25% increase, though this increase cannot exceed the approved minimum wage according to the Labour Law (Social Security Law, Article 30(b)).
+
+For calculation of compensation in other scenarios such as partial disability, a different formula applies, which includes a percentage of the total disability compensation based on an assessment by the medical authority (Labor Law 1996, Article 90(c) and Social Security Law, Article 30(c)-(d)). 
+
+This information provides a clear understanding of the compensation payable in these unfortunate circumstances. It is general information and not legal advice; please consult a licensed lawyer for your specific case.",False
+baseline,q05,3,"If someone is killed or permanently unable to work due to an accident at work, the following compensation applies:
+
+1. **In the case of death or total disability:**
+   - The employer is liable to pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs (Labour Law 1996, Article 90(a)).
+
+2. **In case of total permanent work-related disability:**
+   - The insured is entitled to a monthly Disability Pension equivalent to 75% of their wage which was used for calculating contributions on the date of the injury (Social Security Law, Article 30(b)). 
+
+These provisions outline the payment and calculation method for both scenarios. 
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.",False
+baseline,q43,0,"If a worker is killed or permanently unable to work due to an accident at work, the employer is required to pay compensation as follows:
+
+1. If the work injury results in death or total disability of the worker, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. (Labour Law 1996, Article 90(a)).
+
+2. In case of death due to work injury, survivor beneficiaries shall be entitled to a Death Due to Work-Injury Pension equivalent to 75% of the wage which was used as the basis for calculating contributions on the date of injury. This pension shall accrue from the beginning of the month on which the death occurs. (Social Security Law, Article 30(a)).
+
+3. In the case of total permanent work-related disability, the insured shall be entitled to a monthly Disability Pension equivalent to 75% of the wage which was used as the basis for calculating contributions on the date of the injury, accruing from the date on which the condition becomes stable. (Social Security Law, Article 30(b)).
+
+This information provides clear obligations for the compensation payable by the employer in the event of such accidents. 
+
+This is general information, not legal advice. Please consult a licensed lawyer about your own case.",False
+baseline,q43,1,"If a worker is killed or left permanently unable to work due to an accident at work, the employer is required to pay compensation as follows:
+
+1. For death or total disability, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that this compensation does not exceed five thousand JDs and is not less than two thousand JDs. 
+   - (Labour Law 1996, Article 90(a))
+
+2. In the case of death due to a work injury, survivor beneficiaries are entitled to a pension equivalent to 75% of the worker's wage used to calculate contributions on the date of the injury, accruing from the beginning of the month in which the death occurs.
+   - (Social Security Law, Article 30(a))
+
+3. In case of total permanent work-related disability, the insured is entitled to a monthly disability pension equivalent to 75% of his/her wage used for calculating contributions, starting from when the condition becomes stable as determined by the Medical Reference.
+   - (Social Security Law, Article 30(b))
+
+This general information should not be taken as legal advice; consult a licensed lawyer regarding specific cases.",False
+baseline,q43,2,"If a worker is killed or totally disabled by a work accident, the employer is required to pay compensation equivalent to the wages of one thousand and two hundred working days, with the total compensation amount capped at five thousand JDs and not less than two thousand JDs. 
+
+Additionally, in the case of death due to a work injury, survivor beneficiaries are entitled to a pension equivalent to 75% of the deceased's wage used for calculating contributions at the time of the injury. This pension accrues from the month in which the death occurs.
+
+Supporting rules:
+- Labour Law 1996, Article 90(a): ""If the work injury results in the death or total disability of the worker, the employer shall be liable to pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs.""
+- Social Security Law, Article 30(a): ""In case of death due to work injury, survivor beneficiaries shall be entitled to a Death Due to Work-Injury Pension equivalent to (75%) of his/her wage which was used as the basis for calculating his/her contributions on the date of injury.""
+
+This information serves as general guidance and not legal advice. Please consult a licensed lawyer for your specific situation.",False
+baseline,q43,3,"If a worker is killed or left permanently unable to work due to a work-related accident, the employer is required to pay compensation as follows:
+
+1. In case of death or total disability, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. (Labour Law 1996, Article 90(a))
+
+2. In case of total permanent work-related disability, the insured shall be entitled to a monthly disability pension equivalent to (75%) of their wage used as the basis for calculating contributions at the time of the injury. This pension shall commence once the condition stabilizes, as determined by the Medical Reference. (Social Security Law, Article 30(b))
+
+This information is general and not legal advice. Please consult a licensed lawyer about your specific case.",False
+revised,q05,0,"If someone is killed or permanently unable to work due to a work-related accident, the payment amounts and calculation methods are as follows:
+
+1. **For Death:** 
+   - The employer is liable to pay compensation equivalent to the wages of one thousand and two hundred working days, but this compensation shall not exceed five thousand JDs and shall not be less than two thousand JDs (Labour Law 1996, Article 90(a)).
+
+2. **For Total Permanent Disability:**
+   - The insured (worker) is entitled to a monthly disability pension equivalent to 75% of the wage used as the basis for calculating contributions on the date of the injury. This pension begins accruing as of the date on which his/her condition becomes stable, as determined by the Medical Reference. An additional 25% increase may apply if the injured person needs assistance for daily life tasks (Social Security Law, Article 30(b)).
+
+The compensation for death and the pension for total permanent disability have specific calculated amounts and conditions associated with them. Note that the pension for total permanent disability based on the wage used for contributions is a different form of payment from the compensation provided by the employer for death or total disability.
+
+This information is general and not legal advice; please consult a licensed lawyer about your specific case.",False
+revised,q05,1,"If someone is killed or left permanently unable to work due to an accident at work, the compensatory payments and their calculation are as follows:
+
+1. In the case of death or total disability, the employer is liable to pay compensation equivalent to the wages for one thousand and two hundred working days, with a maximum payment of five thousand JDs and a minimum payment of two thousand JDs. (Labor Law 1996, Article 90(a))
+
+2. If the worker sustains total permanent work-related disability, they are entitled to a monthly Disability Pension equivalent to 75% of the wage that was used for calculating contributions at the time of the injury. This pension accrues from when their condition is deemed stable by the Medical Reference. (Social Security Law, Article 30(b))
+
+3. For partial permanent disability of at least 30%, the worker is entitled to a monthly Disability Pension based on the percentage of their disability relative to the total permanent disability pension. (Social Security Law, Article 30(c))
+
+4. For partial permanent disability of less than 30%, the worker is entitled to a lump sum compensation equivalent to the proportion of such disability to the total permanent disability amount, multiplied by 36 months. (Social Security Law, Article 30(d))
+
+This information is general and not legal advice; please consult a licensed lawyer regarding your specific situation.",False
+revised,q05,2,"If someone is killed or left permanently unable to work due to an accident at work, the compensation and pension amounts to be paid are as follows:
+
+1. In the case of death or total disability:
+   - The employer is liable to pay compensation equivalent to the wages of one thousand two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. 
+   (Labour Law 1996, Article 90(a))
+
+2. In the case of total permanent work-related disability:
+   - The insured shall be entitled to a monthly Disability Pension equivalent to 75% of the wage that was used as the basis for calculating contributions on the date of the injury. 
+   (Social Security Law, Article 30(b))
+
+3. If assistance is needed for daily life tasks, there is a possibility of a 25% increase on this disability pension, not exceeding the approved minimum wage. 
+   (Social Security Law, Article 30(b))
+
+These rules determine the payments based on the circumstances of the accident and the worker's situation. 
+
+This is general information, not legal advice. Please consult a licensed lawyer about your own case.",False
+revised,q05,3,"If someone is killed or permanently unable to work due to a work injury, the compensation differs based on the circumstances as follows:
+
+1. **In case of death**:
+   - The employer must pay compensation equivalent to the wages of **1,200 working days**, but it must not exceed **5,000 JDs** and cannot be less than **2,000 JDs** (Labour Law 1996, Article 90(a)).
+
+2. **In case of total permanent disability**:
+   - The worker is entitled to a monthly disability pension equal to **75%** of their wage used for calculating contributions on the date of the injury. This pension starts accruing when the condition becomes stable (Social Security Law, Article 30(b)).
+
+The calculation for compensation is based on the last received wage for the worker (Labour Law 1996, Article 91). 
+
+This information is general and not legal advice; consulting a licensed lawyer for personal cases is recommended.",False
+revised,q43,0,"If a worker is killed or left permanently unable to work by an accident at work, the employer is required to pay a compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs (Labour Law 1996, Article 90(a)). 
+
+Additionally, if the worker's death is due to a work injury, the survivor beneficiaries shall be entitled to a Death Due to Work-Injury Pension equivalent to 75% of the wage that was used as the basis for calculating contributions on the date of injury (Social Security Law, Article 30(a)). 
+
+For total permanent work-related disability, the insured is entitled to a monthly Disability Pension equivalent to 75% of the wage used for contributions on the date of the injury (Social Security Law, Article 30(b)). 
+
+This information provides the compensation obligations of the employer regarding both death and total permanent disability cases due to work accidents. 
+
+This is general information, not legal advice. You should consult a licensed lawyer about your own case.",False
+revised,q43,1,"If a worker is killed or left permanently unable to work due to an accident at work, the employer is required to pay compensation as follows:
+
+1. In the case of death or total disability, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. (Labour Law 1996, Article 90(a))
+
+2. The compensation amount shall be calculated based on the worker’s last received wage. If the worker is paid on a task work basis, it is calculated based on the average wage over the last six months of their work. (Labour Law 1996, Article 91)
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.",False
+revised,q43,2,"If a worker is killed or left permanently unable to work as a result of an accident at work, the employer is required to pay compensation as follows:
+
+1. For death or total disability, the employer shall pay compensation equivalent to the wages of one thousand and two hundred working days, provided that the compensation does not exceed five thousand JDs and is not less than two thousand JDs. (Labour Law 1996, Article 90(a))
+
+2. In the case of total permanent work-related disability, the insured worker, if covered by the Social Security Law, shall be entitled to a monthly Disability Pension equivalent to (75%) of their wage which was used as the basis for calculating contributions on the date of the injury. (Social Security Law, Article 30(b))
+
+Therefore, the employer's obligation under the Labour Law is limited to a specific compensation amount, while the Social Security Law may also provide a pension based on the worker's wage at the time of the accident, if applicable.
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.",False
+revised,q43,3,"If a worker is killed or left permanently unable to work due to a work-related accident, the employer is required to pay compensation as follows:
+
+1. For death or total disability, the compensation amount is equivalent to the wages of one thousand and two hundred working days, with the total compensation not exceeding five thousand JDs and not being less than two thousand JDs. (Labour Law 1996, Article 90(a))
+
+2. In the case of total permanent work-related disability, the insured shall be entitled to a monthly Disability Pension equivalent to 75% of their wage, which was used as the basis for calculating contributions on the date of the injury, accruing from the date the condition becomes stable as determined by the Medical Reference. If the injured worker requires assistance with daily tasks, there is a potential increase of 25% of the disability pension, subject to a ceiling equal to the minimum wage. (Social Security Law, Article 30(b))
+
+3. In case of death due to a work injury, survivors are entitled to a pension equivalent to 75% of the deceased's wage, effective from the month the death occurs. (Social Security Law, Article 30(a))
+
+This information outlines the employer's compensation obligations in both scenarios of death and total disability from work-related accidents. 
+
+This is general information, not legal advice, and you should consult a licensed lawyer about your own case.",False
