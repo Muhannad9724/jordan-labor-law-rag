@@ -86,8 +86,6 @@ const I18N = {
     langChipEn: "EN",
     showFullText: "عرض النص كاملاً",
     collapseText: "طيّ النص",
-    showMoreAnswer: "عرض الإجابة كاملة",
-    showLessAnswer: "طيّ الإجابة",
     langToggleLabel: "EN",
     langToggleAria: "التبديل إلى الإنجليزية",
     contactLabel: "تواصل معي عبر لينكدإن",
@@ -122,8 +120,6 @@ const I18N = {
     langChipEn: "EN",
     showFullText: "Show full text",
     collapseText: "Collapse text",
-    showMoreAnswer: "Show full answer",
-    showLessAnswer: "Collapse answer",
     langToggleLabel: "AR",
     langToggleAria: "Switch to Arabic",
     contactLabel: "Connect on LinkedIn",
@@ -443,14 +439,10 @@ function beginAnswer(sources) {
   body.className = "body";
   block.appendChild(body);
 
-  // Always created, even with nothing in it yet -- maybeCollapseAnswer() below
-  // needs somewhere to put a "show more" button once the final length is known,
-  // which is after streaming ends, well after this shell was built.
-  const actions = document.createElement("div");
-  actions.className = "answer-actions";
-  block.appendChild(actions);
-
   if (sources && sources.length) {
+    const actions = document.createElement("div");
+    actions.className = "answer-actions";
+
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "cite-btn";
@@ -459,11 +451,13 @@ function beginAnswer(sources) {
     applyI18n(btn);
     btn.addEventListener("click", () => renderSources(sources));
     actions.appendChild(btn);
+
+    block.appendChild(actions);
   }
 
   thread.appendChild(block);
   revealAnswer(block);
-  return { block, body, actions };
+  return { block, body };
 }
 
 // Re-renders the body from the full text seen so far. renderMarkdown() only ever
@@ -475,32 +469,6 @@ function updateAnswerBody(entry, text) {
   entry.body.innerHTML = "";
   renderMarkdown(text, entry.body);
   entry.block.dir = isArabic(text) ? "rtl" : "ltr";
-}
-
-// Answers can run to several thousand characters (the coverage rules and the
-// completeness reparser both trade length for thoroughness, deliberately -- see
-// src/generation.py). Folding the tail behind a "show more" toggle, the same
-// pattern the sources rail already uses for article text (.card-text/.card-more),
-// gives the length back without touching what the model actually said. Only
-// checked once, after streaming ends (see askQuestion's "done" handler) --
-// collapsing mid-stream, while the text is still visibly growing, would be a
-// confusing thing to watch happen.
-const ANSWER_COLLAPSE_PX = 440;
-
-function maybeCollapseAnswer(entry) {
-  if (entry.body.scrollHeight <= ANSWER_COLLAPSE_PX) return;
-
-  entry.body.classList.add("collapsed");
-
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "cite-btn";
-  btn.textContent = t("showMoreAnswer");
-  btn.addEventListener("click", () => {
-    const stillCollapsed = entry.body.classList.toggle("collapsed");
-    btn.textContent = t(stillCollapsed ? "showMoreAnswer" : "showLessAnswer");
-  });
-  entry.actions.appendChild(btn);
 }
 
 // Rendered into the sticky dock above the question bar, not into the answer. They
@@ -720,7 +688,6 @@ async function askQuestion(question) {
           entry = beginAnswer(sources);
         }
         updateAnswerBody(entry, buffer);
-        maybeCollapseAnswer(entry);   // only decided once the final length is known
       } else if (evt.event === "error") {
         throw new Error(evt.data.detail || "stream error");
       }

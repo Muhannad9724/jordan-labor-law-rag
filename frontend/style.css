@@ -250,27 +250,6 @@ body {
   max-width: 76ch;
 }
 
-/* Folds long answers behind a "show more" toggle -- see maybeCollapseAnswer() in
-   app.js. Same technique the sources rail already uses for article text
-   (.card-text/.card-more), just fading to the page ground (--void) instead of a
-   card's own background, since .answer sits directly on the page. Only ever
-   applied once, after streaming finishes; see app.js for why. */
-.answer .body.collapsed {
-  max-height: 440px;
-  overflow: hidden;
-  position: relative;
-}
-
-.answer .body.collapsed::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4.5em;
-  background: linear-gradient(to bottom, transparent, var(--void));
-}
-
 /* Rendered markdown inside an answer. Spacing is set with margins on the block
    elements themselves rather than on .body, so the first and last child sit flush
    against the label and the actions row. */
