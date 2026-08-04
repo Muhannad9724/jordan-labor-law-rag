@@ -267,16 +267,18 @@ body {
   background: rgba(255, 255, 255, 0.07);
 }
 
+/* Same font and size as the surrounding paragraph text -- headings used to switch
+   to --font-ui at a smaller size, which read as a different typographic system
+   dropped into the middle of an answer. Bold weight alone is enough to mark
+   structure without the jump. */
 .answer .body h3,
 .answer .body h4,
 .answer .body h5,
 .answer .body h6 {
-  font-family: var(--font-ui);
-  font-size: 0.94rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
-  opacity: 0.92;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: inherit;
 }
 
 .answer .body ul,
