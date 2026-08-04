@@ -679,6 +679,15 @@ input.addEventListener("input", () => {
 });
 
 window.addEventListener("resize", syncDockClearance);
+// iOS keeps window.innerHeight fixed when the on-screen keyboard opens (only the
+// visible viewport shrinks), so "resize" alone never fires there -- Android
+// typically fires both, so this is additive, not a replacement. Without it, the
+// dock's last-measured height (and revealAnswer's room calculation, which reads
+// window.innerHeight) can go stale exactly while the keyboard is up, which is the
+// one moment mobile users interact with it most.
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", syncDockClearance);
+}
 
 // Applies the saved (or default) language to the static markup before anything is
 // rendered into the thread/rail, so the very first paint is already in the right

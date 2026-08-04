@@ -2,14 +2,17 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- viewport-fit=cover lets the safe-area-inset-* env() vars in style.css report
+       real values on notched/home-indicator phones instead of 0, which is what the
+       sticky composer dock needs to clear the home indicator. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title data-i18n="pageTitle">دليل قانون العمل والضمان الاجتماعي الأردني</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <!-- ?v= is a cache buster. Without it the browser keeps serving the css/js it
        already has and a deploy looks like it silently did nothing. Bump on change. -->
-  <link rel="stylesheet" href="style.css?v=12" />
+  <link rel="stylesheet" href="style.css?v=13" />
 </head>
 <body>
   <div class="shell">
@@ -97,7 +100,7 @@
 
   </div>
 
-  <script src="markdown.js?v=12"></script>
-  <script src="app.js?v=12"></script>
+  <script src="markdown.js?v=13"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>

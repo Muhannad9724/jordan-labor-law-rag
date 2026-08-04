@@ -27,7 +27,14 @@
   --font-ui: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  /* Mobile browsers flash a grey rectangle on every tap by default. Every
+     interactive element below gets its own :active state as the replacement
+     feedback, so this isn't losing the cue -- it's swapping a generic one
+     that clashes with a dark parchment/brass palette for a deliberate one. */
+  -webkit-tap-highlight-color: transparent;
+}
 
 html, body {
   margin: 0;
@@ -56,6 +63,11 @@ body {
   max-width: clamp(1180px, 84vw, 1560px);
   margin: 0 auto;
   min-height: 100vh;
+  /* 100vh on mobile Safari/Chrome is the LARGEST possible viewport (address bar
+     hidden), not the current one -- the page loads taller than the visible area
+     and then visibly jumps as the bar shows/hides while scrolling. dvh tracks the
+     actual visible viewport; unsupported browsers just keep the vh line above. */
+  min-height: 100dvh;
   padding: 0 24px;
   display: flex;
   flex-direction: column;
@@ -148,7 +160,8 @@ body {
   transition: background 0.18s ease, color 0.18s ease;
 }
 
-.lang-toggle:hover { background: var(--brass-glow); }
+.lang-toggle:hover,
+.lang-toggle:active { background: var(--brass-glow); }
 
 .lang-toggle:focus-visible {
   outline: 1px solid var(--brass);
@@ -327,7 +340,8 @@ body {
   transition: background 0.18s ease, color 0.18s ease;
 }
 
-.cite-btn:hover { background: var(--brass-glow); }
+.cite-btn:hover,
+.cite-btn:active { background: var(--brass-glow); }
 
 .thinking {
   font-size: 0.85rem;
@@ -415,8 +429,10 @@ body {
 
 html[dir="ltr"] .seed::before { content: "→"; }
 
-.seed:hover { color: var(--parchment); padding-inline-start: 5px; }
-.seed:hover::before { opacity: 1; }
+.seed:hover,
+.seed:active { color: var(--parchment); padding-inline-start: 5px; }
+.seed:hover::before,
+.seed:active::before { opacity: 1; }
 
 /* ---------------- Composer ---------------- */
 
@@ -426,7 +442,11 @@ html[dir="ltr"] .seed::before { content: "→"; }
    position -- which is what removed the need for any chip scroll-into-view logic. */
 .composer-dock {
   position: sticky;
-  bottom: 14px;
+  /* env() is 0 on non-notched devices/desktop, so this degrades to the plain
+     14px everywhere else -- only iPhones with a home indicator actually need
+     the extra clearance, and viewport-fit=cover in index.html is what makes
+     the env() value non-zero there at all. */
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -492,7 +512,8 @@ html[dir="ltr"] .seed::before { content: "→"; }
   transition: background 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
 }
 
-#send-btn:not(:disabled):hover { filter: brightness(1.12); }
+#send-btn:not(:disabled):hover,
+#send-btn:not(:disabled):active { filter: brightness(1.12); }
 
 #send-btn:focus-visible {
   outline: 1px solid var(--brass);
@@ -527,7 +548,8 @@ html[dir="ltr"] .seed::before { content: "→"; }
 
 body.reading #reset-btn { display: inline-flex; }
 
-#reset-btn:not(:disabled):hover {
+#reset-btn:not(:disabled):hover,
+#reset-btn:not(:disabled):active {
   border-color: var(--clay);
   color: var(--parchment);
   background: var(--clay-tint);
@@ -615,7 +637,8 @@ body.reading #reset-btn { display: inline-flex; }
   transition: border-color 0.18s ease;
 }
 
-.article-card:hover { border-color: var(--rule); }
+.article-card:hover,
+.article-card:active { border-color: var(--rule); }
 
 .card-top {
   display: flex;
@@ -706,7 +729,8 @@ body.reading #reset-btn { display: inline-flex; }
   letter-spacing: 0.03em;
 }
 
-.card-more:hover { text-decoration: underline; }
+.card-more:hover,
+.card-more:active { text-decoration: underline; }
 
 /* ---------------- Footer ---------------- */
 
@@ -743,7 +767,8 @@ body.reading #reset-btn { display: inline-flex; }
   transition: color 0.18s ease;
 }
 
-.contact-link:hover { color: var(--parchment); }
+.contact-link:hover,
+.contact-link:active { color: var(--parchment); }
 
 .contact-link:focus-visible {
   outline: 1px solid var(--brass);
@@ -773,6 +798,44 @@ body.reading #reset-btn { display: inline-flex; }
   .thread { min-height: 40vh; }
   /* Stacked below the conversation on narrow screens -- sticky would trap it offscreen. */
   .sources-rail { position: static; flex: none; max-height: 460px; width: 100%; }
+
+  /* iOS Safari auto-zooms the page on focusing any input styled under 16px --
+     the composer's 0.95rem (~15.2px) crosses that line. This is the one iOS
+     input-zoom threshold, not a design choice, so it's overridden here rather
+     than raised for every viewport. */
+  #question-input { font-size: 16px; }
+
+  /* 38px send/reset buttons and a 30px lang toggle are under Apple's 44px and
+     Material's 48px minimum touch target guidance -- comfortable with a mouse
+     cursor, fiddly with a fingertip. Widened for touch, not just decoration. */
+  #send-btn { width: 44px; height: 44px; }
+  #reset-btn { height: 44px; }
+  body.reading #reset-btn { width: 44px; }
+  .lang-toggle { height: 36px; padding: 0 14px; }
+}
+
+/* Phones specifically, not just "not-desktop" -- the 900px block above already
+   handles the tablet-width layout switch (stacked rail); this tightens spacing
+   and type further for screens narrow enough that the 900px numbers still feel
+   loose (iPhone SE/mini-class widths and smaller). */
+@media (max-width: 480px) {
+  .shell { padding: 0 12px; }
+
+  .masthead { gap: 10px; padding-top: 18px; }
+  .masthead h1 { font-size: 1.32rem; }
+  .tagline { font-size: 0.78rem; }
+  .masthead-laws span { font-size: 0.62rem; }
+
+  .composer { padding: 12px 12px; gap: 8px; }
+
+  .opening h2 { font-size: 1.14rem; }
+
+  /* 70ch/76ch measures are moot once the viewport itself is narrower than that,
+     but the Amiri body copy's line-height (2.05) was tuned against a wider
+     column -- unchanged here, since dense Arabic legal prose reads better with
+     more vertical air, not less, on a small screen too. */
+  .answer .body { font-size: 1.08rem; }
+  .answer[dir="ltr"] .body { font-size: 0.98rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -894,6 +957,7 @@ body.reading .thread {
 }
 
 .suggestion:hover,
+.suggestion:active,
 .suggestion:focus-visible {
   border-color: var(--brass-dim);
   color: var(--parchment);
