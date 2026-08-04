@@ -976,15 +976,20 @@ REWRITE_MAX_TOKENS = 200
 # to making the ORIGINAL question's own scope explicit, nothing beyond it.
 COMPLETENESS_REPARSE_PROMPT = """You rewrite a legal question into a more explicit version of the SAME question, for a Jordanian labour and social security law assistant. Output must be a single question, not a numbered list of separate questions.
 
-Only make the ORIGINAL question's own scope explicit -- do not add anything else:
-- If it asks who is entitled to something and there could be more than one category of eligible person, make the question explicitly ask for EVERY such category and that category's own specific condition -- nothing beyond that.
+Most questions do NOT need rewriting. Only rewrite if the question's own topic genuinely has more than one distinct category, case, or condition that a complete answer would need to address separately -- e.g. asking who is entitled to something when more than one type of eligible person could exist, or asking about an outcome that genuinely differs between two or more situations the question ITSELF already names.
+
+If the question is already a single, self-contained question -- a yes/no question, a "how much"/"how many" question, or anything with one answer regardless of circumstances -- return the ORIGINAL text UNCHANGED, character for character. Do not reword it, polish its grammar, or add connective padding like "and if so, under what conditions" -- a change that only alters phrasing without adding a genuinely new category is the same as no rewrite, so return the original instead of a cosmetic edit.
+
+When a rewrite IS warranted, only make the ORIGINAL question's own scope explicit -- do not add anything else:
+- If the question asks who is entitled to something (a payment, a benefit, a right), the axis to make explicit is WHICH PEOPLE -- rewrite it to ask for EVERY category of eligible person and that person-category's own specific condition. This is the single most important case: do not let the rewrite drift onto some other axis (payment type, calculation method, procedure) INSTEAD of naming every eligible person-category -- naming the people is the point. Do not just say "every category" or "each type" in the abstract -- actually NAME the plausible categories in the rewritten question itself (e.g. for an inheritance/heir question: the spouse, sons, daughters, parents, siblings), using your general knowledge of who this kind of provision usually covers. This is a starting point for a legal assistant that will check each one against the real law text, not a final answer, so naming a category that turns out not to apply here costs nothing -- but naming too few risks the answer silently skipping one.
+- If the question asks about an outcome for a situation the question itself already names as one of several (e.g. "killed OR left disabled"), make it ask about each named situation separately -- do not introduce a situation the question didn't name.
+- Do NOT invent a hypothetical scenario, severity, or distinction the question does not already suggest. For example: a question that only says "not yet classified" does not also mean "or suspended, or revoked" -- do not add scenarios beyond the one asked about. A question about being injured again after an old injury does not imply asking whether the second injury is the same type or the same accident as the first, unless it says so.
 - Do NOT add a new comparison axis the person did not raise (sector, employer type, pension type, etc.).
 - Do NOT add a new TYPE of question the person did not ask. If they asked what the CONDITIONS are, do not also ask about the PROCEDURE, timeline, required documents, or which authority to contact. If they asked a yes/no or "how much" question, do not turn it into a request for a full explanation of the underlying rule.
-- If the question does not have this shape (no plausible multiple categories/cases), return it unchanged.
 
 Write the rewritten question the way an ordinary person would ask it -- same register, similar length to the original. Do not make it sound like a formal research prompt, and do not address the assistant or add any framing outside the question itself.
 
-Return only the rewritten question, in the same language as the original, as ONE sentence. Nothing else."""
+Return only the question -- the rewritten one, or the original left unchanged -- in the same language as the original, as ONE sentence. Nothing else."""
 
 COMPLETENESS_REPARSE_MAX_TOKENS = 150
 

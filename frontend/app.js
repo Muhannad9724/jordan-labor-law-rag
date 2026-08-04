@@ -16,33 +16,44 @@ const LAW_NAMES = {
   },
 };
 
-// A pool bigger than what's shown at once (renderOpening picks SEEDS_SHOWN at random)
-// so the opening screen doesn't look identical on every visit, and spans all three
-// laws rather than just labor96 -- the four originally hardcoded here were all leave/
-// dismissal/pension, so ssl and prof19 never got a first impression.
-const SEED_QUESTIONS = {
+// The first four seeds shown are always these, in this order. Chosen to cover the
+// most common entry points (leave, retirement, dismissal) rather than randomized.
+const SEED_QUESTIONS_FIXED = {
   ar: [
-    "كم يوم إجازة سنوية مدفوعة الأجر أستحق؟",
+    "ما أنواع الإجازات التي يستحقها الموظف؟",
+    "كم يوم إجازة سنوية ومرضية أستحق؟",
+    "متى يحق لي التقاعد؟",
+    "هل يحق لصاحب العمل فصلي من دون إشعار؟",
+  ],
+  en: [
+    "What kinds of leave is an employee entitled to?",
+    "How many annual and sick leave days am I entitled to?",
+    "When can I retire?",
+    "Can my company fire me without notice?",
+  ],
+};
+
+// Two more picked at random from this pool and appended after the fixed four, so
+// the opening screen doesn't look identical on every visit and still spans ssl/
+// prof19 topics the fixed four don't touch (contributions, EOS gratuity, maternity,
+// work injury) -- see pickRandom() below.
+const SEED_QUESTIONS_POOL = {
+  ar: [
     "ما مدة الإشعار المطلوبة قبل إنهاء عقد العمل؟",
-    "هل يحق لصاحب العمل فصلي من دون إنذار؟",
-    "متى يحق لي الحصول على راتب التقاعد المبكر؟",
     "كم نسبة اشتراكات الضمان الاجتماعي التي يدفعها صاحب العمل؟",
     "ما هي مكافأة نهاية الخدمة وكيف تُحسب؟",
     "هل أستحق إجازة أمومة مدفوعة الأجر؟",
     "ما هي حقوقي في حال إصابتي أثناء العمل؟",
   ],
   en: [
-    "How many days of paid annual leave am I entitled to?",
     "How much notice is required before ending an employment contract?",
-    "Can my employer dismiss me without warning?",
-    "When am I entitled to an early retirement pension?",
     "What percentage of social security contributions does my employer pay?",
     "What is end-of-service gratuity and how is it calculated?",
     "Am I entitled to paid maternity leave?",
     "What are my rights if I'm injured at work?",
   ],
 };
-const SEEDS_SHOWN = 4;
+const SEEDS_RANDOM_SHOWN = 2;
 
 function pickRandom(arr, n) {
   const copy = arr.slice();
@@ -550,7 +561,11 @@ function renderOpening() {
 
   const seeds = document.createElement("div");
   seeds.className = "seeds";
-  for (const q of pickRandom(SEED_QUESTIONS[uiLang], SEEDS_SHOWN)) {
+  const shown = [
+    ...SEED_QUESTIONS_FIXED[uiLang],
+    ...pickRandom(SEED_QUESTIONS_POOL[uiLang], SEEDS_RANDOM_SHOWN),
+  ];
+  for (const q of shown) {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "seed";

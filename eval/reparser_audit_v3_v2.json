@@ -1,0 +1,422 @@
+[
+ {
+  "question_id": "q01",
+  "question_language": "en",
+  "original": "I was injured while at work. What does social security actually cover for me?",
+  "reparsed": "I was injured while at work. What does social security actually cover for me, and under what conditions?",
+  "no_op": false
+ },
+ {
+  "question_id": "q02",
+  "question_language": "en",
+  "original": "I need an artificial limb and I have to travel for treatment. Will those costs be paid for me?",
+  "reparsed": "Will the costs for both an artificial limb and travel for treatment be paid for me?",
+  "no_op": false
+ },
+ {
+  "question_id": "q03",
+  "question_language": "en",
+  "original": "A worker at my company was hurt on site today. What am I required to do straight away?",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q04",
+  "question_language": "en",
+  "original": "I cannot work while I recover from an injury I got at work. Will I still be paid, and how much?",
+  "reparsed": "Will I still be paid, and how much, if I cannot work while I recover from an injury I got at work?",
+  "no_op": false
+ },
+ {
+  "question_id": "q05",
+  "question_language": "en",
+  "original": "If someone is killed or left permanently unable to work because of an accident at work, what money is paid and how is the amount worked out?",
+  "reparsed": "If someone is killed due to an accident at work, what money is paid and how is the amount worked out, and if someone is left permanently unable to work due to an accident at work, what money is paid and how is the amount worked out?",
+  "no_op": false
+ },
+ {
+  "question_id": "q06",
+  "question_language": "en",
+  "original": "Can someone lose their right to injury money because of the way they behaved?",
+  "reparsed": "Can someone lose their right to injury money because of the way they behaved, and if so, what kinds of behavior would lead to that, and is it a full or partial loss of their rights?",
+  "no_op": false
+ },
+ {
+  "question_id": "q07",
+  "question_language": "en",
+  "original": "Can I also sue my employer for more than what social security pays me for my injury?",
+  "reparsed": "Can I also sue my employer for more than what social security pays me for my injury, and if so, under what conditions can I do so?",
+  "no_op": false
+ },
+ {
+  "question_id": "q08",
+  "question_language": "en",
+  "original": "I got ill from a job I left a while ago, and the symptoms only showed up now. Am I still covered?",
+  "reparsed": "Am I still covered if I got ill from a job I left a while ago, and the symptoms only showed up now, and what are the specific conditions for such coverage based on when the illness manifested and when I left employment?",
+  "no_op": false
+ },
+ {
+  "question_id": "q09",
+  "question_language": "en",
+  "original": "Can I take a paid job while I am receiving a disability pension for a work injury?",
+  "reparsed": "Can I take a paid job while I am receiving a disability pension for a work injury, and if so, under what conditions can I do so and how does it affect my pension payments?",
+  "no_op": false
+ },
+ {
+  "question_id": "q10",
+  "question_language": "en",
+  "original": "I am pregnant and working. Do I qualify for a maternity payment, and how much would it be?",
+  "reparsed": "As a pregnant and working individual, do I qualify for a maternity payment, and if so, how much would that payment be, and under what specific conditions would I receive it?",
+  "no_op": false
+ },
+ {
+  "question_id": "q11",
+  "question_language": "en",
+  "original": "I just lost my job. Do I qualify for unemployment payments?",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q12",
+  "question_language": "en",
+  "original": "How long do unemployment payments keep coming, and does the amount drop over time?",
+  "reparsed": "How long do unemployment payments keep coming, and does the amount drop over time, and if so, what are the different durations and reduction schedules that apply to different categories of recipients?",
+  "no_op": false
+ },
+ {
+  "question_id": "q13",
+  "question_language": "en",
+  "original": "Can I draw unemployment payments at the same time as a maternity payment or a retirement pension?",
+  "reparsed": "Can I draw unemployment payments at the same time as a maternity payment, and can I draw unemployment payments at the same time as a retirement pension?",
+  "no_op": false
+ },
+ {
+  "question_id": "q14",
+  "question_language": "en",
+  "original": "At what age can I stop working and draw a pension, and how many contributions do I need?",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q15",
+  "question_language": "en",
+  "original": "Can I stop working before the normal retirement age, and how would my pension be worked out?",
+  "reparsed": "Can I stop working before the normal retirement age, and if so, how would my pension be worked out for early retirement and for disability retirement?",
+  "no_op": false
+ },
+ {
+  "question_id": "q16",
+  "question_language": "ar",
+  "original": "هل يُخصم من راتبي شيء مقابل التأمين ضد إصابات العمل، أم يدفعه صاحب العمل وحده؟",
+  "reparsed": "هل يُخصم من راتبي شيء مقابل التأمين ضد إصابات العمل، وما هو هذا الشيء، أم يدفعه صاحب العمل وحده؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q17",
+  "question_language": "ar",
+  "original": "أُصبت في العمل وما زلت أتعالج. إلى متى تستمر المؤسسة في تغطية علاجي؟",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q18",
+  "question_language": "ar",
+  "original": "أُصبت مرة أخرى في العمل بعد إصابة قديمة. كيف يُحسب ما أستحقه هذه المرة؟",
+  "reparsed": "أُصبت مرة أخرى في العمل بعد إصابة قديمة. كيف يُحسب ما أستحقه هذه المرة، وهل يختلف الحساب إذا كانت الإصابة الجديدة هي نفس الإصابة القديمة أو إصابة مختلفة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q19",
+  "question_language": "ar",
+  "original": "بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى؟",
+  "reparsed": "بعد أن تقرر لي راتب بسبب العجز، هل يمكن أن يُعاد فحصي طبياً مرة أخرى، ومتى يكون ذلك ممكنًا بناءً على نوع العجز الذي تقرر لي؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q20",
+  "question_language": "ar",
+  "original": "لم أقتنع بقرار اللجنة الطبية في إصابتي. هل أستطيع الاعتراض، وكم من الوقت أمامي؟",
+  "reparsed": "لم أقتنع بقرار اللجنة الطبية في إصابتي. هل أستطيع الاعتراض، وكم من الوقت أمامي للاعتراض على القرار الصادر عن اللجنة الطبية الابتدائية وكم من الوقت أمامي للاعتراض على القرار الصادر عن اللجنة الطبية الاستئنافية؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q21",
+  "question_language": "ar",
+  "original": "تسبب لي شخص آخر بإصابة أثناء عملي. هل تدفع لي المؤسسة أم أطالب ذلك الشخص؟",
+  "reparsed": "تسبب لي شخص آخر بإصابة أثناء عملي، فهل تدفع لي المؤسسة أم أطالب ذلك الشخص أم كليهما، وتحت أي ظروف تدفع المؤسسة أو أطالب ذلك الشخص أو كليهما؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q22",
+  "question_language": "ar",
+  "original": "أتقاضى بدل إجازة الأمومة وعُرض علي عمل خلال الإجازة. هل يتوقف البدل إن قبلت العمل؟",
+  "reparsed": "هل يتوقف بدل إجازة الأمومة إذا قبلت عملاً جديداً خلال الإجازة، أم إذا عدت لعملي السابق؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q23",
+  "question_language": "ar",
+  "original": "وجدت عملاً جديداً وأنا ما زلت أتقاضى بدل التعطل. ماذا يحدث للبدل؟",
+  "reparsed": "وجدت عملاً جديداً وأنا ما زلت أتقاضى بدل التعطل، فهل يتوقف صرف البدل وماذا يحدث للمبلغ المتبقي منه؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q24",
+  "question_language": "ar",
+  "original": "متى أستلم أول دفعة من بدل التعطل بعد أن تركت عملي؟",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q25",
+  "question_language": "ar",
+  "original": "هل أستطيع طلب بدل التعطل أكثر من مرة خلال حياتي العملية؟",
+  "reparsed": "هل أستطيع طلب بدل التعطل أكثر من مرة خلال حياتي العملية، وفي حال الإجابة بنعم، كم مرة يمكنني ذلك وما هي الشروط التي يجب توفرها في كل مرة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q26",
+  "question_language": "ar",
+  "original": "خرجت نهائياً من الضمان. ماذا يحدث للمبالغ التي اقتُطعت مني لتأمين التعطل؟",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q27",
+  "question_language": "ar",
+  "original": "بلغت الستين ولم تكتمل اشتراكاتي اللازمة للراتب التقاعدي. هل أستطيع الاستمرار في الضمان؟",
+  "reparsed": "بلغت الستين ولم تكتمل اشتراكاتي اللازمة للراتب التقاعدي. هل أستطيع الاستمرار في الضمان الاختياري، أم يجب عليّ الاستمرار بالضمان الإلزامي إذا كنت لا أزال أعمل؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q28",
+  "question_language": "ar",
+  "original": "تنقصني مدة قصيرة حتى أستحق الراتب التقاعدي. هل أستطيع شراء هذه المدة بمبلغ أدفعه؟",
+  "reparsed": "أنا بحاجة لبعض الأشهر لأستحق الراتب التقاعدي، فما هي الحالات التي يمكنني فيها شراء هذه المدة بمبلغ أدفعه، وما هي الشروط المتعلقة بكل حالة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q29",
+  "question_language": "ar",
+  "original": "توفي زوجي وهو على رأس عمله. ما الشروط حتى يستحق ورثته راتباً؟",
+  "reparsed": "ما هي الشروط التي يجب توفرها حتى يستحق ورثة زوجي راتباً تقاعدياً في حال وفاته وهو على رأس عمله، وما هي الشروط التي يجب توفرها حتى يستحق ورثته راتباً تعويضياً في حال وفاته وهو على رأس عمله؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q30",
+  "question_language": "ar",
+  "original": "أصابني عجز بسبب مرض لا علاقة له بعملي. هل أستحق راتباً من الضمان؟",
+  "reparsed": "أصابني عجز دائم أو مؤقت بسبب مرض لا علاقة له بعملي، فهل أستحق راتباً من الضمان الاجتماعي في كلتا الحالتين، وما هي شروط استحقاقي؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q31",
+  "question_language": "en",
+  "original": "What time off can I take during the year, and which of it is paid?",
+  "reparsed": "What types of time off can an employee take during the year, and for each type, is it paid or unpaid?",
+  "no_op": false
+ },
+ {
+  "question_id": "q32",
+  "question_language": "en",
+  "original": "How much warning must be given before ending a job that has no fixed end date?",
+  "reparsed": "How much warning must be given before ending a job that has no fixed end date, and how much warning must be given if the employee is the one ending it versus if the employer is the one ending it?",
+  "no_op": false
+ },
+ {
+  "question_id": "q33",
+  "question_language": "en",
+  "original": "I think I was fired for no good reason. What can I get if that is proven?",
+  "reparsed": "If it is proven that I was fired for no good reason, what compensation or reinstatement can I get?",
+  "no_op": false
+ },
+ {
+  "question_id": "q34",
+  "question_language": "en",
+  "original": "My contract had a fixed end date but my employer ended it early. What am I owed?",
+  "reparsed": "What am I owed if my contract had a fixed end date but my employer ended it early, and what are my entitlements regarding notice period compensation and any other compensation or benefits stipulated in the contract or by Jordanian labour law?",
+  "no_op": false
+ },
+ {
+  "question_id": "q35",
+  "question_language": "en",
+  "original": "Are there situations where an employer simply is not allowed to end someone's job?",
+  "reparsed": "Under what specific circumstances is an employer in Jordan not permitted to terminate an employee's employment contract, and does this prohibition apply differently depending on whether the contract is for a definite or indefinite period?",
+  "no_op": false
+ },
+ {
+  "question_id": "q36",
+  "question_language": "en",
+  "original": "When can an employer dismiss someone on the spot, with no warning at all?",
+  "reparsed": "When can an employer dismiss someone on the spot, with no warning at all, and what are the specific conditions or circumstances that justify such immediate termination without prior notice?",
+  "no_op": false
+ },
+ {
+  "question_id": "q37",
+  "question_language": "en",
+  "original": "I am not covered by social security. What is my employer supposed to pay me when my job ends?",
+  "reparsed": "I am not covered by social security. What is my employer supposed to pay me when my job ends, and what if my job ended because I resigned or because I was terminated?",
+  "no_op": false
+ },
+ {
+  "question_id": "q38",
+  "question_language": "en",
+  "original": "How long can an employer keep me on trial at the start of a job, and what happens during that time?",
+  "reparsed": "How long can an employer keep me on trial at the start of a job, and what happens during that time regarding my employment status and rights, and what happens if I am dismissed or if I resign during this period?",
+  "no_op": false
+ },
+ {
+  "question_id": "q39",
+  "question_language": "en",
+  "original": "When must my wages reach me, and what is my employer allowed to take out of them?",
+  "reparsed": "When must my wages reach me, and what deductions is my employer allowed to make from them?",
+  "no_op": false
+ },
+ {
+  "question_id": "q40",
+  "question_language": "en",
+  "original": "How many hours can I be asked to work, and what extra pay do I get for long hours or for working on a holiday?",
+  "reparsed": "How many hours can I be asked to work, and what extra pay do I get for long hours or for working on a holiday, and what extra pay do I get for working on a weekend?",
+  "no_op": false
+ },
+ {
+  "question_id": "q41",
+  "question_language": "en",
+  "original": "I did not use all my annual leave before leaving the job. Do I get paid for the days I did not take?",
+  "reparsed": "If I did not use all my annual leave before leaving the job, do I get paid for the days I did not take, and does it matter whether I resigned or was terminated?",
+  "no_op": false
+ },
+ {
+  "question_id": "q42",
+  "question_language": "en",
+  "original": "How long can I stay off work after giving birth, and do I get time during the day for breastfeeding afterwards?",
+  "reparsed": "How long can I stay off work after giving birth, and how much time during the day do I get for breastfeeding afterwards?",
+  "no_op": false
+ },
+ {
+  "question_id": "q43",
+  "question_language": "en",
+  "original": "If a worker is killed or left permanently unable to work by an accident at work, what is the employer required to pay?",
+  "reparsed": "If a worker is killed by an accident at work, what is the employer required to pay, and if a worker is left permanently unable to work by an accident at work, what is the employer required to pay?",
+  "no_op": false
+ },
+ {
+  "question_id": "q44",
+  "question_language": "ar",
+  "original": "كم يوم إجازة سنوية لي، وهل أستطيع تقسيمها، وماذا يحدث إن لم أستعملها؟",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q45",
+  "question_language": "ar",
+  "original": "كم يوماً أستطيع أن أتغيب بسبب المرض في السنة الواحدة؟",
+  "reparsed": "كم يوماً أستطيع أن أتغيب بسبب المرض في السنة الواحدة، وكم يوماً من هذه الإجازة تكون مدفوعة الأجر وغير مدفوعة الأجر؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q46",
+  "question_language": "ar",
+  "original": "هل هناك إجازات أخرى أستطيع أخذها غير السنوية والمرضية؟",
+  "reparsed": "هل هناك إجازات أخرى أستطيع أخذها غير السنوية والمرضية، وما هي شروط كل منها؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q47",
+  "question_language": "ar",
+  "original": "أريد التفرغ لتربية أطفالي. هل أستطيع أخذ إجازة لذلك، وبأي شروط؟",
+  "reparsed": "هل يمكنني الحصول على إجازة لرعاية الأطفال، وما هي الشروط المتعلقة بأنواع هذه الإجازات المختلفة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q48",
+  "question_language": "ar",
+  "original": "نُقل زوجي للعمل في محافظة أخرى. هل أستطيع أخذ إجازة حتى أرافقه؟",
+  "reparsed": "هل أستطيع أخذ إجازة لمرافقة زوجي إذا نُقل للعمل في محافظة أخرى، وما هي شروط هذه الإجازة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q49",
+  "question_language": "ar",
+  "original": "هل أستطيع ترك عملي فوراً دون إشعار وأحتفظ بحقوقي، وفي أي حالات؟",
+  "reparsed": "هل يمكنني ترك عملي فوراً دون إشعار والاحتفاظ بجميع حقوقي، وفي أي الحالات المحددة يحق لي ذلك كعاملة، وفي أي الحالات يحق لي ذلك كعامل؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q50",
+  "question_language": "ar",
+  "original": "انتهى عملي. هل يلزم صاحب العمل أن يعطيني ورقة تثبت أنني عملت لديه؟",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q51",
+  "question_language": "ar",
+  "original": "شركتنا تمر بضائقة وتريد تقليص عدد الموظفين. ما الذي يلزمها قبل أن تفعل ذلك؟",
+  "reparsed": "ما الذي يلزم شركتنا قبل تقليص عدد الموظفين، وهل تختلف المتطلبات بين تسريح الموظفين أو تخفيض رواتبهم؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q52",
+  "question_language": "ar",
+  "original": "إذا توفي العامل، لمن تُدفع المبالغ المستحقة له؟",
+  "reparsed": "إذا توفي العامل، لمن تُدفع المبالغ المستحقة له، هل الورثة الشرعيون أم المستحقون عنه، وما هي الشروط الخاصة بكلتا الحالتين؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q53",
+  "question_language": "ar",
+  "original": "أتلفت آلة في العمل من غير قصد. هل يُخصم ذلك من راتبي، وكم أقصى ما يمكن خصمه؟",
+  "reparsed": "أتلفت آلة في العمل من غير قصد. هل يُخصم ذلك من راتبي، وكم أقصى ما يمكن خصمه، وهل يختلف الحد الأقصى للخصم إذا كان الإتلاف جزئيًا أم كليًا؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q54",
+  "question_language": "ar",
+  "original": "أوقف صاحب العمل العمل مؤقتاً لسبب خارج عن إرادته. هل أتقاضى أجري في تلك الفترة؟",
+  "reparsed": "هل أتقاضى أجري في حال إيقاف صاحب العمل العمل مؤقتاً لسبب خارج عن إرادته، ومتى يتقاضى العمال أجورهم في هذه الحالة؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q55",
+  "question_language": "ar",
+  "original": "كم يوم راحة لي في الأسبوع، وهل يكون بأجر؟",
+  "reparsed": "كم يوم راحة لي في الأسبوع، وهل يكون بأجر، وإذا كان بأجر فهل يختلف عدد هذه الأيام باختلاف نظام العمل (مثلاً، العمل لساعات طويلة أو بنظام الورديات)؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q56",
+  "question_language": "ar",
+  "original": "ما الذي يلزم صاحب العمل حتى يحميني من مخاطر العمل، وما الذي يلزمني أنا؟",
+  "reparsed": "ما هي الالتزامات القانونية المحددة التي تقع على عاتق صاحب العمل لحماية العامل من مخاطر العمل، وما هي الالتزامات القانونية المحددة التي تقع على عاتق العامل تجاه هذه المخاطر؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q57",
+  "question_language": "en",
+  "original": "Can I work in a place that has not been given a classification yet?",
+  "reparsed": null,
+  "no_op": true
+ },
+ {
+  "question_id": "q58",
+  "question_language": "en",
+  "original": "Am I put into a category as a professional worker, and what does that category affect?",
+  "reparsed": "Am I put into a category as a professional worker, and what does that category affect regarding my legal rights and obligations as an employee, and what does it affect regarding my social security contributions and benefits?",
+  "no_op": false
+ },
+ {
+  "question_id": "q59",
+  "question_language": "ar",
+  "original": "هل أستطيع ممارسة مهنتي في محل لم يُصنَّف بعد؟",
+  "reparsed": "هل أستطيع ممارسة مهنتي في محل لم يُصنَّف بعد، أو في محل صُنف ولكن لم تنتهِ إجراءات ترخيصه، أو في محل رُفض تصنيفه أو إلغي؟",
+  "no_op": false
+ },
+ {
+  "question_id": "q60",
+  "question_language": "ar",
+  "original": "هل يُوضع العاملون المهنيون في فئات، وما الذي يترتب على ذلك؟",
+  "reparsed": "هل يُوضع العاملون المهنيون في فئات، وما الذي يترتب على تصنيفهم ضمن كل فئة من هذه الفئات؟",
+  "no_op": false
+ }
+]
