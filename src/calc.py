@@ -892,9 +892,12 @@ _OT_LABELS = {
                    "the documents do not state how to convert one into the other."),
         "cond": ("CONDITION -- Article 58 excludes anyone in general supervision or management, "
                  "and anyone whose job requires travel, from these overtime provisions entirely. "
-                 "The person has not said whether either applies to them, so give the rates above "
-                 "as conditional on that and ASK whether they hold a supervisory/management role "
-                 "or a role requiring travel. Do not present the rates as simply what they get."),
+                 "If the question is about THIS PERSON's own entitlement and they have not said "
+                 "whether either applies to them, give the rates above as conditional on that and "
+                 "ASK whether they hold a supervisory/management role or a role requiring travel -- "
+                 "do not present the rates as simply what they get. If the question is a general one "
+                 "about what the rules or exceptions ARE, not about their own situation, just state "
+                 "this exclusion as one of the rules; do not ask a clarifying question about them."),
     },
     "ar": {
         "head": "أرقام محسوبة مسبقاً -- العمل الإضافي (المادة 59، النسب مقروءة من النص)",
@@ -905,9 +908,12 @@ _OT_LABELS = {
         "nowage": ("لم يذكر الشخص أجر الساعة، فاذكر النسب كنسبة من أجر الساعة المعتاد -- لا تخترع "
                    "رقماً بالدينار من راتب شهري، فالوثائق لا تنص على طريقة التحويل بينهما."),
         "cond": ("شرط -- المادة (58) تستثني من أحكام العمل الإضافي كل من يتولى مهام الإشراف العام أو "
-                 "الإدارة، وكل من تتطلب طبيعة عمله السفر والتنقل. لم يذكر الشخص إن كان ينطبق عليه "
-                 "أي من الحالتين، فاذكر النسب أعلاه مشروطة بذلك واسأله هل يشغل منصباً إشرافياً أو "
-                 "إدارياً أو عملاً يتطلب السفر. لا تقدّم النسب على أنها ما يستحقه ببساطة."),
+                 "الإدارة، وكل من تتطلب طبيعة عمله السفر والتنقل. إذا كان السؤال عن استحقاق هذا "
+                 "الشخص تحديداً ولم يذكر إن كان ينطبق عليه أي من الحالتين، فاذكر النسب أعلاه مشروطة "
+                 "بذلك واسأله هل يشغل منصباً إشرافياً أو إدارياً أو عملاً يتطلب السفر -- لا تقدّم "
+                 "النسب على أنها ما يستحقه ببساطة. أما إذا كان السؤال عاماً عن ماهية القواعد أو "
+                 "الاستثناءات، وليس عن حالته الشخصية، فاذكر هذا الاستثناء كأحد القواعد فقط دون طرح "
+                 "سؤال توضيحي عنه."),
     },
 }
 

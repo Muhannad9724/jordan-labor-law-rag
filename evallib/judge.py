@@ -36,7 +36,8 @@ import re
 import time
 
 __all__ = ["JUDGE_MODEL", "JUDGE_PROMPT", "JUDGE_MAX_TOKENS",
-           "format_context_for_judge", "make_judge"]
+           "format_context_for_judge", "make_judge",
+           "BEHAVIOR_JUDGE_PROMPT", "make_behavior_judge"]
 
 JUDGE_MODEL = "anthropic/claude-sonnet-5"
 
@@ -111,5 +112,72 @@ def make_judge(client, model=JUDGE_MODEL, max_tokens=None, verbose=True):
                 print(f"    judge retry {attempt + 1}/{max_retries}: {last} -- waiting {wait}s")
             time.sleep(wait)
         raise RuntimeError(f"judge failed after {max_retries} attempts: {last}")
+
+    return judge
+
+
+# ---------------------------------------------------------------------------
+# Behavior judge -- a SEPARATE grader from JUDGE_PROMPT above, deliberately.
+#
+# JUDGE_PROMPT scores general faithfulness/relevancy and must stay byte-identical
+# for historical comparability (see the module docstring). It doesn't fit the
+# eval_mechanisms_v1 questions that test a specific instructed BEHAVIOR rather than
+# citation accuracy -- e.g. "did the model correctly decline an out-of-scope
+# question" or "did it stay neutral on a judgment question" -- where a fully
+# faithful, on-topic-sounding answer can still fail the actual thing being tested
+# (a faithful, relevant recommendation is still a rule-13 violation on a judgment
+# question). This judge takes the `expected_behavior` field those questions carry
+# (same field eval_multiturn_v1 already uses, there for manual reading) and asks a
+# single pass/fail question instead of a 1-5 score, since these are binary
+# instructed behaviors, not a quality gradient.
+BEHAVIOR_JUDGE_PROMPT = """You are checking whether an AI legal assistant's answer displays ONE SPECIFIC required behavior, for a Jordanian labor/social security law assistant. Do not grade general quality -- score ONLY whether the described behavior happened.
+
+Required behavior: {expected_behavior}
+
+Question: {question}
+
+Source documents given to the assistant:
+{context}
+
+Assistant's answer:
+{answer}
+
+Respond with ONLY this JSON, no other text:
+{{"pass": <true or false>, "reason": "<one sentence explaining why>"}}"""
+
+
+def make_behavior_judge(client, model=JUDGE_MODEL, max_tokens=None, verbose=True):
+    """Build a `judge(question, chunks, answer, expected_behavior, max_retries=5)`
+    bound to a client -- same shape and retry/parsing behavior as make_judge()."""
+
+    def judge(question, chunks, answer, expected_behavior, max_retries=5):
+        prompt = BEHAVIOR_JUDGE_PROMPT.format(
+            expected_behavior=expected_behavior, question=question,
+            context=format_context_for_judge(chunks), answer=answer,
+        )
+        last = None
+        for attempt in range(max_retries):
+            try:
+                kwargs = {"model": model,
+                          "messages": [{"role": "user", "content": prompt}]}
+                if max_tokens is not None:
+                    kwargs["max_tokens"] = max_tokens
+                r = client.chat.completions.create(**kwargs)
+                if r.choices:
+                    content = r.choices[0].message.content
+                    if not content:
+                        last = f"empty content (finish_reason={r.choices[0].finish_reason})"
+                    else:
+                        m = re.search(r"\{.*\}", content, re.DOTALL)
+                        if m:
+                            return json.loads(m.group(0))
+                        last = f"no JSON in: {content[:200]!r}"
+            except Exception as e:
+                last = f"{type(e).__name__}: {str(e)[:200]}"
+            wait = min(30, 2 ** attempt)
+            if verbose:
+                print(f"    behavior judge retry {attempt + 1}/{max_retries}: {last} -- waiting {wait}s")
+            time.sleep(wait)
+        raise RuntimeError(f"behavior judge failed after {max_retries} attempts: {last}")
 
     return judge

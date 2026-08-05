@@ -302,10 +302,29 @@ PRECONDITION_TRIGGER_DEPTH = 37  # same depth as FAMILY_TRIGGER_DEPTH; no diluti
                                   # borrows that constant's margin rather than tuning
                                   # a fresh one against a single known failure.
 PRECONDITION_ARTICLES = [
+    # trigger_count=1, not 2 -- Article 91 (task-work-basis compensation calculation)
+    # is a narrow provision whose Arabic-embedding rank for a plain "who pays"
+    # question can fall outside PRECONDITION_TRIGGER_DEPTH even when Article 90 (the
+    # actual compensation clause, and what the precondition logic is really about)
+    # ranks well. Found live: m14/eval_mechanisms_v1 (Arabic) never got Article 86 --
+    # only Article 90 was in the window, so `present=1 < trigger_count=2` never fired
+    # -- while m13, the same question in English, had both and fired. Article 90
+    # alone is sufficient signal; requiring 91 too was an unnecessary extra condition
+    # nothing in the original Phase 28 design depended on.
     {"anchor_law": "labor96", "anchor": "86", "governed_law": "labor96",
-     "governed": {"90", "91"}, "trigger_count": 2},
+     "governed": {"90", "91"}, "trigger_count": 1},
     {"anchor_law": "ssl", "anchor": "4", "governed_law": "ssl",
      "governed": "ALL", "trigger_count": 1},
+    # Article 7 (voluntary Old-Age/Disability/Death insurance: who may join, and that
+    # they pay both the firm's and the insured's shares in full) never states the
+    # actual RATE -- that number (17.5% of wage) is in Article 59(a)(3), a separate
+    # article about contribution funding generally, not retrieved by a plain
+    # "should I join voluntarily" question. Found live: m10/eval_mechanisms_v1 --
+    # the answer correctly described the obligation qualitatively ("pay both shares
+    # in full") from Article 7 alone but never quantified it, because Article 59 was
+    # never in context to quantify it from.
+    {"anchor_law": "ssl", "anchor": "59", "governed_law": "ssl",
+     "governed": {"7"}, "trigger_count": 1},
 ]
 
 _ARABIC_RE = re.compile(r"[؀-ۿ]")
